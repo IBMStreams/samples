@@ -1,0 +1,73 @@
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+namespace sample ;
+
+use com.ibm.streamsx.hdfs2.helpers::HDFSReadFormat ;
+use com.ibm.streamsx.hdfs2.helpers::HDFSFormatWrite ;
+
+/** Demonstration of the helpers for basic read and write
+ * To use this sample, copy the readtest.txt file from the data
+ * directory to testDir (by default hdfsHelpersTest_basic).
+ * 
+ * After running, you can verify the readTest.out file locally.
+ * <code>
+ * "Number is 0",1
+ * "Number is 2",3
+ *  ...
+ * </code>
+ * 
+ * 
+ * Check the writetest.txt file on hadoop.  it's lines are:
+ * <code>
+ * \\\{aString="Number is 0",n=0\\\}
+ * \\\{aString="Number is 1",n=1\\\}
+ * ...
+ * </code>
+ *
+ */
+composite ReadFormatWrite
+{
+	param
+	// Location where the files should go in on hadoop.
+	// Since this is a relative path, it's relative to your home
+	// directory.
+		expression<rstring> $testDir : "hdfsHelpersTest_basic/" ;
+	graph
+		stream<rstring aString, int32 n> testStream = Beacon()
+		{
+			param
+				iterations : 100 ;
+			output
+				testStream : aString = "Number is " +(rstring) IterationCount(), n =(int32)
+					IterationCount() ;
+		}
+
+		// Cast the tuples to strings and write them to HDFS.
+		// The first tuple looks like this:
+		// {aString="Number is 0",n=0}
+		() as sink = HDFSFormatWrite(testStream)
+		{
+			param
+				file : $testDir + "testwrite.txt" ;
+		}
+
+		// Read the file and turn them into tuples. 
+		stream<rstring aString, int32 n> readStream = HDFSReadFormat()
+		{
+			param
+				file : $testDir + "testread.txt" ;
+				streamType : tuple<rstring aString, int32 n> ;
+		}
+
+		// For verification, we write them in CSV format locally.
+		// The first one looks like: 
+		// "Number is 0",1
+		() as readTest = FileSink(readStream)
+		{
+			param
+				file : "readTest.out" ;
+				format : csv ;
+		}
+
+}
