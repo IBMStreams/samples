@@ -1,0 +1,22 @@
+namespace application ;
+
+composite windowTest
+{
+	graph
+		(stream<int32 number> Beacon_1_out0) as Beacon_1 = Beacon()
+		{
+			param
+				iterations : 35 ;
+			output
+				Beacon_1_out0 : number =(int32) IterationCount() ;
+		}
+
+		(stream<int32 number>windowOut) as windowEventTrace =
+			windowEvents(Beacon_1_out0 as inPort0Alias)
+		{
+			window
+				inPort0Alias : tumbling, count(10) ;
+		}
+
+}
+
