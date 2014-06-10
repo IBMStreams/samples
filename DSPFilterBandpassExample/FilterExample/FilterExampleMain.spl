@@ -1,0 +1,39 @@
+namespace FilterExample ;
+
+use com.ibm.streams.timeseries.generators::Generator ;
+use com.ibm.streams.timeseries.analysis::DSPFilter ;
+
+composite FilterExampleMain
+{
+	graph
+		(stream<float64 origSignalValue, float64 filteredSignalValue>
+			DSPFilter_4_out0) as DSPFilter_4 = DSPFilter(Generator_3_out0 as
+			inputSignalAlias)
+		{
+			param
+				inputTimeSeries : inputSignalAlias.signal ;
+				xcoef : { 0u : 0.005542717, 2u : - 0.011085434, 4u : 0.005542717 } ;
+				ycoef : { 0u : 1.0000000, 1u : - 3.6048048, 2u : 5.0363144, 3u : -3.2247373, 4u : 0.8008026 } ;
+			output
+				DSPFilter_4_out0 : origSignalValue = inputSignalAlias.signal, 
+				filteredSignalValue = filteredTimeSeries() ;
+		}
+
+		() as FileSink_5 = FileSink(DSPFilter_4_out0)
+		{
+			param
+				file : "output.txt" ;
+		}
+
+		(stream<float64 signal> Generator_3_out0) as Generator_3 = Generator()
+		{
+			param
+				samplingRate : 2000u ;
+				frequency : 100.0 ;
+				iterations : 1u ;
+			output
+				Generator_3_out0 : signal = generatedTimeSeries() ;
+		}
+
+}
+
