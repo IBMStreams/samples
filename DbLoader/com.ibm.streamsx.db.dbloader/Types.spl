@@ -1,0 +1,190 @@
+/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
+/*                                                                      */
+/* InfoSphere Streams DBLoader                                          */
+/* A sample SPL application to load files into DB2 or Oracle databases  */
+
+/**
+ * Types.spl 
+ * Includes types and functions
+ * 
+ */
+ 
+namespace com.ibm.streamsx.db.dbloader;
+
+/**
+ * The type **ConfigData** is defined as a tuple to store the configuration parameters 
+    and the current file name to load.
+  
+  	rstring dbName		: The name of database 
+ 
+	rstring dbUser		: The name of database user   
+
+	rstring dbPass		: The password of database user
+	
+	rstring inputDir	: The input directory that stores the table files in CSV format
+	
+	rstring logDir		: The directory that stores the log files.
+	
+	rstring archiveDir 	: The directory that stores the successfully loaded files.
+	
+	rstring errorDir	: The directory that stores the failed files.
+	
+	rstring oracleCtlDir: The directory where the Oracle control-files are places.
+
+	rstring databaseType: The type of Database (DB2 or Oracle)
+	
+	rstring fileName	: The name of file 
+
+	int64 counter 		: Counts the number of proceeded files
+ */
+type ConfigData = tuple<rstring dbName, // The name of database 
+rstring dbUser, // The name of database user   
+rstring dbPass, // The password of database user
+rstring inputDir, // The input directory that stores the table files in CSV format
+rstring logDir, // The directory that stores the log files.
+rstring archiveDir, // The directory that stores the successfully loaded files.
+rstring errorDir, // The directory that stores the failed files.
+rstring oracleCtlDir, // The directory where the Oracle control-files are places.
+rstring databaseType, // The type of Database (DB2 or Oracle)
+rstring fileName, // The name of file 
+int64 counter> ; // Counter to control the proceeded files
+
+/** 
+ * The function **getCurrentTime**
+ * build time string in the format YYYY-MM-DD hh:mm:ss
+ */
+stateful rstring getCurrentTime()
+{
+	timestamp ts = getTimestamp() ;
+	rstring strTimestamp =(rstring) year(ts) + "-" +((month(ts) < 9u) ? "0" : "") +(rstring)(month(ts) + 1u) + "-"
+	+((day(ts) < 10u) ? "0" : "") +(rstring) day(ts) + " " +((hour(ts) < 10u) ? "0" : "") +(rstring) hour(ts) + ":"
+	+((minute(ts) < 10u) ? "0" : "") +(rstring) minute(ts) + ":" +((second(ts) < 10u) ? "0" : "") +(rstring) second(ts) ;
+	return strTimestamp ;
+}
+
+/**  
+ * The function **getTableName** returns the name of table embedded in file name.
+ * 
+ * The file names must begin with the database schema and the table name and ending with a dash "-". 
+ * 
+ * @param fileName rstring the name of file
+ * @return rstring tableName the name of table
+ */
+rstring getTableName(rstring fileName)
+{
+	mutable rstring tableName = "" ;
+	mutable int32 position1 = 0 ;
+	mutable int32 position2 = 0 ;
+	mutable int32 leng = 0 ;
+	leng = length(fileName) ;
+	position1 = findLast(fileName, "/", leng - 1) ;
+	position2 = findFirst(fileName, "-", position1) ;
+	tableName = substring(fileName, position1 + 1, position2 - position1 - 1) ;
+	return tableName ;
+} // End of getTableName
+
+/**  
+ * The function **getConfigValue** returns the value of configuration parameter.
+ * 
+ * @param configLine rstring  A line from config.cfg file
+ * @param configName rstring  The name of configuration parameter in config.cfg file
+ * @return rstring The value of configuration parameter
+ */
+rstring getConfigValue(rstring configLine, rstring configName)
+{
+	mutable rstring configValue = "" ;
+	mutable int32 foundPosition = 0 ;
+	foundPosition = findFirst(configLine, configName, 0) ;
+	if(foundPosition != - 1)
+	{
+		foundPosition = findFirst(configLine, "=", 0) ;
+		if(foundPosition > 2)
+		{
+			configValue = substring(configLine, foundPosition + 1, 100) ;
+			//			printStringLn ("getConfigValue  : " + configName + "   " + configValue);
+
+		}
+	}
+
+	return configValue ;
+} // End of getConfigValue
+
+
+/**  
+  * The function **checkDB2LoadResult** checks the DB2 load results.
+  * 
+  * Returns the load status.
+  *
+  * 0 = Error
+  *
+  * 1 = successful
+  *
+  * 2 = partially loaded
+  *
+  * 3 = The table does not exist on database
+  * 
+  * @param result rstring load results
+  * @return int32 loadStatus
+ */
+int32 checkDB2LoadResult(rstring result)
+{
+	mutable int32 loadStatus = 0 ;
+	mutable int32 position1 = 0 ;
+	mutable int32 position2 = 0 ;
+	mutable rstring rows = "" ;
+	mutable int32 readRows = 0 ;
+	mutable int32 loadedRows = 0 ;
+	position1 = findFirst(result, "Number of rows read", 0) ;
+	// check the result and compare the loaded rows with read rows
+	if(position1 > 0)
+	{
+		position2 = findFirst(result, "=", position1) ;
+		position1 = findFirst(result, "\n", position2) ;
+		rows = substring(result, position2 + 1, position1 - position2) ;
+		readRows =(int32) rows ;
+		position1 = findFirst(result, "Number of rows loaded", 0) ;
+		position2 = findFirst(result, "=", position1) ;
+		position1 = findFirst(result, "\n", position2) ;
+		rows = substring(result, position2 + 1, position1 - position2) ;
+		loadedRows =(int32) rows ;
+		// printStringLn("rows  :   " + rows + " readRows " +(rstring) readRows + " loadedRows " +(rstring) loadedRows) ;
+		// The load is successful if the loaded rows is equal to read rows	
+		if((loadedRows > 0) &&(readRows == loadedRows))
+		{
+			if(loadedRows == readRows)
+			{
+			// The number of loaded rows is equal to the number of read rows. 
+			// The file is loaded successful. 
+				loadStatus = 1 ;
+			}
+
+			else
+			{
+			// The file is partially loaded			
+				loadStatus = 2 ;
+			}
+		}
+
+	}
+
+	else
+	{
+		position1 = findFirst(result, "SQL3304N", 0) ;
+		if(position1 > - 1)
+		{
+			loadStatus = 3 ;
+		}
+		// SQL3304N  The table does not exist.
+
+		position1 = findFirst(result, "SQL0668N", 0) ;
+		if(position1 > - 1)
+		{
+			loadStatus = 3 ;
+		}
+		// SQL0668N  Operation not allowed
+	}
+
+	return loadStatus ;
+} // End of getTableName
+ 
+ 

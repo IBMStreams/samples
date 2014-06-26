@@ -1,0 +1,183 @@
+/*                                                                      */
+/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
+/*                                                                      */
+/* InfoSphere Streams DBLoader                                          */
+/* A sample SPL application to load files into DB2 or Oracle databases  */
+
+namespace com.ibm.streamsx.db.dbloader;
+ 
+use com.ibm.streamsx.linuxshell::* ;
+
+/**
+ * The composite **ExecuteCommand** executes a shell command via LinuxSourec.
+ * 
+ * The LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+ * 
+ * It measures the execution time and writes the command and its result in a log file. 
+ *
+ * @input Command rstring command
+ * @output Result rstring result
+ */
+composite ExecuteCommand(output Result ; input Command)
+{
+	graph
+
+	/**
+		 * StartTime
+		 * Get the current time as Start Time to calculate the execution time.
+		 */
+		stream<rstring command, int64 counter, timestamp startTime> StartTime = Custom(Command)
+		{
+			logic
+				onTuple Command :
+				{
+					submit({ command = command, counter = counter, startTime = getTimestamp() }, StartTime) ;
+				}
+
+		}
+
+		/**
+		 * GetCommand
+		 * Use Custom operator to deliver the command.
+		 */
+		stream<rstring command> GetCommand = Custom(StartTime)
+		{
+			logic
+				onTuple StartTime :
+				{
+					submit({ command = command }, GetCommand) ;
+				}
+		}
+
+		/**
+		 * ExecuteCmd
+		 * Use LinuxSource operator to execute a command.
+		 * LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+		 */
+		stream<rstring result> ExecuteCmd = LinuxSource(GetCommand)
+		{
+			logic
+				onTuple GetCommand :
+				{
+					//	println(Command) ;
+				}
+		}
+
+		/**
+		 * EndTime
+		 * Get the current time as End Time to calculate the execution time.
+		 */
+		stream<rstring result, timestamp endTime> EndTime = Custom(ExecuteCmd)
+		{
+			logic
+				state :
+				{
+					mutable rstring resultLines = "" ;
+				}
+
+				onTuple ExecuteCmd :
+				{
+					if(length(result) > 2)
+					{
+						resultLines = resultLines + result + "\n" ;
+					}
+
+				}
+
+				onPunct ExecuteCmd :
+				{
+				//	printStringLn("ExecuteCmd  : " + resultLines) ;
+					submit({ result = resultLines, endTime = getTimestamp() }, EndTime) ;
+					resultLines = "" ;
+				} // End of onPunct ExecuteCmd
+
+		}
+
+		/**
+		 * GetStartEndTime
+		 * The Barrier operator is used to synchronize tuples from two streams 
+		 * StartTime and EndTime.
+		*/
+		stream<StartTime, EndTime> GetStartEndTime = Barrier(StartTime ; EndTime)
+		{
+		}
+
+		/**
+		 * CreateLog
+		 * Creates log information from command and result.
+		*/
+		stream<rstring result> CreateLog = Functor(GetStartEndTime)
+		{
+			logic
+				state :
+				{
+					mutable int32 findPassword ;
+					mutable rstring cmdAndResult = "" ;
+					mutable rstring cmd = "" ;
+					mutable rstring executeResult ;
+					mutable int64 Counter ;
+					mutable float64 executionTime = 0.0 ;
+				}
+
+				onTuple GetStartEndTime :
+				{
+					executionTime = diffAsSecs(endTime, startTime) ;
+					if(length(result) < 2)
+					{
+						executeResult = "done\n" ;
+					}
+
+					else
+					{
+						executeResult = result ;
+					}
+
+					cmd = command ;
+					// hide db2 password in log file
+					findPassword = findFirst(cmd, " using ", 0) ;
+					if(findPassword != - 1)
+					{
+						cmd =(substring(command, 0, findPassword + 7)) + "********" ;
+					}
+
+					Counter = counter;
+//					Counter =(int32)(random() * 100.0) ;
+					cmdAndResult = "[" +(rstring) Counter + "] Command: " + cmd + "\n                    [" +(rstring) Counter +
+					"] Result : " + executeResult + "Execution Time " +(rstring) executionTime + " seconds\n" ;
+					printStringLn("ExecuteCmd  CreteLog: " + cmdAndResult) ;
+				}
+
+			output
+				CreateLog : result = cmdAndResult ;
+		}
+
+		/**
+		 * LogSink
+		 * Write log information into log file.
+		*/
+		() as LogSink = Logger(CreateLog)
+		{
+		}
+
+		/**
+		 * Result
+		 * Send the execution command result as Output from Composite ExecuteCommand. 
+		 */
+		stream<rstring result> Result = Functor(GetStartEndTime)
+		{
+			logic
+				state :
+				{
+					mutable rstring endResult = "" ;
+				}
+
+				onTuple GetStartEndTime :
+				{
+					endResult = result ;
+				}
+
+			output
+				Result : result = endResult ;
+		}
+
+} // End of Composite ExecuteCommand 

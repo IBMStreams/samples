@@ -1,0 +1,107 @@
+/*                                                                      */
+/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
+/*                                                                      */
+/* InfoSphere Streams DBLoader                                          */
+/* A sample SPL application to load files into DB2 or Oracle databases  */
+
+namespace com.ibm.streamsx.db.dbloader;
+
+/** 
+ * The composite **OracleCheckDb** checks the state of Oracle database. 
+ * 
+ * It returns the status of Oracle database as boolean. 
+ * 
+ * @input ConfigurationData (database name,  database user, database password)
+ * @output DbState boolean connected database status
+ */
+composite OracleCheckDb(output DbState ; input ConfigurationData)
+{
+	graph
+		
+		/**
+		 * CreateOracleCheckDbCommand
+		 * Creates a sqlplus command to check the state of Oracle database. 
+		 */
+		stream<rstring command, int64 counter> CreateOracleCheckDbCommand = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring cmd ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					printStringLn("CreateOracleCheckDbCommand " +(rstring) ConfigurationData) ;
+					cmd = "echo 'select status from v$instance;' | sqlplus -s "
+						+ configData.dbUser + "/" 
+						+ configData.dbPass + "@"
+						+ configData.dbName; 				
+					
+					submit({ command = cmd, counter = configData.counter }, CreateOracleCheckDbCommand) ;
+				}
+
+		}
+
+		/**
+		 * OracleCheckDb
+		 * Execute a sqlplus command via Linux Shell to check the state of Oracle database 
+		 */
+		stream<rstring result> OracleCheckDb = ExecuteCommand(CreateOracleCheckDbCommand)
+		{
+		}
+
+		/**
+		 * CheckOracleDbStatus
+		 * Check the state of Oracle database 
+		 * If result is OPEN the Oracle database is running
+		 * And the database user name and password are correct  
+		 */
+		stream<boolean connected> CheckOracleDbStatus = Custom(OracleCheckDb)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulConnection ;
+					mutable rstring logMessage ;
+				}
+
+				onTuple OracleCheckDb :
+				{
+					if(length(result) > 2)
+					{
+						successfulConnection = findFirst(result, "OPEN", 0) ;
+						if(successfulConnection == - 1)
+						{
+							logMessage = "Oracle check database failed." + result ;
+							log(Sys.error, logMessage) ;
+							printStringLn(logMessage) ;
+							submit({ connected = false }, CheckOracleDbStatus) ;
+						}
+
+						else // successfull
+
+						{
+							logMessage = "Oracle check database completed successfully." ;
+							log(Sys.info, logMessage) ;
+							printStringLn(logMessage) ;
+							submit({ connected = true }, CheckOracleDbStatus) ;
+						}
+
+					}
+
+				}
+
+		}
+
+		/**
+		 * DbState
+		 * Send the tuple connected as DbState of OracleCheckDb composite
+		 */
+		stream<boolean connected> DbState = Custom(CheckOracleDbStatus)
+		{
+			logic
+				onTuple CheckOracleDbStatus : submit(CheckOracleDbStatus, DbState) ;
+		} // End of DbState = Custom(CheckOracleDbStatus)
+
+} /** End of OracleCheckDb composite */ 

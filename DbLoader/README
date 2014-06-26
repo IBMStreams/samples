@@ -1,0 +1,101 @@
+/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
+/*                                                                      */
+/* InfoSphere Streams DBLoader                                          */
+/* A sample SPL application to load files into DB2 or Oracle databases  */
+
+The 'DB Loader' is a SPL application for InfoSphere Streams.
+It use DB2 load command tool or Oracle SQL Loader to load files directly 
+into database. 
+
+DbLoader scans the input directory and loads files parallel into database.  
+It improves insert-performance into DB2 and Oracle databases.
+It is not needed to change the SPL code in case of new tables.
+The input file name must include the database schema and the table name  
+The database schema begin after path and end with a point "."
+The table name begin after . and end with a dash "-"             
+for example:  /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv 
+In this case DB2INST1 is the database user name (or schema) 
+And MY_TABLE_123 is the table name.
+All input files must have a correctly formated Comma Separated Value (csv).
+
+--------------------------------------------------------------------------
+
+DbLoader use LinuxSource operator to execute a command.
+LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit
+It is available in It is available in GitHub: 
+https://github.com/ejpring/LinuxShellToolkit 
+Download and copy this package in a local directory 
+and add its path to the environment variable STREAMS_SPLPATH
+
+--------------------------------------------------------------------------
+
+Change configuration parameters in config/config.cfg file.
+Set the absolute path for directories in configuration file.
+e.g. INPUT_DIR=/home/streams/DbLoder/data/in
+
+--------------------------------------------------------------------------
+Parameter name  | Submission  | Default       | Description
+in config.cfg   | Parameter   | value         |
+--------------------------------------------------------------------------
+DBNAME           dbName                           The name of database .
+DBUSER           dbUser                           The name of DB user . 
+DBPWD            dbPass                           The password of DB user .
+INPUT_DIR        inputDir      ../data/in         The directory that stores the table files in CSV format
+ARCHIVE_DIR      archiveDir    ../data/archive    The directory that stores the successfully loaded files.
+ERROR_DIR        errorDir      ../data/error      The directory that stores the failed files.
+LOG_DIR          logDir        ../data/log        The directory that stores the log files.
+CONTROLFILES_DIR oracleCtlDir  ../data/control    The directory where the Oracle control-files are places.
+DATABASETYPE         -          DB2               The Database type DB2 or Oracle
+PARALLEL_LOADERS     -          5                 The number of parallel loaders (1-10)
+
+--------------------------------------------------------------------------
+
+Check the database connection status and make sure 
+that the database server is running
+
+For DB2
+    db2 connect to DBNAME user <DBUSER> using <DBPWD>
+
+--------------------------------------------------------------------------
+
+For Oracle:
+    sqlplus -s <DBUSER>/<DBPWD>@<DBNAME>
+
+Database name is defined in $TNS_ADMIN/tnsnames.ora
+For example 
+TESTORA =
+  (DESCRIPTION = 
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP) (HOST = 192.168.181.129)(PORT = 1521))
+    )
+    (CONNECT_DATA = (SID = ORAC))
+  )
+
+Check the installation of  Oracle SQL Loader sqlldr.
+more details in:
+    http://docs.oracle.com/cd/B19306_01/server.102/b14215/part_ldr.htm
+
+--------------------------------------------------------------------------
+Start:
+Change configuration parameters in ./config/config.cfg file
+Make the application
+    make all
+Copy your input csv files in input directory.
+Make sure that: 
+	-- The streams instance is running.
+	-- The database is running and available.
+	-- The tables for all input files already created in database.
+
+Start the job
+    streamtool submitjob -i <instance> output/Distributed/com.ibm.streamsx.db.dbloader.Main.adl
+
+Check the log file.
+e.g. tail -f /home/streams/DbLoader/data/log/14.06.25_dbloader.log
+
+It is also possible to start the dbloader job with submission parameters. 
+For example:
+    streamtool submitjob  output/Distributed/com.ibm.streamsx.db.dbloader.Main.adl 
+    -P com.ibm.streamsx.db.dbloader.Main.dbUser=db2inst1
+
+Stop the job
+    streamtool canceljob <job-id>
