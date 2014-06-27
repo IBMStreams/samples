@@ -1,3 +1,6 @@
+# Copyright (C) 2013-2014, International Business Machines Corporation    #
+# All Rights Reserved                                	                 #
+
 # -----------------------------------------------------------------------------
 # phony targets are targets being not in the filesystem but are always "active"
 # -----------------------------------------------------------------------------
@@ -25,8 +28,6 @@ APP_NAME = $(notdir $(CURDIR))
 SPLC_FLAGS = -a
 
 SPLC = $(STREAMS_INSTALL)/bin/sc
-# copy com.ibm.streamsx.linuxshell to the $(TEDA_INSTALL)/toolkits directory
-SPL_CMD_ARGS = -t $(TEDA_INSTALL)/toolkits
 
 # SPLDOC
 SPLDOCDIR?=doc/spldoc
@@ -53,16 +54,12 @@ DISTRIBUTED_OUTPUT_DIR = $(OUTPUT)/Distributed
 
 all: clean distributed spldoc
 
-dependency:
-	@if [ "" == "$(TEDA_INSTALL)" ] ; then echo "error: environment variable TEDA_INSTALL has to be set"; exit 1; fi
 
-standalone: dependency
+standalone: 
 	$(SPLC) $(SPLC_FLAGS) -T -M $(SPL_MAIN_COMPOSITE) --output-directory $(STAND_ALONE_OUTPUT_DIR) 
-#$(SPL_CMD_ARGS) 
 
-distributed: dependency
+distributed: 
 	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE) --output-directory $(DISTRIBUTED_OUTPUT_DIR) 
-#$(SPL_CMD_ARGS)
 
 clean: clean-standalone clean-distributed clean-output clean-runtime-generated-files clean-spldoc
 

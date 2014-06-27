@@ -1,11 +1,8 @@
-/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
-/*                                                                      */
-/* InfoSphere Streams DBLoader                                          */
-/* A sample SPL application to load files into DB2 or Oracle databases  */
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
 
 The 'DB Loader' is a SPL application for InfoSphere Streams.
-It use DB2 load command tool or Oracle SQL Loader to load files directly 
-into database. 
+It use DB2 load command tool or Oracle SQL Loader to load files directly into database. 
 
 DbLoader scans the input directory and loads files parallel into database.  
 It improves insert-performance into DB2 and Oracle databases.
@@ -85,6 +82,7 @@ Make sure that:
 	-- The streams instance is running.
 	-- The database is running and available.
 	-- The tables for all input files already created in database.
+	-- The data directory and input files are accessible.
 
 Start the job
     streamtool submitjob -i <instance> output/Distributed/com.ibm.streamsx.db.dbloader.Main.adl

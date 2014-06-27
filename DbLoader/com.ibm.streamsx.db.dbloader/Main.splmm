@@ -10,18 +10,8 @@ my $databaseType=$config->get('DATABASETYPE')->[0];
 $databaseType = uc $databaseType;
 %>
       
-/*                                                                      */
-/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
-/*                                                                      */
-/* InfoSphere Streams DBLoader                                          */
-/* A sample SPL application to load files via linuxshell toolkit        */
-/* into DB2 or ORACLE databases.                                        */
-/* The format of input files is CSV .                                   */
-/* The file name schema includes the database schema and the table name */
-/* for example DB2INST1.MY_TABLE_123-2012-12-12.csv .                   */
-/* edit the config file (./config/config.cfg  for database name,        */
-/* user, password and ...											    */
-
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
 
 /**
 **DBLoader** is a SPL application for InfoSphere Streams 

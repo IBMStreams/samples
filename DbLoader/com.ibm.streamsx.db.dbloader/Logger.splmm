@@ -8,11 +8,8 @@ my $config=new Configuration(".");
 my $logDir=$config->get('LOG_DIR')->[0]; 
 %>
   
-/*                                                                      */
-/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
-/*                                                                      */
-/* InfoSphere Streams DBLoader                                          */
-/* A sample SPL application to load files into DB2 or Oracle databases  */
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
 
 namespace com.ibm.streamsx.db.dbloader;
  

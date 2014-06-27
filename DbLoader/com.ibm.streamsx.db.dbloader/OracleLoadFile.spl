@@ -1,11 +1,5 @@
-/*                                                                      */
-/* (C) Copyright IBM Corp. 2014,  All Rights reserved.                  */
-/*                                                                      */
-/* InfoSphere Streams DBLoader                                          */
-/* A sample SPL application to load files via linuxshell toolkit        */
-/* into DB2 or ORACLE databases                                         */
-/* The input files format is CSV .                                      */
-/* The file name schema includes the database schema and the table name */
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
 
 namespace com.ibm.streamsx.db.dbloader;
 
