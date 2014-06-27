@@ -1,0 +1,91 @@
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+namespace com.ibm.streamsx.db.dbloader ;
+
+/**
+* The composite **DB2CreateConnection** creates a connection to DB2 database.
+* 
+* Checks the connection results and returns the connection state in output. 
+*
+* @input ConfigurationData configuration data (database name, database user, database password)
+* @output ConnectionState boolean connected = true connection successful
+* connected = false  connection failed
+*/
+composite DB2CreateConnection(output ConnectionState ; input ConfigurationData)
+{
+	graph
+
+		/**
+		 * ConnectionCmd
+		 * Creates with Input information database name database user name 
+		 * and database password a DB2 command
+		 */
+		stream<rstring command, int64 counter> ConnectionCmd = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring connectionCmd ;
+					mutable rstring tableName ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					connectionCmd = "db2 connect to " + configData.dbName + " user " +
+						configData.dbUser + " using " + configData.dbPass ;
+					submit({ command = connectionCmd, counter = configData.counter}, ConnectionCmd) ;
+				}
+
+		}
+
+		/**
+		 * CreateConnection
+		 * Execute the DB2 connection command to create a database connection 
+		 */
+		stream<rstring result> CreateConnection = ExecuteCommand(ConnectionCmd)
+		{
+		}
+
+		/**
+		 * ConnectionState
+		 * Check the result of create connection
+		 * if successful delivers connected=true as Output of  DB2CreateConnection Composite
+		 * otherwise connected=false 
+		 */
+		stream<boolean connected> ConnectionState = Functor(CreateConnection)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulConnection ;
+					mutable rstring logMessage ;
+					mutable boolean Connected = false ;
+				}
+
+				onTuple CreateConnection :
+				{
+					if(length(result) > 2)
+					{
+						successfulConnection = findFirst(result, "authorization", 0) ;
+						if(successfulConnection == - 1)
+						{
+							logMessage = "Database connection failed." + result ;
+							log(Sys.error, logMessage) ;
+							Connected = false ;
+						}
+						else // successful
+						{
+							logMessage = "Database connection completed successfully." ;
+							Connected = true ;
+						}
+
+					}
+
+				}
+
+			output
+				ConnectionState : connected = Connected ;
+		} // End of Output = Functor(CreateConnection)
+
+} // End of DB2CreateConnection Composite

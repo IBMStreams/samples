@@ -1,0 +1,317 @@
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+namespace com.ibm.streamsx.db.dbloader;
+ 
+
+/**
+* The composite **DB2LoadFile** loads files into DB2 database.
+*
+* Creates a connection to the DB2 database.
+*
+* Creates load command and loads file into database.
+* 
+* Checks the load results. 
+*
+* Depending to the load result it moves the processing file into archive or error directory
+* and at the end it releases the database connection.
+*
+* @input ConfigurationData configuration parameters (database name, database user, database password and file name)
+* @output Result rstring result
+*/
+composite DB2LoadFile(output Result ; input ConfigurationData)
+{ 
+	graph 
+		/**
+		 * CreateConnection
+		 * Creates a database connection with ConfigurationData parameters
+		 */                  	
+		stream<boolean connected> CreateConnection = DB2CreateConnection(ConfigurationData)
+		{
+		}
+
+		/**
+		 * ConnectionState
+		 * Get Connection State
+		 * Merge configuration parameter and connection state
+		 */                  	
+		stream<boolean connected, int64 counter, rstring fileName, rstring archiveDir, rstring errorDir> ConnectionState =
+			Custom(ConfigurationData ; CreateConnection)
+		{
+			logic
+				state :
+				{
+					mutable rstring FileName = "" ;
+					mutable rstring ArchiveDir = "" ;
+					mutable rstring ErrorDir = "" ;
+					mutable boolean Connected = false ;
+					mutable int64 Counter = 0 ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					FileName = configData.fileName ;
+					Counter = configData.counter ;
+					ArchiveDir = configData.archiveDir ;
+					ErrorDir = configData.errorDir ;
+				}
+
+				onTuple CreateConnection :
+				{
+					if(connected)
+					{
+						submit({ connected = connected, counter = Counter, fileName = FileName, archiveDir = ArchiveDir, errorDir =
+							ErrorDir }, ConnectionState) ;
+					}
+
+				}
+
+		}
+
+		/**
+		 * CreateLoadCommand
+		 * Create load command with following parameters to load a file into a table in database
+		 * WARNINGCOUNT n 	Stops the load operation after n warnings.
+		 * NONRECOVERABLE 	use this parameter if you do not need to be able to recover load transactions
+		 * DATA BUFFER nnn  The DATA BUFFER parameter specifies the total amount of memory,
+		 *  				in 4 KB units, allocated to the load utility as a buffer.
+		 * CPU_PARALLELISM n Use this parameter to exploit the number of processes running per 
+		 * 					database partition (if this is part of your machine's capability), and significantly 
+		 * 					improve load performance
+		 * DISK_PARALLELISM	This parameter specifies the number of processes or threads used by the 
+		 * 					load utility to write data records to disk. 
+		 * ALLOW READ ACCESS This option allows you to query a table while a load operation is in progress. 
+		 * 
+		 */                  	
+		stream<rstring command, int64 counter> CreateLoadCommand = Functor(ConnectionState)
+		{
+			logic
+				state :
+				{
+					mutable rstring loadCmd ;
+					mutable rstring tableName ;
+					mutable int64 Counter = 0;
+				}
+
+				onTuple ConnectionState :
+				{
+					Counter = counter;
+					if(connected && (length(fileName)> 1))
+					{
+						/**  
+						 * After a successfully connection to a database
+						 */
+						tableName = getTableName(fileName) ;
+						
+						loadCmd = "db2 LOAD CLIENT FROM " + fileName + " OF "
+							+ "DEL " // DEL (delimited ASCII format) CSV (,)
+					//		+ " SAVECOUNT 1000000 "  	// Use this parameter to set an interval for the establishment of consistency 
+													 	// points during the load phase of a load operation. 
+							+ " WARNINGCOUNT 10 "  		// Stops the load operation after n warnings.
+							+ "INSERT INTO " + tableName 				
+							+ " NONRECOVERABLE " 
+						    + " DATA BUFFER 6000 "  	// The DATA BUFFER parameter specifies the total amount of memory, 
+						    							// in 4 KB units, allocated to the load utility as a buffer.
+							+ " CPU_PARALLELISM 2 " 	//Use this parameter to exploit the number of processes running per 
+														// database partition (if this is part of your machine's capability), and significantly improve load performance
+							+ " DISK_PARALLELISM 10 "  	// This parameter specifies the number of processes or threads used by the 
+		 												//load utility to write data records to disk. 
+					//		+ " FETCH_PARALLELISM yes" 	// When performing a load from a cursor where the cursor is declared using the DATABASE keyword
+							+ " ALLOW READ ACCESS "  	// This option allows you to query a table while a load operation is in progress. 
+							;
+						
+						}
+
+					else  
+					{
+						/**
+						 * Connection failed
+						 */
+						loadCmd = "db2 terminate" ;
+					}
+
+				}
+
+			output
+				CreateLoadCommand : command = loadCmd, counter= Counter ;
+		}
+		
+		
+		/**
+		 * LoadFile
+		 * This is the main operator to load a file into database
+		 * It uses the ExecuteCommand to run the created load command via linuxshell 
+		*/
+		stream<rstring result> LoadFile = ExecuteCommand(CreateLoadCommand)
+		{
+		}
+
+		/**
+		 * LoadFileResult
+		 * The Barrier operator is used to synchronize tuples from two streams LoadFile and ConnectionState.
+		*/
+		stream<LoadFile, ConnectionState> LoadFileResult = Barrier(LoadFile ; ConnectionState)
+		{
+			param
+				bufferSize : 1u ;
+		}
+
+		/**
+		 * CheckResult
+		 * Check the load result 
+		 * depending on the result set the value of moveTo parameter into archive ore error directory  
+		 */
+		stream<rstring result, rstring fileName, int64 counter, boolean loaded, rstring moveTo> CheckResult = Functor(LoadFileResult)
+		{
+			logic
+				state :
+				{
+					mutable int32 loadStatus ;
+					mutable rstring loadResult ;
+					mutable rstring move_To = "";
+					mutable boolean loaded = false ;
+				}
+
+				onTuple LoadFileResult :
+				{
+					
+					if(length(result) > 2)
+					{
+						loadStatus = checkDB2LoadResult(result);
+					
+						if(loadStatus == 0)
+						{
+							loadResult = "[" +(rstring) counter + "] [ERROR] Load of file " + fileName + " FAILED. " + result ;
+							log(Sys.error, loadResult) ;
+							loaded = false ;
+						}
+						else 
+						{
+							if (loadStatus == 1) // successful loaded	
+							{
+								loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " completed SUCCESSFULLY." ;
+								loaded = true ;
+								move_To = archiveDir ;
+							}
+							
+							if (loadStatus == 2) // partially loaded	
+							{
+								loadResult = "[" +(rstring) counter + "] The file " + fileName + " partially loaded." ;
+								loaded = true ;
+								move_To = errorDir ;								
+							}
+
+							if (loadStatus == 3) // The table does not exist.
+							{
+								loadResult = "[" +(rstring) counter + "] [ERROR] Load of file " + fileName + " FAILED. " + result ;
+								log(Sys.error, loadResult) ;
+								loaded = false ;
+								move_To = errorDir ;								
+							}
+						}
+
+					}
+
+				}
+
+			output
+				CheckResult : result = loadResult, fileName = fileName, counter = counter, loaded = loaded, moveTo = move_To ;
+		}
+
+		/**
+		 * LogResultSink
+		 * Writes the result in log file 
+		*/
+	//	() as LogResultSink = Logger(CheckResult)
+	//	{
+	//	}
+
+		/**
+		 * MoveFileCoammnd
+		 * Creates depending on load result a Linux move command to archive or error directory    
+		*/
+		stream<rstring command, int64 counter> MoveFileCoammnd = Functor(CheckResult)
+		{
+			logic
+				state :
+				{
+					mutable rstring moveCmd ;
+					mutable int64 Counter = 0;
+				}
+
+				onTuple CheckResult :
+				{
+					moveCmd = "mv " + fileName + " " + moveTo ;
+					Counter = counter;
+				}
+
+			output
+				MoveFileCoammnd : command = moveCmd , counter = Counter;
+		}
+
+		/**
+		 * MoveiFile
+		 * Moves proceeded file depending on load result into archive or error directory    
+		*/
+		stream<rstring result> MoveiFile = ExecuteCommand(MoveFileCoammnd)
+		{
+		}
+
+		/**
+		 * CreateTerminateCommand
+		 * Creates Terminate Command to release the database connection   
+		*/
+		stream<rstring command, int64 counter> CreateTerminateCommand = Custom(MoveFileCoammnd; MoveiFile)
+		{
+	
+			logic
+				state :
+				{
+					mutable rstring releaseCommand ;
+					mutable int64 Counter = 0;
+				}
+				onTuple MoveFileCoammnd :
+				{
+					Counter = counter ;
+				}
+	
+				onTuple MoveiFile :
+				{
+					releaseCommand = "db2 terminate" ;
+					submit({ command =  releaseCommand, counter = Counter }, CreateTerminateCommand) ;
+					
+				}
+		}
+
+		/**
+		 * ReleaseConnection
+		 * Release the DB2 database connection   
+		*/
+		stream<rstring result> ReleaseConnection = ExecuteCommand(CreateTerminateCommand)
+		{
+		}
+
+		/**
+		 * LoadResult
+		 * The Barrier operator is used to synchronize tuples from two streams 
+		 * CheckResult and ReleaseConnection.
+		*/
+		stream<CheckResult, ReleaseConnection> LoadResult = Barrier(CheckResult ; ReleaseConnection)
+		{
+			param
+				bufferSize : 1u ;
+		}
+
+
+		/**
+		 * Result
+		 * Returns load result in output
+		 */
+		stream<rstring result> Result = Functor(LoadResult)
+		{
+			output
+				Result : result = LoadResult.result ;
+		}
+		// End of Result = Functor(LoadResult)
+
+} // End of composite DB2LoadFile

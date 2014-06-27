@@ -1,0 +1,65 @@
+<% # Switch to Perl scripting mode to get the config settings in ./config/config.cfg
+#!/usr/bin/perl -w
+###################################################################################################
+use lib "scripts";
+use Configuration;
+my $config=new Configuration(".");
+ 
+my $logDir=$config->get('LOG_DIR')->[0]; 
+%>
+  
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+namespace com.ibm.streamsx.db.dbloader;
+ 
+/** 
+ * The composite **Logger** writes log in a file. 
+ * 
+ * This will create daily a log file starting with the current date 
+ * embedded in the filename. (e.g   ./log/14.04.01_dbloader.log)
+ *
+ * @input LogInfo rstring 
+ */ 
+composite Logger (input LogInfo)
+{
+	graph
+			
+		/** 
+		* AddCurrentTime
+ 		* Adds current time to the log information. 
+ 		*/ 
+		stream<rstring currentTimeLog> AddCurrentTime = Custom(LogInfo)
+		{
+			logic
+				state :
+				{
+					mutable rstring logText ;
+				}
+
+				onTuple LogInfo :
+				{
+					if(length(result) > 2)
+					{
+						logText = getCurrentTime() + " " + result ;
+						submit({ currentTimeLog = logText}, AddCurrentTime) ;
+					}
+				}
+				
+		} 
+
+		/** 
+ 		* LogSink writes log information in a file 
+ 		* param file: logDir + "/{localtime:%y.%m.%d}_"+ "dbloader.log" ; 
+ 		* This will create daily a log file starting with the current date embedded in the filename. 		
+ 		*/ 
+		() as LogSink = FileSink(AddCurrentTime)		                                                           
+    	{                                                                                      
+      		param   
+      			file : (getSubmissionTimeValue("logDir", "<%=$logDir%>")) + "/{localtime:%y.%m.%d}_"+ "dbloader.log" ;                                                                            
+        		format      : line ; 
+        		append		: true; 
+        		flush  		: 1u;                                                               
+
+   		} 	
+} /** End of Composite Logger */ 

@@ -1,0 +1,165 @@
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+namespace com.ibm.streamsx.db.dbloader;
+
+/**
+* The composite **OracleLoadFile** loads files into Oracle database.
+* 
+* Creates a SQL Loader command.
+* 
+* Calls execute command to run the SQL Loader tool.
+*
+* Checks the results and returns the load result in output.  
+*
+* @input ConfigurationData configuration parameters (database name, database user, database password and file name)
+* @output Result rstring result
+*/
+composite OracleLoadFile(output Result ; input ConfigurationData)
+{
+	graph
+
+	/**
+		 * CreateOracleLoadCommand
+		 * Create a SQL Loader (sqlldr) to load a file into a table in Oracle database.
+		*/
+		stream<rstring command, int64 counter> CreateOracleLoadCommand = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring loadCmd ;
+					mutable rstring fileName ;
+					mutable rstring tableName ;
+					mutable rstring logFilename ;
+					mutable rstring controlFilename ;
+					mutable rstring badFilename ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					fileName = configData.fileName ;
+					printStringLn("CreateOracleLoadCommand " +(rstring) ConfigurationData) ;
+					tableName = getTableName(fileName) ;
+					logFilename = regexReplace(fileName, configData.inputDir, configData.logDir, true) ;
+					logFilename = regexReplace(logFilename, "csv", "log", true) ;
+					badFilename = regexReplace(logFilename, "log", "bad", true) ;
+					controlFilename = configData.oracleCtlDir + "/" + tableName + ".ctl" ;
+					loadCmd = "sqlldr " 
+						+ configData.dbUser + "/" 
+						+ configData.dbPass + "@"
+						+ configData.dbName 					
+						+ " DIRECT=TRUE" // This will effectively bypass most of the RDBMS processing.
+						+ " PARALLEL=TRUE" // Load data in parallel for maximum performance.
+						+ " data=" + fileName 
+						+ " CONTROL=" + controlFilename 
+						+ " log=" + logFilename 
+						+ " bad=" + badFilename ;
+					submit({ command = loadCmd, counter = configData.counter }, CreateOracleLoadCommand) ;
+				}
+
+		}
+
+		/**
+		 * LoadFile
+		 * This is the main operator to load a file into database.
+		 * It is use ExecuteCommand to run created load command via linux shell. 
+		*/
+		stream<rstring result> LoadFile = ExecuteCommand(CreateOracleLoadCommand)
+		{
+		}
+
+		/**
+		 * CheckResult
+		 * Checks the load results. 
+		 * Depending on result creates a moveTo string.
+		*/
+		stream<rstring result, rstring fileName, int64 counter, rstring moveTo> CheckResult = Custom(ConfigurationData ; LoadFile)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulLoaded ;
+					mutable rstring loadResult ;
+					mutable rstring fileName = "" ;
+					mutable rstring archiveDir = "" ;
+					mutable rstring errorDir = "" ;
+					mutable rstring move_To = "" ;
+					mutable boolean Connected = false ;
+					mutable int64 counter = 0 ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					fileName = configData.fileName ;
+					archiveDir = configData.archiveDir ;
+					errorDir = configData.errorDir ;
+					counter = configData.counter ;
+				}
+
+				onTuple LoadFile :
+				{
+					if(length(result) > 2)
+					{
+						printStringLn("CheckLoadFile resul:\n" + result) ;
+						successfulLoaded = findFirst(result, "Load completed", 0) ;
+						if(successfulLoaded == - 1)
+						{
+							loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " FAILED. " + result ;
+							log(Sys.error, loadResult) ;
+							move_To = errorDir ;
+						}
+
+						else // successfull	
+
+						{
+							loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " completed SUCCESSFULLY." ;
+							log(Sys.info, loadResult) ;
+							move_To = archiveDir ;
+						}
+
+						submit({ result = loadResult, fileName = fileName, counter = counter, moveTo = move_To }, CheckResult) ;
+					}
+
+				}
+
+		}
+
+		/**
+		 * MoveFileCoammnd
+		 * Creates depending on load result a Linux move command to archive or error directory.   
+		*/
+		stream<rstring command, int64 counter> MoveFileCoammnd = Custom(CheckResult)
+		{
+			logic
+				state :
+				{
+					mutable rstring moveCmd ;
+				}
+
+				onTuple CheckResult :
+				{
+					moveCmd = "mv " + fileName + " " + moveTo ;
+					submit({ command = moveCmd, counter = counter }, MoveFileCoammnd) ;
+				}
+		}
+
+		/**
+		 * MoveiFile
+		 * Moves proceeded file depending on load result into archive or error directory.    
+		*/
+		stream<rstring result> MoveiFile = ExecuteCommand(MoveFileCoammnd)
+		{
+		}
+
+		/**
+		 * Result
+		 * Send load result as Result for Composite DB2LoadFile.
+		 */
+		stream<rstring result> Result = Functor(CheckResult)
+		{
+			output
+				Result : result =(rstring) CheckResult.result ;
+		}
+
+} /** End of composite OracleLoadFile */

@@ -1,0 +1,248 @@
+<% # Switch to Perl scripting mode to get the config settings in ./config/config.cfg
+#!/usr/bin/perl -w
+###################################################################################################
+use lib "scripts";
+use Configuration;
+my $config=new Configuration(".");   
+my $logDir=$config->get('LOG_DIR')->[0]; 
+my $inputDir=$config->get('INPUT_DIR')->[0]; 
+my $databaseType=$config->get('DATABASETYPE')->[0]; 
+$databaseType = uc $databaseType;
+%>
+      
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+
+/**
+**DBLoader** is a SPL application for InfoSphere Streams 
+It use DB2 load command tool or Oracle SQL Loader to load files directly into database. 
+
+**DBLoader** scans the input directory and loads files parallel into database.  
+
+It improves insert-performance into DB2 and Oracle databases.
+
+It is not needed to change the SPL code in case of new tables.
+
+Prerequisite:
+
+All input files must have a correctly formated Comma Separated Value (csv).
+The input file names must include the database schema and the table name.  
+The database schema begin after path and end with a point ".".
+The table name begin after "." and end with a dash "-".             
+
+for example:  /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv 
+
+In this case **DB2INST1** is the database user name (or schema) 
+And **MY_TABLE_123** is the table name. 
+
+DBLoader use LinuxSource operator to execute a command.
+LinuxSource operator is a part of **com.ibm.streamsx.linuxshell** toolkit.
+
+linuxshell toolkit is available in GitHub: [https://github.com/ejpring/LinuxShellToolkit]
+
+Download and copy this package in a directory and add its path to the environment variable STREAMS_SPLPATH.
+ 
+*/
+
+namespace com.ibm.streamsx.db.dbloader ;
+
+ 
+
+/**
+ * The composite **Main** reads configuration parameters from config.cfg file.
+ * 
+ * Depending to the value of database type in configuration file config.cfg, 
+ * it starts DB2FileLoder or OrcaleFileLoader 
+ */
+composite Main
+{	
+	graph
+ 
+	/** 
+	 * ReadConfig
+	 * Opens config.cfg file and delivers the lines of configuration parameters.
+	 */	 
+	stream <rstring configLine> ReadConfig = FileSource()
+	{
+		param
+			file  		: "../config/config.cfg" ;
+			initDelay 	: 3.0 ;
+			
+		/**  
+		 * All operators with the same partitionColocation value "MainPE" 
+		 * will be run in the same partition.
+		*/  
+		config
+			placement : partitionColocation("MainPE") ; 
+	}	
+		   
+	/** 
+	 * ConfigParamaters
+	 * Checks the configuration parameters via getSubmissionTimeValue.
+	 * If no parameter was given reads the value of configuration 
+	 * parameters from configuration file 
+	 */	 
+	stream <ConfigData configData> ConfigParameters = Custom(ReadConfig)
+	{
+		logic
+		state :
+		{
+			mutable ConfigData cfgData = {
+					dbName			= getSubmissionTimeValue("dbName", " ") ,
+					dbUser			= getSubmissionTimeValue("dbUser", " ") ,
+					dbPass			= getSubmissionTimeValue("dbPass", " ") , 
+					inputDir		= "<%=$inputDir%>",	
+					logDir			= "<%=$logDir%>",
+				 	archiveDir 		= getSubmissionTimeValue("archiveDir", " ") , 
+				 	errorDir 		= getSubmissionTimeValue("errorDir", " ") , 
+				 	oracleCtlDir 	= getSubmissionTimeValue("oracleCtlDir", " "), 
+				 	databaseType 	= "" ,
+				 	fileName 		= "",
+				 	counter 		= 0l };
+
+
+			mutable rstring configParam = "";
+			mutable rstring configValue = "";
+			mutable rstring value;
+			mutable int32 foundPosition = 0;
+		}
+		onTuple ReadConfig:
+		{
+			/**
+			 * If no parameter was given via submit job
+			 */
+			if(length(cfgData.dbName) < 2)
+			{
+				cfgData.dbName = getConfigValue(configLine, "DBNAME");
+			}
+
+			if(length(cfgData.dbUser) < 2)
+			{
+				cfgData.dbUser = getConfigValue(configLine, "DBUSER");
+			}
+
+			if(length(cfgData.dbPass) < 2)
+			{
+				cfgData.dbPass = getConfigValue(configLine, "DBPWD");
+			}
+
+			if(length(cfgData.archiveDir) < 2)
+			{
+				cfgData.archiveDir = getConfigValue(configLine, "ARCHIVE_DIR");
+			}
+
+			if(length(cfgData.errorDir) < 2)
+			{
+				cfgData.errorDir = getConfigValue(configLine, "ERROR_DIR");
+			}
+
+			if(length(cfgData.oracleCtlDir) < 2)
+			{
+				cfgData.oracleCtlDir = getConfigValue(configLine, "CONTROLFILES_DIR");
+			}
+									 				
+		}
+		 
+		onPunct ReadConfig:
+		{
+
+			if (currentPunct() == Sys.FinalMarker)
+			{
+				submit({ configData = cfgData }, ConfigParameters) ;
+			}
+		}
+		
+		/**  
+	 	* All operators with the same partitionColocation value "MainPE" 
+	 	* will be run in the same partition.
+		*/  
+		config
+			placement : partitionColocation("MainPE") ; 
+		
+	} 
+	    
+	/**
+	 * CreateStartLog
+	 * Create start log information
+	*/
+	stream <rstring result> CreateStartLog = Custom(ConfigParameters)
+	{	 
+		logic 
+		state :
+		{
+			mutable rstring result = "";
+			mutable rstring databaseType = "<%=$databaseType%>";
+		}
+		onTuple ConfigParameters :
+		{
+			println(ConfigParameters);	
+			result ="Configuration parameters: \n" 
+			+ "                    dbName       = " + configData.dbName + "\n"	
+			+ "                    dbUser       = " + configData.dbUser + "\n"	
+			+ "                    databaseType = <%=$databaseType%>\n"	
+			+ "                    logDir       = <%=$logDir%>\n"	
+			+ "                    inputDir     = <%=$inputDir%>\n"	
+			+ "                    archiveDir   = " + configData.archiveDir + "\n"
+			+ "                    errorDir     = " + configData.errorDir + "\n"	
+			+ "                    oracleCtlDir = " + configData.oracleCtlDir + "\n\n";	
+			// check $databaseType
+			if ((findFirst(databaseType, "DB2", 0) == - 1) && (findFirst(databaseType, "ORACLE", 0) == - 1))
+			{				
+				result = result + getCurrentTime() + " The value of DATABASETYPE in config.cfg file is " +  "<%=$databaseType%>.\n"
+				+ "                    Change the value of DATABASETYPE to DB2 or Oracle.\n"
+				+ "                    Rebuild DBLoader project and try it again.\n";
+			}
+			printStringLn(result);
+			submit({ result =  result}, CreateStartLog) ;
+	
+		}
+
+		/**  
+	 	* All operators with the same partitionColocation value "MainPE" 
+	 	* will be run in the same partition.
+		*/  
+		config
+			placement : partitionColocation("MainPE") ; 
+		
+	} 
+	 
+	/**
+	* LogSink
+	* Write start log information into a log file.
+	*/
+	() as LogSink = Logger(CreateStartLog)
+	{
+		/**  
+	 	* All operators with the same partitionColocation value "MainPE" 
+	 	* will be run in the same partition.
+		*/  
+		config
+			placement : partitionColocation("MainPE") ; 
+		
+	} 
+
+<% if ($databaseType eq "DB2") 
+{ %>
+	/** 
+	 * DB2LoadFiles
+	 * Starts parallel loaders to load files into DB2 database.
+	 */ 
+	stream <rstring result> DB2LoadFiles = DB2Loader(ConfigParameters)
+	{
+	} 
+	<% 
+}
+elsif ($databaseType eq "ORACLE")
+{ %>
+	/** 
+	 * OracleLoadFiles
+	 * Starts parallel loaders to load files into Oracle database.
+	 */ 
+	stream <rstring result> OracleLoadFiles = OracleLoader(ConfigParameters)
+	{	 
+	}
+	<%
+}
+%>	  
+					
+} /** End of Main composite*/ 
