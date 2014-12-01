@@ -1,0 +1,28 @@
+Example application using a periodic consistent region. The application 
+counts how many times a word occurs in an input file (dara/loremIpsum.txt).
+The word count is reported every time the counter operator (WordCount)
+processes 25 tuples.
+
+The application uses only operators available in the SPL Standard toolkit. The
+example includes a fault injection operator named CrashAtTuple. This operator 
+optionally crashes itself after processing a certain number of tuples. When 
+the application does not use consistent regions and a crash occurs, tuples are
+lost and the word count is incomplete. When using consistent regions, tuples
+are replayed upon a failure and operator state is restored to the last 
+successfully established consistent state, resulting in an exact word count 
+(i.e., as if no failures had occurred). 
+
+To run the application do the following:
+
+1. Set the Streams Checkpoint backend related properties. The example below uses
+the file system as the checkpoint backend.
+  $ streamtool setproperty instance.checkpointRepository=fileSystem -d YOUR_DOMAIN_ID_HERE -i YOUR_INSTANCE_ID_HERE
+  $ streamtool setproperty instance.checkpointRepositoryConfiguration=/your/checkpoint/directory/here/ 
+2. Compile the application
+  $ make
+3. Submit the job injecting failures
+  $ submitjob output/Main.adl -P crash=1
+4. After the result file data/result.dat has 20 lines, compare it with the expected output without failures. There should be no difference between the files.
+  $ diff data/result.dat result.dat.exp
+
+For more details on how consistent regions work, please check out the blog post at http://blah.
