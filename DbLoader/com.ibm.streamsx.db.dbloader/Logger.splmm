@@ -4,7 +4,7 @@
 use lib "scripts";
 use Configuration;
 my $config=new Configuration(".");
- 
+
 my $logDir=$config->get('LOG_DIR')->[0]; 
 %>
   
@@ -14,9 +14,9 @@ my $logDir=$config->get('LOG_DIR')->[0];
 namespace com.ibm.streamsx.db.dbloader;
  
 /** 
- * The composite **Logger** writes log in a file. 
+ * The composite **Logger** writes log data in a file. 
  * 
- * This will create daily a log file starting with the current date 
+ * This will create a daily log file starting with the current date 
  * embedded in the filename. (e.g   ./log/14.04.01_dbloader.log)
  *
  * @input LogInfo rstring 
@@ -27,7 +27,7 @@ composite Logger (input LogInfo)
 			
 		/** 
 		* AddCurrentTime
- 		* Adds current time to the log information. 
+ 		* Adds the current time to the log information. 
  		*/ 
 		stream<rstring currentTimeLog> AddCurrentTime = Custom(LogInfo)
 		{
@@ -39,7 +39,7 @@ composite Logger (input LogInfo)
 
 				onTuple LogInfo :
 				{
-					if(length(result) > 2)
+					if(length(result) > 0)
 					{
 						logText = getCurrentTime() + " " + result ;
 						submit({ currentTimeLog = logText}, AddCurrentTime) ;
@@ -49,17 +49,18 @@ composite Logger (input LogInfo)
 		} 
 
 		/** 
- 		* LogSink writes log information in a file 
- 		* param file: logDir + "/{localtime:%y.%m.%d}_"+ "dbloader.log" ; 
- 		* This will create daily a log file starting with the current date embedded in the filename. 		
+ 		* LogSink writes the log information into a file 
+ 		* param file: logDir + "/{localtime:%y.%m.%d-%H}_"+ "dbloader.log" ; 
+ 		* This will create a hourly a new log file starting with the current date embedded in the filename. 		
  		*/ 
 		() as LogSink = FileSink(AddCurrentTime)		                                                           
     	{                                                                                      
       		param   
-      			file : (getSubmissionTimeValue("logDir", "<%=$logDir%>")) + "/{localtime:%y.%m.%d}_"+ "dbloader.log" ;                                                                            
+      			file : (getSubmissionTimeValue("logDir", "<%=$logDir%>")) + "/{localtime:%Y.%m.%d-%H}_"+ "dbloader.log" ;                                                                            
         		format      : line ; 
         		append		: true; 
-        		flush  		: 1u;                                                               
+        		flush  		: 1u;		/** flush the log file after 1 tuple */
+        		closeMode	: dynamic;                                                               
 
    		} 	
 } /** End of Composite Logger */ 

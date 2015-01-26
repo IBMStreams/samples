@@ -3,45 +3,38 @@
   <info:identity>
     <info:name>com.ibm.streams.telco.framework.dbloader</info:name>
     <info:description>
-DBLoader is a SPL application for InfoSphere Streams to load files into database.
+The DBLoader is an SPL application for InfoSphere Streams to load files into a database.
 
-It improves insert-performance into DB2 and Oracle databases. 
+It improves the insert-performance for DB2 and Oracle databases. 
 
 It is not needed to change the SPL code in case of new tables.
 
-DBLoader scans the input directory and load files parallel into database.  
+The DBLoader scans the input directory and loads the files parallel into the database.  
 
 The DB2 load utility is capable of efficiently moving large quantities of data into newly created tables, or into tables that already contain data.
 
 
 Prerequisite:
 
-All input files must have a correctly formated Comma Separated Value (csv). 
+All input files must have a correctly formatted Comma Separated Value (csv) format. 
 
 The input file names must include the database schema and the table name. 
 
-The database schema begin after path and end with a point &quot;.&quot; The table name begin after &quot;.&quot; 
-and end with a dash &quot;-&quot;.
+The database schema begins after the path and end with a dot &quot;.&quot; The table name begins after &quot;.&quot; 
+and ends with a dash &quot;-&quot;.
 
-for example: /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv.
+For example: /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv.
 
 In this case DB2INST1 is the database user name (or schema) And MY_TABLE_123 is the table name.
 
-DBLoader use LinuxSource operator to execute a command. 
+DBLoader uses the LinuxSource operator to execute a command. 
 LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
 
 It is available in GitHub: [https://github.com/ejpring/LinuxShellToolkit]
-
-Download and copy this package in a directory and add its path to the environment variable STREAMS_SPLPATH
 
 </info:description>
     <info:version>1.0.0</info:version>
     <info:requiredProductVersion>3.0.0</info:requiredProductVersion>
   </info:identity>
-  <info:dependencies>
-    <info:toolkit>
-      <common:name>com.ibm.streamsx.linuxshell</common:name>
-      <common:version>1.0.0</common:version>
-    </info:toolkit>
-  </info:dependencies>
+  <info:dependencies/>
 </info:toolkitInfoModel>

@@ -1,0 +1,107 @@
+
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+namespace com.ibm.streamsx.db.dbloader ;
+
+/** 
+ * The composite **NETEZZACheckDb** checks the state of Netezza database. 
+ * 
+ * It returns the status of the Netezza database as a boolean. 
+ * 
+ * @input ConfigurationData (database name,  database user, database password)
+ * @output DbState boolean connected database status
+ * @output NetezzaCheckLog rstring result (log information)
+ */
+composite NETEZZACheckDb(output DbState, NetezzaCheckLog ; input ConfigurationData)
+{
+	graph
+
+	/**
+		 * CreateNETEZZACheckDbCommand
+		 * Creates a sqlplus command to check the state of the Netezza database. 
+		 */
+		stream<rstring command, int64 counter> CreateNETEZZACheckDbCommand = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring cmd ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					printStringLn("CreateNETEZZACheckDbCommand " +(rstring) ConfigurationData) ;
+					cmd = "nzsql " + " -host " + configData.dbHost + " -u " + configData.dbUser + " -pw " +
+						configData.dbPass + " -l" ;
+					/** nzsql -l List available databases, then exit*/
+					submit({ command = cmd, counter = configData.counter }, CreateNETEZZACheckDbCommand) ;
+				}
+
+		}
+
+		/**
+		 * NETEZZACheckDb
+		 * Execute a sqlplus command via Linux Shell to check the state of the Netezza database 
+		 */
+		(stream<rstring result> NETEZZACheckDb ; stream<rstring result> NetezzaCheckLog) =
+			ExecuteCommand(CreateNETEZZACheckDbCommand)
+		{
+		}
+
+		/**
+		 * CheckNetezzaDbStatus
+		 * Check the state of the Netezza database 
+		 * If the result is OPEN the Netezza database is running
+		 * and the database user name and password are correct  
+		 */
+		stream<boolean connected> CheckNetezzaDbStatus = Custom(NETEZZACheckDb)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulConnection ;
+					mutable rstring logMessage ;
+				}
+
+				onTuple NETEZZACheckDb :
+				{
+					if(length(result) > 2)
+					{
+						successfulConnection = findFirst(result, "DATABASE", 0) ;
+						if(successfulConnection == - 1)
+						{
+							logMessage = "Netezza check database failed." + result ;
+							log(Sys.error, logMessage) ;
+							printStringLn(logMessage) ;
+							submit({ connected = false }, CheckNetezzaDbStatus) ;
+						}
+
+						else // successfull
+
+						{
+							logMessage = "Netezza check database completed successfully." ;
+							log(Sys.info, logMessage) ;
+							printStringLn(logMessage) ;
+							submit({ connected = true }, CheckNetezzaDbStatus) ;
+						}
+
+					}
+
+				}
+
+		}
+
+		/**
+		 * DbState
+		 * Send the tuple connected as DbState of NETEZZACheckDb composite
+		 */
+		stream<boolean connected> DbState = Custom(CheckNetezzaDbStatus)
+		{
+			logic
+				onTuple CheckNetezzaDbStatus : submit(CheckNetezzaDbStatus, DbState) ;
+		} // End of DbState = Custom(CheckNetezzaDbStatus)
+
+	config
+		placement : partitionColocation("NETEZZACheckDb") ;
+}
+/** End of NETEZZACheckDb composite */ 
