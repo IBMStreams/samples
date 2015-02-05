@@ -26,6 +26,8 @@ APP_NAME = $(notdir $(CURDIR))
 # -----------------------------------------------------------------------------
 
 SPLC_FLAGS = -a
+DATA_DIR := $(abspath ./data)
+SPLC_FLAGS+=--data-directory=$(DATA_DIR)
 
 SPLC = $(STREAMS_INSTALL)/bin/sc
 
