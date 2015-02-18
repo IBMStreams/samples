@@ -308,7 +308,7 @@ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 				metrics : Succeeded, Failed ;
 				names : "Succeeded", "Failed" ;
 				descriptions : "Sum of successfully loaded files", "Sum of failed files" ;
-				initialValues : 1000l, 1000l ;
+				initialValues : 0l, 0l ;
 		}
 		
 		/**
