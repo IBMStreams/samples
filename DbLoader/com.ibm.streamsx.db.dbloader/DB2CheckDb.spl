@@ -1,0 +1,73 @@
+
+/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+namespace com.ibm.streamsx.db.dbloader ;
+
+/** 
+ * The composite **DB2CheckDb** checks the state of DB2 database. 
+ * 
+ * It returns the status of the DB2 database as a boolean. 
+ * 
+ * @input ConfigurationData (database name,  database user, database password)
+ * @output DbState boolean connected database status
+ * @output DB2ChkLog rstring result (log information)
+ */
+composite DB2CheckDb(output DbState, DB2ChkLog ; input ConfigurationData)
+{
+	graph
+		(stream<boolean connected> CreateConnection ; stream<rstring result> CreateConnectionLog) =
+			DB2CreateConnection(ConfigurationData)
+		{
+		}
+
+		stream<rstring command, int64 counter> CreateDB2ReleaseCommand = Custom(CreateConnection)
+		{
+			logic
+				state :
+				{
+					mutable rstring cmd = "" ;
+				}
+
+				onTuple CreateConnection :
+				{
+					if(connected)
+					{
+						cmd = "db2 terminate " ;
+						submit({ command = cmd, counter = 0l }, CreateDB2ReleaseCommand) ;
+					}
+
+				}
+
+		}
+
+		/**
+		 * ReleaseConnection
+		 * Release the DB2 database connection   
+		*/
+		(stream<rstring result> ReleaseConnection ; stream<rstring result> ReleaseConnectionLog) =
+			ExecuteCommand(CreateDB2ReleaseCommand)
+		{
+		}
+
+		/**
+		 * DB2ChkLog
+		 * Collects log information and forward them to DBLoader    
+		*/
+		(stream<rstring result> DB2ChkLog) = Filter(CreateConnectionLog, ReleaseConnectionLog)
+		{
+		}
+
+		/**
+		 * DbState
+		 * Send the tuple connected as DbState of DB2CheckDb composite
+		 */
+		stream<boolean connected> DbState = Custom(CreateConnection)
+		{
+			logic
+				onTuple CreateConnection : submit(CreateConnection, DbState) ;
+		} // End of DbState = Custom(CheckDB2DbStatus)
+
+	config
+		placement : partitionColocation("DB2CheckDb") ;
+}
+/** End of DB2CheckDb composite */ 

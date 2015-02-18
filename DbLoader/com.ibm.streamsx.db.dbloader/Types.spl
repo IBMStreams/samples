@@ -35,21 +35,26 @@ namespace com.ibm.streamsx.db.dbloader;
 
 	int64 counter 		: Counts the number of proceeded files
  */
-type ConfigData = tuple<rstring dbName, // The name of database 
-rstring dbUser, // The name of database user   
-rstring dbPass, // The password of database user
+type ConfigData = tuple<rstring dbName, // The name of the database 
+rstring dbUser, // The name of the database user   
+rstring dbPass, // The password of the database user
+rstring dbHost, // Specifies the host name or IP address of the database
 rstring inputDir, // The input directory that stores the table files in CSV format
 rstring logDir, // The directory that stores the log files.
 rstring archiveDir, // The directory that stores the successfully loaded files.
 rstring errorDir, // The directory that stores the failed files.
 rstring oracleCtlDir, // The directory where the Oracle control-files are places.
 rstring databaseType, // The type of Database (DB2 or Oracle)
-rstring fileName, // The name of file 
-int64 counter> ; // Counter to control the proceeded files
+rstring fileName, // The name of the the file 
+int64 counter> ; // Counter of control the proceeded files
+
+
+type MetricRes = tuple<rstring result, int64 succeeded, int64 failed> ;
+
 
 /** 
  * The function **getCurrentTime**
- * build time string in the format YYYY-MM-DD hh:mm:ss
+ * builds the time string in the format YYYY-MM-DD hh:mm:ss
  */
 stateful rstring getCurrentTime()
 {
@@ -65,8 +70,8 @@ stateful rstring getCurrentTime()
  * 
  * The file names must begin with the database schema and the table name and ending with a dash "-". 
  * 
- * @param fileName rstring the name of file
- * @return rstring tableName the name of table
+ * @param fileName rstring the name of the file
+ * @return rstring tableName the name of the table
  */
 rstring getTableName(rstring fileName)
 {
@@ -82,10 +87,10 @@ rstring getTableName(rstring fileName)
 } // End of getTableName
 
 /**  
- * The function **getConfigValue** returns the value of configuration parameter.
+ * The function **getConfigValue** returns the value of a specified configuration parameter.
  * 
  * @param configLine rstring  A line from config.cfg file
- * @param configName rstring  The name of configuration parameter in config.cfg file
+ * @param configName rstring  The name of the configuration parameter in the config.cfg file
  * @return rstring The value of configuration parameter
  */
 rstring getConfigValue(rstring configLine, rstring configName)
