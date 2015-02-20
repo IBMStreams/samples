@@ -1,4 +1,4 @@
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2014-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                                   */
 
 type 
@@ -13,6 +13,10 @@ void sortMap(map<rstring, uint32> inMap, mutable list<WordCountTuple> orderedLis
   }
 }
 
+// This application counts words from the input file "loremIpsum.txt". Word count
+// statistics is reported at every 25 tuples. The application can be configured
+// at submission to inject faults, forcing tuples to be dropped. As the application
+// uses the @consistent annotation, tuples are replayed after failure detection. 
 composite Main {
 
   graph
