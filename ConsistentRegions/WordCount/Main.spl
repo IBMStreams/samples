@@ -1,0 +1,142 @@
+/* Copyright (C) 2014-2015, International Business Machines Corporation  */
+/* All Rights Reserved                                                   */
+
+type 
+  WordCountTuple = tuple<rstring word, uint32 count>;
+
+// Sorts an input map according to its keys into a list
+void sortMap(map<rstring, uint32> inMap, mutable list<WordCountTuple> orderedList) {
+  mutable list<rstring> mapKeys = keys(inMap);
+  sortM(mapKeys);
+  for (rstring key in mapKeys) {
+    appendM(orderedList, {word = key, count = inMap[key]});
+  }
+}
+
+// This application counts words from the input file "loremIpsum.txt". Word count
+// statistics is reported at every 25 tuples. The application can be configured
+// at submission to inject faults, forcing tuples to be dropped. As the application
+// uses the @consistent annotation, tuples are replayed after failure detection. 
+composite Main {
+
+  graph
+    // JobControlPlane operator is mandatory in applications with consistent regions
+    () as JCP = JobControlPlane() {}
+
+    // FileSource is the start operator of a periodic consistent region. Consistent
+    // state is reached at every second.
+    @consistent(trigger=periodic, period=1.0)
+    stream<rstring line> Lines = FileSource() {
+      param
+        file: "loremIpsum.txt";
+        format: line;
+      config
+        placement: partitionColocation("PE1");
+    }
+
+    // Given the input data file is a short file, the Throttle operator is 
+    // gives the application the chance to establish consistent states
+    // before fully processing the file. Throttle is fused with FileSource so that
+    // its input stream is not filled up with all the lines of the file.
+    stream<Lines> ThrottledLines = Throttle(Lines) {
+      param
+        rate: 20.0;
+      config
+        placement: partitionColocation("PE1");
+    } 
+
+    // Tokenize a line and eliminate punctuation from words
+    stream<list<rstring> words> Words = Custom(Lines) {
+      logic
+        onTuple Lines: {
+          list<rstring> originalWords = tokenize(Lines.line, " ", false);
+          mutable list<rstring> trimmedWords = [];
+          for (rstring word in originalWords) {
+            rstring trimmedWord = rtrim(lower(word), ",.:;");
+            appendM(trimmedWords, trimmedWord);
+          }
+          submit({words = trimmedWords}, Words);
+        }
+    }
+    
+    // Optionally crash operator when processing the 200th input tuple
+    stream<Words> WordsAfterACrash = CrashAtTuple(Words) {
+      param
+        tupleNumber: 200u;
+    }
+
+    // Optionally crash operator when processing the 370th input tuple
+    stream<Words> WordsAfterAnotherCrash = CrashAtTuple(WordsAfterACrash) {
+      param
+        tupleNumber: 370u;
+      config
+        placement: partitionColocation("PE2");
+    }
+
+    // Operator counts words and submits an ordered list of the current count values
+    // at the specified submission interval. State of the operator is automatically 
+    // checkpointed when establishing a consistent state.
+    // Operator is fused with the the 'WordsAfterAnotherCrash' operator to illustrate
+    // a stateful operator failure.  
+    stream<list<WordCountTuple> wordCount> WordCount = Custom(WordsAfterAnotherCrash as I) {
+      logic
+        state: { mutable map<rstring, uint32> wordCountMap; 
+                 mutable int32 tupCounter = 0; 
+                 int32 submissionInterval = 25; }
+        onTuple I: {
+          for (rstring word in words) {
+            if (word in wordCountMap) {
+              wordCountMap[word] += 1u;
+            } else {
+              wordCountMap[word] = 1u;
+            }
+          }
+          tupCounter++; 
+          if (tupCounter % submissionInterval == 0) {
+            mutable list<WordCountTuple> orderedList = [];
+            // Sorts map to have a deterministic output
+            sortMap(wordCountMap, orderedList);
+            submit({wordCount = orderedList}, WordCount);
+          } 
+        }
+      config
+        placement: partitionColocation("PE2");
+    }
+
+    // FileSink operator automatically truncates its output when a failure
+    // occurs in a consistent region. After a run with failures, the result
+    // file has the same content as if the run had had no failures. 
+    () as Nil = FileSink(WordCount) {
+      param
+        file: "result.dat";
+    }
+
+  config
+    restartable: true;
+}
+
+// Forwards input stream to the output stream. The operator
+// optionally crashes itself when processing the specified tupleNumber.
+// The crash occurs if the parameter "crash" is specified with a value
+// greater than 0.
+composite CrashAtTuple(output O; input I) {
+  param
+    expression<uint32> $tupleNumber;
+
+  graph
+    stream<I> O = Custom(I) {
+      logic 
+        state: { uint32 mustCrash = (uint32) strtoull(getSubmissionTimeValue("crash", "0"), 10);
+                 mutable uint32 counter = 0u; }
+        onTuple I : {
+          counter++;
+          if (counter == $tupleNumber && mustCrash > 0u &&
+              getRelaunchCount() == 0u) {
+            abort();
+          }
+          submit(I, O);
+        }
+
+    }    
+}
+
