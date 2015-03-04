@@ -1,0 +1,53 @@
+/* Copyright (C) 2015, International Business Machines Corporation  */
+/* All Rights Reserved                                	            */
+
+namespace com.ibm.streamsx.mapviewer ;
+
+use com.ibm.streamsx.inet.rest::HTTPTupleView ;
+
+/** Marker type supported by etc/map.html
+ * Entities will be displayed in markers in color as specified by the MARKER_TYPE
+ */
+type MARKER_TYPE = enum { GREEN, YELLOW, RED } ;
+
+
+/** The expected schema for the MapViewer composite
+ * id - the id of the entity
+ * wkt - geometry of the entity specified in WKT format
+ * updateAction - 1 to add / update the entity in the map, 0 to remove the entity from the map.
+ * note - information to be displayed in the popup 
+ * markerType - if the entity is a point, the color of the marker to use.
+ */
+type MapViewerT = rstring id, rstring wkt, uint32 updateAction, rstring note,
+	MARKER_TYPE markerType ;
+
+/** Composite to allow easy visualization of geospatial data on a map.
+ * This composite wrappers a HTTPTupleView operator from the com.ibm.streamsx.inet toolkit.
+ * The operator is set up with a sliding window of $windowSize.  The window is partitioned by "id" 
+ * The operator is set up to deploy the "etc/map.html" file onto the Jetty server when the operator is started.
+ * To view entities on map, use the following URL:  http://<PEHost>:8080/map/map.html.
+ * To display popup on the map, use the following parameter:  popup=true (i.e. http://<PEHost>:8080/map/map.html?popup=true)
+ * To control the period of updates, use the following parameter:  period=<time in millisecond>, default is 1000.
+ * The input stream of the composite must be of type MapViewerT
+ */
+public composite MapViewer(input stream<MapViewerT> In0 )
+{
+	param
+		expression $windowSize : 1 ;
+	graph
+		() as data = HTTPTupleView(In0 as inPort0Alias)
+		{
+			window
+				inPort0Alias : sliding, count($windowSize), count(1), partitioned ;
+			param
+				contextResourceBase : getThisToolkitDir() + "/etc" ;
+				context : "map" ;
+				partitionKey : "id" ;
+			config
+				placement : partitionColocation("mapviewer") ;
+		}
+
+}
+
+
+
