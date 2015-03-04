@@ -12,7 +12,7 @@ To compile the application, you need:
 
 - Streams 3.2.2 Beta - for the new com.ibm.streams.geospatial toolkit
 
-- com.ibm.streamsx.inet toolkit from here: [https://github.com/IBMStreams/streamsx.inet/releases/tag/streams_3.2.2beta-fix1]
+- com.ibm.streamsx.inet toolkit from here: https://github.com/IBMStreams/streamsx.inet/releases/tag/streams_3.2.2beta-fix1
   
 In a browser, open the following URL:  http://PEHost:8080/map/map.html
  
