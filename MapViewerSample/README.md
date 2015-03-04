@@ -14,6 +14,6 @@ To compile the application, you need:
 
 - com.ibm.streamsx.inet toolkit from here: [https://github.com/IBMStreams/streamsx.inet/releases/tag/streams_3.2.2beta-fix1]
   
-In a browser, open the following URL:  http://<PEHost>:8080/map/map.html
+In a browser, open the following URL:  http://PEHost:8080/map/map.html
  
-To see popup on the map, open the following URL:  http://<PEHost>:8080/map/map.html?popup=true
+To see popup on the map, open the following URL:  http://PEHost:8080/map/map.html?popup=true
