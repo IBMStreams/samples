@@ -1,0 +1,81 @@
+/* Copyright (C) 2015, International Business Machines Corporation  */
+/* All Rights Reserved                                	            */
+namespace com.ibm.streamsx.mapviewer ;
+
+use com.ibm.streamsx.mapviewer::MapViewer ;
+use com.ibm.streamsx.mapviewer.gen::* ;
+use com.ibm.streamsx.inet.rest::* ;
+use com.ibm.streamsx.mapviewer::* ;
+use com.ibm.streams.geospatial.ext::*;
+
+/** Main composite to demonstrate how to display geospatial data onto a map using the HTTPTupleView operator
+ * This application has two custom operators that randomly generates geospatial locations of two types of entities around Hong Kong.
+ * Taxi entities are represented by red markers on the map.
+ * Public minivan entities are represented by green markers on the map
+ * 
+ * To see this sample in action, compile and submit the application to a streams instance.
+ * To compile the application, you need:
+ * * Streams 3.2.2 Beta - for the new com.ibm.streams.geospatial toolkit
+ * * com.ibm.streamsx.inet toolkit from here: [https://github.com/IBMStreams/streamsx.inet/releases/tag/streams_3.2.2beta-fix1]
+ * 
+ * In a browser, open the following URL:  http://<PEHost>:8080/map/map.html 
+ * To see popup on the map, open the following URL:  http://<PEHost>:8080/map/map.html?popup=true
+ */
+composite Main
+{
+	graph
+		(stream<rstring id, rstring wkt, uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> RedEntities_out0) as RedEntities = Custom()
+		{
+			logic
+				onProcess :
+				{
+					while(! isShutdown())
+					{
+						// Randomly generate entities in Hong Kong
+						float64 latitude = randomLatitude(22.248429, 22.282425) ;
+						float64 longitude = randomLongitude(114.137821,	114.236355) ;
+						rstring id = randomId(0, 10) ;
+						
+						// convert coordinates to wkt string
+						rstring wktGeometry = point(longitude,latitude);
+						
+						// submit to MapViewr, set upactionAction to 1 to add point to the map
+						submit({ id = id, wkt = wktGeometry, updateAction=1u, note =
+							"Taxis: " + wktGeometry, markerType = RED }, RedEntities_out0) ;
+						block(0.01) ;
+					}
+				}
+
+		}
+
+		() as MapViewer_2 = MapViewer(RedEntities_out0, GreenEntities_out0)
+		{
+		}
+
+		(stream<rstring id, rstring wkt,uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> GreenEntities_out0) as GreenEntities = Custom()
+		{
+			logic
+				onProcess :
+				{
+					while(! isShutdown())
+					{
+						// Randomly generate entities in Hong Kong
+						float64 latitude = randomLatitude(22.248429, 22.282425) ;
+						float64 longitude = randomLongitude(114.137821,	114.236355) ;
+						rstring id = randomId(10, 10) ;
+						
+						// convert coordinates to wkt string
+						rstring wktGeometry = point(longitude,latitude);
+						
+						// submit to MapViewr, set upactionAction to 1 to add point to the map
+						submit({ id = id, wkt = wktGeometry, updateAction=1u, note =
+							"Public Mini Van: " + wktGeometry, markerType = GREEN }, GreenEntities_out0) ;
+						block(0.01) ;
+					}
+				}
+		}
+
+}
+
