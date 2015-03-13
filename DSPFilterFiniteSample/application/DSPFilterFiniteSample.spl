@@ -3,11 +3,11 @@ namespace application ;
 use com.ibm.streams.timeseries.generators::Generator ;
 use com.ibm.streams.timeseries.analysis::DSPFilterFinite ;
 use com.ibm.streams.timeseries.analysis::* ;
+
 composite DSPFilterFiniteSample
 {
 	graph
-		(stream<list<float64> signalSeg> SineWave_Out) as SineGenerator =
-			Generator()
+		(stream<list<float64> signalSeg> SineWave_Out) as SineGenerator = Generator()
 		{
 			param
 				frequency : 100f ;
@@ -26,39 +26,40 @@ composite DSPFilterFiniteSample
 				cutOffFrequency : cutoffFreq ;
 				filterType : filterType ;
 				samplingRate : 1000f ;
-				
-			output DSPFilterFinite_Out:
-				filteredSignal = filteredTimeSeries() ;
-		}
-
-		() as ResultPrinter = Custom(DSPFilterFinite_Out)
-		{
-			logic
-				onTuple DSPFilterFinite_Out:
-				{
-					println(DSPFilterFinite_Out.filteredSignal);
-				}
+			output
+				DSPFilterFinite_Out : filteredSignal = filteredTimeSeries() ;
 		}
 
 		(stream<list<float64> signalSeg, float64 cutoffFreq,
-			DSPFilterTypes.DSPFilterType filterType> FilterParamMod_Out) as FilterParamMod =
-			Custom(SineWave_Out)
+			DSPFilterTypes.DSPFilterType filterType> FilterParamMod_Out) as
+			FilterParamMod = Custom(SineWave_Out)
 		{
 			logic
-				onTuple SineWave_Out:
+				onTuple SineWave_Out :
 				{
-					// low-pass filters
-					submit({signalSeg = signalSeg, cutoffFreq = 25f, filterType=DSPFilterTypes.lowPass}, FilterParamMod_Out);
-					submit({signalSeg = signalSeg, cutoffFreq = 75f, filterType=DSPFilterTypes.lowPass}, FilterParamMod_Out);
-					submit({signalSeg = signalSeg, cutoffFreq = 200f, filterType=DSPFilterTypes.lowPass}, FilterParamMod_Out);
-					
-					// high-pass filters
-					submit({signalSeg = signalSeg, cutoffFreq = 200f, filterType=DSPFilterTypes.highPass}, FilterParamMod_Out);
-					submit({signalSeg = signalSeg, cutoffFreq = 125f, filterType=DSPFilterTypes.highPass}, FilterParamMod_Out);
-					submit({signalSeg = signalSeg, cutoffFreq = 50f, filterType=DSPFilterTypes.highPass}, FilterParamMod_Out);
-					
-					
+				// low-pass filters
+					submit({ signalSeg = signalSeg, cutoffFreq = 25f, filterType =
+						DSPFilterTypes.lowPass }, FilterParamMod_Out) ;
+					submit({ signalSeg = signalSeg, cutoffFreq = 75f, filterType =
+						DSPFilterTypes.lowPass }, FilterParamMod_Out) ;
+					submit({ signalSeg = signalSeg, cutoffFreq = 200f, filterType =
+						DSPFilterTypes.lowPass }, FilterParamMod_Out) ;
+
+						// high-pass filters
+					submit({ signalSeg = signalSeg, cutoffFreq = 200f, filterType =
+						DSPFilterTypes.highPass }, FilterParamMod_Out) ;
+					submit({ signalSeg = signalSeg, cutoffFreq = 125f, filterType =
+						DSPFilterTypes.highPass }, FilterParamMod_Out) ;
+					submit({ signalSeg = signalSeg, cutoffFreq = 50f, filterType =
+						DSPFilterTypes.highPass }, FilterParamMod_Out) ;
 				}
+
+		}
+
+		() as ResultFileSink = FileSink(DSPFilterFinite_Out)
+		{
+			param
+				file : "result.txt" ;
 		}
 
 }
