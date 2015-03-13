@@ -1,0 +1,54 @@
+namespace application ;
+
+use com.ibm.streams.timeseries.analysis::AnomalyDetector ;
+
+composite AnomalyDetectorArticle
+{
+	graph
+		(stream<float64 data> FileSource_1_out0) as FileSource_1 = FileSource()
+		{
+			param
+				file : "pktsPerSec.txt" ;
+		}
+
+		(stream<list<float64> subsequence, uint64 startTime, uint64 endTime,
+			float64 score> AnomalyDetector_2_out0) as AnomalyDetector_2 =
+			AnomalyDetector(Functor_4_out0 as inPort0Alias)
+		{
+			param
+				referenceLength : 20ul ;
+				inputTimeseries : data ;
+				patternLength : 10ul ;
+				inputTimestamp : t ;
+				confidence : 3E9;
+			output
+				AnomalyDetector_2_out0 : subsequence = getSubsequence(), startTime =
+					getStartTime(), endTime = getEndTime(), score = getScore() ;
+		}
+
+		() as FileSink_3 = FileSink(AnomalyDetector_2_out0)
+		{
+			param
+				file : "detectedAnomalies.txt" ;
+		}
+
+		(stream<uint64 t, float64 data> Functor_4_out0) as Functor_4 =
+			Functor(FileSource_1_out0)
+		{
+			logic
+				state :
+				{
+					mutable uint64 cnt = 0ul ;
+				}
+
+				onTuple FileSource_1_out0 :
+				{
+					cnt ++ ;
+				}
+
+			output
+				Functor_4_out0 : t = cnt ;
+		}
+
+}
+
