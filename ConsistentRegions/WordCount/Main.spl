@@ -46,7 +46,7 @@ composite Main {
     } 
 
     // Tokenize a line and eliminate punctuation from words
-    stream<list<rstring> words> Words = Custom(Lines) {
+    stream<list<rstring> words> Words = Custom(ThrottledLines) {
       logic
         onTuple Lines: {
           list<rstring> originalWords = tokenize(Lines.line, " ", false);
