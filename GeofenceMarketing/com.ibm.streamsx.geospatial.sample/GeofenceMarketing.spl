@@ -1,0 +1,129 @@
+
+/* Copyright (C) 2015, International Business Machines Corporation  */
+/* All Rights Reserved    
+ * 
+ */
+namespace com.ibm.streamsx.geospatial.sample ;
+
+use com.ibm.streams.geospatial::* ;
+use com.ibm.streams.geospatial.ext::* ;
+use com.ibm.streams.geospatial::Geofence ;
+
+/**This application demonstrates the basic use of the GeoFence operator.
+ * There are two data sources to this application:
+ * * Randomized entities stream that simulates GPS data from cell phones
+ * * A directory scan that watches the GeofenceMarketing/fences directory.  Initially, the directory contains csv file that contains geospatial data of shopping mall near Toronto.
+ *   The DirectoryScan allows us to update geofences in the Geofence operator dynamically at runtime, wihtout having to restart the application. 
+ * 
+ * As data flows, the Geofence operator is set up to detect fenceEntry and fenceExit events.  When we detect an entity has entered a fenced area, the applicaiton
+ * looks for marketing promotions from that area and sends the promotion info to the cell phone user.
+ * 
+ * To see this applicaiton in action, after you have launched the application, go to the following page in a browser:
+ * http://<PE Host of MapViewer Operator>:8080/map/map.html?popup=true
+ * 
+ * */
+composite GeofenceMarketingMain
+{
+	type
+		Point = rstring id, rstring wkt ;
+		FenceData = rstring fenceId, int32 fenceUpdateAction, rstring fencePolygon ;
+		MatchedFences = tuple<list<rstring> fences, list<rstring> fencesEntered,
+			list<rstring> fencesExited> ;
+	graph
+		stream<FenceData> PolygonStream = FileSource(FenceDir)
+		{
+			param
+				format : csv ;
+		}
+
+		@spl_note(id = "0", text = "Detect entities entering shopping center")
+		stream<Point, MatchedFences> GeofenceEvents = Geofence(GpsFromCellPhones_out0
+			as inPort0Alias ; PolygonStream)
+		{
+			param
+				outputMode : events ;
+				geometry : wkt ;
+			output
+				GeofenceEvents : fences = CurrentFences(), fencesEntered = FencesEntered(),
+					fencesExited = FencesExited() ;
+		}
+
+		@spl_note(id = "0", text = "Send promotion based on entity location")
+		stream<MapViewerT> EntitiesWithPromotion = Functor(GeofenceEvents)
+		{
+			logic
+				state :
+				{
+					mutable rstring promotions = "" ;
+				}
+
+				onTuple GeofenceEvents :
+				{
+					promotions = "" ;
+					// if the entity has entered a geofence
+					if(size(GeofenceEvents.fencesEntered) > 0)
+					{
+					// for each geofence, find promotion and display on map
+						for(int32 i in range(GeofenceEvents.fencesEntered))
+						{
+							rstring id = GeofenceEvents.fencesEntered [ i ] ;
+							promotions += getPromotion(id) ;
+							promotions += "\n" ;
+						}
+
+					}
+
+				}
+
+			output
+				EntitiesWithPromotion : updateAction = 1u, note = promotions, markerType =
+					GREEN ;
+		}
+		/** MapViewer makes use of the HTTPTupleView operator to allow us to visualize the data		
+		in a browser.		
+		*/
+		() as MapViewer_7 = MapViewer(EntitiesWithPromotion, PolygonToMapViewer)
+		{
+		}
+
+		(stream<MapViewerT> PolygonToMapViewer) = Custom(PolygonStream)
+		{
+			logic
+				onTuple PolygonStream :
+				{
+					MapViewerT fencePt = { id = PolygonStream.fenceId, updateAction =(uint32)
+						fenceUpdateAction, note = "FencePt", wkt = PolygonStream.fencePolygon,
+						markerType = RED } ;
+					submit(fencePt, PolygonToMapViewer) ;
+				}
+
+		}
+
+		(stream<rstring filename> FenceDir) as FenceDirScan = DirectoryScan()
+		{
+			param
+				directory : dataDirectory() + "/fences" ;
+				initDelay : 3.0 ;
+		}
+
+		(stream<rstring id, rstring wkt> GpsFromCellPhones_out0) as
+			GpsFromCellPhones = Custom()
+		{
+			logic
+				onProcess :
+				{
+					while(! isShutdown())
+					{
+						float64 latitude = randomLatitude(43.80792132384321, 43.8518832177072) ;
+						float64 longitude = randomLongitude(- 79.52736854553223, -
+							79.55174446105957) ;
+						rstring id = randomId(10, 10) ;
+						submit({ id = id, wkt = com.ibm.streams.geospatial.ext::point(longitude,
+							latitude) }, GpsFromCellPhones_out0) ;
+						block(0.5) ;
+					}
+				}
+
+		}
+
+}

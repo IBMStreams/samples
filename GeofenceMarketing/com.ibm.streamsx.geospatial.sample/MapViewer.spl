@@ -1,0 +1,36 @@
+/* Copyright (C) 2015, International Business Machines Corporation  */
+/* All Rights Reserved    
+ * 
+ */
+namespace com.ibm.streamsx.geospatial.sample ;
+
+use com.ibm.streamsx.inet.rest::HTTPTupleView ;
+type MARKER_TYPE = enum { GREEN, YELLOW, RED } ;
+// updateAction : 0 to remove, 1 to add / update
+type MapViewerT = rstring id, rstring wkt, uint32 updateAction, rstring note,
+	MARKER_TYPE markerType ;
+
+/** This composite allows you to visualize location data on a map.
+ * 
+ */
+public composite MapViewer(input stream<MapViewerT> In0 )
+{
+	param
+		expression $windowSize : 10 ;
+	graph
+		() as data = HTTPTupleView(In0 as inPort0Alias)
+		{
+			window
+				inPort0Alias : sliding, count($windowSize), count(1), partitioned ;
+			param
+				contextResourceBase : getThisToolkitDir() + "/etc" ;
+				context : "map" ;
+				partitionKey : "id" ;
+			config
+				placement : partitionColocation("mapviewer") ;
+		}
+
+}
+
+
+
