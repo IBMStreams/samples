@@ -21,7 +21,7 @@ the file system as the checkpoint backend.
 2. Compile the application
   $ make
 3. Submit the job injecting failures
-  $ submitjob output/Main.adl -P crash=1 -d YOUR_DOMAIN_ID_HERE -i YOUR_INSTANCE_ID_HERE
+  $ streamtool submitjob output/Main.adl -P crash=1 -d YOUR_DOMAIN_ID_HERE -i YOUR_INSTANCE_ID_HERE
 4. After the result file data/result.dat has 20 lines, compare it with the expected output without failures. There should be no difference between the files.
   $ diff data/result.dat result.dat.exp
 
