@@ -1,0 +1,36 @@
+Example application using an operator-driven consistent region. This (synthetic)
+application has two paths for processing a stream with strictly increasing 
+integers. The first path processes only even numbers and the second path 
+processes only odd ones. Each path counts the current number of processed 
+tuples and forwards it toghether with the current tuple count. The paths are
+merged with a Barrier, which combines tuples from the even path to tuples from
+the odd path.
+
+The output file of the application when there are no failures should have 
+2.500.000 lines that follows the following schema and pattern:
+  uint64 evenId - starts at 0 and increases by 2.
+  uint64 evenCounter - starts at 0 and increases by 1. It has the value of 
+evenId/2
+  uint64 oddId - starts at 1 and increases by 2.
+  uint64 oddCounter - starts at 0 and increases by 1. It has the same value of
+evenCounter.
+
+Without consistent regions, and with a failure injected at the PE containing
+the 'Even' operator (CrashEven operator), evenCounter will restart at 0 in 
+the middle of the processing.
+
+With consistent regions, the output is the same as a failure-free run.
+
+To run the application, do the following:
+ 1. Configure the Streams checkpointing backend. The example below uses
+the file system backend.
+  $ streamtool setproperty instance.checkpointRepository=fileSystem -d YOUR_DOMAIN_HERE -i YOUR_INSTANCE_ID_HERE
+  $ streamtool setproperty instance.checkpointRepositoryConfiguration={"Dir":"/your/checkpoint/directory/here/"}
+ 2. Compile the application 
+  2.1. Without consistent regions
+   $ make consistent=no
+  2.2. With consistent regions
+   $ make consistent=yes
+ 3. Submit the job
+   $ streamtool submitjob output/Main.adl -d YOUR_DOMAIN_HERE -i YOUR_INSTANCE_ID_HERE
+ 4. Check the number of tuples in the output and the tuple values from line 1234560 onwards. 

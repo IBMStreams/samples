@@ -1,0 +1,85 @@
+<%
+  # Configure the application with @consistent
+  my $consistent = $ARGV[0];
+%>
+
+composite Main {
+  graph
+
+    <%if ($consistent eq "yes") {%>
+      // JobControlPlane operator is mandatory when using consistent
+      // regions 
+      () as JCP = JobControlPlane() {}
+ 
+      // Configures an operator-driven consistent region. In this example, 
+      // the Beacon operator is the start of the consistent region. Beacon
+      // starts the establishment of a consistent state based on the triggerCount
+      // parameter. In this case, it is configured to establish a consistent
+      // state at every 200000 tuples. 
+      @consistent(trigger=operatorDriven)
+    <%}%>
+    stream<uint64 id> Beat = Beacon() {
+      param
+        iterations: 5000000;
+        <%if ($consistent eq "yes") {%>
+          triggerCount: 200000u;
+        <%}%>
+      output Beat: id = IterationCount();
+    }
+
+    // Discard any odd tuple. Count the number of even tuples, and submit
+    // the input tuple together with the current number of processed tuples.
+    // If the PE crashes, and the operator is not in a consistent region,
+    // the current value of 'count' is lost. If the operator is in a consistent
+    // region, the value of 'count' is restored to the value it had at the last
+    // successfully established consistent state. 
+    stream<uint64 id, uint64 counter> Even = Functor(Beat) {
+      logic
+        state: { mutable uint64 count = 0ul; }
+      param filter : (id % 2ul) == 0ul;
+      output Even: id = Beat.id, counter = count++; 
+      config
+        placement: partitionColocation("fused");
+    }
+
+    // When processing tuple with id 1234566, abort. This emulates a transient
+    // error while processing a tuple. We emulate a transient error by executing
+    // the abort clause only when the relaunch count of the PE is 0. 
+    stream<Even> CrashEven = Custom(Even) {
+      logic
+        onTuple Even: {
+          if (id == 1234566ul && getRelaunchCount() == 0u) {
+            abort();
+          }  
+          submit(Even, CrashEven); 
+        }
+      config
+        placement: partitionColocation("fused");
+    }
+
+    // Same as the Functor above, but passing on Odd numbers.
+    stream<uint64 id, uint64 counter> Odd = Functor(Beat) {
+      logic
+        state: { mutable uint64 count = 0ul; }
+      param filter : (id % 2ul) == 1ul;
+      output Odd: id = Beat.id, counter = count++; 
+    }
+
+    stream<Odd> PassOddThrough = Custom(Odd) {
+      logic
+        onTuple Odd: { submit(Odd, PassOddThrough); }
+    }
+
+    // Barrier Joining both Odd and Even Streams. 
+    stream<uint64 evenId, uint64 evenCounter, 
+           uint64 oddId, uint64 oddCounter> JoinedStreams 
+             = Barrier(CrashEven as I1; PassOddThrough as I2) {
+      output JoinedStreams: evenId = I1.id, evenCounter = I1.counter, 
+                            oddId = I2.id, oddCounter = I2.counter;
+    } 
+
+    () as FS = FileSink(JoinedStreams) {
+      param
+        file: "joined.dat";
+    } 
+}
