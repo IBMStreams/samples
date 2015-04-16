@@ -306,17 +306,10 @@ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 				}
 				
 			param
-<<<<<<< HEAD
 				metrics : Succeeded, Failed, ElapsedTime ;
 				names : " Successfully loaded files ", " Failed files ", " Elapsed Time ";
 				descriptions : "Sum of successfully loaded files ", "Sum of failed files ", "Elapsed Time " ;
 				initialValues : 0l, 0l, 0l ;
-=======
-				metrics : Succeeded, Failed ;
-				names : "Succeeded", "Failed" ;
-				descriptions : "Sum of successfully loaded files", "Sum of failed files" ;
-				initialValues : 0l, 0l ;
->>>>>>> origin/master
 		}
 		
 		/**
