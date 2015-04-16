@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -34,7 +34,7 @@ composite DB2CreateConnection(output ConnectionState, CreateConnectionLog ; inpu
 				onTuple ConfigurationData :
 				{
 					connectionCmd = "db2 connect to " + configData.dbName + " user " + configData.dbUser +
-						" using " + configData.dbPass ;
+						" using \"" + configData.dbPass + "\"";
 					submit({ command = connectionCmd, counter = configData.counter }, CreateConnectionCmd) ;
 				}
 

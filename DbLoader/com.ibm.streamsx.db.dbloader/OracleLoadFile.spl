@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -40,12 +40,12 @@ composite ORACLELoadFile(output Result, ORACLELoadFileLog ; input ConfigurationD
 				onTuple ConfigurationData :
 				{
 					fileName = configData.fileName ;
-					printStringLn("CreateOracleLoadCommand " +(rstring) ConfigurationData) ;
+					// printStringLn("CreateOracleLoadCommand " +(rstring) ConfigurationData) ;
 					tableName = getTableName(fileName) ;
 					logFilename = regexReplace(fileName, configData.inputDir, configData.logDir, true) ;
 					logFilename = regexReplace(logFilename, "csv", "log", true) ;
 					badFilename = regexReplace(logFilename, "log", "bad", true) ;
-					controlFilename = configData.oracleCtlDir + "/" + tableName + ".ctl" ;
+					controlFilename = configData.controlDir + "/" + tableName + ".ctl" ;
 					loadCmd = "sqlldr " + configData.dbUser + "/" + configData.dbPass + "@" + configData.dbName +
 						" DIRECT=TRUE" // This will effectively bypass most of the RDBMS processing.
 					+ " PARALLEL=TRUE" // Load data in parallel for maximum performance.
@@ -99,7 +99,7 @@ composite ORACLELoadFile(output Result, ORACLELoadFileLog ; input ConfigurationD
 				{
 					if(length(result) > 2)
 					{
-						printStringLn("CheckLoadFile resul:\n" + result) ;
+						// printStringLn("CheckLoadFile resul:\n" + result) ;
 						successfulLoaded = findFirst(result, "Load completed", 0) ;
 						if(successfulLoaded == - 1)
 						{

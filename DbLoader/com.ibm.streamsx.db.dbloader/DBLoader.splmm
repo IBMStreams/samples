@@ -20,7 +20,7 @@ if ($parallelLoaders  eq  $parallelLoaders+0)  # is a number
 	{
 		$parallelLoaders = 10;
 	}
-	  
+	 
 	if ($parallelLoaders < 1)
 	{
 		$parallelLoaders = 1;
@@ -33,7 +33,7 @@ else
 %>
 
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
 namespace com.ibm.streamsx.db.dbloader;
@@ -225,7 +225,6 @@ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 						}
 						lastResult = result;
 						logInfo = result +   "\n                         Loader number: <%=$cnt%>  Proceeded files: " + (rstring)counter;
-						printStringLn("LoadDBFile0<%=$cnt%> " + (rstring)counter + " " + (rstring)successfull + " " + result);
 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
 					}
 					
@@ -252,13 +251,15 @@ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 		 * CalculateMetrics
 		 * Calculate the number of succeeded or failed files.
 		 */
-		stream<rstring result, int64 succeeded, int64 failed> CalculateMetrics= Custom(CollectResults)
+		stream<rstring result, int64 succeeded, int64 failed, int64 elapsedTime> CalculateMetrics= Custom(CollectResults)
 		{
 			logic
 				state :
 				{
 					mutable int64 failed = 0 ;
 					mutable int64 succeeded = 0 ;
+					mutable int64 elapsedTime = 0 ;
+					mutable	float64 ts = getTimestampInSecs() ;
 					mutable rstring logInfo  = "" ;
 				}
 
@@ -273,42 +274,42 @@ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 						failed ++ ; 
 					}
 					 
+					elapsedTime =  (int64) (getTimestampInSecs() - ts);
 					logInfo = result 
 						+ "\n                         Sum of successfully loaded files : " +(rstring) succeeded 
 						+ "\n                         Sum of failed files : " +(rstring) failed
+						+ "\n                         Elapsed time since start(s) : " +(rstring) elapsedTime
 						+ "\n---------------------------------------------------------------------" ;
-					submit({ result = logInfo , succeeded = succeeded , failed = failed}, CalculateMetrics) ;					 
+					submit({ result = logInfo , succeeded = succeeded , failed = failed, elapsedTime = elapsedTime}, CalculateMetrics) ;					 
 				}
 		}
-			
+			 
 		/** 
-		 * MetricsWriter
-		 * write the number of succeeded or failed files. 
+		 * Metrics
+		 * write the number of succeeded or failed files and elapsed time since start as metrics. 
 		 */
-		() as MetricsWriter = MetricsSink(CalculateMetrics)
+		() as Metrics = MetricsSink(CalculateMetrics)
 		{
 			logic
 				state :
 				{
 					mutable int64 Failed = 0 ;
 					mutable int64 Succeeded = 0 ;
+					mutable int64 ElapsedTime = 0 ;
 				}
 
 				onTuple CalculateMetrics :
 				{
 					Succeeded = succeeded;
-					Failed = failed; 	 
-					printStringLn("Sum of successfully loaded files : " +(rstring) Succeeded +
-						"\nSum of failed files : " +(rstring) Failed + "\n" );
-					printStringLn("************************************************************************") ;
-					
+					Failed = failed; 	
+					ElapsedTime = elapsedTime;
 				}
 				
 			param
-				metrics : Succeeded, Failed ;
-				names : "Succeeded", "Failed" ;
-				descriptions : "Sum of successfully loaded files", "Sum of failed files" ;
-				initialValues : 1000l, 1000l ;
+				metrics : Succeeded, Failed, ElapsedTime ;
+				names : " Successfully loaded files ", " Failed files ", " Elapsed Time ";
+				descriptions : "Sum of successfully loaded files ", "Sum of failed files ", "Elapsed Time " ;
+				initialValues : 0l, 0l, 0l ;
 		}
 		
 		/**

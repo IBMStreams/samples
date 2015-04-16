@@ -4,7 +4,7 @@
 namespace com.ibm.streamsx.db.dbloader ;
 
 /**
-* The composite **NETEZZALoadFile** loads files into the Netezza database.
+* The composite **INFORMIXLoadFile** loads files into the Informix database.
 * 
 * Creates a SQL Loader command.
 * 
@@ -14,17 +14,17 @@ namespace com.ibm.streamsx.db.dbloader ;
 *
 * @input ConfigurationData configuration parameters (database name, database user, database password and file name)
 * @output Result rstring result
-* @output NETEZZALoadFileLog rstring result (log information)
+* @output INFORMIXLoadFileLog rstring result (log information)
 */
-composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input ConfigurationData)
+composite INFORMIXLoadFile(output Result, INFORMIXLoadFileLog ; input ConfigurationData)
 {
 	graph
 
 	/**
-		 * CreateNetezzaLoadCommand
-		 * Create a Netezza Loader (nzload) to load a file into a table in Netezza database.
+		 * CreateInformixLoadCommand
+		 * Create a Informix Loader (nzload) to load a file into a table in Informix database.
 		*/
-		stream<rstring command, int64 counter> CreateNetezzaLoadCommand = Custom(ConfigurationData)
+		stream<rstring command, int64 counter> CreateInformixLoadCommand = Custom(ConfigurationData)
 		{
 			logic
 				state :
@@ -33,42 +33,26 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 					mutable rstring fileName ;
 					mutable rstring tableName ;
 					mutable rstring logFilename ;
-					mutable rstring controlFilename ;
-					mutable rstring badFilename ;
+					mutable rstring sqlFile ;
 				}
 
 				onTuple ConfigurationData :
 				{
 					fileName = configData.fileName ;
-					// printStringLn("CreateNetezzaLoadCommand " +(rstring) ConfigurationData) ;
+					// printStringLn("CreateInformixLoadCommand " +(rstring) ConfigurationData) ;
 					tableName = getTableName(fileName) ;
 					logFilename = regexReplace(fileName, configData.inputDir, configData.logDir, true) ;
 					logFilename = regexReplace(logFilename, "csv", "log", true) ;
-					badFilename = regexReplace(logFilename, "log", "bad", true) ;
-					controlFilename = configData.controlDir + "/" + tableName + ".ctl" ;
-					loadCmd = "nzload " + " -u " + configData.dbUser
-					/** Specifies the database user name [NZ_USER]. */
-					+ " -pw " + configData.dbPass
-					/** Specifies the password of the Netezza user [NZ_PASSWORD]. */
-					+ " -host " + configData.dbHost
-					/** Specifies the host name or IP address [NZ_HOST] */
-					+ " -db " + configData.dbName
-					/** Specifies the database to load [NZ_DATABASE]. */
-					+ " -df " + fileName
-					/** Specifies the data file to load. */
-					+ " -lf " + logFilename
-					/** Specifies the log file name.*/
-					+ " -bf " + badFilename
-					/** Specifies the bad or rejected rows file name */
-					+ " -t " + tableName
-					/** Specifies the table name. */
-					+ " -delim ',' "
-					/** separator between successive input fields [default = \t]*/
-					+ " -dateStyle YMD"
-					/** data style */
-					+ " -dateDelim '-'"
-					/** date component separator */ ;
-					submit({ command = loadCmd, counter = configData.counter }, CreateNetezzaLoadCommand) ;
+		
+					sqlFile = configData.controlDir + "/" + (rstring)configData.counter +"_informix-connection.sql";
+					// This command creates a sql file, connects to infomix database, load file into a table and removes the sql file.
+					loadCmd = "echo 'connect to \"" + configData.dbName + "\" user \"" +configData.dbUser + "\" using \""
+					+ configData.dbPass + "\"; ' > " + sqlFile + "; "				
+					+ "echo 'LOAD FROM \"" + fileName + "\" DELIMITER \",\"  INSERT INTO " + tableName + "; ' >> " + sqlFile + "; "
+					+ "dbaccess - " + sqlFile + "; "
+					+ "rm " + sqlFile;
+		
+					submit({ command = loadCmd, counter = configData.counter }, CreateInformixLoadCommand) ;
 				}
 
 		}
@@ -79,7 +63,7 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 		 * It is use ExecuteCommand to run created load command via linux shell. 
 		*/
 		(stream<rstring result> LoadFile ; stream<rstring result> LoadFileLog) =
-			ExecuteCommand(CreateNetezzaLoadCommand)
+			ExecuteCommand(CreateInformixLoadCommand)
 		{
 		}
 
@@ -117,7 +101,7 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 					if(length(result) > 2)
 					{
 						// printStringLn("CheckLoadFile resul:\n" + result) ;
-						successfulLoaded = findFirst(result, "successfully", 0) ;
+						successfulLoaded = findFirst(result, "loaded", 0) ;
 						if(successfulLoaded == - 1)
 						{
 							loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " FAILED. " ;
@@ -184,7 +168,7 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 		{
 		}
 
-		(stream<rstring result> NETEZZALoadFileLog) = Filter(LoadFileLog, MoveLog)
+		(stream<rstring result> INFORMIXLoadFileLog) = Filter(LoadFileLog, MoveLog)
 		{
 		}
 
@@ -199,4 +183,4 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 		}
 
 }
-/** End of composite NETEZZALoadFile */
+/** End of composite INFORMIXLoadFile */

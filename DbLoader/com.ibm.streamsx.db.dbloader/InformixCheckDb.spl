@@ -1,0 +1,109 @@
+
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+namespace com.ibm.streamsx.db.dbloader ;
+
+/** 
+ * The composite **INFORMIXCheckDb** checks the state of Informix database. 
+ * 
+ * It returns the status of the Informix database as a boolean. 
+ * 
+ * @input ConfigurationData (database name,  database user, database password)
+ * @output DbState boolean connected database status
+ * @output InformixCheckLog rstring result (log information)
+ */
+composite INFORMIXCheckDb(output DbState, InformixCheckLog ; input ConfigurationData)
+{
+	graph
+
+	/**
+		 * CreateINFORMIXCheckDbCommand
+		 * Creates a sqlplus command to check the state of the Informix database. 
+		 */
+		stream<rstring command, int64 counter> CreateINFORMIXCheckDbCommand = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring cmd ;
+					mutable rstring sqlFile;
+				}
+
+				onTuple ConfigurationData :
+				{
+					sqlFile = configData.logDir + "/" + (rstring)configData.counter +"_informix-connection.sql";
+					// This command creates a sql file and connects to infomix database and removes the sql file.
+					cmd = "echo 'connect to \"" + configData.dbName + "\" user \"" +configData.dbUser + "\" using \""+ configData.dbPass + "\"; ' > " 
+					+ sqlFile + "; dbaccess - " + sqlFile +"; rm " + sqlFile;
+
+					submit({ command = cmd, counter = configData.counter }, CreateINFORMIXCheckDbCommand) ;
+				}
+
+		}
+
+		/**
+		 * INFORMIXCheckDb
+		 * Execute a dbaccess command via Linux Shell to check the state of the Informix database 
+		 */
+		(stream<rstring result> INFORMIXCheckDb ; stream<rstring result> InformixCheckLog) =
+			ExecuteCommand(CreateINFORMIXCheckDbCommand)
+		{
+		}
+
+		/**
+		 * CheckInformixDbStatus
+		 * Check the state of the Informix database 
+		 * If the result is OPEN the Informix database is running
+		 * and the database user name and password are correct  
+		 */
+		stream<boolean connected> CheckInformixDbStatus = Custom(INFORMIXCheckDb)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulConnection ;
+					mutable rstring logMessage ;
+				}
+
+				onTuple INFORMIXCheckDb :
+				{
+					if(length(result) > 2)
+					{
+						successfulConnection = findFirst(result, "Connected", 0) ;
+						if(successfulConnection == - 1)
+						{
+							logMessage = "Informix check database failed." + result ;
+							log(Sys.error, logMessage) ;
+							// printStringLn(logMessage) ;
+							submit({ connected = false }, CheckInformixDbStatus) ;
+						}
+
+						else // successfull
+
+						{
+							logMessage = "Informix check database completed successfully." ;
+							log(Sys.info, logMessage) ;
+						//	printStringLn(logMessage) ;
+							submit({ connected = true }, CheckInformixDbStatus) ;
+						}
+
+					}
+
+				}
+
+		}
+
+		/**
+		 * DbState
+		 * Send the tuple connected as DbState of INFORMIXCheckDb composite
+		 */
+		stream<boolean connected> DbState = Custom(CheckInformixDbStatus)
+		{
+			logic
+				onTuple CheckInformixDbStatus : submit(CheckInformixDbStatus, DbState) ;
+		} // End of DbState = Custom(CheckInformixDbStatus)
+
+	config
+		placement : partitionColocation("INFORMIXCheckDb") ;
+}
+/** End of INFORMIXCheckDb composite */ 

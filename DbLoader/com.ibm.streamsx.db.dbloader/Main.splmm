@@ -9,8 +9,8 @@ my $inputDir=$config->get('INPUT_DIR')->[0];
 my $databaseType=$config->get('DATABASETYPE')->[0]; 
 $databaseType = uc $databaseType;
 %>
- 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+   
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
  
 /**
@@ -19,7 +19,7 @@ It uses the DB2 load command tool or the Oracle SQL Loader to load files directl
 
 **DBLoader** scans the input directory and loads the files parallel into the database.  
 
-It improves the insert-performance of DB2 and Oracle databases actions.
+It improves the insert-performance of DB2, Informix, Netezza and Oracle databases actions.
 
 It is not needed to change the SPL code in case of new tables.
 
@@ -94,7 +94,7 @@ composite Main
 					logDir			= "<%=$logDir%>",
 				 	archiveDir 		= getSubmissionTimeValue("archiveDir", " ") , 
 				 	errorDir 		= getSubmissionTimeValue("errorDir", " ") , 
-				 	oracleCtlDir 	= getSubmissionTimeValue("oracleCtlDir", " "), 
+				 	controlDir 	= getSubmissionTimeValue("controlDir", " "), 
 				 	databaseType 	= "" ,
 				 	fileName 		= "",
 				 	counter 		= 0l };
@@ -141,9 +141,9 @@ composite Main
 				cfgData.errorDir = getConfigValue(configLine, "ERROR_DIR");
 			}
 
-			if(length(cfgData.oracleCtlDir) < 2)
+			if(length(cfgData.controlDir) < 2)
 			{
-				cfgData.oracleCtlDir = getConfigValue(configLine, "CONTROLFILES_DIR");
+				cfgData.controlDir = getConfigValue(configLine, "CONTROLFILES_DIR");
 			}
 									 				
 		}
@@ -180,7 +180,7 @@ composite Main
 		}
 		onTuple ConfigParameters :
 		{
-			println(ConfigParameters);	
+			// println(ConfigParameters);	
 			result ="Configuration parameters: \n" 
 			+ "                    dbName       = " + configData.dbName + "\n"	
 			+ "                    dbUser       = " + configData.dbUser + "\n"	
@@ -189,17 +189,18 @@ composite Main
 			+ "                    inputDir     = <%=$inputDir%>\n"	
 			+ "                    archiveDir   = " + configData.archiveDir + "\n"
 			+ "                    errorDir     = " + configData.errorDir + "\n"	
-			+ "                    oracleCtlDir = " + configData.oracleCtlDir + "\n\n";	
+			+ "                    controlDir = " + configData.controlDir + "\n\n";	
 			// check $databaseType
 			if ((findFirst(databaseType, "DB2", 0) == - 1) 
 				&& (findFirst(databaseType, "ORACLE", 0) == - 1)
-				&& (findFirst(databaseType, "NETEZZA", 0) == - 1))
+				&& (findFirst(databaseType, "NETEZZA", 0) == - 1)
+				&& (findFirst(databaseType, "INFORMIX", 0) == - 1))
 			{				
 				result = result + getCurrentTime() + " The value of DATABASETYPE in config.cfg file is " +  "<%=$databaseType%>.\n"
-				+ "                    Change the value of DATABASETYPE to DB2 or Oracle or NETEZZA.\n"
+				+ "                    Change the value of DATABASETYPE to DB2 or Oracle or NETEZZA or Informix.\n"
 				+ "                    Rebuild DBLoader project and try it again.\n";
 			}
-			printStringLn(result);
+			// printStringLn(result);
 			submit({ result =  result}, CreateStartLog) ;
 	
 		} 
@@ -215,10 +216,10 @@ composite Main
 
 
 	/** 
-	 * DBLoader
+	 * Loader
 	 * Starts parallel loaders to load files into database.
 	 */ 
-        (stream <rstring result> MainLoader; stream<rstring result> Log) = DBLoader(ConfigParameters)
+    (stream <rstring result> Loader; stream<rstring result> Log) = DBLoader(ConfigParameters)
 	{
 	} 
 

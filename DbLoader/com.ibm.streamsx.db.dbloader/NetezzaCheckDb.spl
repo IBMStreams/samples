@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -30,7 +30,7 @@ composite NETEZZACheckDb(output DbState, NetezzaCheckLog ; input ConfigurationDa
 
 				onTuple ConfigurationData :
 				{
-					printStringLn("CreateNETEZZACheckDbCommand " +(rstring) ConfigurationData) ;
+					// printStringLn("CreateNETEZZACheckDbCommand " +(rstring) ConfigurationData) ;
 					cmd = "nzsql " + " -host " + configData.dbHost + " -u " + configData.dbUser + " -pw " +
 						configData.dbPass + " -l" ;
 					/** nzsql -l List available databases, then exit*/
@@ -72,7 +72,7 @@ composite NETEZZACheckDb(output DbState, NetezzaCheckLog ; input ConfigurationDa
 						{
 							logMessage = "Netezza check database failed." + result ;
 							log(Sys.error, logMessage) ;
-							printStringLn(logMessage) ;
+							// printStringLn(logMessage) ;
 							submit({ connected = false }, CheckNetezzaDbStatus) ;
 						}
 
@@ -81,7 +81,7 @@ composite NETEZZACheckDb(output DbState, NetezzaCheckLog ; input ConfigurationDa
 						{
 							logMessage = "Netezza check database completed successfully." ;
 							log(Sys.info, logMessage) ;
-							printStringLn(logMessage) ;
+						//	printStringLn(logMessage) ;
 							submit({ connected = true }, CheckNetezzaDbStatus) ;
 						}
 
