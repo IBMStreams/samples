@@ -1,0 +1,55 @@
+namespace tokenize.example;
+
+list<rstring> simplifyTokenList(list<tuple<rstring atoken>> inputList) {
+  mutable list<rstring> toReturn = [];
+  for (tuple<rstring atoken> t in inputList) {
+      appendM(toReturn,t.atoken);
+  }
+  return toReturn;
+}
+
+/**
+ * For each document, output the list of tokens in that document. 
+ * This is what you want to use if you're getting a bag of words
+ * for machine learning
+ */
+composite TokenBag {
+param 
+expression<rstring> $inputFile: getSubmissionTimeValue("inputFile");
+expression<rstring> $outFile: getSubmissionTimeValue("outFile","tokenbag.out");
+expression<rstring> $tokenizer: getSubmissionTimeValue("tokenizer","multilingual");
+expression<rstring> $stopWordsDict: getSubmissionTimeValue("stopwords","etc/punct.dict");
+expression<rstring> $applicationDir: substring(getThisFileDir(),0,length(getThisFileDir())-1-length("tokenize.example"));
+
+// Specify the langauge code to be used by the operator.
+// For the list of languages supported, see http://pic.dhe.ibm.com/infocenter/bigins/v2r0/index.jsp?topic=%2Fcom.ibm.swg.im.infosphere.biginsights.text.doc%2Fdoc%2Ftext_analytics_languageware_support.html
+expression<rstring> $langCode: "en";
+
+graph 
+
+stream<rstring inputDoc> Documents = FileSource() {
+param file: $inputFile;
+format:line;
+}
+
+
+stream<list<tuple<rstring atoken>> allTokens> OutputStream = com.ibm.streams.text.analytics::TextExtract(Documents) {
+   param uncompiledModules: $applicationDir+"/etc/usetokenizer";
+   tokenizer: $tokenizer;
+   languageCode: $langCode;
+   // This line is optional.  
+   externalDictionary: "usetokenizer.StopwordsDict="+$applicationDir+"/"+$stopWordsDict;
+}
+
+// Let's make the list a bit tidier
+stream<list<rstring> tokenList> Tokenized = Functor(OutputStream) {
+    output Tokenized:
+    tokenList = simplifyTokenList(OutputStream.allTokens);
+}
+
+
+() as sink = FileSink(Tokenized) {
+   param file: $outFile;
+}
+
+}
