@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common"
- xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
- <info:identity>
-     <info:name>TextAnalytics</info:name>
-   <info:description>Applications for the StreamsDev TextAnalyticsToGo post.</info:description>
-   <info:version>1.0.0</info:version>
-   <info:requiredProductVersion>3.2</info:requiredProductVersion>
- </info:identity>
- <info:dependencies/>
+<info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
+  <info:identity>
+    <info:name>TextAnalytics</info:name>
+    <info:description>Applications for the StreamsDev TextAnalyticsToGo post.</info:description>
+    <info:version>1.0.0</info:version>
+    <info:requiredProductVersion>3.2</info:requiredProductVersion>
+  </info:identity>
+  <info:dependencies>
+    <info:toolkit>
+      <common:name>com.ibm.streams.text</common:name>
+      <common:version>1.2</common:version>
+    </info:toolkit>
+  </info:dependencies>
 </info:toolkitInfoModel>
