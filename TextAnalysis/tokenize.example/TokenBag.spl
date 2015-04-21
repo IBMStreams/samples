@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2015, International Business Machines Corporation       
+ *  All Rights Reserved
+ */
+
+
 namespace tokenize.example;
 
 list<rstring> simplifyTokenList(list<tuple<rstring atoken>> inputList) {
