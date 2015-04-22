@@ -17,7 +17,7 @@ To run the application do the following:
 1. Set the Streams Checkpoint backend related properties. The example below uses
 the file system as the checkpoint backend.
   $ streamtool setproperty instance.checkpointRepository=fileSystem -d YOUR_DOMAIN_ID_HERE -i YOUR_INSTANCE_ID_HERE
-  $ streamtool setproperty instance.checkpointRepositoryConfiguration={"Dir":"/your/checkpoint/directory/here/"}
+  $ streamtool setproperty instance.checkpointRepositoryConfiguration={\"Dir\":\"/your/checkpoint/directory/here/\"}
 2. Compile the application
   $ make
 3. Submit the job injecting failures
