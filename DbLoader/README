@@ -1,43 +1,47 @@
 /* Copyright (C) 2013-2014, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
-The 'DB Loader' is a SPL application for InfoSphere Streams.
-It use DB2 load command tool or Oracle SQL Loader to load files directly into database. 
+The 'DB Loader' is an SPL application for InfoSphere Streams.
+It uses the DB2 load command tool, the Oracle SQL Loader or the Netezza Loader 
+to load files directly into the database. 
 
-DbLoader scans the input directory and loads files parallel into database.  
-It improves insert-performance into DB2 and Oracle databases.
+The DbLoader scans the input directory and loads files parallel into the database.  
+It improves insert-performance of DB2 and Oracle database actions.
 It is not needed to change the SPL code in case of new tables.
-The input file name must include the database schema and the table name  
-The database schema begin after path and end with a point "."
-The table name begin after . and end with a dash "-"             
+The input file name must include the database schema and the table name.  
+The database schema begins after the path and ends with a dot ".".
+The table name begin afters "." and end with a dash "-",             
 for example:  /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv 
 In this case DB2INST1 is the database user name (or schema) 
-And MY_TABLE_123 is the table name.
-All input files must have a correctly formated Comma Separated Value (csv).
+and MY_TABLE_123 is the table name.
+All input files must have a correctly formated Comma Separated Value (csv) format.
 
 --------------------------------------------------------------------------
 
-DbLoader use LinuxSource operator to execute a command.
-LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit
-It is available in It is available in GitHub: 
+The DbLoader uses the LinuxSource operator to execute a command.
+The LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+It is available in GitHub: 
 https://github.com/ejpring/LinuxShellToolkit 
-Download and copy this package in a local directory 
-and add its path to the environment variable STREAMS_SPLPATH
 
 --------------------------------------------------------------------------
+
+To run the DbLoader job you need to do the following steps:
+
+1. Configure the parameters
 
 Change configuration parameters in config/config.cfg file.
 Set the absolute path for directories in configuration file.
 e.g. INPUT_DIR=/home/streams/DbLoder/data/in
+see also 3.
 
 --------------------------------------------------------------------------
 Parameter name  | Submission  | Default       | Description
 in config.cfg   | Parameter   | value         |
 --------------------------------------------------------------------------
-DBNAME           dbName                           The name of database .
-DBUSER           dbUser                           The name of DB user . 
-DBPWD            dbPass                           The password of DB user .
-INPUT_DIR        inputDir      ../data/in         The directory that stores the table files in CSV format
+DBNAME           dbName                           The name of the database
+DBUSER           dbUser                           The name of the DB user 
+DBPWD            dbPass                           The password of the DB user
+INPUT_DIR        inputDir      ../data/in         The directory that stores the table files in CSV format.
 ARCHIVE_DIR      archiveDir    ../data/archive    The directory that stores the successfully loaded files.
 ERROR_DIR        errorDir      ../data/error      The directory that stores the failed files.
 LOG_DIR          logDir        ../data/log        The directory that stores the log files.
@@ -45,17 +49,16 @@ CONTROLFILES_DIR oracleCtlDir  ../data/control    The directory where the Oracle
 DATABASETYPE         -          DB2               The Database type DB2 or Oracle
 PARALLEL_LOADERS     -          5                 The number of parallel loaders (1-10)
 
---------------------------------------------------------------------------
 
-Check the database connection status and make sure 
-that the database server is running
+2. Check the database connection status and make sure 
+   that the database server is running.
+   see also 3.
 
-For DB2
+2.1 DB2
     db2 connect to DBNAME user <DBUSER> using <DBPWD>
 
---------------------------------------------------------------------------
 
-For Oracle:
+2.2 Oracle
     sqlplus -s <DBUSER>/<DBPWD>@<DBNAME>
 
 Database name is defined in $TNS_ADMIN/tnsnames.ora
@@ -68,32 +71,41 @@ TESTORA =
     (CONNECT_DATA = (SID = ORAC))
   )
 
-Check the installation of  Oracle SQL Loader sqlldr.
+Check the installation of the Oracle SQL Loader sqlldr.
 more details in:
     http://docs.oracle.com/cd/B19306_01/server.102/b14215/part_ldr.htm
 
---------------------------------------------------------------------------
-Start:
-Change configuration parameters in ./config/config.cfg file
-Make the application
+
+2.3 Netezza
+    nzsql -host <nz-host> -u user -pw password -d database
+    nzload -h
+
+
+3. The configure script
+
+The script ./config/configure.pl combines a comfortable  configuration and a 
+database access check. It is located in the DbLoader application folder. 
+
+4. Build the application
     make all
-Copy your input csv files in input directory.
+
+5. Copy your input csv files into the input directory.
+
 Make sure that: 
 	-- The streams instance is running.
 	-- The database is running and available.
-	-- The tables for all input files already created in database.
-	-- The data directory and input files are accessible.
+	-- The tables for all input files are already created in database.
 
-Start the job
+6. Start the job
     streamtool submitjob -i <instance> output/Distributed/com.ibm.streamsx.db.dbloader.Main.adl
-
-Check the log file.
-e.g. tail -f /home/streams/DbLoader/data/log/14.06.25_dbloader.log
 
 It is also possible to start the dbloader job with submission parameters. 
 For example:
     streamtool submitjob  output/Distributed/com.ibm.streamsx.db.dbloader.Main.adl 
     -P com.ibm.streamsx.db.dbloader.Main.dbUser=db2inst1
 
-Stop the job
+7. Check the log file.
+e.g. tail -f /home/streams/DbLoader/data/log/14.06.25_dbloader.log
+
+8. Stop the job
     streamtool canceljob <job-id>

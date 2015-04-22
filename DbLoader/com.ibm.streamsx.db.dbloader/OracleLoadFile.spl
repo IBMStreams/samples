@@ -1,21 +1,22 @@
+
 /* Copyright (C) 2013-2014, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
-
-namespace com.ibm.streamsx.db.dbloader;
+namespace com.ibm.streamsx.db.dbloader ;
 
 /**
-* The composite **OracleLoadFile** loads files into Oracle database.
+* The composite **ORACLELoadFile** loads files into the Oracle database.
 * 
 * Creates a SQL Loader command.
 * 
-* Calls execute command to run the SQL Loader tool.
+* Calls ExecuteCommand to run the SQL Loader tool.
 *
 * Checks the results and returns the load result in output.  
 *
 * @input ConfigurationData configuration parameters (database name, database user, database password and file name)
 * @output Result rstring result
+* @output ORACLELoadFileLog rstring result (log information)
 */
-composite OracleLoadFile(output Result ; input ConfigurationData)
+composite ORACLELoadFile(output Result, ORACLELoadFileLog ; input ConfigurationData)
 {
 	graph
 
@@ -45,16 +46,11 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 					logFilename = regexReplace(logFilename, "csv", "log", true) ;
 					badFilename = regexReplace(logFilename, "log", "bad", true) ;
 					controlFilename = configData.oracleCtlDir + "/" + tableName + ".ctl" ;
-					loadCmd = "sqlldr " 
-						+ configData.dbUser + "/" 
-						+ configData.dbPass + "@"
-						+ configData.dbName 					
-						+ " DIRECT=TRUE" // This will effectively bypass most of the RDBMS processing.
-						+ " PARALLEL=TRUE" // Load data in parallel for maximum performance.
-						+ " data=" + fileName 
-						+ " CONTROL=" + controlFilename 
-						+ " log=" + logFilename 
-						+ " bad=" + badFilename ;
+					loadCmd = "sqlldr " + configData.dbUser + "/" + configData.dbPass + "@" + configData.dbName +
+						" DIRECT=TRUE" // This will effectively bypass most of the RDBMS processing.
+					+ " PARALLEL=TRUE" // Load data in parallel for maximum performance.
+					+ " data=" + fileName + " CONTROL=" + controlFilename + " log=" + logFilename + " bad=" +
+						badFilename ;
 					submit({ command = loadCmd, counter = configData.counter }, CreateOracleLoadCommand) ;
 				}
 
@@ -65,7 +61,8 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 		 * This is the main operator to load a file into database.
 		 * It is use ExecuteCommand to run created load command via linux shell. 
 		*/
-		stream<rstring result> LoadFile = ExecuteCommand(CreateOracleLoadCommand)
+		(stream<rstring result> LoadFile ; stream<rstring result> LoadFileLog) =
+			ExecuteCommand(CreateOracleLoadCommand)
 		{
 		}
 
@@ -74,7 +71,8 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 		 * Checks the load results. 
 		 * Depending on result creates a moveTo string.
 		*/
-		stream<rstring result, rstring fileName, int64 counter, rstring moveTo> CheckResult = Custom(ConfigurationData ; LoadFile)
+		stream<rstring result, rstring fileName, int64 counter, rstring moveTo> CheckResult =
+			Custom(ConfigurationData ; LoadFile)
 		{
 			logic
 				state :
@@ -113,12 +111,14 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 						else // successfull	
 
 						{
-							loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " completed SUCCESSFULLY." ;
+							loadResult = "[" +(rstring) counter + "] Load of file " + fileName +
+								" completed SUCCESSFULLY." ;
 							log(Sys.info, loadResult) ;
 							move_To = archiveDir ;
 						}
 
-						submit({ result = loadResult, fileName = fileName, counter = counter, moveTo = move_To }, CheckResult) ;
+						submit({ result = loadResult, fileName = fileName, counter = counter, moveTo = move_To },
+							CheckResult) ;
 					}
 
 				}
@@ -142,13 +142,19 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 					moveCmd = "mv " + fileName + " " + moveTo ;
 					submit({ command = moveCmd, counter = counter }, MoveFileCoammnd) ;
 				}
+
 		}
 
 		/**
 		 * MoveiFile
 		 * Moves proceeded file depending on load result into archive or error directory.    
 		*/
-		stream<rstring result> MoveiFile = ExecuteCommand(MoveFileCoammnd)
+		(stream<rstring result> MoveiFile ; stream<rstring result> MoveLog) =
+			ExecuteCommand(MoveFileCoammnd)
+		{
+		}
+
+		(stream<rstring result> ORACLELoadFileLog) = Filter(MoveLog, LoadFileLog)
 		{
 		}
 
@@ -162,4 +168,5 @@ composite OracleLoadFile(output Result ; input ConfigurationData)
 				Result : result =(rstring) CheckResult.result ;
 		}
 
-} /** End of composite OracleLoadFile */
+}
+/** End of composite ORACLELoadFile */

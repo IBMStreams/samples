@@ -19,14 +19,15 @@ namespace com.ibm.streamsx.db.dbloader;
 * @input ConfigurationData configuration parameters (database name, database user, database password and file name)
 * @output Result rstring result
 */
-composite DB2LoadFile(output Result ; input ConfigurationData)
+composite DB2LoadFile(output Result, LogDb2 ; input ConfigurationData)
 { 
 	graph 
 		/**
 		 * CreateConnection
 		 * Creates a database connection with ConfigurationData parameters
 		 */                  	
-		stream<boolean connected> CreateConnection = DB2CreateConnection(ConfigurationData)
+	
+		(stream <boolean connected> CreateConnection; stream<rstring result> CreateConnectionLog) = DB2CreateConnection(ConfigurationData)
 		{
 		}
 
@@ -58,7 +59,7 @@ composite DB2LoadFile(output Result ; input ConfigurationData)
 
 				onTuple CreateConnection :
 				{
-					if(connected)
+			//		if(connected)
 					{
 						submit({ connected = connected, counter = Counter, fileName = FileName, archiveDir = ArchiveDir, errorDir =
 							ErrorDir }, ConnectionState) ;
@@ -142,7 +143,7 @@ composite DB2LoadFile(output Result ; input ConfigurationData)
 		 * This is the main operator to load a file into database
 		 * It uses the ExecuteCommand to run the created load command via linuxshell 
 		*/
-		stream<rstring result> LoadFile = ExecuteCommand(CreateLoadCommand)
+		(stream<rstring result> LoadFile; stream<rstring result> LoadFileLog) = ExecuteCommand(CreateLoadCommand)
 		{
 		}
 
@@ -253,7 +254,7 @@ composite DB2LoadFile(output Result ; input ConfigurationData)
 		 * MoveiFile
 		 * Moves proceeded file depending on load result into archive or error directory    
 		*/
-		stream<rstring result> MoveiFile = ExecuteCommand(MoveFileCoammnd)
+		(stream<rstring result> MoveiFile; stream<rstring result> MoveLog) = ExecuteCommand(MoveFileCoammnd)
 		{
 		}
 
@@ -287,7 +288,7 @@ composite DB2LoadFile(output Result ; input ConfigurationData)
 		 * ReleaseConnection
 		 * Release the DB2 database connection   
 		*/
-		stream<rstring result> ReleaseConnection = ExecuteCommand(CreateTerminateCommand)
+		(stream<rstring result> ReleaseConnection; stream<rstring result> ReleaseConnectionLog) = ExecuteCommand(CreateTerminateCommand)
 		{
 		}
 
@@ -300,6 +301,10 @@ composite DB2LoadFile(output Result ; input ConfigurationData)
 		{
 			param
 				bufferSize : 1u ;
+		}
+
+		(stream<rstring result> LogDb2) = Filter(CreateConnectionLog, LoadFileLog, ReleaseConnectionLog, MoveLog)
+		{
 		}
 
 

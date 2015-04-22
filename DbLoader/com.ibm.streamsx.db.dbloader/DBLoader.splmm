@@ -4,19 +4,23 @@
 use lib "scripts";
 use Configuration;
 my $config=new Configuration(".");
-  
+ 
 my $inputDir=$config->get('INPUT_DIR')->[0]; 
 my $pattern=$config->get('PATTERN')->[0]; 
-my $parallelLoaders=$config->get('PARALLEL_LOADERS')->[0]; 
+my $databaseType=$config->get('DATABASETYPE')->[0]; 
+$databaseType = uc $databaseType; # upercase
+$databaseType =~ s/^\s+|\s+$//g;  # remove spaces
 
+my $parallelLoaders=$config->get('PARALLEL_LOADERS')->[0]; 
+  
 # check the value of $parallelLoaders 
 if ($parallelLoaders  eq  $parallelLoaders+0)  # is a number
-{    
-	if ($parallelLoaders > 40)
+{  
+	if ($parallelLoaders > 10)
 	{
-		$parallelLoaders = 40;
+		$parallelLoaders = 10;
 	}
-	
+	  
 	if ($parallelLoaders < 1)
 	{
 		$parallelLoaders = 1;
@@ -28,78 +32,69 @@ else
 }
 %>
 
+
 /* Copyright (C) 2013-2014, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
 namespace com.ibm.streamsx.db.dbloader;
 
 /**
-* The composite **DB2Loader** scans the input directory, passes the filenames to DB2LoadFile if connection check was successful.
-*
-* It reads configuration parameter "PARALLEL_LOADERS" direct from config.cfg file.
+* The composite **DBLoader** scans the input directory, passes the filenames to DBLoadFile if the connection check was successful.
 * 
-* Depending to the value of "PARALLEL_LOADERS" (1-10) creates n Gate and n Control operators
+* Reads the configuration parameter "PARALLEL_LOADERS" directly from the config.cfg file. 
+* 
+* Depending on the value of "PARALLEL_LOADERS" n (1 -10) it creates n Gates and n Controls operators
 * to start several parallel file loaders.
-*  
-* @input ConfigurationData configuration parameters
+* 
+* @input ConfigurationData (database name,  database user, database password)
 * @output Result rstring result
+* @output DBLoaderLog rstring result (log information)
 */
-composite DB2Loader(output Result ; input ConfigurationData)
+composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
 {	
 	graph 
-			 
-		/**
-		 * CreateConnection
-		 * Creates a database connection to check the user name and the user password of database.
-		 */                  	
-		stream<boolean connected> CreateConnection = DB2CreateConnection(ConfigurationData)
-		{
-		}
+	 
+
+	/**
+	 * GetDbStatus
+	 * Creates a connection to database and check the user name,
+	 * the user password and the status of database.
+	 */                  	
+	(stream<boolean connected> GetDbStatus; stream<rstring result> CheckDbLog) = <%=$databaseType%>CheckDb(ConfigurationData)
+	{
+	}
+	
+	
 			
 		/**
-		 * CheckConnection
-		 * Creates connection and release it if connection check was successful.
-		 * It is a security check to prevent the database user account lock due wrong password. 
-		 * Only a successfully connection to database can open the SwitchDirScan .
+		 * CheckDbStatus
+		 * Checks the DB database status.  
+		 * It is a security check to prevent the database user account lock due to wrong password. 
+		 * Only a successful connection to a running DB database can open the SwitchDirScan. 
 		 */                  	
-		stream<rstring command, int64 counter> CheckConnection = Custom(ConfigurationData; CreateConnection)
+		stream<boolean dbReady> CheckDbStatus = Custom(GetDbStatus)
 		{
 			logic
 			state : 
 			{
-				mutable rstring releaseCommand = "";
-				mutable int64 Counter = 0;
+				mutable rstring checkResult = "";
 			}
-
-			onTuple ConfigurationData:
-			{
-				Counter = configData.counter;
-			}
-		
-			onTuple CreateConnection:
+	
+			onTuple GetDbStatus:
 			{
 				if 	(connected)
 				{
-					releaseCommand = "db2 terminate";				
-					submit({ command =  releaseCommand, counter = Counter }, CheckConnection) ;
+					submit({ dbReady =  true }, CheckDbStatus) ;
+		
 				}
 			}
 		}
 		
-		/**
-		 * ReleaseConnection
-		 * Release DB2 Connection
-		 * ReleaseConnection open the directory scan switch. 
-		 */                  	
-		stream<rstring result>  ReleaseConnection = ExecuteCommand(CheckConnection)
-		{
-		}
-
 		
 		/**
 		 * DirScan
-		 * The DirectoryScan operator watches the input directory, and generates 
-		 * file names and a counter on the output.
+		 * The DirectoryScan operator watches the input directory, generates 
+		 * the file names and a counter on the output.
 		 */                  	
 		stream<rstring fileName, int64 count> DirScan = DirectoryScan()
 		{
@@ -117,30 +112,20 @@ composite DB2Loader(output Result ; input ConfigurationData)
 
 		/**
 		 * SwitchDirScan
-		 * Switch to hold up Data tuples from ScanDir until CheckConnection operator is initialized.
-		 * Any ReleaseConnection tuple will cause the switch to open
-		 * initialStatus defaults to false (Switch is open/blocked) .         
-		 */                                              
-		stream<DirScan> SwitchDirScan = Switch(DirScan ; ReleaseConnection)
+		 * Switch to hold on Data tuples from ScanDir until the CheckConnection operator is initialized. 
+		 * Any CheckDbStatus tuple will cause the switch to open.
+		 * initialStatus default is false (Switch is open/blocked).          
+		 */                  	                            
+		stream<DirScan> SwitchDirScan = Switch(DirScan ; CheckDbStatus)
 		{
 			param
-				status : true ; // Any ReleaseConnection tuple will cause the switch to open.  
+				status : true ; // any CheckDbStatus tuple will cause the switch to open  
 				initialStatus : false;         
-		}
-
-		() as WriterSwitchDirScan = Custom(SwitchDirScan)
-		{
-			logic
-				onTuple SwitchDirScan :
-				{
-				 	printStringLn("SwitchDirScan " + (rstring) SwitchDirScan) ;
-				}
-
 		}
 	
 		/**
 		 * AddFileName
-		 * Add file name from scan directory to the configuration. 
+		 * Add the file name from scan directory to the configuration.
 		 */
 		stream<ConfigData configData> AddFileName = Custom(SwitchDirScan; ConfigurationData) 
 		{                                       
@@ -166,7 +151,7 @@ composite DB2Loader(output Result ; input ConfigurationData)
 	 
 		/**
 		 * ThreadedSplit
-		 * A ThreadedSplit operator is used to split a stream, and process
+		 * A ThreadedSplit operator is used to split a stream and process 
 		 * tuples in parallel.
 		 * Split the stream into <%=$parallelLoaders%> streams and use a following Gate to ensure load balancing.
 		 * 
@@ -184,7 +169,7 @@ composite DB2Loader(output Result ; input ConfigurationData)
 	
 		/**
 		 * Gate<%=$cnt%>
-		 * The Gate operator is used to control to process files one by one in a loader.
+		 * The Gate operator is used to open or close the gate for one by one file processing . 
 		 */	
 		stream<AddFileName> Gate<%=$cnt%> = Gate(Split<%=$cnt%> ; Control<%=$cnt%> as Control)
 		{
@@ -195,24 +180,24 @@ composite DB2Loader(output Result ; input ConfigurationData)
 			config
 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
 		}
- 
+   
+	
 		/**
 		 * LoadDB2File<%=$cnt%>
-		 * call composite DB2LoadFile with new fileName.   
+		 * Calls composite DBLoadFile with new fileName.   
 		 */	
-		stream<rstring result> LoadDB2File<%=$cnt%> = DB2LoadFile(Gate<%=$cnt%>)
+		(stream<rstring result> LoadDBFile<%=$cnt%> ; stream<rstring result> LoaderLog<%=$cnt%>) = <%=$databaseType%>LoadFile(Gate<%=$cnt%>)
 		{
 			config
-				placement : partitionColocation("LoadDB2File<%=$cnt%>") ;
-				// all operators in LoadDB2File<%=$cnt%> must run in the same partition. 
+				placement : partitionColocation("<%=$databaseType%>LoadFile<%=$cnt%>") ;
 		}
-		
+	
 		 
 		/**
 		 * Control<%=$cnt%>
-		 * open the Gate<%=$cnt%> to process the next file  
+		 * Opens the Gate<%=$cnt%> for the file.  
 		 */	
-		stream<uint32 count, boolean loaded, rstring result> Control<%=$cnt%> as Control = Custom(LoadDB2File<%=$cnt%>)
+		stream<uint32 count, boolean loaded, rstring result> Control<%=$cnt%> as Control = Custom(LoadDBFile<%=$cnt%>)
 		{
 			logic 
 			state :
@@ -224,7 +209,7 @@ composite DB2Loader(output Result ; input ConfigurationData)
 					mutable rstring logInfo = "";
 				}
 	  
-				onTuple LoadDB2File<%=$cnt%> :
+				onTuple LoadDBFile<%=$cnt%> :
 				{
 					if(lastResult != result)
 					{
@@ -239,39 +224,33 @@ composite DB2Loader(output Result ; input ConfigurationData)
 							successfull = true;
 						}
 						lastResult = result;
-						logInfo = result +   "\n                         Loader <%=$cnt%> " + (rstring)counter;
-						printStringLn("LoadDB2File0<%=$cnt%> " + (rstring)counter + " " + (rstring)successfull + " " + result);
+						logInfo = result +   "\n                         Loader number: <%=$cnt%>  Proceeded files: " + (rstring)counter;
+						printStringLn("LoadDBFile0<%=$cnt%> " + (rstring)counter + " " + (rstring)successfull + " " + result);
 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
 					}
 					
 				}
-
-				// Place on a different PE from Gate and other processing operator
+				// Place on a different PE from Gate and other processing operators
       			config
         			placement : partitionExlocation("Process");
 			}
 		
-		<% } if ($parallelLoaders == 1)
-		{ %> 
-		stream<uint32 count, boolean loaded, rstring result> CollectResults = Functor(Control1)
-		{                                       
-		} 
-		<% } else {%>
+		<% } %> 
+		
 		
 		/**
 		 * CollectResults
 		 * Collects results from all loaders. 
 		 */	
-		stream<uint32 count, boolean loaded, rstring result> CollectResults = Union (<% my $cnt=0;  for ($cnt=1; $cnt<=$parallelLoaders; $cnt++) {%>
-		Control<%=$cnt%><% if ($cnt < $parallelLoaders) { %>;<% }} %>) 
+		stream<uint32 count, boolean loaded, rstring result> CollectResults = Filter (<% my $cnt=0;  for ($cnt=1; $cnt<=$parallelLoaders; $cnt++) {%>
+		Control<%=$cnt%><% if ($cnt < $parallelLoaders) { %>,<% }} %>) 
 		{                                      
 		}
-		<% }%>
 		
 		
 		/** 
 		 * CalculateMetrics
-		 * Calculate the number of successfully loaded or failed files.
+		 * Calculate the number of succeeded or failed files.
 		 */
 		stream<rstring result, int64 succeeded, int64 failed> CalculateMetrics= Custom(CollectResults)
 		{
@@ -293,17 +272,18 @@ composite DB2Loader(output Result ; input ConfigurationData)
 					{
 						failed ++ ; 
 					}
-					
+					 
 					logInfo = result 
 						+ "\n                         Sum of successfully loaded files : " +(rstring) succeeded 
-						+ "\n                         Sum of failed files : " +(rstring) failed;
+						+ "\n                         Sum of failed files : " +(rstring) failed
+						+ "\n---------------------------------------------------------------------" ;
 					submit({ result = logInfo , succeeded = succeeded , failed = failed}, CalculateMetrics) ;					 
 				}
 		}
 			
 		/** 
 		 * MetricsWriter
-		 * write the number of succeeded or failed files.
+		 * write the number of succeeded or failed files. 
 		 */
 		() as MetricsWriter = MetricsSink(CalculateMetrics)
 		{
@@ -318,9 +298,9 @@ composite DB2Loader(output Result ; input ConfigurationData)
 				{
 					Succeeded = succeeded;
 					Failed = failed; 	 
-					// printStringLn("Sum of successfully loaded files : " +(rstring) Succeeded +
-					//	"\nSum of failed files : " +(rstring) Failed + "\n" );
-					// printStringLn("************************************************************************") ;
+					printStringLn("Sum of successfully loaded files : " +(rstring) Succeeded +
+						"\nSum of failed files : " +(rstring) Failed + "\n" );
+					printStringLn("************************************************************************") ;
 					
 				}
 				
@@ -328,18 +308,24 @@ composite DB2Loader(output Result ; input ConfigurationData)
 				metrics : Succeeded, Failed ;
 				names : "Succeeded", "Failed" ;
 				descriptions : "Sum of successfully loaded files", "Sum of failed files" ;
-				initialValues : 1000l, 1000l ;
+				initialValues : 0l, 0l ;
 		}
 		
 		/**
 		 * LogResult
-		 * Writes the result in log file 
+		 * Writes the result in log file. 
 		*/
-		() as LogResult = Logger(CalculateMetrics)
+		stream<rstring result> MetricLog = Functor(CalculateMetrics)
+		{                                       
+			output
+				MetricLog : result =(rstring) CalculateMetrics.result ;
+		}
+
+		(stream<rstring result> DBLoaderLog) = Filter(CheckDbLog<% my $cnt=0;  for ($cnt=1; $cnt<=$parallelLoaders; $cnt++) {%>, LoaderLog<%=$cnt }%>, MetricLog)
 		{
 		}
-		
-		
+
+	
 		/**
 		 * Result
 		 * Send the tuple (boolean loaded) out now.
@@ -354,4 +340,9 @@ composite DB2Loader(output Result ; input ConfigurationData)
 
 		} // End of Result = Custom(CollectResults)
 
-} /** End of composite DB2Loader */  
+      		config
+                        placement : partitionColocation("DBLoader") ;
+
+
+
+} /** End of composite DBLoader */ 

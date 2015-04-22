@@ -1,27 +1,28 @@
+
 /* Copyright (C) 2013-2014, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
-
 namespace com.ibm.streamsx.db.dbloader ;
 
 /**
-* The composite **DB2CreateConnection** creates a connection to DB2 database.
+* The composite **DB2CreateConnection** creates a connection to a DB2 database.
 * 
-* Checks the connection results and returns the connection state in output. 
+* It checks the connection results and returns the connection state in output. 
 *
 * @input ConfigurationData configuration data (database name, database user, database password)
-* @output ConnectionState boolean connected = true connection successful
-* connected = false  connection failed
+* @output ConnectionState boolean connected = true: connection successful,
+* connected = false: connection failed
 */
-composite DB2CreateConnection(output ConnectionState ; input ConfigurationData)
+composite DB2CreateConnection(output ConnectionState, CreateConnectionLog ; input
+	ConfigurationData)
 {
 	graph
 
 		/**
-		 * ConnectionCmd
-		 * Creates with Input information database name database user name 
-		 * and database password a DB2 command
+		 * CreateConnectionCmd
+		 * Creates a DB2 command with the input information database name, database user name 
+		 * and database password 
 		 */
-		stream<rstring command, int64 counter> ConnectionCmd = Custom(ConfigurationData)
+		stream<rstring command, int64 counter> CreateConnectionCmd = Custom(ConfigurationData)
 		{
 			logic
 				state :
@@ -32,9 +33,9 @@ composite DB2CreateConnection(output ConnectionState ; input ConfigurationData)
 
 				onTuple ConfigurationData :
 				{
-					connectionCmd = "db2 connect to " + configData.dbName + " user " +
-						configData.dbUser + " using " + configData.dbPass ;
-					submit({ command = connectionCmd, counter = configData.counter}, ConnectionCmd) ;
+					connectionCmd = "db2 connect to " + configData.dbName + " user " + configData.dbUser +
+						" using " + configData.dbPass ;
+					submit({ command = connectionCmd, counter = configData.counter }, CreateConnectionCmd) ;
 				}
 
 		}
@@ -43,7 +44,8 @@ composite DB2CreateConnection(output ConnectionState ; input ConfigurationData)
 		 * CreateConnection
 		 * Execute the DB2 connection command to create a database connection 
 		 */
-		stream<rstring result> CreateConnection = ExecuteCommand(ConnectionCmd)
+		(stream<rstring result> CreateConnection ; stream<rstring result> CreateConnectionLog) =
+			ExecuteCommand(CreateConnectionCmd)
 		{
 		}
 
@@ -74,7 +76,9 @@ composite DB2CreateConnection(output ConnectionState ; input ConfigurationData)
 							log(Sys.error, logMessage) ;
 							Connected = false ;
 						}
+
 						else // successful
+
 						{
 							logMessage = "Database connection completed successfully." ;
 							Connected = true ;

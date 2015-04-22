@@ -1,21 +1,22 @@
+
 /* Copyright (C) 2013-2014, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
+namespace com.ibm.streamsx.db.dbloader ;
 
-namespace com.ibm.streamsx.db.dbloader;
- 
 use com.ibm.streamsx.linuxshell::* ;
 
 /**
- * The composite **ExecuteCommand** executes a shell command via LinuxSourec.
+ * The composite **ExecuteCommand** executes a shell command via LinuxSource.
  * 
- * The LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+ * The LinuxSource operator is a part of the com.ibm.streamsx.linuxshell toolkit.
  * 
  * It measures the execution time and writes the command and its result in a log file. 
  *
  * @input Command rstring command
  * @output Result rstring result
+ * @output ExecuteCommandLog rstring result (log information)
  */
-composite ExecuteCommand(output Result ; input Command)
+composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 {
 	graph
 
@@ -44,46 +45,62 @@ composite ExecuteCommand(output Result ; input Command)
 				{
 					submit({ command = command }, GetCommand) ;
 				}
+
 		}
 
 		/**
 		 * ExecuteCmd
 		 * Use LinuxSource operator to execute a command.
-		 * LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+		 * The LinuxSource operator is a part of the com.ibm.streamsx.linuxshell toolkit.
 		 */
-		stream<rstring result> ExecuteCmd = LinuxSource(GetCommand)
+		(stream<rstring resultLine> ExecuteCmd ; stream<rstring errorLine> StdErr) =
+			LinuxSource(GetCommand)
 		{
 			logic
 				onTuple GetCommand :
 				{
-					//	println(Command) ;
+				//	println(Command) ;
+
 				}
+
 		}
 
 		/**
 		 * EndTime
 		 * Get the current time as End Time to calculate the execution time.
 		 */
-		stream<rstring result, timestamp endTime> EndTime = Custom(ExecuteCmd)
+		stream<rstring result, timestamp endTime> EndTime = Custom(ExecuteCmd ; StdErr)
 		{
 			logic
 				state :
 				{
 					mutable rstring resultLines = "" ;
+					mutable rstring stdOut = "" ;
 				}
 
 				onTuple ExecuteCmd :
 				{
-					if(length(result) > 2)
+				//	printStringLn("ExecuteCmd resultLine : " + resultLine) ;
+					if(length(resultLine) > 0)
 					{
-						resultLines = resultLines + result + "\n" ;
+						resultLines = resultLines + resultLine + "\n" ;
+					}
+
+				}
+
+				onTuple StdErr :
+				{
+				//	printStringLn("ExecuteCmd errorLine : " + errorLine) ;
+					if(length(errorLine) > 1)
+					{
+						resultLines += errorLine + "\n" ;
 					}
 
 				}
 
 				onPunct ExecuteCmd :
 				{
-				//	printStringLn("ExecuteCmd  : " + resultLines) ;
+				//	printStringLn("ExecuteCmd onPunct : " + resultLines) ;
 					submit({ result = resultLines, endTime = getTimestamp() }, EndTime) ;
 					resultLines = "" ;
 				} // End of onPunct ExecuteCmd
@@ -103,7 +120,7 @@ composite ExecuteCommand(output Result ; input Command)
 		 * CreateLog
 		 * Creates log information from command and result.
 		*/
-		stream<rstring result> CreateLog = Functor(GetStartEndTime)
+		stream<rstring result> ExecuteCommandLog = Functor(GetStartEndTime)
 		{
 			logic
 				state :
@@ -119,7 +136,7 @@ composite ExecuteCommand(output Result ; input Command)
 				onTuple GetStartEndTime :
 				{
 					executionTime = diffAsSecs(endTime, startTime) ;
-					if(length(result) < 2)
+					if(length(result) < 1)
 					{
 						executeResult = "done\n" ;
 					}
@@ -137,23 +154,16 @@ composite ExecuteCommand(output Result ; input Command)
 						cmd =(substring(command, 0, findPassword + 7)) + "********" ;
 					}
 
-					Counter = counter;
-//					Counter =(int32)(random() * 100.0) ;
-					cmdAndResult = "[" +(rstring) Counter + "] Command: " + cmd + "\n                    [" +(rstring) Counter +
-					"] Result : " + executeResult + "Execution Time " +(rstring) executionTime + " seconds\n" ;
+					Counter = counter ;
+					//					Counter =(int32)(random() * 100.0) ;
+					cmdAndResult = "[" +(rstring) Counter + "] Command: " + cmd + "\n                    ["
+						+(rstring) Counter + "] Result : " + executeResult + "Execution Time " +(rstring)
+						executionTime + " seconds\n" ;
 					printStringLn("ExecuteCmd  CreteLog: " + cmdAndResult) ;
 				}
 
 			output
-				CreateLog : result = cmdAndResult ;
-		}
-
-		/**
-		 * LogSink
-		 * Write log information into log file.
-		*/
-		() as LogSink = Logger(CreateLog)
-		{
+				ExecuteCommandLog : result = cmdAndResult ;
 		}
 
 		/**

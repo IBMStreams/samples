@@ -1,0 +1,62 @@
+/* Copyright (C) 2015, International Business Machines Corporation  */
+/* All Rights Reserved                                	            */
+
+namespace com.ibm.streamsx.geospatial.sample;
+
+/** Generate a random latitude value. 
+ * @param min must be greater than or equal to -90.0
+ * @param max must be less than or equal to 90.0
+ */
+public stateful float64 randomLatitude(float64 min, float64 max)
+{
+	float64 minLatitude = min ;
+	float64 range = max-min ;
+	float64 randomNum = random() ;
+	return minLatitude +(randomNum * range) ;
+}
+
+/** Generate a random longitude value. 
+ * @param min must be greater than or equal to -180.0
+ * @param max must be less than or equal to 180.0
+ */
+public stateful float64 randomLongitude(float64 min, float64 max)
+{
+	float64 minLongitude = min ;
+	float64 range = max-min ;
+	float64 randomNum = random() ;
+	return minLongitude +(randomNum * range) ;
+}
+
+/** Generate a random entity id 
+ * @param minId minimum value of the id to generatel
+ * @param numEntities possible number of entities
+ */
+public stateful rstring randomId(int32 minId, int32 numEntities)
+{
+	float64 randomNum = random() ;
+	int32 range = numEntities ;
+	
+	rstring id = (rstring)((int32)((float64)minId + (randomNum * (float64)range))) ;
+	return id;
+}
+
+/** Return promotions based on the given ID.
+ * This is just a simple function to simulate promotion lookup
+ * In reality, we can be fetching promotion information from some external
+ * storage.
+ */
+public rstring getPromotion(rstring id)
+{
+	if (id == "Vaughan Mills")
+	{
+		return id + ": 10% of at H&M; 20% off Family Ticket at Legoland!";
+	}
+	else if (id == "Canada's Wonderland")
+	{
+		return id + ": Get Season's Pass today and receive extra 10% off!";
+	}
+	else
+	{
+		return "";
+	}
+}
