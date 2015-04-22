@@ -110,9 +110,6 @@ composite Main {
       param
         file: "result.dat";
     }
-
-  config
-    restartable: true;
 }
 
 // Forwards input stream to the output stream. The operator
