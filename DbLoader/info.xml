@@ -5,7 +5,7 @@
     <info:description>
 The DBLoader is an SPL application for InfoSphere Streams to load files into a database.
 
-It improves the insert-performance for DB2 and Oracle databases. 
+It improves the insert-performance for DB2, Informix, Netezaa and Oracle databases. 
 
 It is not needed to change the SPL code in case of new tables.
 
@@ -33,7 +33,7 @@ LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
 It is available in GitHub: [https://github.com/ejpring/LinuxShellToolkit]
 
 </info:description>
-    <info:version>1.0.0</info:version>
+    <info:version>1.1.0</info:version>
     <info:requiredProductVersion>3.0.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies/>

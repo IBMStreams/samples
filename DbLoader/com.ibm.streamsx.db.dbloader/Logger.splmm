@@ -7,8 +7,8 @@ my $config=new Configuration(".");
 
 my $logDir=$config->get('LOG_DIR')->[0]; 
 %>
-  
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+   
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
 namespace com.ibm.streamsx.db.dbloader;

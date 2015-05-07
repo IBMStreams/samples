@@ -1,4 +1,4 @@
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
 /**
@@ -27,7 +27,7 @@ namespace com.ibm.streamsx.db.dbloader;
 	
 	rstring errorDir	: The directory that stores the failed files.
 	
-	rstring oracleCtlDir: The directory where the Oracle control-files are places.
+	rstring controlDir: The directory where the Oracle control-files are places.
 
 	rstring databaseType: The type of Database (DB2 or Oracle)
 	
@@ -43,13 +43,10 @@ rstring inputDir, // The input directory that stores the table files in CSV form
 rstring logDir, // The directory that stores the log files.
 rstring archiveDir, // The directory that stores the successfully loaded files.
 rstring errorDir, // The directory that stores the failed files.
-rstring oracleCtlDir, // The directory where the Oracle control-files are places.
+rstring controlDir, // The directory where the Oracle control-files are places.
 rstring databaseType, // The type of Database (DB2 or Oracle)
 rstring fileName, // The name of the the file 
 int64 counter> ; // Counter of control the proceeded files
-
-
-type MetricRes = tuple<rstring result, int64 succeeded, int64 failed> ;
 
 
 /** 
@@ -104,8 +101,6 @@ rstring getConfigValue(rstring configLine, rstring configName)
 		if(foundPosition > 2)
 		{
 			configValue = substring(configLine, foundPosition + 1, 100) ;
-			//			printStringLn ("getConfigValue  : " + configName + "   " + configValue);
-
 		}
 	}
 

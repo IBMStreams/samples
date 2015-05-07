@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -10,30 +10,83 @@ namespace com.ibm.streamsx.db.dbloader ;
  * 
  * @input ConfigurationData (database name,  database user, database password)
  * @output DbState boolean connected database status
- * @output DB2ChkLog rstring result (log information)
+ * @output DB2CheckLog rstring result (log information)
  */
-composite DB2CheckDb(output DbState, DB2ChkLog ; input ConfigurationData)
+composite DB2CheckDb(output DbState, DB2CheckLog ; input ConfigurationData)
 {
 	graph
-		(stream<boolean connected> CreateConnection ; stream<rstring result> CreateConnectionLog) =
-			DB2CreateConnection(ConfigurationData)
-		{
-		}
 
-		stream<rstring command, int64 counter> CreateDB2ReleaseCommand = Custom(CreateConnection)
+	/**
+		 * CreateDB2CheckDbCommand
+		 * Creates a sqlplus command to check the state of the DB2 database. 
+		 */
+		stream<rstring command, int64 counter> CreateDB2CheckDbCommand = Custom(ConfigurationData)
 		{
 			logic
 				state :
 				{
-					mutable rstring cmd = "" ;
+					mutable rstring cmd ;
+					mutable rstring sqlFile;
 				}
 
-				onTuple CreateConnection :
+				onTuple ConfigurationData :
 				{
-					if(connected)
+					sqlFile = configData.logDir + "/" + (rstring)configData.counter +"_informix-connection.sql";
+					// This command creates a sql file and connects to infomix database and removes the sql file.
+					cmd = "db2 connect to " + configData.dbName + " user " +configData.dbUser + " using \""+ configData.dbPass + "\"; " +
+						"db2 terminate";
+
+					submit({ command = cmd, counter = configData.counter }, CreateDB2CheckDbCommand) ;
+				}
+
+		}
+
+		/**
+		 * DB2CheckDb
+		 * Execute a dbaccess command via Linux Shell to check the state of the DB2 database 
+		 */
+		(stream<rstring result> DB2CheckDb ; stream<rstring result> DB2CheckLog) =
+			ExecuteCommand(CreateDB2CheckDbCommand)
+		{
+		}
+
+		/**
+		 * CheckDB2DbStatus
+		 * Check the state of the DB2 database 
+		 * If the result is OPEN the DB2 database is running
+		 * and the database user name and password are correct  
+		 */
+		stream<boolean connected> CheckDB2DbStatus = Custom(DB2CheckDb)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulConnection ;
+					mutable rstring logMessage ;
+				}
+
+				onTuple DB2CheckDb :
+				{
+					if(length(result) > 2)
 					{
-						cmd = "db2 terminate " ;
-						submit({ command = cmd, counter = 0l }, CreateDB2ReleaseCommand) ;
+						successfulConnection = findFirst(result, "authorization", 0) ;
+						if(successfulConnection == - 1)
+						{
+							logMessage = "DB2 check database failed." + result ;
+							log(Sys.error, logMessage) ;
+							// printStringLn(logMessage) ;
+							submit({ connected = false }, CheckDB2DbStatus) ;
+						}
+
+						else // successfull
+
+						{
+							logMessage = "DB2 check database completed successfully." ;
+							log(Sys.info, logMessage) ;
+						//	printStringLn(logMessage) ;
+							submit({ connected = true }, CheckDB2DbStatus) ;
+						}
+
 					}
 
 				}
@@ -41,30 +94,13 @@ composite DB2CheckDb(output DbState, DB2ChkLog ; input ConfigurationData)
 		}
 
 		/**
-		 * ReleaseConnection
-		 * Release the DB2 database connection   
-		*/
-		(stream<rstring result> ReleaseConnection ; stream<rstring result> ReleaseConnectionLog) =
-			ExecuteCommand(CreateDB2ReleaseCommand)
-		{
-		}
-
-		/**
-		 * DB2ChkLog
-		 * Collects log information and forward them to DBLoader    
-		*/
-		(stream<rstring result> DB2ChkLog) = Filter(CreateConnectionLog, ReleaseConnectionLog)
-		{
-		}
-
-		/**
 		 * DbState
 		 * Send the tuple connected as DbState of DB2CheckDb composite
 		 */
-		stream<boolean connected> DbState = Custom(CreateConnection)
+		stream<boolean connected> DbState = Custom(CheckDB2DbStatus)
 		{
 			logic
-				onTuple CreateConnection : submit(CreateConnection, DbState) ;
+				onTuple CheckDB2DbStatus : submit(CheckDB2DbStatus, DbState) ;
 		} // End of DbState = Custom(CheckDB2DbStatus)
 
 	config

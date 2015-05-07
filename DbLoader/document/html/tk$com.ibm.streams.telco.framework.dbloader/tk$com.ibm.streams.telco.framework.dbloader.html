@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="Toolkit com.ibm.streams.telco.framework.dbloader 1.1.0"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_toolkit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>Toolkit com.ibm.streams.telco.framework.dbloader 1.1.0</title>
+</head>
+<body id="spldoc_toolkit">
+
+
+<h1 class="title topictitle1 spltoolkitname">Toolkit <tt class="ph tt">com.ibm.streams.telco.framework.dbloader 1.1.0</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; com.ibm.streams.telco.framework.dbloader 1.1.0</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">General Information</h2>
+
+
+<p class="p">The DBLoader is an SPL application for InfoSphere Streams to load files into a database.
+</p>
+
+<p class="p">It improves the insert-performance for DB2, Informix, Netezaa and Oracle databases. 
+</p>
+
+<p class="p">It is not needed to change the SPL code in case of new tables.
+</p>
+
+<p class="p">The DBLoader scans the input directory and loads the files parallel into the database.  
+</p>
+
+<p class="p">The DB2 load utility is capable of efficiently moving large quantities of data into newly created tables, or into tables that already contain data.
+</p>
+
+<p class="p">Prerequisite:
+</p>
+
+<p class="p">All input files must have a correctly formatted Comma Separated Value (csv) format. 
+</p>
+
+<p class="p">The input file names must include the database schema and the table name. 
+</p>
+
+<p class="p">The database schema begins after the path and end with a dot "." The table name begins after "."  and ends with a dash "-".
+</p>
+
+<p class="p">For example: /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv.
+</p>
+
+<p class="p">In this case DB2INST1 is the database user name (or schema) And MY_TABLE_123 is the table name.
+</p>
+
+<p class="p">DBLoader uses the LinuxSource operator to execute a command.  LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+</p>
+
+<p class="p">It is available in GitHub: <a class="xref" href="https://github.com/ejpring/LinuxShellToolkit">https://github.com/ejpring/LinuxShellToolkit</a>
+</p>
+
+<dl class="dl">
+  
+  <dt class="dt dlterm">Version</dt>
+
+  <dd class="dd">1.1.0</dd>
+
+  
+  
+  <dt class="dt dlterm">Required Product Version</dt>
+
+  <dd class="dd">3.0.0</dd>
+
+  
+</dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Indexes</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    <dt class="dt dlterm"><a class="xref" href="ix$Operator.html">Operators</a></dt>
+<dd class="dd"/>
+
+    <dt class="dt dlterm"><a class="xref" href="ix$Function.html">Functions</a></dt>
+<dd class="dd"/>
+
+    <dt class="dt dlterm"><a class="xref" href="ix$Type.html">Types</a></dt>
+<dd class="dd"/>
+
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Namespaces</h2>
+  
+  <dl class="dl">
+    
+      <dt class="dt dlterm splpart"><a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a></dt>
+
+      <dd class="dd"/>
+
+      <dd class="dd"><dl class="dl">
+        <dt class="dt dlterm">Operators</dt>
+
+        <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2CheckDb.html#spldoc_compilationunit__composite_operator__DB2CheckDb">DB2CheckDb</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2CreateConnection.html#spldoc_compilationunit__composite_operator__DB2CreateConnection">DB2CreateConnection</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2LoadFile.html#spldoc_compilationunit__composite_operator__DB2LoadFile">DB2LoadFile</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DBLoader.html#spldoc_compilationunit__composite_operator__DBLoader">DBLoader</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$ExecuteCommand.html#spldoc_compilationunit__composite_operator__ExecuteCommand">ExecuteCommand</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$InformixCheckDb.html#spldoc_compilationunit__composite_operator__INFORMIXCheckDb">INFORMIXCheckDb</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$InformixLoadFile.html#spldoc_compilationunit__composite_operator__INFORMIXLoadFile">INFORMIXLoadFile</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Logger.html#spldoc_compilationunit__composite_operator__Logger">Logger</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Main.html#spldoc_compilationunit__composite_operator__Main">Main</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$NetezzaCheckDb.html#spldoc_compilationunit__composite_operator__NETEZZACheckDb">NETEZZACheckDb</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$NetezzaLoadFile.html#spldoc_compilationunit__composite_operator__NETEZZALoadFile">NETEZZALoadFile</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$OracleCheckDb.html#spldoc_compilationunit__composite_operator__ORACLECheckDb">ORACLECheckDb</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$OracleLoadFile.html#spldoc_compilationunit__composite_operator__ORACLELoadFile">ORACLELoadFile</a></li>
+
+</ul>
+
+        </dd>
+
+      </dl>
+</dd>
+
+      <dd class="dd"><dl class="dl">
+        <dt class="dt dlterm">Functions</dt>
+
+        <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Types.html#spldoc_compilationunit__function__checkDB2LoadResult.rstring">checkDB2LoadResult(rstring)</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Types.html#spldoc_compilationunit__function__getConfigValue.rstring.rstring">getConfigValue(rstring, rstring)</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Types.html#spldoc_compilationunit__function__getCurrentTime">getCurrentTime()</a></li>
+
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Types.html#spldoc_compilationunit__function__getTableName.rstring">getTableName(rstring)</a></li>
+
+</ul>
+
+        </dd>
+
+      </dl>
+</dd>
+
+      <dd class="dd"><dl class="dl">
+        <dt class="dt dlterm">Types</dt>
+
+        <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Types.html#spldoc_compilationunit__type__ConfigData">ConfigData</a></li>
+
+</ul>
+
+        </dd>
+
+      </dl>
+</dd>
+
+         
+      <dt class="dt dlterm splpart"><a class="xref" href="ns$com.ibm.streamsx.linuxshell.html">com.ibm.streamsx.linuxshell</a></dt>
+
+      <dd class="dd"/>
+
+      <dd class="dd"><dl class="dl">
+        <dt class="dt dlterm">Operators</dt>
+
+        <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><a class="xref" href="op$com.ibm.streamsx.linuxshell$LinuxSource.html">LinuxSource</a></li>
+
+</ul>
+
+        </dd>
+
+      </dl>
+</dd>
+
+       </dl>
+
+</div>
+
+</div>
+
+
+</body>
+</html>
