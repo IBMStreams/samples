@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -30,7 +30,7 @@ composite ORACLECheckDb(output DbState, OracleCheckLog ; input ConfigurationData
 
 				onTuple ConfigurationData :
 				{
-					printStringLn("CreateORACLECheckDbCommand " +(rstring) ConfigurationData) ;
+					// printStringLn("CreateORACLECheckDbCommand " +(rstring) ConfigurationData) ;
 					cmd = "echo 'select status from v$instance;' | sqlplus -s " + configData.dbUser + "/" +
 						configData.dbPass + "@" + configData.dbName ;
 					submit({ command = cmd, counter = configData.counter }, CreateORACLECheckDbCommand) ;
@@ -71,7 +71,7 @@ composite ORACLECheckDb(output DbState, OracleCheckLog ; input ConfigurationData
 						{
 							logMessage = "Oracle check database failed." + result ;
 							log(Sys.error, logMessage) ;
-							printStringLn(logMessage) ;
+							// printStringLn(logMessage) ;
 							submit({ connected = false }, CheckOracleDbStatus) ;
 						}
 
@@ -80,7 +80,7 @@ composite ORACLECheckDb(output DbState, OracleCheckLog ; input ConfigurationData
 						{
 							logMessage = "Oracle check database completed successfully." ;
 							log(Sys.info, logMessage) ;
-							printStringLn(logMessage) ;
+					//		printStringLn(logMessage) ;
 							submit({ connected = true }, CheckOracleDbStatus) ;
 						}
 

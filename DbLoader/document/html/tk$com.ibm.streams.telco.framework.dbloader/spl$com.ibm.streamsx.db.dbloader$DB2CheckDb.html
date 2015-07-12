@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File DB2CheckDb.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File DB2CheckDb.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">DB2CheckDb.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streams.telco.framework.dbloader.html">com.ibm.streams.telco.framework.dbloader 1.1.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a> &gt; DB2CheckDb.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2CheckDb.html#spldoc_compilationunit__composite_operator__DB2CheckDb">DB2CheckDb</a></strong>: The composite <strong class="ph b">DB2CheckDb</strong> checks the state of DB2 database.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__DB2CheckDb"><h2 class="title sectiontitle splpart">public composite DB2CheckDb(output DbState, DB2CheckLog; input ConfigurationData)</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">The composite <strong class="ph b">DB2CheckDb</strong> checks the state of DB2 database. 
+</p>
+
+<p class="p">It returns the status of the DB2 database as a boolean. 
+</p>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Input Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">ConfigurationData</strong>: (database name,  database user, database password)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Output Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">DbState</strong>: boolean connected database status
+</li>
+
+<li class="sli"><strong class="ph b">DB2CheckLog</strong>: rstring result (log information)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">Composite Operator Graph</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streams.telco.framework.dbloader/op$com.ibm.streamsx.db.dbloader$DB2CheckDb.svg" width="462" height="116"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite DB2CheckDb(output DbState, DB2CheckLog ; input ConfigurationData)
+ {
+ 	graph
+ 
+ 	/**
+ 		 * CreateDB2CheckDbCommand
+ 		 * Creates a sqlplus command to check the state of the DB2 database. 
+ 		 */
+ 		stream&lt;rstring command, int64 counter&gt; CreateDB2CheckDbCommand = Custom(ConfigurationData)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring cmd ;
+ 					mutable rstring sqlFile;
+ 				}
+ 
+ 				onTuple ConfigurationData :
+ 				{
+ 					sqlFile = configData.logDir + "/" + (rstring)configData.counter +"_informix-connection.sql";
+ 					// This command creates a sql file and connects to infomix database and removes the sql file.
+ 					cmd = "db2 connect to " + configData.dbName + " user " +configData.dbUser + " using \""+ configData.dbPass + "\"; " +
+ 						"db2 terminate";
+ 
+ 					submit({ command = cmd, counter = configData.counter }, CreateDB2CheckDbCommand) ;
+ 				}
+ 
+ 		}
+ 
+ 		/**
+ 		 * DB2CheckDb
+ 		 * Execute a dbaccess command via Linux Shell to check the state of the DB2 database 
+ 		 */
+ 		(stream&lt;rstring result&gt; DB2CheckDb ; stream&lt;rstring result&gt; DB2CheckLog) =
+ 			ExecuteCommand(CreateDB2CheckDbCommand)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * CheckDB2DbStatus
+ 		 * Check the state of the DB2 database 
+ 		 * If the result is OPEN the DB2 database is running
+ 		 * and the database user name and password are correct  
+ 		 */
+ 		stream&lt;boolean connected&gt; CheckDB2DbStatus = Custom(DB2CheckDb)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable int32 successfulConnection ;
+ 					mutable rstring logMessage ;
+ 				}
+ 
+ 				onTuple DB2CheckDb :
+ 				{
+ 					if(length(result) &gt; 2)
+ 					{
+ 						successfulConnection = findFirst(result, "authorization", 0) ;
+ 						if(successfulConnection == - 1)
+ 						{
+ 							logMessage = "DB2 check database failed." + result ;
+ 							log(Sys.error, logMessage) ;
+ 							// printStringLn(logMessage) ;
+ 							submit({ connected = false }, CheckDB2DbStatus) ;
+ 						}
+ 
+ 						else // successfull
+ 
+ 						{
+ 							logMessage = "DB2 check database completed successfully." ;
+ 							log(Sys.info, logMessage) ;
+ 						//	printStringLn(logMessage) ;
+ 							submit({ connected = true }, CheckDB2DbStatus) ;
+ 						}
+ 
+ 					}
+ 
+ 				}
+ 
+ 		}
+ 
+ 		/**
+ 		 * DbState
+ 		 * Send the tuple connected as DbState of DB2CheckDb composite
+ 		 */
+ 		stream&lt;boolean connected&gt; DbState = Custom(CheckDB2DbStatus)
+ 		{
+ 			logic
+ 				onTuple CheckDB2DbStatus : submit(CheckDB2DbStatus, DbState) ;
+ 		} // End of DbState = Custom(CheckDB2DbStatus)
+ 
+ 	config
+ 		placement : partitionColocation("DB2CheckDb") ;
+ }
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

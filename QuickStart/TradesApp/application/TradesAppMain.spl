@@ -1,0 +1,67 @@
+/* Copyright (C) 2015, International Business Machines Corporation */
+/* All Rights Reserved */
+namespace application ;
+
+/** Main composite for stock processing application
+ * 
+ */
+composite TradesAppMain
+{
+	graph
+		(stream<rstring ticker, rstring date, rstring time, float64 askprice>
+			TradeQuotes) as TradeQuoteSrc = FileSource()
+		{
+			param
+				file : "trades.csv" ;
+				format : csv ;
+		}
+
+		(stream<rstring ticker, rstring date, rstring time, float64 askprice>
+			FilteredTradeQuotes) as FilteredTrade = Filter(TradeQuotes)
+		{
+			param
+				filter : ticker != "GLD" ;
+		}
+
+		(stream<rstring ticker, float64 min, float64 max, float64 average>
+			TradesSummary) as AggregateTrades = Aggregate(FilteredTradeQuotes as
+			inPort0Alias)
+		{
+			window
+				inPort0Alias : tumbling, count(5), partitioned ;
+			param
+				partitionBy : ticker ;
+			output
+				TradesSummary : average = Average(askprice), min = Min(askprice), max =
+					Max(askprice) ;
+		}
+
+		(stream<rstring ticker, float64 min, float64 max, float64 average>
+			CheckedTradesSummary) as CustomProcess = Custom(TradesSummary)
+		{
+			logic
+				onTuple TradesSummary :
+				{
+					if(average == 0.0l)
+					{
+						printStringLn("ERROR: " + ticker) ;
+					}
+
+					else
+					{
+						submit(TradesSummary, CheckedTradesSummary) ;
+					}
+
+				}
+		}
+
+		() as CheckedTradesSummaryFile = FileSink(CheckedTradesSummary)
+		{
+			param
+				file : "tradesSummary.csv" ;
+				flush : 1u ;
+				format : csv ;
+		}
+
+}
+

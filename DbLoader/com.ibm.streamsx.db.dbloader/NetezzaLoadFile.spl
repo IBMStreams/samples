@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -40,12 +40,12 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 				onTuple ConfigurationData :
 				{
 					fileName = configData.fileName ;
-					printStringLn("CreateNetezzaLoadCommand " +(rstring) ConfigurationData) ;
+					// printStringLn("CreateNetezzaLoadCommand " +(rstring) ConfigurationData) ;
 					tableName = getTableName(fileName) ;
 					logFilename = regexReplace(fileName, configData.inputDir, configData.logDir, true) ;
 					logFilename = regexReplace(logFilename, "csv", "log", true) ;
 					badFilename = regexReplace(logFilename, "log", "bad", true) ;
-					controlFilename = configData.oracleCtlDir + "/" + tableName + ".ctl" ;
+					controlFilename = configData.controlDir + "/" + tableName + ".ctl" ;
 					loadCmd = "nzload " + " -u " + configData.dbUser
 					/** Specifies the database user name [NZ_USER]. */
 					+ " -pw " + configData.dbPass
@@ -116,7 +116,7 @@ composite NETEZZALoadFile(output Result, NETEZZALoadFileLog ; input Configuratio
 				{
 					if(length(result) > 2)
 					{
-						printStringLn("CheckLoadFile resul:\n" + result) ;
+						// printStringLn("CheckLoadFile resul:\n" + result) ;
 						successfulLoaded = findFirst(result, "successfully", 0) ;
 						if(successfulLoaded == - 1)
 						{

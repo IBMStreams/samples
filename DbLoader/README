@@ -1,8 +1,8 @@
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 
 The 'DB Loader' is an SPL application for InfoSphere Streams.
-It uses the DB2 load command tool, the Oracle SQL Loader or the Netezza Loader 
+It uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader 
 to load files directly into the database. 
 
 The DbLoader scans the input directory and loads files parallel into the database.  
@@ -45,7 +45,7 @@ INPUT_DIR        inputDir      ../data/in         The directory that stores the 
 ARCHIVE_DIR      archiveDir    ../data/archive    The directory that stores the successfully loaded files.
 ERROR_DIR        errorDir      ../data/error      The directory that stores the failed files.
 LOG_DIR          logDir        ../data/log        The directory that stores the log files.
-CONTROLFILES_DIR oracleCtlDir  ../data/control    The directory where the Oracle control-files are places.
+CONTROLFILES_DIR oracleCtlDir  ../data/controlDir The directory where the Oracle control-files are places.
 DATABASETYPE         -          DB2               The Database type DB2 or Oracle
 PARALLEL_LOADERS     -          5                 The number of parallel loaders (1-10)
 
@@ -80,6 +80,11 @@ more details in:
     nzsql -host <nz-host> -u user -pw password -d database
     nzload -h
 
+2.4 Informix
+    dbaccess - connect.sql
+    cat connect.sql
+    CONNECT to <database> USER <username> USING <password>
+    
 
 3. The configure script
 
@@ -105,7 +110,7 @@ For example:
     -P com.ibm.streamsx.db.dbloader.Main.dbUser=db2inst1
 
 7. Check the log file.
-e.g. tail -f /home/streams/DbLoader/data/log/14.06.25_dbloader.log
+e.g. tail -f /home/streamsadmin/DbLoader/data/log/14.06.25_dbloader.log
 
 8. Stop the job
     streamtool canceljob <job-id>

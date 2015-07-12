@@ -94,7 +94,7 @@ sub choiceDatabaseType
 
 	while($invalidInput) 
 	{ 
-		printColor('blue', "Please select the database vendor!\n1 DB2 \n2 Oracle \n3 Netezza\n");
+		printColor('blue', "Please select the database vendor!\n1 DB2 \n2 Oracle \n3 Netezza\n4 Informix\n");
 		print "$question [$currentValue] :";
 		chomp($input = <STDIN>);
 		if(checkInput($input))
@@ -117,9 +117,12 @@ sub choiceDatabaseType
 		} elsif(($input eq "3") or($input eq "NETEZZA" )) {
 			change_config($configName, "NETEZZA");
 			$invalidInput = 0;
+		} elsif(($input eq "4") or($input eq "INFORMIX" )) {
+			change_config($configName, "INFORMIX");
+			$invalidInput = 0;
 		} else {
 			printColor('red', "Your answer  $input  is wrong!\n");
-			print ("Please enter 1 or 2 or 3 \n");
+			print ("Please enter 1 or 2 or 3 or 4\n");
 		}	
 		}
 	}
@@ -128,14 +131,27 @@ sub choiceDatabaseType
 }
 
 ###################################################################################################
-sub executeCmd
+sub executeCmd1
 {
 	my $cmd = $_[0];
 	printColor('blue' ,"$cmd\n");
 	my $result = `$cmd`;
+	$result = "resssssult. ="."$result";	
 	printColor('blue' ,"$result\n");
 	return $result;
 }
+
+###################################################################################################
+sub executeCmd
+{
+	my $cmd = $_[0];
+	my $results = "";
+	printColor('blue' ,"$cmd\n");
+	my $result = `$cmd 2>&1`;
+	printColor('blue' ,"$result\n");
+	return $result;
+}
+
 
 ###################################################################################################
 sub pingIp
@@ -200,7 +216,7 @@ sub getComment
 	my $comment = "";
 	if($configName eq "DATABASETYPE") 
 	{
-		$comment = "1 DB2 \n2 Oracle \n3 Netezza\nPlease select one of above database vendors";
+		$comment = "1 DB2 \n2 Oracle \n3 Netezza \n4 Informix \nPlease select one of above database vendors";
 	} 
 	elsif($configName eq "DBHOST") 
 	{
@@ -304,6 +320,9 @@ sub setParameter
 					$invalidInput = 0;
 				} elsif(($input eq "3") or($input eq "NETEZZA" )) {
 					$input="NETEZZA";
+					$invalidInput = 0;
+				} elsif(($input eq "4") or($input eq "INFORMIX" )) {
+					$input="INFORMIX";
 					$invalidInput = 0;
 				} else {
 					printColor('red', "Your answer  $input  is wrong!\n");
@@ -495,6 +514,25 @@ sub checkDatabaseConnection
 			$dbReady = 1;
 		}	
 	}			
+
+
+	if ( $databaseType eq "INFORMIX")
+	{
+		$connectionCmd = "echo 'connect to \"$dbName\" user \"$dbUser\" using \"$dbPwd\";'> informix-connect.sql";
+		$result = executeCmd($connectionCmd);
+		
+		$connectionCmd = "dbaccess - informix-connect.sql";
+		$result = executeCmd($connectionCmd);
+
+		if (index($result, "Connected") != -1) 
+		{
+			$dbReady = 1;
+		}	
+		$connectionCmd = "rm informix-connect.sql";
+		$result = executeCmd($connectionCmd);
+	}
+
+
 
 	if ($dbReady)
 		{

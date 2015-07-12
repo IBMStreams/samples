@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File DBLoader.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File DBLoader.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">DBLoader.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streams.telco.framework.dbloader.html">com.ibm.streams.telco.framework.dbloader 1.1.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a> &gt; DBLoader.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DBLoader.html#spldoc_compilationunit__composite_operator__DBLoader">DBLoader</a></strong>: The composite <strong class="ph b">DBLoader</strong> scans the input directory, passes the filenames to DBLoadFile if the connection check was successful.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__DBLoader"><h2 class="title sectiontitle splpart">public composite DBLoader(output Result, DBLoaderLog; input ConfigurationData)</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">The composite <strong class="ph b">DBLoader</strong> scans the input directory, passes the filenames to DBLoadFile if the connection check was successful.
+</p>
+
+<p class="p">Reads the configuration parameter "PARALLEL_LOADERS" directly from the config.cfg file. 
+</p>
+
+<p class="p">Depending on the value of "PARALLEL_LOADERS" n (1 -10) it creates n Gates and n Controls operators to start several parallel file loaders.
+</p>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Input Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">ConfigurationData</strong>: (database name,  database user, database password)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Output Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">Result</strong>: rstring result
+</li>
+
+<li class="sli"><strong class="ph b">DBLoaderLog</strong>: rstring result (log information)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">Composite Operator Graph</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streams.telco.framework.dbloader/op$com.ibm.streamsx.db.dbloader$DBLoader.svg" width="640" height="480"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite DBLoader(output Result, DBLoaderLog ; input ConfigurationData)
+ {	
+ 	graph 
+ 	 
+ 
+ 	/**
+ 	 * GetDbStatus
+ 	 * Creates a connection to database and check the user name,
+ 	 * the user password and the status of database.
+ 	 */                  	
+ 	(stream&lt;boolean connected&gt; GetDbStatus; stream&lt;rstring result&gt; CheckDbLog) = INFORMIXCheckDb(ConfigurationData)
+ 	{
+ 	}
+ 	
+ 	
+ 			
+ 		/**
+ 		 * CheckDbStatus
+ 		 * Checks the DB database status.  
+ 		 * It is a security check to prevent the database user account lock due to wrong password. 
+ 		 * Only a successful connection to a running DB database can open the SwitchDirScan. 
+ 		 */                  	
+ 		stream&lt;boolean dbReady&gt; CheckDbStatus = Custom(GetDbStatus)
+ 		{
+ 			logic
+ 			state : 
+ 			{
+ 				mutable rstring checkResult = "";
+ 			}
+ 	
+ 			onTuple GetDbStatus:
+ 			{
+ 				if 	(connected)
+ 				{
+ 					submit({ dbReady =  true }, CheckDbStatus) ;
+ 		
+ 				}
+ 			}
+ 		}
+ 		
+ 		
+ 		/**
+ 		 * DirScan
+ 		 * The DirectoryScan operator watches the input directory, generates 
+ 		 * the file names and a counter on the output.
+ 		 */                  	
+ 		stream&lt;rstring fileName, int64 count&gt; DirScan = DirectoryScan()
+ 		{
+ 			logic
+ 			state :
+ 				{
+ 					mutable int64 counter = 1l ;
+ 				}
+ 			param
+ 				directory : getSubmissionTimeValue("inputDir", "/home/spreeadmin/workspace/DbLoader/data/in"); 
+ 				initDelay : 5.0 ;
+ 				pattern : ".*\\.csv" ;
+ 			output DirScan: fileName = FullPath(), count = counter++; 
+ 		}
+ 
+ 		/**
+ 		 * SwitchDirScan
+ 		 * Switch to hold on Data tuples from ScanDir until the CheckConnection operator is initialized. 
+ 		 * Any CheckDbStatus tuple will cause the switch to open.
+ 		 * initialStatus default is false (Switch is open/blocked).          
+ 		 */                  	                            
+ 		stream&lt;DirScan&gt; SwitchDirScan = Switch(DirScan ; CheckDbStatus)
+ 		{
+ 			param
+ 				status : true ; // any CheckDbStatus tuple will cause the switch to open  
+ 				initialStatus : false;         
+ 		}
+ 	
+ 		/**
+ 		 * AddFileName
+ 		 * Add the file name from scan directory to the configuration.
+ 		 */
+ 		stream&lt;ConfigData configData&gt; AddFileName = Custom(SwitchDirScan; ConfigurationData) 
+ 		{                                       
+ 			logic
+ 			state :
+ 				{
+ 					mutable ConfigData cfgData;
+ 				}
+ 			
+ 				onTuple ConfigurationData :
+ 				{
+ 					cfgData = configData;
+ 				}	
+ 		
+ 				onTuple SwitchDirScan :
+ 				{
+ 					cfgData.fileName = fileName;
+ 					cfgData.counter = count;
+ 					submit({ configData =  cfgData }, AddFileName) ;
+ 				}	
+ 	
+ 		}   
+ 	 
+ 		/**
+ 		 * ThreadedSplit
+ 		 * A ThreadedSplit operator is used to split a stream and process 
+ 		 * tuples in parallel.
+ 		 * Split the stream into 5 streams and use a following Gate to ensure load balancing.
+ 		 * 
+ 		 */
+ 		(
+ 		stream&lt;AddFileName&gt; Split1;
+ 		stream&lt;AddFileName&gt; Split2;
+ 		stream&lt;AddFileName&gt; Split3;
+ 		stream&lt;AddFileName&gt; Split4;
+ 		stream&lt;AddFileName&gt; Split5) = ThreadedSplit(AddFileName)
+ 		{
+ 			param
+ 				bufferSize : 1u ;
+ 			config
+ 				placement : partitionColocation("Split"), // ensure same PE as the Gates 
+ 				partitionExlocation("Process") ;
+ 		}
+ 		
+ 	
+ 		/**
+ 		 * Gate1
+ 		 * The Gate operator is used to open or close the gate for one by one file processing . 
+ 		 */	
+ 		stream&lt;AddFileName&gt; Gate1 = Gate(Split1 ; Control1 as Control)
+ 		{
+ 			param
+ 				maxUnackedTupleCount : 1u ;
+ 				numTuplesToAck : Control.count; // acknowledge given number of tuples              
+    
+ 			config
+ 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
+ 		}
+    
+ 	
+ 		/**
+ 		 * LoadDB2File1
+ 		 * Calls composite DBLoadFile with new fileName.   
+ 		 */	
+ 		(stream&lt;rstring result&gt; LoadDBFile1 ; stream&lt;rstring result&gt; LoaderLog1) = INFORMIXLoadFile(Gate1)
+ 		{
+ 			config
+ 				placement : partitionColocation("INFORMIXLoadFile1") ;
+ 		}
+ 	
+ 		 
+ 		/**
+ 		 * Control1
+ 		 * Opens the Gate1 for the file.  
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; Control1 as Control = Custom(LoadDBFile1)
+ 		{
+ 			logic 
+ 			state :
+ 				{ 
+ 					mutable uint32 counter = 0 ;
+ 					mutable boolean successfull = false;
+ 					mutable int32 successfulLoaded = 0;
+ 					mutable rstring lastResult = "";
+ 					mutable rstring logInfo = "";
+ 				}
+ 	  
+ 				onTuple LoadDBFile1 :
+ 				{
+ 					if(lastResult != result)
+ 					{
+ 						counter ++;
+ 						successfulLoaded = findFirst(result, "SUCCESSFULLY", 0) ;
+ 						if(successfulLoaded == -1)
+ 						{
+ 							successfull = false;
+ 						}
+ 						else
+ 						{
+ 							successfull = true;
+ 						}
+ 						lastResult = result;
+ 						logInfo = result +   "\n                         Loader number: 1  Proceeded files: " + (rstring)counter;
+ 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
+ 					}
+ 					
+ 				}
+ 				// Place on a different PE from Gate and other processing operators
+       			config
+         			placement : partitionExlocation("Process");
+ 			}
+ 		
+ 		
+ 	
+ 		/**
+ 		 * Gate2
+ 		 * The Gate operator is used to open or close the gate for one by one file processing . 
+ 		 */	
+ 		stream&lt;AddFileName&gt; Gate2 = Gate(Split2 ; Control2 as Control)
+ 		{
+ 			param
+ 				maxUnackedTupleCount : 1u ;
+ 				numTuplesToAck : Control.count; // acknowledge given number of tuples              
+    
+ 			config
+ 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
+ 		}
+    
+ 	
+ 		/**
+ 		 * LoadDB2File2
+ 		 * Calls composite DBLoadFile with new fileName.   
+ 		 */	
+ 		(stream&lt;rstring result&gt; LoadDBFile2 ; stream&lt;rstring result&gt; LoaderLog2) = INFORMIXLoadFile(Gate2)
+ 		{
+ 			config
+ 				placement : partitionColocation("INFORMIXLoadFile2") ;
+ 		}
+ 	
+ 		 
+ 		/**
+ 		 * Control2
+ 		 * Opens the Gate2 for the file.  
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; Control2 as Control = Custom(LoadDBFile2)
+ 		{
+ 			logic 
+ 			state :
+ 				{ 
+ 					mutable uint32 counter = 0 ;
+ 					mutable boolean successfull = false;
+ 					mutable int32 successfulLoaded = 0;
+ 					mutable rstring lastResult = "";
+ 					mutable rstring logInfo = "";
+ 				}
+ 	  
+ 				onTuple LoadDBFile2 :
+ 				{
+ 					if(lastResult != result)
+ 					{
+ 						counter ++;
+ 						successfulLoaded = findFirst(result, "SUCCESSFULLY", 0) ;
+ 						if(successfulLoaded == -1)
+ 						{
+ 							successfull = false;
+ 						}
+ 						else
+ 						{
+ 							successfull = true;
+ 						}
+ 						lastResult = result;
+ 						logInfo = result +   "\n                         Loader number: 2  Proceeded files: " + (rstring)counter;
+ 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
+ 					}
+ 					
+ 				}
+ 				// Place on a different PE from Gate and other processing operators
+       			config
+         			placement : partitionExlocation("Process");
+ 			}
+ 		
+ 		
+ 	
+ 		/**
+ 		 * Gate3
+ 		 * The Gate operator is used to open or close the gate for one by one file processing . 
+ 		 */	
+ 		stream&lt;AddFileName&gt; Gate3 = Gate(Split3 ; Control3 as Control)
+ 		{
+ 			param
+ 				maxUnackedTupleCount : 1u ;
+ 				numTuplesToAck : Control.count; // acknowledge given number of tuples              
+    
+ 			config
+ 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
+ 		}
+    
+ 	
+ 		/**
+ 		 * LoadDB2File3
+ 		 * Calls composite DBLoadFile with new fileName.   
+ 		 */	
+ 		(stream&lt;rstring result&gt; LoadDBFile3 ; stream&lt;rstring result&gt; LoaderLog3) = INFORMIXLoadFile(Gate3)
+ 		{
+ 			config
+ 				placement : partitionColocation("INFORMIXLoadFile3") ;
+ 		}
+ 	
+ 		 
+ 		/**
+ 		 * Control3
+ 		 * Opens the Gate3 for the file.  
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; Control3 as Control = Custom(LoadDBFile3)
+ 		{
+ 			logic 
+ 			state :
+ 				{ 
+ 					mutable uint32 counter = 0 ;
+ 					mutable boolean successfull = false;
+ 					mutable int32 successfulLoaded = 0;
+ 					mutable rstring lastResult = "";
+ 					mutable rstring logInfo = "";
+ 				}
+ 	  
+ 				onTuple LoadDBFile3 :
+ 				{
+ 					if(lastResult != result)
+ 					{
+ 						counter ++;
+ 						successfulLoaded = findFirst(result, "SUCCESSFULLY", 0) ;
+ 						if(successfulLoaded == -1)
+ 						{
+ 							successfull = false;
+ 						}
+ 						else
+ 						{
+ 							successfull = true;
+ 						}
+ 						lastResult = result;
+ 						logInfo = result +   "\n                         Loader number: 3  Proceeded files: " + (rstring)counter;
+ 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
+ 					}
+ 					
+ 				}
+ 				// Place on a different PE from Gate and other processing operators
+       			config
+         			placement : partitionExlocation("Process");
+ 			}
+ 		
+ 		
+ 	
+ 		/**
+ 		 * Gate4
+ 		 * The Gate operator is used to open or close the gate for one by one file processing . 
+ 		 */	
+ 		stream&lt;AddFileName&gt; Gate4 = Gate(Split4 ; Control4 as Control)
+ 		{
+ 			param
+ 				maxUnackedTupleCount : 1u ;
+ 				numTuplesToAck : Control.count; // acknowledge given number of tuples              
+    
+ 			config
+ 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
+ 		}
+    
+ 	
+ 		/**
+ 		 * LoadDB2File4
+ 		 * Calls composite DBLoadFile with new fileName.   
+ 		 */	
+ 		(stream&lt;rstring result&gt; LoadDBFile4 ; stream&lt;rstring result&gt; LoaderLog4) = INFORMIXLoadFile(Gate4)
+ 		{
+ 			config
+ 				placement : partitionColocation("INFORMIXLoadFile4") ;
+ 		}
+ 	
+ 		 
+ 		/**
+ 		 * Control4
+ 		 * Opens the Gate4 for the file.  
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; Control4 as Control = Custom(LoadDBFile4)
+ 		{
+ 			logic 
+ 			state :
+ 				{ 
+ 					mutable uint32 counter = 0 ;
+ 					mutable boolean successfull = false;
+ 					mutable int32 successfulLoaded = 0;
+ 					mutable rstring lastResult = "";
+ 					mutable rstring logInfo = "";
+ 				}
+ 	  
+ 				onTuple LoadDBFile4 :
+ 				{
+ 					if(lastResult != result)
+ 					{
+ 						counter ++;
+ 						successfulLoaded = findFirst(result, "SUCCESSFULLY", 0) ;
+ 						if(successfulLoaded == -1)
+ 						{
+ 							successfull = false;
+ 						}
+ 						else
+ 						{
+ 							successfull = true;
+ 						}
+ 						lastResult = result;
+ 						logInfo = result +   "\n                         Loader number: 4  Proceeded files: " + (rstring)counter;
+ 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
+ 					}
+ 					
+ 				}
+ 				// Place on a different PE from Gate and other processing operators
+       			config
+         			placement : partitionExlocation("Process");
+ 			}
+ 		
+ 		
+ 	
+ 		/**
+ 		 * Gate5
+ 		 * The Gate operator is used to open or close the gate for one by one file processing . 
+ 		 */	
+ 		stream&lt;AddFileName&gt; Gate5 = Gate(Split5 ; Control5 as Control)
+ 		{
+ 			param
+ 				maxUnackedTupleCount : 1u ;
+ 				numTuplesToAck : Control.count; // acknowledge given number of tuples              
+    
+ 			config
+ 				placement : partitionColocation("Split") ; // ensure same PE as ThreadedSplit 
+ 		}
+    
+ 	
+ 		/**
+ 		 * LoadDB2File5
+ 		 * Calls composite DBLoadFile with new fileName.   
+ 		 */	
+ 		(stream&lt;rstring result&gt; LoadDBFile5 ; stream&lt;rstring result&gt; LoaderLog5) = INFORMIXLoadFile(Gate5)
+ 		{
+ 			config
+ 				placement : partitionColocation("INFORMIXLoadFile5") ;
+ 		}
+ 	
+ 		 
+ 		/**
+ 		 * Control5
+ 		 * Opens the Gate5 for the file.  
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; Control5 as Control = Custom(LoadDBFile5)
+ 		{
+ 			logic 
+ 			state :
+ 				{ 
+ 					mutable uint32 counter = 0 ;
+ 					mutable boolean successfull = false;
+ 					mutable int32 successfulLoaded = 0;
+ 					mutable rstring lastResult = "";
+ 					mutable rstring logInfo = "";
+ 				}
+ 	  
+ 				onTuple LoadDBFile5 :
+ 				{
+ 					if(lastResult != result)
+ 					{
+ 						counter ++;
+ 						successfulLoaded = findFirst(result, "SUCCESSFULLY", 0) ;
+ 						if(successfulLoaded == -1)
+ 						{
+ 							successfull = false;
+ 						}
+ 						else
+ 						{
+ 							successfull = true;
+ 						}
+ 						lastResult = result;
+ 						logInfo = result +   "\n                         Loader number: 5  Proceeded files: " + (rstring)counter;
+ 						submit({ count = 1u, loaded = successfull , result = logInfo}, Control) ;
+ 					}
+ 					
+ 				}
+ 				// Place on a different PE from Gate and other processing operators
+       			config
+         			placement : partitionExlocation("Process");
+ 			}
+ 		
+ 		 
+ 		
+ 		
+ 		/**
+ 		 * CollectResults
+ 		 * Collects results from all loaders. 
+ 		 */	
+ 		stream&lt;uint32 count, boolean loaded, rstring result&gt; CollectResults = Filter (
+ 		Control1,
+ 		Control2,
+ 		Control3,
+ 		Control4,
+ 		Control5) 
+ 		{                                      
+ 		}
+ 		
+ 			@view(name = "DbLoaderView", port = CalculateMetrics, sampleSize = 20, bufferSize = 30)
+ 	
+ 		/** 
+ 		 * CalculateMetrics
+ 		 * Calculate the number of succeeded or failed files.
+ 		 */
+ 		stream&lt;rstring result, int64 succeeded, int64 failed, int64 elapsedTime&gt; CalculateMetrics= Custom(CollectResults)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable int64 failed = 0 ;
+ 					mutable int64 succeeded = 0 ;
+ 					mutable int64 elapsedTime = 0 ;
+ 					mutable	float64 ts = getTimestampInSecs() ;
+ 					mutable rstring logInfo  = "" ;
+ 				}
+ 
+ 				onTuple CollectResults :
+ 				{
+ 					if(loaded)
+ 					{	
+ 						succeeded ++ ;
+ 					}
+ 					else
+ 					{
+ 						failed ++ ; 
+ 					}
+ 					 
+ 					elapsedTime =  (int64) (getTimestampInSecs() - ts);
+ 					logInfo = result 
+ 						+ "\n                         Sum of successfully loaded files : " +(rstring) succeeded 
+ 						+ "\n                         Sum of failed files : " +(rstring) failed
+ 						+ "\n                         Elapsed time since start(s) : " +(rstring) elapsedTime
+ 						+ "\n---------------------------------------------------------------------" ;
+ 					submit({ result = logInfo , succeeded = succeeded , failed = failed, elapsedTime = elapsedTime}, CalculateMetrics) ;					 
+ 				}
+ 		}
+ 			 
+ 		/** 
+ 		 * Metrics
+ 		 * write the number of succeeded or failed files and elapsed time since start as metrics. 
+ 		 */
+ 		() as Metrics = MetricsSink(CalculateMetrics)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable int64 Failed = 0 ;
+ 					mutable int64 Succeeded = 0 ;
+ 					mutable int64 ElapsedTime = 0 ;
+ 				}
+ 
+ 				onTuple CalculateMetrics :
+ 				{
+ 					Succeeded = succeeded;
+ 					Failed = failed; 	
+ 					ElapsedTime = elapsedTime;
+ 				}
+ 				
+ 			param
+ 				metrics : Succeeded, Failed, ElapsedTime ;
+ 				names : " Successfully loaded files ", " Failed files ", " Elapsed Time ";
+ 				descriptions : "Sum of successfully loaded files ", "Sum of failed files ", "Elapsed Time " ;
+ 				initialValues : 0l, 0l, 0l ;
+ 		}
+ 		
+ 		/**
+ 		 * LogResult
+ 		 * Writes the result in log file. 
+ 		*/
+ 		stream&lt;rstring result&gt; MetricLog = Functor(CalculateMetrics)
+ 		{                                       
+ 			output
+ 				MetricLog : result =(rstring) CalculateMetrics.result ;
+ 		}
+ 
+ 		(stream&lt;rstring result&gt; DBLoaderLog) = Filter(CheckDbLog, LoaderLog1, LoaderLog2, LoaderLog3, LoaderLog4, LoaderLog5, MetricLog)
+ 		{
+ 		}
+ 
+ 	
+ 		/**
+ 		 * Result
+ 		 * Send the tuple (boolean loaded) out now.
+ 		 */
+ 		stream&lt;rstring  result&gt; Result = Custom(CollectResults)
+ 		{
+ 			logic
+ 				onTuple CollectResults :
+ 				{
+ 						submit({ result = (rstring)CollectResults.loaded }, Result) ;
+ 				}
+ 
+ 		} // End of Result = Custom(CollectResults)
+ 
+       		config
+                         placement : partitionColocation("DBLoader") ;
+ 
+ 
+ 
+ } /** End of composite DBLoader */ 
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

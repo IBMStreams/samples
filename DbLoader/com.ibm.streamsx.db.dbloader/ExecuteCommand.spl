@@ -1,5 +1,5 @@
 
-/* Copyright (C) 2013-2014, International Business Machines Corporation  */
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
 /* All Rights Reserved                                	                 */
 namespace com.ibm.streamsx.db.dbloader ;
 
@@ -59,7 +59,6 @@ composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 			logic
 				onTuple GetCommand :
 				{
-				//	println(Command) ;
 
 				}
 
@@ -100,7 +99,7 @@ composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 
 				onPunct ExecuteCmd :
 				{
-				//	printStringLn("ExecuteCmd onPunct : " + resultLines) ;
+					// printStringLn("ExecuteCmd onPunct : " + resultLines) ;
 					submit({ result = resultLines, endTime = getTimestamp() }, EndTime) ;
 					resultLines = "" ;
 				} // End of onPunct ExecuteCmd
@@ -126,8 +125,11 @@ composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 				state :
 				{
 					mutable int32 findPassword ;
+					mutable int32 index1;
+					mutable int32 index2;
 					mutable rstring cmdAndResult = "" ;
 					mutable rstring cmd = "" ;
+					mutable rstring passWord = "";
 					mutable rstring executeResult ;
 					mutable int64 Counter ;
 					mutable float64 executionTime = 0.0 ;
@@ -148,10 +150,19 @@ composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 
 					cmd = command ;
 					// hide db2 password in log file
-					findPassword = findFirst(cmd, " using ", 0) ;
+					findPassword = findFirst(command, " using ", 0) ;
 					if(findPassword != - 1)
 					{
-						cmd =(substring(command, 0, findPassword + 7)) + "********" ;
+						index1 = findFirst(command, "\"", findPassword) ;
+						if(index1 != - 1)
+						{
+							index2 = findFirst(command, "\"", index1 +1) ;
+							if(index2 != - 1)
+							{
+								cmd = substring(command, 0, index1 +1) + "*******";
+								cmd = cmd + substring(command, index2, length(command)-1);
+							}
+						}
 					}
 
 					Counter = counter ;
@@ -159,7 +170,6 @@ composite ExecuteCommand(output Result, ExecuteCommandLog ; input Command)
 					cmdAndResult = "[" +(rstring) Counter + "] Command: " + cmd + "\n                    ["
 						+(rstring) Counter + "] Result : " + executeResult + "Execution Time " +(rstring)
 						executionTime + " seconds\n" ;
-					printStringLn("ExecuteCmd  CreteLog: " + cmdAndResult) ;
 				}
 
 			output
