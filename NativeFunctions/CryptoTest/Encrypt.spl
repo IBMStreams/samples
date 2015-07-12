@@ -1,0 +1,26 @@
+
+use com.ibm.streamsx.aes::aesencrypt;
+
+composite Encrypt {
+param 
+	// we create a blob as a list of unsigned bytes.
+	expression<blob> $key: (blob)[0ub,0ub,0ub,0ub,
+								  0ub,0ub,0ub,0ub,
+								  0ub,0ub,0ub,0ub,
+								  0ub,0ub,0ub,0bu];
+graph
+
+stream<rstring line> PlainText = FileSource() {
+	param file: "plain_in.txt";
+}
+
+stream<blob cipherText> CipherText = Functor(PlainText) {
+	output CipherText:
+		cipherText = aesencrypt($key,convertToBlob(line));	
+}
+
+() as CipherSink = FileSink(CipherText) {
+	param file: "cipher.txt";
+	flush:1u;
+}
+}
