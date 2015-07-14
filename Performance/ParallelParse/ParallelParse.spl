@@ -1,3 +1,7 @@
+/*
+ * Licensed Materials - Property of IBM
+ * Copyright IBM Corp. 2015  
+ */
 type ManyAttributes = tuple <
     rstring str00, rstring str01, rstring str02, rstring str03, rstring str04,
     rstring str05, rstring str06, rstring str07, rstring str08, rstring str09,

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Licensed Materials - Property of IBM
+# Copyright IBM Corp. 2015  
+
 import sys, time, collections, csv
 from subprocess import call, Popen, PIPE
 
