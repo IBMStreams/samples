@@ -6,7 +6,7 @@
 #define BYTES_PER_BLOCK 16
 namespace openssl_for_spl {
 
-void crypto(const unsigned char * key, const unsigned char * input, int len, unsigned char* output,int & outputLen, bool encrypt) {
+void crypto(const unsigned char * key, const unsigned char * input, int len, unsigned char* output,int * outputLen, bool encrypt) {
 
 	EVP_CIPHER_CTX ctx;
 	EVP_CIPHER_CTX_init(&ctx);
@@ -14,15 +14,15 @@ void crypto(const unsigned char * key, const unsigned char * input, int len, uns
 	int tmpLen =0;
 	if (!EVP_CipherUpdate(&ctx,output, &tmpLen,input, len)) {
 		EVP_CIPHER_CTX_cleanup(&ctx);
-		outputLen=0;
+		*outputLen=0;
 		return;
 	}
-	outputLen=tmpLen;
+	*outputLen=tmpLen;
 	if (!EVP_CipherFinal_ex(&ctx,output+tmpLen,&tmpLen)) {
 		outputLen=0;
 		return;
 	}
-	outputLen += tmpLen;
+	*outputLen += tmpLen;
 	EVP_CIPHER_CTX_cleanup(&ctx);
 
 }
@@ -33,7 +33,7 @@ SPL::blob aesencrypt(const SPL::blob &key, const SPL::blob& input_data) {
 	const int len = input_data.getSize();
 	const size_t maxOutputLen = len % BYTES_PER_BLOCK == 0 ? len/BYTES_PER_BLOCK : len/BYTES_PER_BLOCK+1;
 	unsigned char  output[maxOutputLen];
-	crypto(key.getData(),input_data.getData(),input_data.getSize(),&(output[0]),outputLen,true);
+	crypto(key.getData(),input_data.getData(),input_data.getSize(),&(output[0]),&outputLen,true);
     SPL::blob myblob(output,outputLen);;
     SPLAPPTRC(L_ERROR,"Encrypt output size " << outputLen,"opensslwrapper");
     return myblob;
@@ -45,7 +45,7 @@ SPL::blob aesdecrypt(const SPL::blob& key, const SPL::blob &input_data) {
 	const int len = input_data.getSize();
 	const size_t maxOutputLen = len % BYTES_PER_BLOCK == 0 ? len/BYTES_PER_BLOCK : len/BYTES_PER_BLOCK+1;
 	unsigned char output[maxOutputLen];
-	 crypto(key.getData(),input_data.getData(),input_data.getSize(),&(output[0]), outputLen,false);
+	 crypto(key.getData(),input_data.getData(),input_data.getSize(),&(output[0]), &outputLen,false);
 	SPL::blob myblob(output,outputLen);
 	SPLAPPTRC(L_ERROR,"Decrypt output size " << outputLen,"opensslwrapper");
 	return myblob;
