@@ -92,7 +92,7 @@ composite ParallelParse {
 		}
 
         stream<blob bytes> LinesAsBytes = Functor(Lines) {
-            output LinesAsBytes: bytes = convertToBlob(Lines.line);
+            output LinesAsBytes: bytes = convertToBlob(Lines.line + "\n");
         }
 
         @parallel(width=(int32)getSubmissionTimeValue("parallelism"))
