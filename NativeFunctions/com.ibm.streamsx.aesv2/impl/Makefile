@@ -22,7 +22,7 @@ lib/libopensslwrapper.so: bin/opensslwrapper.o lib
 	gcc --shared -o lib/libopensslwrapper.so bin/opensslwrapper.o
 
 bin/opensslwrapper.o: src/opensslwrapper.cpp include/opensslwrapper.h bin
-	@$(CXX) -O3 -Wall -fPIC -I include -lOpenCL $(SPL_COMPILE_OPTIONS) -c $< -o $@
+	@$(CXX) -O3 -Wall -fPIC -I include  $(SPL_COMPILE_OPTIONS) -c $< -o $@
 
 clean:
 	rm lib/*.so
