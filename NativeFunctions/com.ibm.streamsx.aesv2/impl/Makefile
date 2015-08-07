@@ -7,7 +7,6 @@ endif
 SPL_PKGCFG=$(STREAMS_INSTALL)/bin/dst-pe-pkg-config.sh
 SPL_PKG=dst-spl-pe-install
 SPL_COMPILE_OPTIONS = `$(SPL_PKGCFG) --cflags $(SPL_PKG)`
-SPL_LINK_OPTIONS = `$(SPL_PKGCFG) --libs $(SPL_PKG)`
 .PHONY: clean distclean
 
 all: lib/libopensslwrapper.so
