@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<function:functionModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:function="http://www.ibm.com/xmlns/prod/streams/spl/function">
+  <function:functionSet>
+    <function:headerFileName>opensslwrapper.h</function:headerFileName>
+    <function:cppNamespaceName>openssl_for_spl</function:cppNamespaceName>
+    <function:functions>
+      <function:function>
+        <function:description>function to encrypt data using AES</function:description>
+        <function:prototype>public blob aesencrypt(blob key, blob toEncrypt)</function:prototype>
+      </function:function>
+      <function:function>
+        <function:description>Use to decrypt</function:description>
+        <function:prototype cppName="">public blob aesdecrypt(blob key, blob cyphertext)</function:prototype>
+      </function:function>
+    </function:functions>
+    <function:dependencies>
+      <function:library>
+        <common:description></common:description>
+        <common:managedLibrary>
+          <common:lib>opensslwrapper</common:lib>
+          <common:libPath>../../impl/lib</common:libPath>
+          <common:includePath>../../impl/include</common:includePath>
+        </common:managedLibrary>
+      </function:library>
+    </function:dependencies>
+  </function:functionSet>
+</function:functionModel>
