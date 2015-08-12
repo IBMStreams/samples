@@ -1,3 +1,6 @@
+
+/* Copyright (C) 2015, International Business Machines Corporation */
+/* All Rights Reserved */
 package hdfshelper;
 
 import java.io.BufferedReader;
