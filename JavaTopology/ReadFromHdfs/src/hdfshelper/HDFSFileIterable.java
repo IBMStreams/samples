@@ -1,3 +1,7 @@
+
+/* Copyright (C) 2013-2014, International Business Machines Corporation */
+/* All Rights Reserved */
+
 package hdfshelper;
 
 import java.util.Iterator;
