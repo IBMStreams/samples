@@ -30,7 +30,7 @@ public class HDFSFileReadIterator implements  Iterator<String> {
 		conf.addResource(new Path(coreSitePath));
 		File coreSiteFile = new File(coreSitePath);
 		if (!coreSiteFile.exists()) {
-			System.err.println("Warning: the core site file does not exist.");
+			System.err.println("Warning: the core site file "+coreSitePath+" does not exist");
 		}
 		FileSystem fSystem;
 		try {
