@@ -1,0 +1,35 @@
+/**
+ * Copyright (C) 2015, International Business Machines Corporation.
+ * All Rights Reserved.
+ */
+use com.ibm.streamsx.sample.sgfilter::SGFilter;
+
+composite Main {
+    param
+        expression<int32> $filterLength : (int32)getSubmissionTimeValue("length", "11");
+
+  graph
+    // Injects a rectangular waveform of period 20 and levels 0 and 10.
+    stream<float64 l> Src = Beacon() {
+        param 
+          iterations : 100u;
+          period : 0.1;
+        output Src: l = (float64)(10 * ((((int32)IterationCount()) / 10) % 2));
+    }
+
+    () as SrcSink = FileSink (Src) {
+        param file : "input.txt";
+            format : txt;
+            flush : 1u;
+    }
+
+    stream<float64 value> Smoothed = SGFilter(Src) {  
+        param length : $filterLength;
+    }
+
+    () as SmoothSink = FileSink (Smoothed) {
+        param file : "smoothed.txt";
+            format : txt;
+            flush : 1u;
+    }
+}

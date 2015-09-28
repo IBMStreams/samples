@@ -1,0 +1,43 @@
+/**
+ * Copyright (C) 2015, International Business Machines Corporation
+ * All Rights Reserved
+ */
+
+#pragma SPL_NON_GENERIC_OPERATOR_IMPLEMENTATION_PROLOGUE
+
+#include <streamsx/sample/sgfilter/SGFilter.h>
+
+const std::string MY_OPERATOR::length_("length");
+
+// Implementation class
+class MY_OPERATOR::impl : public
+    ::streamsx::sample::sgfilter::SGFilter<MY_OPERATOR, IPort0Type, OPort0Type>
+{
+public:
+    typedef ::streamsx::sample::sgfilter::SGFilter<
+            MY_OPERATOR, IPort0Type, OPort0Type> impl_base;
+
+    impl(MY_OPERATOR & op, size_t filterLength, const char* traceCategories) :
+                impl_base(op, filterLength, traceCategories) {}
+};
+
+MY_OPERATOR::MY_OPERATOR()
+{
+    impl_.reset(new impl(*this, getFilterLength(), "SGFilter"));
+}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+    impl_->process(tuple, port);
+}
+
+int MY_OPERATOR::getFilterLength() const
+{
+    int value = 11; // default
+    if (hasParameter(MY_OPERATOR::length_)) {
+        value = impl::validateFilterLength((int)getParameter(MY_OPERATOR::length_));
+    }
+    return value;
+}
+
+#pragma SPL_NON_GENERIC_OPERATOR_IMPLEMENTATION_EPILOGUE
