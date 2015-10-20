@@ -1,6 +1,8 @@
 This sample demonstrates how you can use the Geofence operator from the com.ibm.streams.geospatial toolkit for a smart
 marketing campaign.  
 
+See this article about this sample:  https://developer.ibm.com/streamsdev/docs/geofence-smart-marketing/
+
 This application has a custom operator that randomly generates cell phone user GPS locations around a shopping center North of Toronto.
 The application has also sent up a geofence around the shopping center that we are interested in running the smart marketing campaign for.
 As cell phone users are detected to enter the shopping center, the application sends targeted promotions to the users.
