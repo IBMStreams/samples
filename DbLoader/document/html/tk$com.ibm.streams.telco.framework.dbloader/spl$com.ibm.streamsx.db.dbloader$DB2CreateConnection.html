@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File DB2CreateConnection.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File DB2CreateConnection.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">DB2CreateConnection.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streams.telco.framework.dbloader.html">com.ibm.streams.telco.framework.dbloader 1.1.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a> &gt; DB2CreateConnection.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2CreateConnection.html#spldoc_compilationunit__composite_operator__DB2CreateConnection">DB2CreateConnection</a></strong>: The composite <strong class="ph b">DB2CreateConnection</strong> creates a connection to a DB2 database.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__DB2CreateConnection"><h2 class="title sectiontitle splpart">public composite DB2CreateConnection(output ConnectionState, CreateConnectionLog; input ConfigurationData)</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">The composite <strong class="ph b">DB2CreateConnection</strong> creates a connection to a DB2 database.
+</p>
+
+<p class="p">It checks the connection results and returns the connection state in output. 
+</p>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Input Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">ConfigurationData</strong>: configuration data (database name, database user, database password)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Output Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">ConnectionState</strong>: boolean connected = true: connection successful, connected = false: connection failed
+</li>
+
+<li class="sli"><strong class="ph b">CreateConnectionLog</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">Composite Operator Graph</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streams.telco.framework.dbloader/op$com.ibm.streamsx.db.dbloader$DB2CreateConnection.svg" width="357" height="116"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite DB2CreateConnection(output ConnectionState, CreateConnectionLog ; input
+ 	ConfigurationData)
+ {
+ 	graph
+ 
+ 		/**
+ 		 * CreateConnectionCmd
+ 		 * Creates a DB2 command with the input information database name, database user name 
+ 		 * and database password 
+ 		 */
+ 		stream&lt;rstring command, int64 counter&gt; CreateConnectionCmd = Custom(ConfigurationData)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring connectionCmd ;
+ 					mutable rstring tableName ;
+ 				}
+ 
+ 				onTuple ConfigurationData :
+ 				{
+ 					connectionCmd = "db2 connect to " + configData.dbName + " user " + configData.dbUser +
+ 						" using \"" + configData.dbPass + "\"";
+ 					submit({ command = connectionCmd, counter = configData.counter }, CreateConnectionCmd) ;
+ 				}
+ 
+ 		}
+ 
+ 		/**
+ 		 * CreateConnection
+ 		 * Execute the DB2 connection command to create a database connection 
+ 		 */
+ 		(stream&lt;rstring result&gt; CreateConnection ; stream&lt;rstring result&gt; CreateConnectionLog) =
+ 			ExecuteCommand(CreateConnectionCmd)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * ConnectionState
+ 		 * Check the result of create connection
+ 		 * if successful delivers connected=true as Output of  DB2CreateConnection Composite
+ 		 * otherwise connected=false 
+ 		 */
+ 		stream&lt;boolean connected&gt; ConnectionState = Functor(CreateConnection)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable int32 successfulConnection ;
+ 					mutable rstring logMessage ;
+ 					mutable boolean Connected = false ;
+ 				}
+ 
+ 				onTuple CreateConnection :
+ 				{
+ 					if(length(result) &gt; 2)
+ 					{
+ 						successfulConnection = findFirst(result, "authorization", 0) ;
+ 						if(successfulConnection == - 1)
+ 						{
+ 							logMessage = "Database connection failed." + result ;
+ 							log(Sys.error, logMessage) ;
+ 							Connected = false ;
+ 						}
+ 
+ 						else // successful
+ 
+ 						{
+ 							logMessage = "Database connection completed successfully." ;
+ 							Connected = true ;
+ 						}
+ 
+ 					}
+ 
+ 				}
+ 
+ 			output
+ 				ConnectionState : connected = Connected ;
+ 		} // End of Output = Functor(CreateConnection)
+ 
+ } // End of DB2CreateConnection Composite
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

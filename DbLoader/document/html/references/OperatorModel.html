@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL Operator Model"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_reference_operator_model"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL Operator Model</title>
+</head>
+<body id="spldoc_reference_operator_model">
+
+
+<h1 class="title topictitle1">SPL Operator Model</h1>
+
+<div class="body refbody">
+<div class="section" id="spldoc_reference_operator_model__overview">
+<p class="p">
+An operator model can be used to describe a C++ primitive operator or a Java primitive operator. The set of elements that can 
+be present in a Java operator model is a strict subset of the ones that can be present in a C++ operator model, with the 
+exception of a special element used for JVM related configurations.
+</p>
+
+</div>
+
+<div class="section" id="spldoc_reference_operator_model__context"><h2 class="title sectiontitle splhead-1">Context</h2>
+
+<p class="p">
+The context element describes the properties that apply to the operator as a whole and are not associated
+with particular parameters or ports of the operator. It also includes common definitions that are referenced in 
+other places in the operator model. 
+</p>
+
+<dl class="dl">
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__description"><!-- --></a>Description</dt>
+
+    <dd class="dd">The description element, which is optional, provides an overview of the operator.</dd>
+
+  
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__metrics"><!-- --></a>Metrics</dt>
+
+    <dd class="dd">The metrics element, which is optional, contains the list of metrics exposed by the operator. 
+It is structured as a list of metric elements, where each metric element contains a name, a description, and a kind. 
+      <dl class="dl">
+         
+          <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__metrics_kind_counter"><!-- --></a>Kind: Counter</dt>
+
+          <dd class="dd">Represents metrics whose values are either non-decreasing or non-increasing.
+          </dd>
+
+        
+         
+          <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__metrics_kind_gauge"><!-- --></a>Kind: Gauge</dt>
+
+          <dd class="dd">Represent metrics that can change their values freely, that is, they can go up or down.
+          </dd>
+
+        
+         
+          <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__metrics_kind_time"><!-- --></a>Kind: Time</dt>
+
+          <dd class="dd">Represents metrics that denote a point in time.
+          </dd>
+
+        
+      </dl>
+
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__customliterals"><!-- --></a>Custom Literals</dt>
+
+    <dd class="dd">The customLiterals element, which is optional, captures the identifiers that may appear in parameter 
+configurations of an operator. It is structured as a list of enumeration elements. For instance, a Source
+operator may support different source formats, in which case we can have an enumeration called FileFormat 
+that will contain values <tt class="ph tt">{csv, xml, bin}</tt>. 
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__customoutputfunctions"><!-- --></a>Custom Output Functions (C++ only)</dt>
+
+    <dd class="dd">The customOutputFunctions element, which is optional, captures the output function prototypes used by an operator 
+in its output attribute assignments. It is structured as a list of customOutputFunction elements, where each enumeration 
+contains a name and a list of output function prototypes. For instance, an Aggregate operator may support relational 
+aggregations, in which case we can have an enumeration called RelationalAggs that will contain output functions 
+<tt class="ph tt">{Min, Max, Avg, Sum, and so on}</tt>.
+    </dd>
+
+  
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies"><!-- --></a>Dependencies (Optional)</dt>
+
+    <dd class="dd">A sequence of one or more library elements, each representing a library dependency. 
+The library element format is exactly the same as the one used for operator models.
+     <dl class="dl">
+        
+          <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__description"><!-- --></a>Description (Optional)</dt>
+
+          <dd class="dd">A description of the library
+          </dd>
+
+        
+        
+          <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__managedlibrary"><!-- --></a>Managed Library</dt>
+
+          <dd class="dd">Specifies the details of the individual library artifacts. The paths can
+contain environment variables embedded between @ signs (for example: <tt class="ph tt">@FOO_FFT_HOME@/lib</tt>),
+which will be fully resolved by the SPL compiler at compile time.
+            <dl class="dl">
+              
+                <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__managedlibrary__lib"><!-- --></a>lib (Optional)</dt>
+
+                <dd class="dd">Specifies a name to be passed to C++ compiler's <tt class="ph tt">-l</tt> argument 
+(such as <tt class="ph tt">fft</tt> which will be translated into <tt class="ph tt">-lfft</tt> when passed to the linker)
+                </dd>
+
+              
+              
+                <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__managedlibrary__libpath"><!-- --></a>libPath (Optional)</dt>
+
+                <dd class="dd">Specifies a path to be passed to C++ compiler's <tt class="ph tt">-L</tt> argument.
+                </dd>
+
+              
+              
+                <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__managedlibrary__includepath"><!-- --></a>includePath (Optional)</dt>
+
+                <dd class="dd">Specifies a path to be passed to C++ compiler's <tt class="ph tt">-I</tt> argument. 
+                </dd>
+
+              
+              
+                <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__dependencies__managedlibrary__command"><!-- --></a>command (Optional)</dt>
+
+                <dd class="dd">A path to a program that will be executed to retrieve <tt class="ph tt">includePath, libPath</tt>, and <tt class="ph tt">lib</tt>
+information. If the path to the program is relative, it is assumed to be rooted at the directory of the
+operator model. The program is executed three times, each time with a different argument, namely <tt class="ph tt">lib, 
+libPath</tt>, and <tt class="ph tt">includePath</tt>. 1 The standard output from these executions will be read and each line 
+(trimmed of white spaces) will be added to one of the <tt class="ph tt">lib, libPath</tt>, and <tt class="ph tt">includePath</tt> elements, depending
+on the type of the execution. A line that begins with # will be ignored. Relative paths are assumed to
+be rooted at the directory where the operator model XML document resides.
+                </dd>
+
+              
+            </dl>
+
+          </dd>
+
+        
+    </dl>
+
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__providessinglethreadedexecutioncontext"><!-- --></a>Provides Single Threaded Execution Context (C++ only)</dt>
+
+    <dd class="dd"><div class="p">The <tt class="ph tt">providesSingleThreadedContext</tt> element describes the threading semantics of the
+operator with respect to the flow of execution. An operator provides a single threaded execution context, 
+if and only if: 
+      <ul class="ul">
+        <li class="li">It does not perform concurrent submit calls unless its process method(s) are called concurrently.</li>
+
+        <li class="li">Its submit calls complete before the process call that triggered the submission completes.</li>
+
+      </ul>
+
+    </div>
+
+    <p class="p">Both source and non-source operators have process methods, and the definition above applies
+globally. Based on this definition, if an operator has submit calls that are not triggered by a process
+call, such as those triggered by a time-based event, then that operator does not provide a single threaded
+execution context. Note that this definition does not require a submit call to execute under the same 
+thread that executes the process call which triggered the submission (even though in the common case 
+they execute under the same thread).
+    </p>
+
+    <div class="p">There are several valid values for this property:
+<ul class="ul">
+  <li class="li"><tt class="ph tt">Never:</tt> Instances of this operator never provide a single threaded execution context.</li>
+
+  <li class="li"><tt class="ph tt">Always:</tt> Instances of this operator always provide a single threaded execution context.</li>
+
+  <li class="li"><tt class="ph tt">WindowBound:</tt> Instances of this operator that do not specify time-based window eviction
+policies or time-based window trigger policies provide a single threaded execution context.</li>
+
+  <li class="li"><tt class="ph tt">WindowEvictionBound:</tt> Instances of this operator that do not specify time-based window 
+eviction policies provide a single threaded execution context.</li>
+
+  <li class="li"><tt class="ph tt">WindowTriggerBound:</tt> Instances of this operator that do not specify time-based window trigger
+policies provide a single threaded execution context.</li>
+
+  <li class="li"><tt class="ph tt">WindowPartitionEvictionBound:</tt> Instances of this operator use a thread to implement 
+partition eviction. Use this setting if tuples are submitted from the onWindowPartitionEvictionSelection event.</li>
+
+</ul>
+
+    </div>
+
+<p class="p">
+As an example, consider a <tt class="ph tt">Filter</tt> operator. Unless its process method is being called concurrently,
+the <tt class="ph tt">Filter</tt> operator does not make concurrent submit calls. Its submit calls are triggered by incoming
+tuples. When it receives a tuple via a process call, it makes a submit call if the received tuple passes the
+filter condition, and that submit call completes before the process call that triggered it is complete. As a
+result, all instances of a <tt class="ph tt">Filter</tt> operator provide a single threaded context and the setting
+<tt class="ph tt">Always</tt> is appropriate.
+</p>
+
+<p class="p">
+Implementation note: The <tt class="ph tt">providesSingleThreadedContext</tt> element is used to enable the SPL runtime 
+to avoid unnecessary thread synchronization. While setting it to the value Never is safe for all operators, 
+it would prevent optimizations that reduce synchronization overhead when the operator does provide a single 
+threaded context. Specifying a value other than Never that is inconsistent with the threading semantics 
+implemented by the operator will result in undefined behavior.
+</p>
+
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__incrementalcompilationstrategy"><!-- --></a>Incremental Compilation Strategy (C++ only)</dt>
+
+    <dd class="dd"><div class="p">Specifies how the compiler should manage incremental compilation of operators. The choices are:
+       <ul class="ul">
+         <li class="li"><tt class="ph tt">SourceDependent</tt>: In this mode the compiler will only regenerate the operator source 
+         if it is out-of-date with the SPL source or the code generator 
+         for that operator. This is the default mode.</li>
+
+         <li class="li"><tt class="ph tt">ResultDependent:</tt> In this mode the compiler always generates the operator source, but 
+         only updates the source files if they differ from what exists prior to the compile. Use this 
+         mode if the operator code generator relies on external configurations that are not captured by the parameterization given in the SPL source.
+         </li>
+
+       </ul>
+
+    </div>
+</dd>
+
+   
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__allowCustomLogic"><!-- --></a>Allow Custom Logic (C++ only)</dt>
+
+    <dd class="dd"><p class="p">This optional element specifies whether or not the use of an operator is permitted to 
+have a logic clause specifying either state, <tt class="ph tt">onTuple</tt> or <tt class="ph tt">onPunct</tt> processing. When set to false no 
+logic clause may be specified for the given operator. The default, in the absence of this element, 
+is true.
+    </p>
+</dd>
+
+   
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__codetemplate"><!-- --></a>Code Template (C++ only)</dt>
+
+    <dd class="dd"><p class="p">This optional element specifies one or more code templates for the operator. 
+These will show up in IDE's context sensitive content assist menus and SPLDOC documents. 
+Each code template has a name attribute that names it, a description element that describes it, 
+and a value element, which is a string that contains the boilerplate code for the template. 
+When the template is used in the IDE, the boilerplate code is embedded into the source code. 
+The parts of the code that are in the form ${name} are used to indicate the pieces that must be 
+customized by the user. The IDE will use the identifier specified within the ${} to indicate the customizable 
+portions. One example for the Barrier operator is as follows:
+</p>
+
+<div class="p">
+<pre class="pre codeblock">
+&lt;codeTemplates&gt;
+  &lt;codeTemplate name="Barrier"&gt;
+    &lt;description&gt;Basic Barrier template&lt;/description&gt;
+    &lt;template&gt;
+      &lt;![CDATA[ 
+        stream&lt;${schema}&gt; ${outputStream} = Barrier(${inputStream1};${inputStream2}) 
+        {
+          param
+            ${parameter}: ${parameterExpression};
+          output
+            ${outputStream}: ${outputExpression};
+          ${cursor} 
+        }
+      ]]&gt;
+    &lt;template&gt;
+  &lt;/codeTemplate&gt;
+&lt;/codeTemplates&gt;
+</pre>
+
+    </div>
+</dd>
+
+   
+   
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__context__splexpressiontree"><!-- --></a>SPL Expression Tree (C++ only)</dt>
+
+    <dd class="dd"><p class="p">An optional element that controls the generation of SPL expression trees for use in generic C++ 
+    primitive operators.</p>
+
+      <ul class="ul">
+      <li class="li"><tt class="ph tt">param</tt> - If set to <tt class="ph tt">true</tt>, the SPL Expression Trees are generated for parameters.</li>
+
+      <li class="li"><tt class="ph tt">output</tt> - If set to <tt class="ph tt">true</tt>, the SPL Expression Trees are generated for output.</li>
+
+      <li class="li"><tt class="ph tt">cppCode</tt> -  If set to <tt class="ph tt">true</tt>, each node in the generated operator instance XML is enhanced with C++ code using templates.
+This C++ code can be used to generate the C++ code for an SPL expression. For example, for the SPL code:
+<div class="p">
+<pre class="pre codeblock">
+param predicates : {a = "a" == In.letter, b = "b" == In.letter};
+</pre>
+
+</div>
+
+<p class="p">
+The generated SPL expression tree includes:
+</p>
+
+<div class="p">
+<pre class="pre codeblock">
+&lt;expressionTree cppCode="SPL::BeJwrMUoyTEwyTAIAC7UCCQ({attr:0}, {attr:1})"&gt;
+  &lt;literal cppCode="SPL::BeJwrMUoyTEwyTAIAC7UCCQ({attr:0}, {attr:1})" type="1"&gt;
+    &lt;tuple count="2" cppCode="SPL::BeJwrMUoyTEwyTAIAC7UCCQ({attr:0}, {attr:1})" type="1"&gt;
+      &lt;attr id="a"&gt;
+        &lt;value cppCode="({Lhs} == {Rhs})" type="2"&gt;
+          &lt;expn cppCode="({Lhs} == {Rhs})"&gt;
+            &lt;binary cppCode="({Lhs} == {Rhs})" op="==" type="2"&gt;
+              &lt;lhs cppCode="SPL::rstring("a")"&gt;
+                &lt;literal cppCode="SPL::rstring("a")" type="0"&gt;"a"&lt;/literal&gt;
+              &lt;/lhs&gt;
+              &lt;rhs cppCode="iport$0.get_letter()"&gt;
+                &lt;attribute attribute="letter" cppCode="iport$0.get_letter()" type="0"&gt;
+                  &lt;lhs cppCode="iport$0"&gt;
+                    &lt;stream cppCode="iport$0" name="In" port="0" type="3"/&gt;
+                  &lt;/lhs&gt;
+                &lt;/attribute&gt;
+              &lt;/rhs&gt;
+            &lt;/binary&gt;
+          &lt;/expn&gt;
+        &lt;/value&gt;
+      &lt;/attr&gt;
+</pre>
+
+</div>
+
+<p class="p">
+The templates (for example, <tt class="ph tt">{Lhs}, {attr:0}</tt>) are used to ensure that code replacement is well defined.
+</p>
+
+<p class="p">
+These expressions represent the SPL expression, but are available in a form that can easily be walked. 
+Perl objects are derived from <tt class="ph tt">SPL::Operator::Instance::ExpressionTree</tt>, and have a kind, type, 
+and methods to access the fields of the expression. <tt class="ph tt">ExpressionTreeVisitor</tt> is a visitor pattern
+provided to allow easy walking of the expression tree. For more information, see the 
+<em class="ph i">IBM Streams Processing Language Code Generation API Documentation.</em>
+</p>
+
+      </li>
+
+      </ul>
+
+    </dd>
+
+      
+</dl>
+
+</div>
+
+
+<div class="section" id="spldoc_reference_operator_model__input_port_set"><h2 class="title sectiontitle splhead-1">Input Port Set</h2>
+
+<p class="p">
+Input ports are defined in terms of port sets. A port set is a fixed number of ports that share the same configuration. 
+This avoids repetition of the same configuration for different ports. A port set can be open, in which case it can 
+contain zero or more ports with the same configuration. An inputPorts element contains zero or more inputPortSet elements, 
+followed by an optional inputPortOpenSet element.
+</p>
+
+<dl class="dl">
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__cardinality"><!-- --></a>Cardinality</dt>
+
+    <dd class="dd">Defines the number of ports that the port set represents. This property applies to non-open port sets.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__optional"><!-- --></a>Optional</dt>
+
+    <dd class="dd">A boolean which specifies whether the input port set is optional.
+    </dd>
+
+  
+    
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__controlport"><!-- --></a>Control Port</dt>
+
+    <dd class="dd">The optional controlPort element tells the compiler that tuples received on this port will be
+used only to control the operator, and no tuples will be submitted when tuples are processed on this port.
+If not specified, the value is false. The SPL compiler will emit warnings when loops are found in the 
+operator graph, as this can lead to deadlock or infinite recursion. Setting controlPort to true will tell 
+the compiler that this port will not submit further tuples, and that this is an expected (and harmless) 
+feedback loop, so no warning will be emitted for this port. 
+   </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__windowingmode"><!-- --></a>Windowing Mode</dt>
+
+    <dd class="dd">The windowingMode element specifies the valid windowing configurations for the port. Options include NonWindowed, 
+Windowed, and OptionallyWindowed.
+   </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__windowpunctuationinputmode"><!-- --></a>Window Punctuation Input Mode</dt>
+
+    <dd class="dd">
+The windowPunctuationInputMode element specifies the punctuation semantics of the input port. The valid options are:
+<ul class="ul">
+<li class="li"><tt class="ph tt">Expecting</tt> - This port expects window punctuations in order for the operator to function correctly and thus must be fed a punctuated stream.</li>
+
+<li class="li"><tt class="ph tt">Oblivious</tt> - This port does not require punctuations in order for the operator to work correctly and thus has no restrictions on the connections that can be attached to it.</li>
+
+<li class="li"><tt class="ph tt">WindowBound</tt> - This port is an Expecting port if it has a punctuation based window, and an Oblivious port otherwise.</li>
+
+</ul>
+
+   </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set__windowexpressionmode"><!-- --></a>Window Expression Mode</dt>
+
+    <dd class="dd">This element tells the compiler what type of windowing expressions are valid. If not specified, the default is <tt class="ph tt">Constant</tt>. 
+    <ul class="ul">
+      <li class="li"><tt class="ph tt">Constant</tt> - Expressions in <tt class="ph tt">count</tt>, <tt class="ph tt">time</tt>, and <tt class="ph tt">delta</tt> must be constants that can 
+    be evaluated at compile time, or if runtime expressions that do not reference 
+    input tuple attributes are valid.</li>
+
+      <li class="li"><tt class="ph tt">AttributeFree</tt> - Expressions cannot reference input tuple attributes. An expression such as time 
+<tt class="ph tt">((int32) getSubmissionTimeValue("timeParam"))</tt> can be used. For delta, only the second argument is allowed to be a runtime
+attribute-free expression. The first argument is still an attribute from the input stream.</li>
+
+    </ul>
+
+   </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set_rewriteallowedforwindowexpression"><!-- --></a>Rewrite Allowed for Window Expression (C++ only)</dt>
+
+    <dd class="dd">If set to true, this boolean element tells the compiler that it may rewrite the window expression the same way
+the <tt class="ph tt">rewriteAllowed</tt> element rewrites the expressions that appear in the parameter values. For more information
+about the rewriteAllowed element, see <tt class="ph tt">Parameters</tt>. If the <tt class="ph tt">rewriteAllowedForWindowExpression</tt> element is not specified, 
+by default the value is set to false. <tt class="ph tt">rewriteAllowedForWindowExpression</tt> must be false (or omitted) if the 
+C++ primitive operator wants to examine the value as a literal.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__input_port_set_tuplemutationallowed"><!-- --></a>Tuple Mutation Allowed</dt>
+
+    <dd class="dd">The tupleMutationAllowed element defines whether the processing logic attached to the input port (this includes both
+the logic associated with the operator's process functions and the processing done as part of the onTuple clauses specified
+in the SPL code) can mutate an incoming tuple. It can be set to true for operators that desire to modify the tuples they receive.
+   </dd>
+
+  
+</dl>
+
+
+</div>
+
+<div class="section" id="spldoc_reference_operator_model__output_port_set"><h2 class="title sectiontitle splhead-1">Output Port Set</h2>
+  
+  <p class="p">
+Output ports are defined in terms of port sets, just like input ports. A port set is a fixed number of ports that share 
+the same configuration. This avoids repetition of the same configuration for different ports. A port set can be open, in 
+which case it can contain zero or more ports with the same configuration. An outputPorts element contains zero or more 
+outputPortSet elements, followed by an optional outputPortOpenSet element.
+  </p>
+
+  <dl class="dl">
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__cardinality"><!-- --></a>Cardinality</dt>
+
+    <dd class="dd">Defines the number of ports that the port set represents. This property applies to non-open port sets.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__optional"><!-- --></a>Optional</dt>
+
+    <dd class="dd">A boolean which specifies whether the output port set is optional.
+    </dd>
+
+  
+    
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set_expressionmode"><!-- --></a>Expression Mode (C++ only)</dt>
+
+    <dd class="dd">
+The expressionMode element describes the valid syntax of the attribute assignments made on this port. 
+Note that an expressionMode value of CustomLiteral is not valid for output ports and will result in 
+a compilation error. Valid values for the expression mode are:
+<ul class="ul">
+<li class="li"><tt class="ph tt">Attribute:</tt> This means that the assignments made to output attributes of this
+port need to be stream attributes. For example: output <tt class="ph tt">Out : x = In.y;</tt>, but not <tt class="ph tt">x = In.y.z</tt>.</li>
+
+<li class="li"><tt class="ph tt">AttributeFree:</tt> This means that the assignments made to output attributes of this port cannot reference 
+any input stream attributes. For example: output <tt class="ph tt">Out : x = 3 + random(3);</tt>, but not <tt class="ph tt">x = In.x + 3</tt>.</li>
+
+<li class="li"><tt class="ph tt">Constant:</tt> This means that the assignments made to output attributes of this port need to be 
+compile-time evaluatable to a constant. For example: output <tt class="ph tt">Out : x = 3 + pow(2, 3);</tt>, but not <tt class="ph tt">x = random(3)</tt>.</li>
+
+<li class="li"><tt class="ph tt">Expression:</tt> This is the most flexible expression mode, any SPL expression of correct type can appear as an assignment to the output attributes of this port. For example: output Out : x = A.y + B.z;.
+Nonexistent: This means that output attribute assignments cannot be specified in the SPL source for this port.</li>
+
+</ul>
+
+    </dd>
+
+  
+    
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__autoassignment"><!-- --></a>Auto Assignment</dt>
+
+    <dd class="dd">
+The <tt class="ph tt">autoAssignment</tt> element defines whether unassigned attributes will be automatically assigned from the attributes of the input ports.
+If set to true, the SPL compiler will rewrite (at compile-time) the operator invocation as if the unassigned output attributes have 
+explicit assignments in the output section. For each output attribute that is missing an assignment, an input attribute that has 
+the same name and type will be assigned to it. If there is no such input attribute or if there are more than one, an error is 
+reported at compile-time. Note that an expressionMode value of Constant is incompatible with an autoAssignment value of true. 
+This combination will result in a compilation error.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__completeassignment"><!-- --></a>Complete Assignment</dt>
+
+    <dd class="dd">
+The <tt class="ph tt">completeAssignment</tt> element defines if all the output port attributes need to be assigned in order to have a valid
+invocation of the operator. This is checked at compile-time. If an operator has this element set to true in its operator model
+and if not all output attributes have assignments after the auto-assignment step (if requested) for a given instance of this 
+operator, an error will be reported.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__rewriteallowed"><!-- --></a>Rewrite Allowed (C++ only)</dt>
+
+    <dd class="dd">
+The <tt class="ph tt">rewriteAllowed</tt> element specifies whether the compiler is allowed to rewrite the expressions that appear in the output
+attribute assignments for this port.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__outputfunctions"><!-- --></a>Output Functions</dt>
+
+    <dd class="dd">
+The outputFunctions element defines the valid custom output functions that can appear in output attribute assignments. 
+It is optional. When present, it contains two sub-elements: the type element, which defines the name of the custom output
+function type, as in RelationalAggs; and the default element, which defines the default output function to be used when
+performing auto-assignment of output attributes. This value should be a valid function name for the custom output function
+type that is being used (as in Last for RelationalAggs). Note that if the user code specifies an output attribute assignment
+without an output function for a port that expects an output function,
+the default output function will be inserted automatically.
+    </dd>
+
+  
+    
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__finalpunctuationoutputscope"><!-- --></a>Final Punctuation Port Scope</dt>
+
+    <dd class="dd">
+The <tt class="ph tt">finalPunctuationPortScope</tt> element, which is optional, specifies the set of input ports to be used by the SPL language
+runtime for final punctuation forwarding. By default, operators that have both input and output ports will automatically
+forward final punctuations from their input ports to their output ports. This is achieved by generating a final punctuation
+on an output port when a final punctuation is received on all input ports. The finalPunctuationPortScope can be used to
+limit the set of input ports to be used for forwarding the final punctuation. This element can also be used to turn off
+auto-forwarding of final punctuations, by setting the set of input ports to use for forwarding to the empty set. In this case, 
+the operator developer is responsible for ensuring that the output port gets a final punctuation.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__windowpunctuationoutputmode"><!-- --></a>Window Punctuation Output Mode</dt>
+
+    <dd class="dd">
+The windowPunctuationOutputMode specifies the window punctuation semantics of the output port. The options are:
+<ul class="ul">
+<li class="li"><tt class="ph tt">Generating</tt> - This port generates window punctuations.</li>
+
+<li class="li"><tt class="ph tt">Free</tt> - This port is free of window punctuations.</li>
+
+<li class="li"><tt class="ph tt">Preserving</tt> - This port preserves the received window punctuations. If an operator has more than one
+input port, then the windowPunctuationInputPort element must be specified in order to identify which input port's
+punctuation is being preserved.</li>
+
+</ul>
+
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__tuplemutationallowed"><!-- --></a>Tuple Mutation Allowed</dt>
+
+    <dd class="dd">
+The <tt class="ph tt">tupleMutationAllowed</tt> element defines whether this operator permits the downstream operators to mutate the output
+tuples submitted to this port via the submit call. If set to true, then the processing logic of the operator should expect
+that the tuples it submits to this port are modified as a result of the submit call.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__windowpunctuationinputport"><!-- --></a>Window Punctuation Input Port</dt>
+
+    <dd class="dd">
+As mentioned above, the <tt class="ph tt">windowPunctuationInputPort</tt> element associates an input port with a punctuation 
+preserving output port. This element may only be specified if the output port's window punctuation mode is Preserving. 
+The windowPunctuationInputPort can be set to -1, which has the same semantics as a missing windowPunctuationInputPort element. 
+It is important to note that punctuation forwarding for window punctuations is not performed automatically by the SPL 
+language runtime (unlike final punctuations) and the operator model is used to inform the SPL compiler about the behavior 
+that is being implemented by the operator. For more information, see IBM Streams Processing Language Toolkit Development Reference.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__output_port_set__outputassignmentportscope"><!-- --></a>Output Assignment Port Scope</dt>
+
+    <dd class="dd">
+ The <tt class="ph tt">outputAssignmentPortScope</tt> optionally limits which input port attributes may appear in output assignments on this port. 
+ If a scope is specified, only attributes from the ports specified by the scope
+ may appear in the output assignments for that port.   
+    </dd>
+
+  
+</dl>
+
+</div>
+
+
+<div class="section" id="spldoc_reference_operator_model__parameters"><h2 class="title sectiontitle splhead-1">Parameters</h2>
+
+<p class="p">
+The parameters element describes the valid parameters an operator can be configured with. 
+It also describes the valid syntax for such parameter configurations.
+</p>
+
+<dl class="dl">
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__allowany"><!-- --></a>Allow Any</dt>
+
+    <dd class="dd">This element is a boolean flag that determines whether an operator can take arbitrary parameters, with no restrictions. 
+An operator can take arbitrary parameters, yet still specify additional parameters and associated restrictions.
+    </dd>
+
+  
+  
+    <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter"><!-- --></a>Parameter</dt>
+
+    <dd class="dd"><p class="p">Each parameter element contains several subelements.
+    </p>
+
+      <dl class="dl">
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__name"><!-- --></a>Name</dt>
+
+         <dd class="dd">The <tt class="ph tt">name</tt> element is the name of the parameter as it will appear in the SPL source code. 
+For example, a <tt class="ph tt">Functor</tt> operator may have a <tt class="ph tt">filter</tt> parameter.</dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__description"><!-- --></a>Description</dt>
+
+         <dd class="dd">An optional description of this parameter.</dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__optional"><!-- --></a>Optional</dt>
+
+         <dd class="dd">A boolean which specifies whether this parameter is optional. A value of false implies that the parameter 
+         must be specified in the SPL source code. </dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__rewriteallowed"><!-- --></a>Rewrite Allowed (C++ only)</dt>
+
+         <dd class="dd">This boolean parameter allows the compiler to rewrite the expressions that appear in this parameter's 
+values by substituting literals (including those resulting from compile-time evaluation step) with variables whose
+values are loaded at runtime. This enables the compiler to generate less code for operators that differ slightly
+in their parameter configurations. In certain cases, the operator code generators may want to look into the parameter
+value, in order to generate different code based on the particular value found or perform compile-time validation. 
+For example, <tt class="ph tt">format: csv</tt> may result in generating specialized code for a Source operator. In such cases, expression
+rewrite should be turned off.</dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__expressionmode"><!-- --></a>Expression Mode</dt>
+
+         <dd class="dd">
+           <ul class="ul">
+             <li class="li"><tt class="ph tt">Attribute</tt> - Restricts the parameter values to stream attributes.</li>
+
+             <li class="li"><tt class="ph tt">AttributeFree</tt> - The parameter value is an expression that does not 
+contain a reference to a stream attribute.</li>
+
+             <li class="li"><tt class="ph tt">Constant (C++ only)</tt> - The parameter values need to be compile-time evaluatable to a constant.</li>
+
+             <li class="li"><tt class="ph tt">CustomLiteral</tt> - Restricts the parameter values to valid values from one of the custom
+literal enumerations defined in the context section of the model</li>
+
+             <li class="li"><tt class="ph tt">Expression (C++ only)</tt> - The most flexible expression mode, where any SPL expression of correct type
+can appear as a parameter value. </li>
+
+           </ul>
+
+         </dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__type"><!-- --></a>Type</dt>
+
+         <dd class="dd">The <tt class="ph tt">type</tt> of a parameter is either the SPL type of its values (such as <tt class="ph tt">list&lt;ustring&gt;</tt>) 
+or a custom literal name (such as <tt class="ph tt">SourceFormat</tt>). The type can also be omitted, in which case any SPL type 
+will match. The type subelement of a parameter can have an empty value, which has the same semantics as a missing 
+type element.
+         </dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__cardinality"><!-- --></a>Cardinality</dt>
+
+         <dd class="dd">The maximum number of values the parameter accepts. If omitted or the value is -1, the number of values is 
+assumed to be unbounded. The number of parameter values must match the cardinality. The cardinality subelement can take a 
+value of -1, which has the same semantics as a missing cardinality element.
+         </dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__portScope"><!-- --></a>Port Scope (C++ only)</dt>
+
+         <dd class="dd">This element is used to limit the stream attributes that appear in a parameter value to a specific 
+input port or to a list of input ports. Port indices start from 0. When omitted, there are no restrictions on stream attributes.
+         </dd>
+
+       
+       
+         <dt class="dt dlterm"><a name="spldoc_reference_operator_model__parameters__parameter__customOutputFunction"><!-- --></a>Custom Output Function (C++ only)</dt>
+
+         <dd class="dd">This optional element of a parameter specifies the name of a custom output function set defined in the context
+element, and makes the functions defined in that set visible during the compilation of a parameter. It is the responsibility
+of the operator to generate correct C++ code that involves custom output functions with the parameter, in the same manner as
+it would be for a use in an output clause.
+         </dd>
+
+       
+      </dl>
+
+    </dd>
+
+  
+</dl>
+ 
+</div>
+
+</div>
+
+
+</body>
+</html>

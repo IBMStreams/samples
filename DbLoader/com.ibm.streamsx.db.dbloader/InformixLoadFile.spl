@@ -1,0 +1,186 @@
+
+/* Copyright (C) 2013-2015, International Business Machines Corporation  */
+/* All Rights Reserved                                	                 */
+namespace com.ibm.streamsx.db.dbloader ;
+
+/**
+* The composite **INFORMIXLoadFile** loads files into the Informix database.
+* 
+* Creates a SQL Loader command.
+* 
+* Calls ExecuteCommand to run the SQL Loader tool.
+*
+* Checks the results and returns the load result on the output.  
+*
+* @input ConfigurationData configuration parameters (database name, database user, database password and file name)
+* @output Result rstring result
+* @output INFORMIXLoadFileLog rstring result (log information)
+*/
+composite INFORMIXLoadFile(output Result, INFORMIXLoadFileLog ; input ConfigurationData)
+{
+	graph
+
+	/**
+		 * CreateInformixLoadCommand
+		 * Create a Informix Loader (nzload) to load a file into a table in Informix database.
+		*/
+		stream<rstring command, int64 counter> CreateInformixLoadCommand = Custom(ConfigurationData)
+		{
+			logic
+				state :
+				{
+					mutable rstring loadCmd ;
+					mutable rstring fileName ;
+					mutable rstring tableName ;
+					mutable rstring logFilename ;
+					mutable rstring sqlFile ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					fileName = configData.fileName ;
+					// printStringLn("CreateInformixLoadCommand " +(rstring) ConfigurationData) ;
+					tableName = getTableName(fileName) ;
+					logFilename = regexReplace(fileName, configData.inputDir, configData.logDir, true) ;
+					logFilename = regexReplace(logFilename, "csv", "log", true) ;
+		
+					sqlFile = configData.controlDir + "/" + (rstring)configData.counter +"_informix-connection.sql";
+					// This command creates a sql file, connects to infomix database, load file into a table and removes the sql file.
+					loadCmd = "echo 'connect to \"" + configData.dbName + "\" user \"" +configData.dbUser + "\" using \""
+					+ configData.dbPass + "\"; ' > " + sqlFile + "; "				
+					+ "echo 'LOAD FROM \"" + fileName + "\" DELIMITER \",\"  INSERT INTO " + tableName + "; ' >> " + sqlFile + "; "
+					+ "dbaccess - " + sqlFile + "; "
+					+ "rm " + sqlFile;
+		
+					submit({ command = loadCmd, counter = configData.counter }, CreateInformixLoadCommand) ;
+				}
+
+		}
+
+		/**
+		 * LoadFile
+		 * This is the main operator to load a file into database.
+		 * It is use ExecuteCommand to run created load command via linux shell. 
+		*/
+		(stream<rstring result> LoadFile ; stream<rstring result> LoadFileLog) =
+			ExecuteCommand(CreateInformixLoadCommand)
+		{
+		}
+
+		/**
+		 * CheckResult
+		 * Checks the load results. 
+		 * Depending on result creates a moveTo string.
+		*/
+		stream<rstring result, rstring fileName, int64 counter, rstring moveTo> CheckResult =
+			Custom(ConfigurationData ; LoadFile)
+		{
+			logic
+				state :
+				{
+					mutable int32 successfulLoaded ;
+					mutable rstring loadResult ;
+					mutable rstring fileName = "" ;
+					mutable rstring archiveDir = "" ;
+					mutable rstring errorDir = "" ;
+					mutable rstring move_To = "" ;
+					mutable boolean Connected = false ;
+					mutable int64 counter = 0 ;
+				}
+
+				onTuple ConfigurationData :
+				{
+					fileName = configData.fileName ;
+					archiveDir = configData.archiveDir ;
+					errorDir = configData.errorDir ;
+					counter = configData.counter ;
+				}
+
+				onTuple LoadFile :
+				{
+					if(length(result) > 2)
+					{
+						// printStringLn("CheckLoadFile resul:\n" + result) ;
+						successfulLoaded = findFirst(result, "loaded", 0) ;
+						if(successfulLoaded == - 1)
+						{
+							loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " FAILED. " ;
+							log(Sys.error, loadResult) ;
+							if(findFirst(result, "Operation canceled", 0) == - 1)
+							{
+								move_To = "" ;
+							}
+
+							else
+							{
+								move_To = errorDir ;
+							}
+
+						}
+
+						else // successfull	
+
+						{
+							loadResult = "[" +(rstring) counter + "] Load of file " + fileName +
+								" completed SUCCESSFULLY." ;
+							log(Sys.info, loadResult) ;
+							move_To = archiveDir ;
+						}
+
+						submit({ result = loadResult, fileName = fileName, counter = counter, moveTo = move_To },
+							CheckResult) ;
+					}
+
+				}
+
+		}
+
+		/**
+		 * MoveFileCoammnd
+		 * Creates depending on the load result a Linux move the command to archive or error directory.   
+		*/
+		stream<rstring command, int64 counter> MoveFileCoammnd = Custom(CheckResult)
+		{
+			logic
+				state :
+				{
+					mutable rstring moveCmd ;
+				}
+
+				onTuple CheckResult :
+				{
+					if(length(moveTo) > 1)
+					{
+						moveCmd = "mv " + fileName + " " + moveTo ;
+						submit({ command = moveCmd, counter = counter }, MoveFileCoammnd) ;
+					}
+
+				}
+
+		}
+
+		/**
+		 * MoveiFile
+		 * Moves proceeded file depending on load result into archive or error directory.    
+		*/
+		(stream<rstring result> MoveiFile ; stream<rstring result> MoveLog) =
+			ExecuteCommand(MoveFileCoammnd)
+		{
+		}
+
+		(stream<rstring result> INFORMIXLoadFileLog) = Filter(LoadFileLog, MoveLog)
+		{
+		}
+
+		/**
+		 * Result
+		 * Send load result as Result to the composite DB2LoadFile.
+		 */
+		stream<rstring result> Result = Functor(CheckResult)
+		{
+			output
+				Result : result =(rstring) CheckResult.result ;
+		}
+
+}
+/** End of composite INFORMIXLoadFile */

@@ -1,0 +1,182 @@
+// begin_generated_IBM_copyright_prolog                             
+//                                                                  
+// This is an automatically generated copyright prolog.             
+// After initializing,  DO NOT MODIFY OR MOVE                       
+// **************************************************************** 
+// THIS SAMPLE CODE IS PROVIDED ON AN "AS IS" BASIS. IBM MAKES NO   
+// REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, CONCERNING    
+// USE OF THE SAMPLE CODE, OR THE COMPLETENESS OR ACCURACY OF THE   
+// SAMPLE CODE. IBM DOES NOT WARRANT UNINTERRUPTED OR ERROR-FREE    
+// OPERATION OF THIS SAMPLE CODE. IBM IS NOT RESPONSIBLE FOR THE    
+// RESULTS OBTAINED FROM THE USE OF THE SAMPLE CODE OR ANY PORTION  
+// OF THIS SAMPLE CODE.                                             
+//                                                                  
+// LIMITATION OF LIABILITY. IN NO EVENT WILL IBM BE LIABLE TO ANY   
+// PARTY FOR ANY DIRECT, INDIRECT, SPECIAL OR OTHER CONSEQUENTIAL   
+// DAMAGES FOR ANY USE OF THIS SAMPLE CODE, THE USE OF CODE FROM    
+// THIS [ SAMPLE PACKAGE,] INCLUDING, WITHOUT LIMITATION, ANY LOST  
+// PROFITS, BUSINESS INTERRUPTION, LOSS OF PROGRAMS OR OTHER DATA   
+// ON YOUR INFORMATION HANDLING SYSTEM OR OTHERWISE.                
+//                                                                  
+// (C) Copyright IBM Corp. 2015  All Rights reserved.         
+//                                                                  
+// end_generated_IBM_copyright_prolog                               
+
+namespace application ;
+
+use com.ibm.streams.geospatial::OSMPointMatcher ;
+use com.ibm.streamsx.mapviewer::MapViewer ;
+use com.ibm.streamsx.mapviewer.gen::* ;
+use com.ibm.streamsx.inet.rest::* ;
+use com.ibm.streams.geospatial.ext::* ;
+use com.ibm.streams.geospatial::UpdateType ;
+use com.ibm.streams.geospatial::UpdateFlags ;
+type MARKER_TYPE = enum { GREEN, YELLOW, RED } ;
+
+/* This sample takes as input an OpenStreetMap XML map file and matches
+ * entity GPS data from a CSV file to the map.
+ */
+composite OSMPointMapMatchingSample
+{
+	graph
+		(stream<int64 objectId, float64 latitude, float64 longitude, int64 timeStamp>
+			FileSource_5_out0) as FileSource_5 = FileSource()
+		{
+			param
+				file : getThisToolkitDir() + "/etc/bewdley.csv" ;
+				format : csv ;
+		}
+
+		(stream<int64 objectId, float64 latitude, float64 longitude, int64 timeStamp>
+			Throttle_32_out0) as Throttle_32 = Throttle(FileSource_5_out0 as
+			inputStream)
+		{
+			param
+				rate : 100.0 ;
+		}
+
+		(stream<int64 matchedEdgeId, float64 latitude, float64 longitude,
+			float64 distanceOnTrack, boolean directionOfTravel, int64 objectId,
+			float64 origLatitude, float64 origLongitude> OSMPointMatcher_18_out0) as
+			OSMPointMatcher_18 = OSMPointMatcher(Throttle_32_out0 as inPort0Alias)
+		{
+			param
+				mapfile : getThisToolkitDir() + "/etc/bewdley.osm" ;
+				distanceThreshold : 50.0 ;
+				matchingTimeCutoff : 120000.0 ;
+				historySize : 5u ;
+				velocityThreshold : 100.0 ;
+		}
+
+		(stream<int64 objectId, float64 latitude, float64 longitude> Custom_11_out0 ;
+			stream<int64 objectId, float64 latitude, float64 longitude> Custom_11_out1 ;
+			stream<int64 objectId, float64 latitude, float64 longitude> Custom_11_out2)
+			as Custom_11 = Custom(OSMPointMatcher_18_out0 as inputStream)
+		{
+			logic
+				onTuple inputStream :
+				{
+					if(inputStream.directionOfTravel == true)
+					{
+						submit({ objectId = inputStream.objectId, latitude =
+							inputStream.latitude, longitude = inputStream.longitude },
+							Custom_11_out0) ; // start to end matched points go to red
+
+					}
+
+					else
+					{
+						submit({ objectId = inputStream.objectId, latitude =
+							inputStream.latitude, longitude = inputStream.longitude },
+							Custom_11_out2) ; // end to start matched points go to yellow
+
+					}
+
+					submit({ objectId = inputStream.objectId, latitude =
+						inputStream.origLatitude, longitude = inputStream.origLongitude },
+						Custom_11_out1) ; // orig items go to green
+
+				}
+
+		}
+
+		(stream<rstring id, rstring wkt, uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> RedEntities_out0) as RedEntities =
+			Custom(Custom_11_out0 as inPort0Alias)
+		{
+			logic
+				state :
+				{
+					mutable int64 currentId = 100001 ;
+				}
+
+				onTuple inPort0Alias :
+				{
+
+					// convert coordinates to wkt string
+					mutable rstring wktGeometry = point(longitude, latitude) ;
+	
+					// submit to MapViewer, set upactionAction to 1 to add point to the map
+					submit({ id =(rstring) currentId ++, wkt = wktGeometry, updateAction = 1u,
+						note = "", markerType = RED }, RedEntities_out0) ;
+					block(0.01) ;
+				}
+
+		}
+
+		(stream<rstring id, rstring wkt, uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> GreenEntities_out0) as GreenEntities =
+			Custom(Custom_11_out1 as inPort0Alias)
+		{
+			logic
+				state :
+				{
+					mutable int64 currentId = 1 ;
+				}
+
+				onTuple inPort0Alias :
+				{
+
+					// convert coordinates to wkt string
+					mutable rstring wktGeometry = point(longitude, latitude) ;
+					
+					// submit to MapViewer, set upactionAction to 1 to add point to the map
+					submit({ id =(rstring) currentId ++, wkt = wktGeometry, updateAction = 1u,
+						note = "", markerType = GREEN }, GreenEntities_out0) ;
+					block(0.01) ;
+				}
+
+		}
+
+		(stream<rstring id, rstring wkt, uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> YellowEntities_out0) as YellowEntities =
+			Custom(Custom_11_out2 as inPort0Alias)
+		{
+			logic
+				state :
+				{
+					mutable int64 currentId = 200001 ;
+				}
+
+				onTuple inPort0Alias :
+				{
+
+					// convert coordinates to wkt string
+				
+					mutable rstring wktGeometry = point(longitude, latitude) ;
+	
+					// submit to MapViewer, set upactionAction to 1 to add point to the map
+					submit({ id =(rstring) currentId ++, wkt = wktGeometry, updateAction = 1u,
+						note = "", markerType = YELLOW }, YellowEntities_out0) ;
+					block(0.01) ;
+				}
+
+		}
+
+		() as MapViewer_2 = MapViewer(RedEntities_out0, GreenEntities_out0,
+			YellowEntities_out0)
+		{
+		}
+
+}
+

@@ -1,0 +1,35 @@
+/**
+ * Copyright (C) 2015, International Business Machines Corporation
+ * All Rights Reserved
+ */
+
+#include <memory>
+
+#pragma SPL_NON_GENERIC_OPERATOR_HEADER_PROLOGUE
+
+class MY_OPERATOR : public MY_BASE_OPERATOR 
+{
+public:
+    /**
+     * The constructor instantiates a filter with a number of coefficients
+     * specified by the "length" parameter. It also adds the "SGFilter"
+     * trace category to trace statements emitted by the filter code.
+     */
+    MY_OPERATOR();
+
+    // Tuple processing for non-mutating ports
+    void process(Tuple const & tuple, uint32_t port);
+
+    virtual ~MY_OPERATOR() {}
+
+private:
+    // Parameter names and helpers
+    static const std::string length_;
+    int getFilterLength() const;
+
+    // Forward definition and pointer to the implementation
+    class impl;
+    std::tr1::shared_ptr<impl> impl_;
+};
+
+#pragma SPL_NON_GENERIC_OPERATOR_HEADER_EPILOGUE

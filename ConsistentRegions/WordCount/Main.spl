@@ -46,10 +46,10 @@ composite Main {
     } 
 
     // Tokenize a line and eliminate punctuation from words
-    stream<list<rstring> words> Words = Custom(Lines) {
+    stream<list<rstring> words> Words = Custom(ThrottledLines) {
       logic
-        onTuple Lines: {
-          list<rstring> originalWords = tokenize(Lines.line, " ", false);
+        onTuple ThrottledLines: {
+          list<rstring> originalWords = tokenize(ThrottledLines.line, " ", false);
           mutable list<rstring> trimmedWords = [];
           for (rstring word in originalWords) {
             rstring trimmedWord = rtrim(lower(word), ",.:;");
@@ -110,9 +110,6 @@ composite Main {
       param
         file: "result.dat";
     }
-
-  config
-    restartable: true;
 }
 
 // Forwards input stream to the output stream. The operator

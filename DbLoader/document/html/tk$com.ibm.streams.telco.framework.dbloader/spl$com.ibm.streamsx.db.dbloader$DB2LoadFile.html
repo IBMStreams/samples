@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File DB2LoadFile.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File DB2LoadFile.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">DB2LoadFile.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streams.telco.framework.dbloader.html">com.ibm.streams.telco.framework.dbloader 1.1.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a> &gt; DB2LoadFile.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$DB2LoadFile.html#spldoc_compilationunit__composite_operator__DB2LoadFile">DB2LoadFile</a></strong>: The composite <strong class="ph b">DB2LoadFile</strong> loads files into DB2 database.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__DB2LoadFile"><h2 class="title sectiontitle splpart">public composite DB2LoadFile(output Result, LogDb2; input ConfigurationData)</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">The composite <strong class="ph b">DB2LoadFile</strong> loads files into DB2 database.
+</p>
+
+<p class="p">Creates a connection to the DB2 database.
+</p>
+
+<p class="p">Creates load command and loads file into database.
+</p>
+
+<p class="p">Checks the load results. 
+</p>
+
+<p class="p">Depending to the load result it moves the processing file into archive or error directory and at the end it releases the database connection.
+</p>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Input Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">ConfigurationData</strong>: configuration parameters (database name, database user, database password and file name)
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Output Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">Result</strong>: rstring result
+</li>
+
+<li class="sli"><strong class="ph b">LogDb2</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">Composite Operator Graph</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streams.telco.framework.dbloader/op$com.ibm.streamsx.db.dbloader$DB2LoadFile.svg" width="640" height="190"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite DB2LoadFile(output Result, LogDb2 ; input ConfigurationData)
+ { 
+ 	graph 
+ 		/**
+ 		 * CreateConnection
+ 		 * Creates a database connection with ConfigurationData parameters
+ 		 */                  	
+ 	
+ 		(stream &lt;boolean connected&gt; CreateConnection; stream&lt;rstring result&gt; CreateConnectionLog) = DB2CreateConnection(ConfigurationData)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * ConnectionState
+ 		 * Get Connection State
+ 		 * Merge configuration parameter and connection state
+ 		 */                  	
+ 		stream&lt;boolean connected, int64 counter, rstring fileName, rstring archiveDir, rstring errorDir&gt; ConnectionState =
+ 			Custom(ConfigurationData ; CreateConnection)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring FileName = "" ;
+ 					mutable rstring ArchiveDir = "" ;
+ 					mutable rstring ErrorDir = "" ;
+ 					mutable boolean Connected = false ;
+ 					mutable int64 Counter = 0 ;
+ 				}
+ 
+ 				onTuple ConfigurationData :
+ 				{
+ 					FileName = configData.fileName ;
+ 					Counter = configData.counter ;
+ 					ArchiveDir = configData.archiveDir ;
+ 					ErrorDir = configData.errorDir ;
+ 				}
+ 
+ 				onTuple CreateConnection :
+ 				{
+ 			//		if(connected)
+ 					{
+ 						submit({ connected = connected, counter = Counter, fileName = FileName, archiveDir = ArchiveDir, errorDir =
+ 							ErrorDir }, ConnectionState) ;
+ 					}
+ 
+ 				}
+ 
+ 		}
+ 
+ 		/**
+ 		 * CreateLoadCommand
+ 		 * Create load command with following parameters to load a file into a table in database
+ 		 * WARNINGCOUNT n 	Stops the load operation after n warnings.
+ 		 * NONRECOVERABLE 	use this parameter if you do not need to be able to recover load transactions
+ 		 * DATA BUFFER nnn  The DATA BUFFER parameter specifies the total amount of memory,
+ 		 *  				in 4 KB units, allocated to the load utility as a buffer.
+ 		 * CPU_PARALLELISM n Use this parameter to exploit the number of processes running per 
+ 		 * 					database partition (if this is part of your machine's capability), and significantly 
+ 		 * 					improve load performance
+ 		 * DISK_PARALLELISM	This parameter specifies the number of processes or threads used by the 
+ 		 * 					load utility to write data records to disk. 
+ 		 * ALLOW READ ACCESS This option allows you to query a table while a load operation is in progress. 
+ 		 * 
+ 		 */                  	
+ 		stream&lt;rstring command, int64 counter&gt; CreateLoadCommand = Functor(ConnectionState)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring loadCmd ;
+ 					mutable rstring tableName ;
+ 					mutable int64 Counter = 0;
+ 				}
+ 
+ 				onTuple ConnectionState :
+ 				{
+ 					Counter = counter;
+ 					if(connected &amp;&amp; (length(fileName)&gt; 1))
+ 					{
+ 						/**  
+ 						 * After a successfully connection to a database
+ 						 */
+ 						tableName = getTableName(fileName) ;
+ 						
+ 						loadCmd = "db2 LOAD CLIENT FROM " + fileName + " OF "
+ 							+ "DEL " // DEL (delimited ASCII format) CSV (,)
+ 					//		+ " SAVECOUNT 1000000 "  	// Use this parameter to set an interval for the establishment of consistency 
+ 													 	// points during the load phase of a load operation. 
+ 							+ " WARNINGCOUNT 10 "  		// Stops the load operation after n warnings.
+ 							+ "INSERT INTO " + tableName 				
+ 							+ " NONRECOVERABLE " 
+ 						    + " DATA BUFFER 6000 "  	// The DATA BUFFER parameter specifies the total amount of memory, 
+ 						    							// in 4 KB units, allocated to the load utility as a buffer.
+ 							+ " CPU_PARALLELISM 2 " 	//Use this parameter to exploit the number of processes running per 
+ 														// database partition (if this is part of your machine's capability), and significantly improve load performance
+ 							+ " DISK_PARALLELISM 10 "  	// This parameter specifies the number of processes or threads used by the 
+ 		 												//load utility to write data records to disk. 
+ 					//		+ " FETCH_PARALLELISM yes" 	// When performing a load from a cursor where the cursor is declared using the DATABASE keyword
+ 							+ " ALLOW READ ACCESS "  	// This option allows you to query a table while a load operation is in progress. 
+ 							;
+ 						
+ 						}
+ 
+ 					else  
+ 					{
+ 						/**
+ 						 * Connection failed
+ 						 */
+ 						loadCmd = "db2 terminate" ;
+ 					}
+ 
+ 				}
+ 
+ 			output
+ 				CreateLoadCommand : command = loadCmd, counter= Counter ;
+ 		}
+ 		
+ 		
+ 		/**
+ 		 * LoadFile
+ 		 * This is the main operator to load a file into database
+ 		 * It uses the ExecuteCommand to run the created load command via linuxshell 
+ 		*/
+ 		(stream&lt;rstring result&gt; LoadFile; stream&lt;rstring result&gt; LoadFileLog) = ExecuteCommand(CreateLoadCommand)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * LoadFileResult
+ 		 * The Barrier operator is used to synchronize tuples from two streams LoadFile and ConnectionState.
+ 		*/
+ 		stream&lt;LoadFile, ConnectionState&gt; LoadFileResult = Barrier(LoadFile ; ConnectionState)
+ 		{
+ 			param
+ 				bufferSize : 1u ;
+ 		}
+ 
+ 		/**
+ 		 * CheckResult
+ 		 * Check the load result 
+ 		 * depending on the result set the value of moveTo parameter into archive ore error directory  
+ 		 */
+ 		stream&lt;rstring result, rstring fileName, int64 counter, boolean loaded, rstring moveTo&gt; CheckResult = Functor(LoadFileResult)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable int32 loadStatus ;
+ 					mutable rstring loadResult ;
+ 					mutable rstring move_To = "";
+ 					mutable boolean loaded = false ;
+ 				}
+ 
+ 				onTuple LoadFileResult :
+ 				{
+ 					
+ 					if(length(result) &gt; 2)
+ 					{
+ 						loadStatus = checkDB2LoadResult(result);
+ 					
+ 						if(loadStatus == 0)
+ 						{
+ 							loadResult = "[" +(rstring) counter + "] [ERROR] Load of file " + fileName + " FAILED. " + result ;
+ 							log(Sys.error, loadResult) ;
+ 							loaded = false ;
+ 						}
+ 						else 
+ 						{
+ 							if (loadStatus == 1) // successful loaded	
+ 							{
+ 								loadResult = "[" +(rstring) counter + "] Load of file " + fileName + " completed SUCCESSFULLY." ;
+ 								loaded = true ;
+ 								move_To = archiveDir ;
+ 							}
+ 							
+ 							if (loadStatus == 2) // partially loaded	
+ 							{
+ 								loadResult = "[" +(rstring) counter + "] The file " + fileName + " partially loaded." ;
+ 								loaded = true ;
+ 								move_To = errorDir ;								
+ 							}
+ 
+ 							if (loadStatus == 3) // The table does not exist.
+ 							{
+ 								loadResult = "[" +(rstring) counter + "] [ERROR] Load of file " + fileName + " FAILED. " + result ;
+ 								log(Sys.error, loadResult) ;
+ 								loaded = false ;
+ 								move_To = errorDir ;								
+ 							}
+ 						}
+ 
+ 					}
+ 
+ 				}
+ 
+ 			output
+ 				CheckResult : result = loadResult, fileName = fileName, counter = counter, loaded = loaded, moveTo = move_To ;
+ 		}
+ 
+ 		/**
+ 		 * LogResultSink
+ 		 * Writes the result in log file 
+ 		*/
+ 	//	() as LogResultSink = Logger(CheckResult)
+ 	//	{
+ 	//	}
+ 
+ 		/**
+ 		 * MoveFileCoammnd
+ 		 * Creates depending on load result a Linux move command to archive or error directory    
+ 		*/
+ 		stream&lt;rstring command, int64 counter&gt; MoveFileCoammnd = Functor(CheckResult)
+ 		{
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring moveCmd ;
+ 					mutable int64 Counter = 0;
+ 				}
+ 
+ 				onTuple CheckResult :
+ 				{
+ 					moveCmd = "mv " + fileName + " " + moveTo ;
+ 					Counter = counter;
+ 				}
+ 
+ 			output
+ 				MoveFileCoammnd : command = moveCmd , counter = Counter;
+ 		}
+ 
+ 		/**
+ 		 * MoveiFile
+ 		 * Moves proceeded file depending on load result into archive or error directory    
+ 		*/
+ 		(stream&lt;rstring result&gt; MoveiFile; stream&lt;rstring result&gt; MoveLog) = ExecuteCommand(MoveFileCoammnd)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * CreateTerminateCommand
+ 		 * Creates Terminate Command to release the database connection   
+ 		*/
+ 		stream&lt;rstring command, int64 counter&gt; CreateTerminateCommand = Custom(MoveFileCoammnd; MoveiFile)
+ 		{
+ 	
+ 			logic
+ 				state :
+ 				{
+ 					mutable rstring releaseCommand ;
+ 					mutable int64 Counter = 0;
+ 				}
+ 				onTuple MoveFileCoammnd :
+ 				{
+ 					Counter = counter ;
+ 				}
+ 	
+ 				onTuple MoveiFile :
+ 				{
+ 					releaseCommand = "db2 terminate" ;
+ 					submit({ command =  releaseCommand, counter = Counter }, CreateTerminateCommand) ;
+ 					
+ 				}
+ 		}
+ 
+ 		/**
+ 		 * ReleaseConnection
+ 		 * Release the DB2 database connection   
+ 		*/
+ 		(stream&lt;rstring result&gt; ReleaseConnection; stream&lt;rstring result&gt; ReleaseConnectionLog) = ExecuteCommand(CreateTerminateCommand)
+ 		{
+ 		}
+ 
+ 		/**
+ 		 * LoadResult
+ 		 * The Barrier operator is used to synchronize tuples from two streams 
+ 		 * CheckResult and ReleaseConnection.
+ 		*/
+ 		stream&lt;CheckResult, ReleaseConnection&gt; LoadResult = Barrier(CheckResult ; ReleaseConnection)
+ 		{
+ 			param
+ 				bufferSize : 1u ;
+ 		}
+ 
+ 		(stream&lt;rstring result&gt; LogDb2) = Filter(CreateConnectionLog, LoadFileLog, ReleaseConnectionLog, MoveLog)
+ 		{
+ 		}
+ 
+ 
+ 		/**
+ 		 * Result
+ 		 * Returns load result in output
+ 		 */
+ 		stream&lt;rstring result&gt; Result = Functor(LoadResult)
+ 		{
+ 			output
+ 				Result : result = LoadResult.result ;
+ 		}
+ 		// End of Result = Functor(LoadResult)
+ 
+ } // End of composite DB2LoadFile
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

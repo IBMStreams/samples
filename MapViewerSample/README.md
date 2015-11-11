@@ -10,9 +10,9 @@ To see this sample in action, compile and submit the main application to a strea
  
 To compile the application, you need:
 
-- Streams 3.2.2 Beta - for the new com.ibm.streams.geospatial toolkit
+- Streams 4.0 - for the new com.ibm.streams.geospatial toolkit
 
-- com.ibm.streamsx.inet toolkit from here: https://github.com/IBMStreams/streamsx.inet/releases/tag/streams_3.2.2beta-fix1
+- com.ibm.streamsx.inet toolkit v2.5 prerelease from here: https://github.com/IBMStreams/streamsx.inet/releases
   
 In a browser, open the following URL:  http://PEHost:8080/map/map.html
  
