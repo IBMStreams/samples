@@ -1,0 +1,207 @@
+namespace com.ibm.streams.cybersecurity.sample ;
+
+use com.ibm.streams.cybersecurity.tagging::BWListTagger ;
+use com.ibm.streams.cybersecurity.analytics::PredictiveBlacklisting ;
+use com.ibm.streams.cybersecurity.types::* ;
+use com.ibm.streamsx.network.enrichment::* ;
+use com.ibm.streams.cybersecurity.extractors::PredictiveBlacklistingFE ;
+use com.ibm.streamsx.network.parse::* ;
+use com.ibm.streamsx.network.source::* ;
+use com.ibm.streamsx.network.ipv4::* ;
+use com.ibm.streamsx.network.enrichment::IPLocationMatrix_t ;
+
+composite PredictiveBlacklistingBasic
+{
+	graph
+		(stream<PBDNSResponseMessage_t, tuple<BWListTag_e domainTags,
+			list<BWListTag_e> ipTags>> BWTagger_Stream) as BWTagger =
+			BWListTagger(PBSrcOp_Stream)
+		{
+			param
+				domainAttr : questionName ;
+				ipAttr : concat(answerData, additionalData) ;
+				blackDomainFile : "bwlist/domainBlackList.txt" ;
+				blackIPFile : "bwlist/ipBlackList.txt" ;
+				whiteDomainFile : "bwlist/domainWhiteList.txt" ;
+				whiteIPFile : "bwlist/ipWhiteList.txt" ;
+			output
+				BWTagger_Stream : domainTags = getDomainTags(), ipTags = getIPTags() ;
+		}
+
+		(stream<PBDNSResponseMessage_t, tuple<BWListTag_e bwTag>> BWFilter_Stream) as
+			BWFilter = Custom(BWTagger_Stream)
+		{
+			logic
+				onTuple BWTagger_Stream :
+				{
+					mutable BWListTag_e tag_ = nonMatched ;
+					if(domainTags == blackListDomain)
+					{
+						tag_ = blackListDomain ;
+					}
+
+					else if(has(ipTags, blackListIP))
+					{
+						tag_ = blackListIP ;
+					}
+
+					else if(domainTags == whiteList || has(ipTags, whiteList))
+					{
+						tag_ = whiteList ;
+					}
+
+					if(tag_ != whiteList)
+					{
+						mutable BWFilter_Stream outTuple =(BWFilter_Stream) { } ;
+						assignFrom(outTuple, BWTagger_Stream) ;
+						outTuple.bwTag = tag_ ;
+						submit(outTuple, BWFilter_Stream) ;
+					}
+
+				}
+
+			}
+
+		(stream<PBDNSResponseMessage_t, tuple<BWListTag_e bwTag,
+			IPLocationMatrix_t spatialInfoMatrix>> IPSpatialEnricherOp_Stream) as
+			IPSpatialEnricherOp = IPSpatialEnricher(BWFilter_Stream as inPort0Alias)
+			{
+				param
+					inputIPAttr :(list<list<rstring>>) [ answerData, additionalData ] ;
+					blocksIPv4File : "maxmind/geo/GeoLite2-City-Blocks-IPv4.csv" ;
+					blocksIPv6File : "maxmind/geo/GeoLite2-City-Blocks-IPv6.csv" ;
+					locationFile : "maxmind/geo/GeoLite2-City-Locations-en.csv" ;
+				output
+					IPSpatialEnricherOp_Stream : spatialInfoMatrix = getIPLocationData() ;
+			}
+
+		(stream<PBDNSResponseMessage_t, tuple<BWListTag_e bwTag,
+			IPLocationMatrix_t spatialInfoMatrix, IPASNInfoMatrix_t asnInfoMatrix>>
+			IPASNEnricherOp_Stream) as IPASNEnricherOp =
+				IPASNEnricher(IPSpatialEnricherOp_Stream)
+			{
+				param
+					inputIPAttr :(list<list<rstring>>) [ answerData, additionalData ] ;
+					asnIPv4File : "maxmind/asn/GeoIPASNum2.csv" ;
+					asnIPv6File : "maxmind/asn/GeoIPASNum2v6.csv" ;
+				output
+					IPASNEnricherOp_Stream : asnInfoMatrix = getASNInfo() ;
+			}
+
+		(stream<PBFeatureExtractorInput_t> TupleFormatter_Stream) as TupleFormatter =
+				Functor(IPASNEnricherOp_Stream)
+			{
+				output
+					TupleFormatter_Stream : answerSpatialInfo = spatialInfoMatrix [ 0 ],
+						additionalSpatialInfo = spatialInfoMatrix [ 1 ], answerASNInfo =
+						asnInfoMatrix [ 0 ], additionalASNInfo = asnInfoMatrix [ 1 ] ;
+			}
+
+		(stream<PredictiveBlacklisting_t, PBFeatureExtractorInput_t>
+			FeatureExtractor_Stream) as FeatureExtractor =
+				PredictiveBlacklistingFE(TupleFormatter_Stream as inPort0Alias)
+			{
+				output
+					FeatureExtractor_Stream : domain = TupleFormatter_Stream.questionName,
+						featureVector = getFeatureVector() ;
+			}
+
+		(stream<PBDNSResponseMessage_t> PBSrcOp_Stream) as PBSrcOp = PBSrc()
+			{
+				param
+					directory : dataDirectory() ;
+					pattern : "predictive_blacklisting_sample.pcap" ;
+			}
+
+		(stream<rstring empty> DirScanPlaceholder_Stream) as DirScanPlaceholder =
+				Custom()
+			{
+			}
+
+		(stream<PredictiveBlacklisting_t, PBFeatureExtractorInput_t>
+			PredictiveBlacklistingOp_Stream) as PredictiveBlacklistingOp =
+				PredictiveBlacklisting(FeatureExtractor_Stream ; DirScanPlaceholder_Stream)
+			{
+			}
+
+		(stream<PredictiveBlacklisting_t, PBFeatureExtractorInput_t>
+			Suspicious_Stream ; stream<PredictiveBlacklisting_t,
+			PBFeatureExtractorInput_t> Benign_Stream) as PredictionFilter =
+				Filter(PredictiveBlacklistingOp_Stream)
+			{
+				param
+					filter : predictedClass == "suspicious" ;
+			}
+
+		() as SuspiciousSink = FileSink(Suspicious_Stream)
+			{
+				param
+					file : "pbresults_suspicious.csv" ;
+					format : csv ;
+			}
+
+		() as BenignSink = FileSink(Benign_Stream)
+			{
+				param
+					file : "pbresults_benign.csv" ;
+					format : csv ;
+			}
+
+	}
+
+	composite PBSrc(output DNSMsgParser_Stream )
+	{
+		param
+			expression<rstring> $directory ;
+			expression<rstring> $pattern : "" ;
+			expression<rstring> $filterExpression : "udp port 53" ;
+			expression<float64> $initDelay : 0f ;
+		graph
+			(stream<rstring filename> DirScan_Stream) as DirScan = DirectoryScan()
+			{
+				param
+					directory : $directory ;
+					pattern : $pattern ;
+					initDelay : $initDelay ;
+			}
+
+			(stream<PacketType> PktFileSrc_Stream) as PktFileSrc =
+				PacketFileSource(DirScan_Stream)
+			{
+				param
+					inputFilter : $filterExpression ;
+					metricsInterval : 0.0 ;
+				output
+					PktFileSrc_Stream : captureTime = createTimestamp((int64)
+						CAPTURE_SECONDS(), CAPTURE_MICROSECONDS() * 1000u), dstAddress =
+						convertIPV4AddressNumericToString(IPV4_DST_ADDRESS()), dnsMessage =
+						PAYLOAD_DATA() ;
+			}
+
+			(stream<PBDNSResponseMessage_t> DNSMsgParser_Stream) as DNSMsgParser =
+				DNSMessageParser(PktFileSrc_Stream)
+			{
+				param
+					messageAttribute : dnsMessage ;
+					outputFilters : DNS_RESPONSE_FLAG() && DNS_ANSWER_COUNT() > 0uh &&
+						size(DNS_ANSWER_TYPES()) > 0 && !(DNS_ANSWER_TYPES() [ 0 ] in [ 2uh, 6uh,
+						12uh, 15uh ]) && ! parseError() ;
+				output
+					DNSMsgParser_Stream : questionName = DNS_QUESTION_NAME(), responseCode =
+						DNS_RESPONSE_CODE(), answerCount = DNS_ANSWER_COUNT(), answerData =
+						DNS_ANSWER_DATA(), answerTypes = DNS_ANSWER_TYPES(), answerTTLs =
+						DNS_ANSWER_TTLS(), nameserverCount = DNS_NAMESERVER_COUNT(),
+						nameserverData = DNS_NAMESERVER_DATA(), nameserverTypes =
+						DNS_NAMESERVER_TYPES(), nameserverTTLs = DNS_NAMESERVER_TTLS(),
+						additionalCount = DNS_ADDITIONAL_COUNT(), additionalData =
+						DNS_ADDITIONAL_DATA(), additionalTypes = DNS_ADDITIONAL_TYPES(),
+						additionalTTLs = DNS_ADDITIONAL_TTLS() ;
+			}
+
+	}
+
+	//
+	//				filter : inputStream.responseCode == 0ub && inputStream.answerCount > 0uh
+	//					&&(size(inputStream.answerTypes) > 0 && !(inputStream.answerTypes [ 0 ] in
+	//					[ 2uh, 6uh, 12uh, 15uh ])) ;
+
