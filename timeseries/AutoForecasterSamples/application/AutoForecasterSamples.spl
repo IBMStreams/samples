@@ -5,14 +5,14 @@ use com.ibm.streams.timeseries.modeling::AutoForecaster2 ;
 composite AutoForecasterSamples
 {
 	graph
-		(stream<float64 inputData> FileSource_1_out0) as FileSource_1 = FileSource()
+		(stream<float64 inputData> NetloadData) as NetloadSource = FileSource()
 		{
 			param
 				file : "netload.out" ;
 		}
 
-		(stream<uint64 forecastedTimestamp, float64 forecastedResult>
-			AutoForecaster2_2_out0) as AutoForecaster2_2 = AutoForecaster2(Custom_4_out0
+		(stream<uint64 t, float64 inputData, uint64 forecastedTimestamp, float64 forecastedResult>
+			ForecastedResults) as ForecastingOperator = AutoForecaster2(NetloadTimeData
 			as inPort0Alias)
 		{
 			param
@@ -22,18 +22,18 @@ composite AutoForecasterSamples
 				algorithm : Dynamic ;
 				inputTimestamp : t ;
 			output
-				AutoForecaster2_2_out0 : forecastedResult = forecastedTimeSeriesStep(),
+				ForecastedResults : forecastedResult = forecastedTimeSeriesStep(),
 					forecastedTimestamp = forecastedTimestamp() ;
 		}
 
-		() as FileSink_3 = FileSink(AutoForecaster2_2_out0)
+		() as FileSinkOp = FileSink(ForecastedResults)
 		{
 			param
 				file : "result.txt" ;
 		}
 
-		(stream<uint64 t, float64 inputData> Custom_4_out0) as Custom_4 =
-			Custom(FileSource_1_out0)
+		(stream<uint64 t, float64 inputData> NetloadTimeData) as AddTimeOp =
+			Custom(NetloadData)
 		{
 			logic
 				state :
@@ -41,9 +41,9 @@ composite AutoForecasterSamples
 					mutable uint64 cnt = 1l ;
 				}
 
-				onTuple FileSource_1_out0 :
+				onTuple NetloadData :
 				{
-					submit({ t = cnt ++, inputData = inputData }, Custom_4_out0) ;
+					submit({ t = cnt ++, inputData = inputData }, NetloadTimeData) ;
 				}
 
 		}
