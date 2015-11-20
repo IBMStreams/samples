@@ -1,0 +1,161 @@
+// begin_generated_IBM_copyright_prolog                             
+//                                                                  
+// This is an automatically generated copyright prolog.             
+// After initializing,  DO NOT MODIFY OR MOVE                       
+// **************************************************************** 
+// THIS SAMPLE CODE IS PROVIDED ON AN "AS IS" BASIS. IBM MAKES NO   
+// REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, CONCERNING    
+// USE OF THE SAMPLE CODE, OR THE COMPLETENESS OR ACCURACY OF THE   
+// SAMPLE CODE. IBM DOES NOT WARRANT UNINTERRUPTED OR ERROR-FREE    
+// OPERATION OF THIS SAMPLE CODE. IBM IS NOT RESPONSIBLE FOR THE    
+// RESULTS OBTAINED FROM THE USE OF THE SAMPLE CODE OR ANY PORTION  
+// OF THIS SAMPLE CODE.                                             
+//                                                                  
+// LIMITATION OF LIABILITY. IN NO EVENT WILL IBM BE LIABLE TO ANY   
+// PARTY FOR ANY DIRECT, INDIRECT, SPECIAL OR OTHER CONSEQUENTIAL   
+// DAMAGES FOR ANY USE OF THIS SAMPLE CODE, THE USE OF CODE FROM    
+// THIS [ SAMPLE PACKAGE,] INCLUDING, WITHOUT LIMITATION, ANY LOST  
+// PROFITS, BUSINESS INTERRUPTION, LOSS OF PROGRAMS OR OTHER DATA   
+// ON YOUR INFORMATION HANDLING SYSTEM OR OTHERWISE.                
+//                                                                  
+// (C) Copyright IBM Corp. 2010, 2012  All Rights reserved.         
+//                                                                  
+// end_generated_IBM_copyright_prolog                               
+
+/** Computes the volume-weighted average price (vwap) for a stream of stock transactions. 
+Given trades and quotes, this application produces a *bargain index* for the last 4 transaction related to a particular stock.  
+The bargain index identifies possible bargains, which occur when the volume-weighted average price for recent trades exceeds 
+the current asking price.
+
+This algorithm may be used to identify opportunities to pick up well priced shares in the stream of current transaction data.
+
+Executed with default arguments, the application selects trades and quotes for ticker symbols `IBM`, `GOOG`,and `MSFT` from an input 
+file containing a snapshot of transaction data.  The ticker symbols to be selected may be changed by updating the 
+`$monitoredTickers` parameter in the `Vwap` composite operator.
+*/
+namespace sample ;
+
+/** Returns true if the transaction type is a quote, and false otherwise.
+@param ttype transaction type
+@return true if the transaction is a quote and false otherwise.
+*/
+boolean isQuote(rstring ttype)
+{
+	return ttype == "Quote" ;
+}
+
+/** Returns true if the transaction type is a trade, and false otherwise.
+@param ttype transaction type
+@return true if the transaction is a trade and false otherwise.
+*/
+boolean isTrade(rstring ttype)
+{
+	return ttype == "Trade" ;
+}
+
+/** 
+Given an input file containing trades and quotes, this composite operator produces an output file called out in the toolkit's data directory. 
+The output file lists the VWAP and bargain index for the last 4 trades. The trades included in the VWAP computation are 
+grouped by the Aggregate operator, which uses a sliding window to sum the weighted price and volume for the 4 most recent transactions. 
+The bargain index identifies the magnitude of the bargain, where a greater values implies a better bargain. A value of 0 indicates 
+that the VWAP is not greater than the asking price, and is therefore not a bargain.
+
+A few records from the output file are show below:
+
+    {ticker="IBM",vwap=83.648,askprice=83.63,asksize=2,ts="Tue Dec 27 14:31:05 2005",index=2.036325952779588}
+    {ticker="IBM",vwap=83.648,askprice=83.58,asksize=2,ts="Tue Dec 27 14:31:08 2005",index=2.140730616957548}
+    {ticker="IBM",vwap=83.648,askprice=83.58,asksize=1,ts="Tue Dec 27 14:31:08 2005",index=1.070365308478774}
+    {ticker="IBM",vwap=83.56533333333333,askprice=83.58,asksize=5,ts="Tue Dec 27 14:31:13 2005",index=0}
+    
+These output records are produced by the `FileSink` operator. Each record shows the contents of the 
+tuples received on the `BargainIndex` stream as a set of tuple attributes. The attributes are formatted
+as a key-value pair. The `vwap` and `index` attributes contains the value-weighted average price and 
+bargain index, respectively.
+
+@param monitoredTickers the set of ticker symbols to select.  The symbols are space delimited.  
+*/
+composite IndexCalculator
+{
+	param
+		expression<rstring> $stockTicker :(rstring)
+			getSubmissionTimeValue("ticker") ;
+	graph
+		@spl_tag(name = "tradeingest")
+		stream<TradeFilterT> TradeFilter = Functor(TradeQuotesImporter2_out0)
+		{
+			logic
+				onTuple TradeQuotesImporter2_out0 :
+				{
+					appTrc(Trace.debug, "The stock ticker is " + $stockTicker) ;
+				}
+
+			param
+				filter : isTrade(ttype) &&(ticker == $stockTicker) ;
+			output
+				TradeFilter : ts = timeStringToTimestamp(date, time, false) ;
+		}
+
+		@spl_tag(name = "tradeingest")
+		stream<QuoteFilterT> QuoteFilter = Functor(TradeQuotes)
+		{
+			param
+				filter : isQuote(ttype) &&(ticker == $stockTicker) ;
+			output
+				QuoteFilter : ts = timeStringToTimestamp(date, time, false) ;
+		}
+
+		stream<VwapT, tuple<decimal64 sumvolume>> PreVwap = Aggregate(TradeFilter)
+		{
+			window
+				TradeFilter : sliding, count(4), count(1), partitioned ;
+			param
+				partitionBy : ticker ;
+			output
+				PreVwap : ticker = Any(ticker), vwap = Sum(price * volume), minprice =
+					Min(price), maxprice = Max(price), avgprice = Average(price), sumvolume =
+					Sum(volume) ;
+		}
+
+		stream<VwapT> Vwap = Functor(PreVwap)
+		{
+			output
+				Vwap : vwap = vwap / sumvolume ;
+		}
+
+		@spl_category(name = "BargainIndexCategory")
+		stream<BargainIndexT> BargainIndex = Join(Vwap as V ; QuoteFilter as Q)
+		{
+			window
+				V : sliding, count(1), partitioned ;
+				Q : sliding, count(0) ;
+			param
+				partitionByLHS : V.ticker ;
+				equalityLHS : V.ticker ;
+				equalityRHS : Q.ticker ;
+			output
+				BargainIndex : index = vwap > askprice ? asksize * exp(vwap - askprice) :
+					0d, ts =(rstring) ctime(ts) ;
+		}
+
+		(stream<TQRecT> TradeQuotes) as TradeQuotesImporter = Import()
+		{
+			param
+				applicationName : "sample::TradeSource" ;
+				streamId : "tradeQuotes" ;
+		}
+
+		(stream<TQRecT> TradeQuotesImporter2_out0) as TradeQuotesImporter2 = Import()
+		{
+			param
+				applicationName : "sample::TradeSource" ;
+				streamId : "tradeQuotes" ;
+		}
+
+		() as Index_Exporter = Export(BargainIndex as inputStream)
+		{
+			param
+				properties : { stockExport = "true" } ;
+		}
+
+}
+

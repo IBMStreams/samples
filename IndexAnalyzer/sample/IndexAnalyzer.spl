@@ -1,0 +1,58 @@
+namespace sample ;
+
+composite IndexAnalyzer
+{
+	graph
+		(stream<BargainIndexT> Import_1_out0) as Import_1 = Import()
+		{
+			param
+				subscription : stockExport == "true" ;
+		}
+
+		() as Sink = Custom(Custom_3 as inputStream)
+		{
+			logic
+				onTuple inputStream :
+				{
+				// Add code here
+
+				}
+
+		}
+
+		@view(name = "Bargain Index Average View", port = Custom_3, sampleSize = 20,
+			bufferTime = 60.0, description = "A view of averages for bargain indexes",
+			activateOption = firstAccess)
+		stream<map<rstring, decimal64> avg> Custom_3 = Functor(Import_1_out0 as
+			inputStream)
+		{
+			logic
+				state :
+				{
+					mutable map<rstring, int64> count = { } ;
+					mutable map<rstring, decimal64> m = { } ;
+				}
+
+				onTuple inputStream :
+				{
+					if(! has(m, ticker))
+					{
+						count [ ticker ] =(int64) 0 ;
+						m [ ticker ] =(decimal64) 0 ;
+					}
+
+					int64 oldCount = count [ ticker ] ;
+					decimal64 oldAverage = m [ ticker ] ;
+					count [ ticker ] = count [ ticker ] +(int64) 1 ;
+					m [ ticker ] =((oldAverage *(decimal64) oldCount) + index) /(decimal64)
+						count [ ticker ] ;
+				}
+
+			output
+				Custom_3 : avg = m ;
+		}
+
+}
+
+
+

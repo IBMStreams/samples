@@ -1,0 +1,20 @@
+namespace sample ;
+
+type TQRecT = rstring ticker, rstring date, rstring time, int32 gmtOffset,
+			rstring ttype, rstring exCntrbID, decimal64 price, decimal64 volume,
+			decimal64 vwap, rstring buyerID, decimal64 bidprice, decimal64 bidsize,
+			int32 numbuyers, rstring sellerID, decimal64 askprice, decimal64 asksize,
+			int32 numsellers, rstring qualifiers, int32 seqno, rstring exchtime,
+			decimal64 blockTrd, decimal64 floorTrd, decimal64 PEratio, decimal64 yield,
+			decimal64 newprice, decimal64 newvol, int32 newseqno, decimal64 bidimpvol,
+			decimal64 askimpcol, decimal64 impvol ;
+type TradeInfoT = decimal64 price, decimal64 volume ;
+type QuoteInfoT = decimal64 bidprice, decimal64 askprice, decimal64 asksize ;
+type TradeQuoteT = TradeInfoT, QuoteInfoT, tuple<rstring ticker, rstring date,
+			rstring time, rstring ttype> ;
+type TradeFilterT = TradeInfoT, tuple<timestamp ts, rstring ticker> ;
+type QuoteFilterT = QuoteInfoT, tuple<timestamp ts, rstring ticker> ;
+type VwapT = rstring ticker, decimal64 minprice, decimal64 maxprice,
+			decimal64 avgprice, decimal64 vwap ;
+type BargainIndexT = rstring ticker, decimal64 vwap, decimal64 askprice,
+			decimal64 asksize, rstring ts, decimal64 index ;
