@@ -20,8 +20,8 @@ All input files must have a correctly formated Comma Separated Value (csv) forma
 
 The DbLoader uses the LinuxSource operator to execute a command.
 The LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
-It is available in GitHub: 
-https://github.com/ejpring/LinuxShellToolkit 
+It is available in: 
+https://www.ibm.com/developerworks/community/files/app#/file/633b140b-73ce-48dc-806e-a8a1e835aa0a
 
 --------------------------------------------------------------------------
 
