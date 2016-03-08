@@ -1,0 +1,121 @@
+namespace application ;
+
+use com.ibm.streams.text.analytics::TextExtract ;
+use com.ibm.streamsx.inet.rest::* ;
+
+/**
+ * This application demonstrates using the TextExtract operator
+ * to load and run an extractor created in the BigInsights web tool.
+ * This is the application that goes along with the article "Real Time Text Analysis with Streams and BigInsights" published on StreamsDev
+ * After launching the application, the results of running the application are updated dynamically in a web app accessible at : http://<pe_host>:$port/textAnalytics to view the app, where port is a configurable parameter. 
+ * @param port the port to use for the web application. Default is 9899.
+ */
+public composite ProductSearch
+{
+	param 
+		expression<int32> $port: (int32) getSubmissionTimeValue("port", "9899");
+	type
+		 InputData = rstring inputLine, rstring source ;
+		/**
+		 * The span type is another way to represent the output of a given column.
+		 * Instead of viewing the data as a string,
+		 * We use a tuple that represents the start and end index of the extracted data.
+		 */
+		Span =  tuple<int32 begin, int32 end>;
+		/**
+		 * The output schema for the Mentions extractor that was created in the web tool. 
+		 */
+		MentionsExtractorOutput =   Span Snippet, rstring Organizations, rstring Offerings;
+
+graph
+		stream<rstring file> FileNameStream = DirectoryScan()
+		{
+			param
+				directory : "input" ;
+				initDelay : 8.0 ;
+		}
+
+		stream<rstring inputLine, rstring source> Input = FileSource(FileNameStream)
+		{
+			param
+				format : line ;
+			output
+				Input : source = FileName() ;
+		}
+
+		/**
+		 * Invocation of the TextExtract operator that loads the extractor created in the web tool
+		 */
+		stream<MentionsExtractorOutput, InputData> TextExtractOutputStream =
+			TextExtract(Input)
+		{
+			param
+				moduleSearchPath : "etc/mentions_extractor" ; //location of where the zip file was unpacked. the operator will load the extractor from that directory.
+				inputDoc : "inputLine" ; //name of the attribute on the input stream that contains the text to analyze
+				outputViews : "Mentions" ; //name(s) of the extractor(s) we created and what to load
+				outputMode : "multiPort" ;
+		}
+
+
+
+	/**
+	 * Format the output -  editing the input text to highlight the occurrence of the match within the text before submitting to the tuple viewer
+	 */
+		stream<rstring match, rstring Organizations, rstring Offerings>
+			FormatOutput = Custom(TextExtractOutputStream)
+		{
+			logic
+				onTuple TextExtractOutputStream :
+				{
+					int32 start = Snippet.begin ; 
+					int32 end = Snippet.end ;
+					mutable rstring left = "" ;
+					mutable rstring formatted_line = "" ;
+					int32 len = length(inputLine) ;
+					if(start > 0)
+					{
+						left = substring(inputLine, 0, start - 1) ;
+					}
+
+					formatted_line = left + " <b> " ; //Surround the match with the html bold tag
+					rstring mention = substring(inputLine, start,(end - start)) ;
+					formatted_line = formatted_line + mention + "</b>" ;
+					formatted_line = formatted_line + substring(inputLine, end,(len - end)) ;
+					mutable FormatOutput T = { } ;
+					assignFrom(T, TextExtractOutputStream) ;
+					T.match = formatted_line ;
+					submit(T, FormatOutput) ;
+				}
+
+		}
+	
+	/**Send the tuples to a web server so we can view them in a browser
+	 * go to : http://<pe_host>:$port/textAnalytics to view the app.
+	 * the $port is an optional parameter
+	 */
+		() as data = HTTPTupleView(Throttle_7_out0 as inPort0Alias)
+		{
+			window
+				inPort0Alias : tumbling, count(2) ;
+			param
+				contextResourceBase : getThisToolkitDir() + "/etc/web" ;
+				context : "textAnalytics" ;
+				port : $port ; //port to open on browser
+
+		}
+
+		() as FileSink_4 = FileSink(TextExtractOutputStream)
+		{
+			param
+				file : "searchResults.txt" ;
+				format : txt ;
+		}
+
+		(stream<rstring match, rstring Organizations, rstring Offerings>
+			Throttle_7_out0) as Throttle_7 = Throttle(FormatOutput)
+		{
+			param
+				rate : 0.5 ;
+		}
+
+}

@@ -1,0 +1,34 @@
+namespace tokenize.example;
+
+composite SPLTokenize {
+param 
+expression<rstring> $inputFile: getSubmissionTimeValue("inputFile","iliad.txt");
+graph 
+
+stream<rstring inputDoc> Documents = FileSource() {
+param file: $inputFile;
+format:line;
+}
+
+stream<list<rstring> tokenList> Tokenized = Functor(Documents) {
+    output Tokenized:
+    tokenList = tokenize(inputDoc,"., \r",false);
+}
+
+stream<rstring token> TokenStream = Custom(Documents) {
+	logic onTuple Documents: {
+		list<rstring> tokens = tokenize(inputDoc, "., \r",false);
+		for (rstring myToken in tokens) {
+			submit({token=myToken},TokenStream);
+		}
+	}
+}
+
+() as streamSink = FileSink(TokenStream) {
+	param file: "spl_tokenstream.out";
+}
+
+() as listSink = FileSink(Tokenized) {
+   param file: "spl_tokenlists.out";
+}
+}

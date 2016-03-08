@@ -1,0 +1,17 @@
+ The Weather Company, IBM and The Weather Company
+
+Like many of us, I wake up and I check the weather. The weather forecast helps me decide how long my commute will take, if I’m going to drink my coffee hot or on ice, and if I’m going to need my sunglasses or an umbrella.
+
+Weather has a major impact on our lives and the economy. It is the single biggest variable in business performance, responsible for half a trillion dollars impact in the US alone every year.
+
+Combining weather data with traditional business data, and data from an unprecedented number of Internet of Things (IoT) enabled systems and devices is fundamentally transforming enterprise decision-making. Combining weather data with other kinds of information—at massive speed and scale that can support an incredible volume of queries at very low latency is an exciting new IoT possibility. I can’t think of a data ingestion use case on the planet we can’t handle for the Internet of Things…very cool. Today, weather sensors are focused on providing weather forecast data; we envision that tomorrow, they could be used for other IoT applications such as smarter cities or utilities. This powerful combination of weather science, data science and technology is what lead to IBM’s relationship with The Weather Company’s global B2B division, WSI, and ultimately, IBM’s acquisition of The Weather Company’s Product and Technology Business.
+
+Last week, on Friday, January 29, IBM closed its acquisition of The Weather Company’s B2B, mobile and cloud-based web properties, including WSI, weather.com, Weather Underground and The Weather Company brand. This acquisition brings together IBM’s powerful cognitive IoT and analytics platform and The Weather Company’s dynamic cloud data platform, which powers the fourth most-used mobile app daily in the United States and handles 26 billion inquiries to its cloud-based services each day.
+
+Pat Toole, IBM Integration executive for The Weather Company, shared his thoughts on the importance of the acquisition, "The Weather Company is an important strategic acquisition that will give us significant differentiation as we deliver cognitive business solutions to our Watson IoT clients. By integrating Watson Core and Watson IoT technology into The Weather Company platform, we will give our clients unique, actionable insight."
+
+The combination of technology and expertise from the two companies will serve as the foundation for the Watson IoT Cloud platform, building on a $3 billion commitment IBM made in March 2015 to invest in the Internet of Things. The acquisition will enable IBM to collect an even larger variety and higher velocity of data sets from billions of IoT sensors around the world while also providing real-time information and insight to tens of millions of users worldwide.
+
+Learn how weather data will transform IoT possibilities.
+
+
