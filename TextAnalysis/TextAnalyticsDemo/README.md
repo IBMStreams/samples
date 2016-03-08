@@ -8,9 +8,9 @@ Before you can run the demo, you'll need to create and export an extractor in th
 Then, to run the application, you'll need:
 - The extractor you created
 - The com.ibm.streams.text toolkit in Streams 4.1
-- The [version 2.5 prerelease](https://github.com/IBMStreams/streamsx.inet/releases) of the com.ibm.streamsx.inet toolkit.
+- The [version 2.5 prerelease](https://github.com/IBMStreams/streamsx.inet/releases) or greater of the com.ibm.streamsx.inet toolkit.
 
 
-Ccompile and submit the main application to a streams instance, optionally specifying the port parameter. The default is 9899.
+Compile and submit the main application to a streams instance, optionally specifying the port parameter. The default is 9899.
 
 In a browser, open the following URL:  http://<pe_host>:<port>/textAnalytics to view the app, where port is the parameter you specified in the previous step.
