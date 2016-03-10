@@ -1,0 +1,38 @@
+module biblumix_biblumix__Export;
+
+/** 
+* @author biblumix (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view Organizations from module biblumix_biblumix_1456168144115__Export;
+import view Offerings from module biblumix_biblumix_1456168144115__Export;
+
+---------------------------------------------
+-- Rules for the extractor 'Mentions' --
+---------------------------------------------
+
+-- Extract the text from the document that conforms
+-- to the following sequence pattern
+create view _Mentions_1 as
+  extract pattern (<O.Organizations>) <Token>{0,5} (<O1.Offerings>)
+  return group 0 as Snippet
+     and group 1 as Organizations
+     and group 2 as Offerings
+  from  biblumix_biblumix_1456168144115__Export.Organizations O,
+        biblumix_biblumix_1456168144115__Export.Offerings O1;
+
+-- Final view representing the extractor 'Mentions' as per the
+-- output specifications
+create view Mentions as
+  select  M.Snippet,
+          M.Organizations,
+          M.Offerings
+  from  _Mentions_1 M
+  consolidate on M.Snippet using 'NotContainedWithin';
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Mentions;
+

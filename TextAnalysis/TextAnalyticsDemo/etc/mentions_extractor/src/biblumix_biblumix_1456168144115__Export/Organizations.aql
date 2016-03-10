@@ -1,0 +1,35 @@
+module biblumix_biblumix_1456168144115__Export;
+
+/** 
+* @author biblumix (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view _Document from module IEWTDocument as _Document;
+
+---------------------------------------------
+-- Rules for the extractor 'Organizations' --
+---------------------------------------------
+
+-- Create a dictionary (view) with required flag 
+-- settings from a .dict file or table
+create dictionary Organizations_dict from file 'Organizations.dict'
+with case insensitive
+;
+
+-- Extract the text from the document that matches
+-- the dictionary terms
+-- Final view representing the extractor 'Organizations' as per the
+-- output specifications
+create view Organizations as
+  extract dictionary 'Organizations_dict'
+    on D.text as Organizations
+  from _Document D;
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Organizations;
+
+export dictionary Organizations_dict;
+

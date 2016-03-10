@@ -1,0 +1,13 @@
+module biblumix_biblumix;
+
+/** 
+* @author biblumix (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Mentions'
+import view Mentions from module biblumix_biblumix__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Mentions'
+output view biblumix_biblumix__Export.Mentions as 'Mentions';

@@ -1,0 +1,65 @@
+namespace application ;
+
+use com.ibm.streams.text.analytics::* ;
+
+/**
+ * This is an application that integrates the sample text analytics extractor from the BigInsights starter Kit with streams.
+ */
+composite BigInsightsStarterKitMain
+{
+	graph
+		stream<rstring line> Input = FileSource()
+		{
+			param
+				file : "twitterNEG_POS.json" ;
+				format : line ;
+		}
+
+		stream<RawTweetType> TwitterParsedStream =
+			com.ibm.streamsx.json::JSONToTuple(Input)
+		{
+			
+		}
+
+		stream<TweetType> RenamedStream = Functor(TwitterParsedStream)
+		{
+			output
+				RenamedStream : tweet = text ; //rename the "text" attribute in the tweet b/c it conflicts with the output from the Sentiment extractor
+
+		}
+
+		stream<ProductSentimentType, TweetType> ProductSentimentStream =
+			TextExtract(RenamedStream)
+		{
+			param
+				outputMode : "multiPort" ;
+				outputViews : "Product_Sentiment" ;
+				inputDoc : "tweet" ;
+				moduleSearchPath: "etc/productSentimentExtractor";
+			config
+				placement : partitionColocation("java_prop") ;
+		}
+		
+
+		() as Output = Custom(ProductSentimentStream)
+		{
+			logic
+				onTuple ProductSentimentStream :
+				{
+					printStringLn("Sentiment = " + polarity + ", text: " + text + ", target:  "
+						+ target) ;
+				}
+
+		}
+
+		/**
+		 * Helper to set needed system properties at runtime
+		 * @exclude
+		 */
+		() as PropertyHelper_8 = PropertyHelper()
+		{
+			config
+				placement : partitionColocation("java_prop") ;
+		}
+
+}

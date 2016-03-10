@@ -1,0 +1,28 @@
+namespace application;
+/**
+ * This type matches the user JSON attribute in a tweet.
+ * See [https://dev.twitter.com/docs/platform-objects/users]
+ */
+type UserType = boolean verified, rstring name, rstring id_str,
+	int64 listed_count, int64 utc_offset, int64 id, rstring time_zone,
+	int64 friends_count, int64 followers_count, rstring created_at,
+	boolean default_profile, rstring lang, int64 statuses_count, rstring location,
+	boolean contributors_enabled, int64 favourites_count, rstring description,
+	rstring screen_name ;
+
+/**
+ * Coordinates of the user
+ */
+type CoordinatesType = list<float64> coordinates ;
+
+/**
+ * This type matches the names of the JSON attributes in a tweet.
+ * See [https://dev.twitter.com/docs/platform-objects/tweets] for details
+ */
+type RawTweetType = CoordinatesType coordinates, UserType user,
+	boolean favorited, rstring created_at, rstring text, rstring id_str,
+	int64 retweet_count, int64 id, rstring source, boolean retweeted ;
+type TweetType = CoordinatesType coordinates, UserType user, boolean favorited,
+	rstring created_at, rstring tweet, rstring id_str, int64 retweet_count,
+	int64 id, rstring source, boolean retweeted ;
+type ProductSentimentType = rstring text, rstring target, rstring polarity;

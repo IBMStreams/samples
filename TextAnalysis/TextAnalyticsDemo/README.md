@@ -1,16 +1,14 @@
 
-This is the sample application discussed in this article: https://developer.ibm.com/streamsdev/docs/real-time-text
-The application demonstrates how you can create a Streams application that analyzes text in real time using the IBM BigInsights Text Analytics web tool and the com.ibm.streams.text toolkit.
+This project contains the ProductSearch application referred to in this [article](https://developer.ibm.com/streamsdev/docs/real-time-text) on StreamsDev.
 It analyzes incoming text data for mentions of Streams and other related technologies, displaying the search results in  a web browser.
+It demonstrates how you can create a Streams application that analyzes text in real time using the IBM BigInsights Text Analytics web tool and the com.ibm.streams.text toolkit.
 
-Before you can run the demo, you'll need to create and export an extractor in the BigInsights Text Analytics web tool by following the steps outlined in the video.
++ Running the application in the Streaming Analytics Service on Bluemix
+The `bluemix` folder in this project contains a pre-built Streams application bundle file that is ready to be submitted to an instance of the Streaming Analytics service.
+To run the application you simply submit the .sab file in the Streams Console. You can verify the results in the Streams Console by checking the Log Viewer of the PE containing the `OutputPrinter` operator.  
 
-Then, to run the application, you'll need:
-- The extractor you created
++ Running the application locally
+To compile and run the application, you'll need:
 - The com.ibm.streams.text toolkit in Streams 4.1
 - The [version 2.5 prerelease](https://github.com/IBMStreams/streamsx.inet/releases) or greater of the com.ibm.streamsx.inet toolkit.
-
-
-Compile and submit the main application to a streams instance, optionally specifying the port parameter. The default is 9899.
-
-In a browser, open the following URL:  http://<pe_host>:<port>/textAnalytics to view the app, where port is the parameter you specified in the previous step.
+Once the application is compiled and you have submitted the job, open the following URL in a browser  `http://<pe_host>:9899/textAnalytics` to view the running application.

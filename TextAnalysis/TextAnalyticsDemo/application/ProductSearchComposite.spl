@@ -7,32 +7,31 @@ use com.ibm.streamsx.inet.rest::* ;
  * This application demonstrates using the TextExtract operator
  * to load and run an extractor created in the BigInsights web tool.
  * This is the application that goes along with the article "Real Time Text Analysis with Streams and BigInsights" published on StreamsDev
- * After launching the application, the results of running the application are updated dynamically in a web app accessible at : http://<pe_host>:$port/textAnalytics to view the app, where port is a configurable parameter. 
- * @param port the port to use for the web application. Default is 9899.
+ * After launching the application, the results of running the application are updated dynamically in a web app accessible at : http://<pe_host>:9899/textAnalytics to view the app
  */
 public composite ProductSearch
 {
-	param 
-		expression<int32> $port: (int32) getSubmissionTimeValue("port", "9899");
 	type
-		 InputData = rstring inputLine, rstring source ;
+		InputData = rstring inputLine, rstring source ;
 		/**
 		 * The span type is another way to represent the output of a given column.
 		 * Instead of viewing the data as a string,
 		 * We use a tuple that represents the start and end index of the extracted data.
 		 */
-		Span =  tuple<int32 begin, int32 end>;
+		Span = tuple<int32 begin, int32 end> ;
 		/**
 		 * The output schema for the Mentions extractor that was created in the web tool. 
 		 */
-		MentionsExtractorOutput =   Span Snippet, rstring Organizations, rstring Offerings;
-
-graph
+		MentionsExtractorOutput = Span Snippet, rstring Organizations,
+			rstring Offerings ;
+	graph
 		stream<rstring file> FileNameStream = DirectoryScan()
 		{
 			param
-				directory : "input" ;
+				directory : getApplicationDir() + "/etc/input" ;
 				initDelay : 8.0 ;
+			config
+				placement : partitionColocation("dataSource") ;
 		}
 
 		stream<rstring inputLine, rstring source> Input = FileSource(FileNameStream)
@@ -41,6 +40,8 @@ graph
 				format : line ;
 			output
 				Input : source = FileName() ;
+			config
+				placement : partitionColocation("dataSource") ;
 		}
 
 		/**
@@ -56,9 +57,7 @@ graph
 				outputMode : "multiPort" ;
 		}
 
-
-
-	/**
+		/**
 	 * Format the output -  editing the input text to highlight the occurrence of the match within the text before submitting to the tuple viewer
 	 */
 		stream<rstring match, rstring Organizations, rstring Offerings>
@@ -67,7 +66,7 @@ graph
 			logic
 				onTuple TextExtractOutputStream :
 				{
-					int32 start = Snippet.begin ; 
+					int32 start = Snippet.begin ;
 					int32 end = Snippet.end ;
 					mutable rstring left = "" ;
 					mutable rstring formatted_line = "" ;
@@ -88,11 +87,36 @@ graph
 				}
 
 		}
-	
-	/**Send the tuples to a web server so we can view them in a browser
-	 * go to : http://<pe_host>:$port/textAnalytics to view the app.
-	 * the $port is an optional parameter
-	 */
+
+		/**
+		 * This is a simple helper to print the results of running the extractor to the console.
+		 * In the Streaming Analytics service, go to the Log Viewer and Click on the PE's Console Log to view output
+		 */
+		() as OutputPrinter = Custom(TextExtractOutputStream)
+		{
+			logic
+				onTuple TextExtractOutputStream :
+				{
+					printStringLn("Snippet: " + substring(inputLine, Snippet.begin,
+						Snippet.end - Snippet.begin) + ", Organization: " + Organizations +
+						", Offering: " + Offerings + ", Original Input: " + inputLine) ;
+				}
+
+		}
+		
+		(stream<rstring match, rstring Organizations, rstring Offerings>
+			Throttle_7_out0) as Throttle_7 = Throttle(FormatOutput)
+		{
+			param
+				rate : 0.5 ;
+		}
+		
+		
+		/**
+		 * Send the tuples to a web server so we can view them in a browser
+		 * go to : http://<pe_host>:$port/textAnalytics to view the app.
+		 * Not available if running this application in the Streaming Analytics service - u
+		 * */
 		() as data = HTTPTupleView(Throttle_7_out0 as inPort0Alias)
 		{
 			window
@@ -100,22 +124,16 @@ graph
 			param
 				contextResourceBase : getThisToolkitDir() + "/etc/web" ;
 				context : "textAnalytics" ;
-				port : $port ; //port to open on browser
+				port : 9899 ; //port to open on browser - change this as needed.
 
 		}
-
 		() as FileSink_4 = FileSink(TextExtractOutputStream)
 		{
 			param
-				file : "searchResults.txt" ;
+				file : "/tmp/productSearchExtractorResults.txt" ;
 				format : txt ;
 		}
 
-		(stream<rstring match, rstring Organizations, rstring Offerings>
-			Throttle_7_out0) as Throttle_7 = Throttle(FormatOutput)
-		{
-			param
-				rate : 0.5 ;
-		}
+	
 
 }

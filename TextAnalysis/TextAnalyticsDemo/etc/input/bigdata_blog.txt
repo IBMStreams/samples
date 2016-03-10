@@ -1,0 +1,25 @@
+
+
+IBM Insight 2015 provides the opportunity to explore solutions for highly challenging problems, connect with peers and find out what’s new in streaming analytics. It features more than 25 elective sessions, three hands-on labs and ten demonstrations on streaming analytics.
+
+A keynote on Apache Hadoop, Apache Spark and IBM InfoSphere Streams—which takes place Tuesday, 27 October 2015, at 10:30 AM PT—presents how Dimension Data applied data science to data streams for creating an immersive, engaging experience for fans of the Tour de France cycling race. And don’t miss seeing IBMers compete for the honor of the best IBM athlete.
+Information streams
+
+Continuous stream processing is part of the IBM analytics platform. InfoSphere Streams provides a comprehensive streaming analytics platform and connects to all data streams. It can be used to build sophisticated streaming analytics such as natural-language processing, geospatial analysis and more by connecting directly to data streams, and build, deploy and score models based on data streams. Several sessions on streaming analytics are presented, direct from colleagues. 
+
+Thomson Reuters Financial Services Optimizes Real-Time Content Analytics: In the financial world, new and creative products can make or break companies. During this session, presenters discuss the architecture and applications that enable in-stream analysis of financial data, filings data from 130 countries in 20 languages and trade information from more than 500,000 equity instruments for real-time visualization and searching to deliver the right services to clients faster. 
+
+IBM InfoSphere BigInsights and InfoSphere Streams: The Answer to Real-Time Analytics for Allied Irish Banks (AIB): Real-time analytics can deliver fast, efficient service to customers, and AIB is reinventing itself as a streamlined, technology-led bank that delivers consistently great service. With new channels, data types, sources and technologies, AIB was challenged to bring these sources together to meet the needs of today’s customers. Learn why AIB chose InfoSphere BigInsights and InfoSphere Streams for real-time processing of its large data sets. 
+
+Powering the Tour de France – Applying In-Streams Analytics to the Largest Cycling Race on the Planet: In support of its goal to revolutionize the viewing experience of billions of cycling fans across the globe, Dimension Data needed to analyze thousands of data points/second from over 200 riders across 21 grueling days of cycling. The joint team from Dimension Data and IBM developed a winning solution that provides advanced analysis of rider data for calculating dynamic race position rankings and groupings of riders. 
+
+Ford Is Changing the Way the World Moves With IBM Big Data and Analytics: Ford Motor Company is adapting to create new opportunities adjacent to the traditional automobile manufacturing business. During 2015, a number of new business model experiments are being conducted in London and other urban cities to learn about such opportunities. 
+
+http://www.ibmbigdatahub.com/sites/default/files/streamingcomputing_insight_embed.jpgReal-Time Outbound Contextual Marketing at Telstra: Australia-based Telstra is a telecommunications and information services company that is implementing a real-time, outbound, contextual marketing solution with Knowesis—a communications provider headquartered in Singapore—and IBM and Unica. Find out about real-time, contextual marketing, the reasons for choosing InfoSphere Streams and Knowesis Sift, challenges that were overcome and the new campaign examples that have been launched as a result. 
+
+Engine and Vehicle Cloud Analytics in Action – A Customer Case Study: Cummins is a large independent manufacturer of diesel engines. Today, they collect thousands of engine-performance data points into a central, cloud-based solution that includes InfoSphere BigInsights, InfoSphere Streams and IBM SPSS predictive analytics. The company analyzes this information for diagnostics and performance data, and it is creating a new generation of value-added data services for its customers and fleet operators.
+Education streams
+
+Many other interesting breakout sessions are scheduled at IBM Insight 2015 to learn much more about streaming analytics and where IBM is sharing its roadmap of streaming analytics. Learn more about IBM analytics, streaming analytics and other advanced analytics. 
+
+Related Content
