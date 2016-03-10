@@ -1,0 +1,29 @@
+ARMONK, N.Y., Feb. 19, 2016 /PRNewswire/ -- IBM (NYSE: IBM) today announced Quarks, a breakthrough technology now available to the open source community that embeds streaming analytics onto Internet of Things (IoT) devices. Analyzing data at the edge continuously, can help companies generate insights more quickly and reduce network communication costs. IBM has submitted a proposal to Apache Software Foundation to request incubation of Quarks.
+
+View photo
+.
+IBM Corporation logo.
+
+IDC predicts that the worldwide installed base of IoT endpoints will grow at a rate of 21.4% through 2019 to 25.6 billion endpoints with IDC expecting approximately 30 billion connections in 20201. These devices will be enabled with digital sensing, computing and communications capabilities, giving passive objects a digital voice and the ability to create and deliver new data streams.
+
+Developers and data scientists can use the open source code in Quarks to build new apps that can handle massive amounts of IoT data streaming from sensors, smart meters, mobile communications and other connected devices. Businesses across industries –from automotive and healthcare to telecommunications and manufacturing –can reduce communication costs and decrease time to insight with Quark's ability to deliver real-time analytics, boost application intelligence, and improve cognitive systems.
+
+"As businesses require more efficient analytics for the variety of connected devices they're using, Quarks can provide tremendous amounts of potential as a streaming analytics solution for the IoT. Its ability to integrate with a rich ecosystem of data sources, allows users to draw greater insight from more data with less work," said Nagui Halim, IBM Fellow and Director, IBM Streams. "By contributing Quarks to the open source community, innovation will move faster, and can enable businesses to move from raw data to insight-driven actions more quickly."
+
+SilverHook Powerboats, maker of some of the world's fastest monohull watercrafts, wanted to use sensor data collected from racing boats to improve the decision-making abilities and safety of racers and to enhance the fan experience. In powerboat racing, racers rely on telemetry data from their boats to formulate strategy and make safety-related decisions. However the high speeds and the pounding against salt water often taxes on-board equipment and drivers. To mitigate such risks, monitoring data is fed back to analytics engines, which provide real-time alerts such as engine performance issues, potential battery failure or even biometric data such as driver exhaustion.
+
+Sensors on SilverHook's racing boats provide more than 80 sources of data, gather measurements at 100 times per second and then transmit the data to on-board computers at five times per second for on-shore teams. But there wasn't a way to collect, distill and deliver insights in a useful format. In collaboration with IBM and Dataskill, SilverHook Powerboats employed a solution that streamed data to a cloud-based analytics solution. Racers can now have access to real-time information while they race, helping them to make adjustments to on-board equipment while they race. The rich visual interface can also allow fans view boat locations, speed and leaderboards in real-time.
+
+"Quarks represents a natural extension of our streaming analytics project. Quarks can be deployed directly on our boats to perform analytics locally. The result is faster insights, which will ultimately help us win the race," said Nigel Hook, co-founder and CEO of SilverHook Powerboats. "Another benefit is we remove dependence on communications networks, which can be unreliable on the water. Quarks offers analytics at the edge so we can pursue a common streaming analytic model across our boats and our central streaming application."
+
+Quarks was conceptualized for the open source community based on the high scalability and dynamic adaptability of IBM Streams. 
+
+Many clients today are using IBM Streams as a cost-efficient way to visualize data, help expand the use of data analytics to a much broader base of users, and help build new products and services.
+
+IBM, an established leader in the IoT with more than 4,000 client engagements in 170 countries, 1,400 partners in its growing ecosystem and more than 750 IoT patents, is extending the power of cognitive computing to the billions of connected devices, sensors and systems that comprise the IoT. In 2015, IBM announced a $3 Billion investment in Internet of Things and launched new global headquarters of IBM Watson IoT business in Munich, Germany.
+
+For more information on IBM Watson IoT, please visit www.ibm.com/iot or follow @IBMIoT on Twitter.
+
+For more information on Quarks, see http://wiki.apache.org/incubator/QuarksProposal.
+
+For more information on IBM Analytics, see http://www.ibm.com/analytics.
