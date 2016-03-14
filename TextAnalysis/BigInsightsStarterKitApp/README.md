@@ -1,5 +1,5 @@
 
-This is one of the sample applications discussed in this [article](https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/).  It loads and runs the extractor created in the [BigInsights Starter Kit](https://ibm-open-platform.ibm.com/biginsights/starterkits/biginsights-starter-kit2-cloud/starterkit2cloud.html#/starterkit)
+This is one of the sample applications discussed in this [article](https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/).  It loads and runs the extractor created in the [BigInsights Starter Kit](https://ibm-open-platform.ibm.com/biginsights/starterkits/biginsights-starter-kit2-cloud/starterkit2cloud.html#/starterkit).
 
 To compile and run the application, you'll need:
 - The com.ibm.streams.text toolkit in Streams 4.1
