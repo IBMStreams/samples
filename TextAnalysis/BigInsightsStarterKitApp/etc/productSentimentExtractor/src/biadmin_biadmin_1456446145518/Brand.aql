@@ -1,0 +1,13 @@
+module biadmin_biadmin_1456446145518;
+
+/** 
+* @author biadmin (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Brand'
+import view Brand from module biadmin_biadmin_1456446145518__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Brand'
+output view biadmin_biadmin_1456446145518__Export.Brand as 'Brand';

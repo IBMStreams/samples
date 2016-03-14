@@ -1,0 +1,13 @@
+module biadmin_biadmin_1456446145518;
+
+/** 
+* @author biadmin (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Product Name'
+import view Product_Name from module biadmin_biadmin_1456446145518__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Product Name'
+output view biadmin_biadmin_1456446145518__Export.Product_Name as 'Product_Name';

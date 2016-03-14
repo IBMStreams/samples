@@ -1,0 +1,13 @@
+module biadmin_biadmin;
+
+/** 
+* @author biadmin (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Product Sentiment'
+import view Product_Sentiment from module biadmin_biadmin__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Product Sentiment'
+output view biadmin_biadmin__Export.Product_Sentiment as 'Product_Sentiment';

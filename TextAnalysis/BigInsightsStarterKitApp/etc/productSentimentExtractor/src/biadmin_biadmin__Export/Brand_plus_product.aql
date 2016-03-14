@@ -1,0 +1,31 @@
+module biadmin_biadmin__Export;
+
+/** 
+* @author biadmin (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view Brand from module biadmin_biadmin_1456446145518__Export;
+import view Product_Name from module biadmin_biadmin_1456446145518__Export;
+
+---------------------------------------------
+-- Rules for the extractor 'Brand plus product' --
+---------------------------------------------
+
+-- Extract the text from the document that conforms
+-- to the following sequence pattern
+-- Final view representing the extractor 'Brand plus product' as per the
+-- output specifications
+create view Brand_plus_product as
+  extract pattern (<B.Brand>) (<P.Product_Name>)
+  return group 0 as Brand_plus_product
+     and group 1 as Brand
+     and group 2 as Product_Name
+  from  biadmin_biadmin_1456446145518__Export.Brand B,
+        biadmin_biadmin_1456446145518__Export.Product_Name P;
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Brand_plus_product;
+
