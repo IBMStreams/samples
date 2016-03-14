@@ -1,5 +1,4 @@
-
-This project contains the ProductSearch application referred to in this [article](https://developer.ibm.com/streamsdev/docs/real-time-text) on StreamsDev.
+This project contains the ProductSearch application referred to in this [article](https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/) on StreamsDev.
 It analyzes incoming text data for mentions of Streams and other related technologies, displaying the search results in  a web browser.
 It demonstrates how you can create a Streams application that analyzes text in real time using the IBM BigInsights Text Analytics web tool and the com.ibm.streams.text toolkit.
 
@@ -9,6 +8,6 @@ To run the application you simply submit the .sab file in the Streams Console. Y
 
 + Running the application locally
 To compile and run the application, you'll need:
-- The com.ibm.streams.text toolkit in Streams 4.1
+- The com.ibm.streams.text toolkit in Streams 4.1.
 - The [version 2.5 prerelease](https://github.com/IBMStreams/streamsx.inet/releases) or greater of the com.ibm.streamsx.inet toolkit.
-Once the application is compiled and you have submitted the job, open the following URL in a browser  `http://<pe_host>:9899/textAnalytics` to view the running application.
+Once the application is compiled and you have submitted the job, open the following URL in a browser: `http://<pe_host>:9899/textAnalytics` to view the running application.
