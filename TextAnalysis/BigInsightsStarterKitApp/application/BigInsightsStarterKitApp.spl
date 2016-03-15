@@ -3,7 +3,8 @@ namespace application ;
 use com.ibm.streams.text.analytics::* ;
 
 /**
- * This is an application that integrates the sample text analytics extractor from the BigInsights starter Kit with streams.
+ * This is an application that integrates the sample text analytics extractor from the BigInsights starter Kit with Streams.
+ * Set the TEXTANALYTICS_HOME environment variable to <STREAMS_INSTALL>/toolkits/com.ibm.streams.text/lib/TextAnalytics before running. 
  */
 public composite BigInsightsStarterKitMain
 {
@@ -37,13 +38,11 @@ public composite BigInsightsStarterKitMain
 				outputMode : "multiPort" ; 
 				outputViews : "Product_Sentiment" ; //name of extractor
 				inputDoc : "tweet" ; 
-				moduleSearchPath: "etc/productSentimentExtractor"; //path to the extractor created by following the steps in the starter kit
-			config
-				placement : partitionColocation("java_prop") ;
+				moduleSearchPath:   "etc/productSentimentExtractor"; //path to the extractor created by following the steps in the starter kit
 		}
 		
 
-		() as Output = Custom(ProductSentimentStream)
+		() as PrintResults = Custom(ProductSentimentStream)
 		{
 			logic
 				onTuple ProductSentimentStream :
@@ -54,14 +53,5 @@ public composite BigInsightsStarterKitMain
 
 		}
 
-		/**
-		 * Helper to set needed system properties at runtime
-		 * @exclude
-		 */
-		() as PropertyHelper_8 = PropertyHelper()
-		{
-			config
-				placement : partitionColocation("java_prop") ;
-		}
 
 }

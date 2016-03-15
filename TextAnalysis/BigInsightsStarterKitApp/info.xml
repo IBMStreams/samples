@@ -9,11 +9,11 @@
   <info:dependencies>
     <info:toolkit>
       <common:name>com.ibm.streams.text</common:name>
-      <common:version>2.1.0</common:version>
+      <common:version>[2.1.0,3.0.0)</common:version>
     </info:toolkit>
     <info:toolkit>
       <common:name>com.ibm.streamsx.json</common:name>
-      <common:version>[1.1.1,2.0.0)</common:version>
+      <common:version>[1.0.0,2.0.0)</common:version>
     </info:toolkit>
   </info:dependencies>
 </info:toolkitInfoModel>
