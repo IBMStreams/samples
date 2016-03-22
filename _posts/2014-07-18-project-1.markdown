@@ -1,0 +1,8 @@
+---
+title: Internet of Things Toolkit
+subtitle: Easily connect Streams applications to IBM Watson IoT Platform
+layout: default
+modal-id: 1
+thumbnail: blue.jpg
+sample-url: https://github.com/IBMStreams/streamsx.iotf/samples
+---

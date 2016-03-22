@@ -1,0 +1,9 @@
+---
+title: Messaging Toolkit
+subtitle: Kafka, JMS, XMS, MQTT, and RabbitMQ messaging server integration. 
+layout: default
+modal-id: 1
+img: 1.jpg
+thumbnail: green.jpg
+sample-url: https://github.com/IBMStreams/streamsx.messaging/samples
+---

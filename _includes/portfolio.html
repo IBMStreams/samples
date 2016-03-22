@@ -1,0 +1,24 @@
+<section class="no-padding" id="portfolio">
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            {% for post in site.posts %}
+                <div class="col-lg-4 col-sm-6">
+                    <a href="{{ post.sample-url }}" class="portfolio-box">
+                        <img src="img/portfolio/{{ post.thumbnail }}" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    {{ post.title }}
+                                </div>
+                                <br>
+                                <div class="project-category text-faded">
+                                    {{ post.subtitle }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

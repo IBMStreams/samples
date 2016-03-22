@@ -1,0 +1,8 @@
+---
+title: INet Toolkit
+subtitle: Support for common internet protocols such as HTTP, WebSockets, etc.
+layout: default
+modal-id: 1
+thumbnail: red.jpg
+sample-url: https://github.com/IBMStreams/streamsx.inet/samples
+---
