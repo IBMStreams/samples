@@ -1,0 +1,8 @@
+---
+title: HBase Toolkit
+subtitle: Streams integration for Apache HBase
+layout: default
+modal-id: 1
+sample-url: https://github.com/IBMStreams/streamsx.hbase/tree/master/samples
+thumbnail: darkBlue.jpg
+---
