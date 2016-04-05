@@ -11,15 +11,23 @@ use com.ibm.streams.timeseries.analysis::AnomalyDetector ;
 composite STD2Anomaly
 {
 	graph
-		(stream<float64 data> SrcStream) as SrcOp = FileSource()
+		(stream<uint64 time, float64 data> SrcStream) as SrcOp = FileSource()
 		{
+			logic
+				state :
+				{
+					mutable uint64 time_ = 0ul ;
+				}
+
 			param
 				file : "anomaly_input.csv" ;
 				format : csv ;
+			output
+				SrcStream : time = time_ ++ ;
 		}
 
-		(stream<float64 data, float64 season, float64 trend, float64 residual>
-			STD2Stream) as STD2Op = STD2(SrcStream)
+		(stream<uint64 time, float64 data, float64 season, float64 trend,
+			float64 residual> STD2Stream) as STD2Op = STD2(SrcStream)
 		{
 			param
 				inputTimeSeries : data ;
@@ -30,16 +38,18 @@ composite STD2Anomaly
 				STD2Stream : season = season(), trend = trend(), residual = residuals() ;
 		}
 
-		(stream<float64 data, float64 season, float64 trend, float64 residual,
-			float64 score> AnomalyStream) as AnomalyDetectorOp =
-			AnomalyDetector(STD2Stream)
+		(stream<uint64 startTime, uint64 endTime, float64 data, float64 season,
+			float64 trend, float64 residual, float64 score> AnomalyStream) as
+			AnomalyDetectorOp = AnomalyDetector(STD2Stream)
 		{
 			param
 				referenceLength : 26ul ;
 				inputTimeseries : residual ;
 				patternLength : 6ul ;
+				inputTimestamp : time ;
 			output
-				AnomalyStream : score = getScore() ;
+				AnomalyStream : score = getScore(), startTime = getStartTime(), endTime =
+					getEndTime() ;
 		}
 
 		() as SinkOp = FileSink(AnomalyStream as inPort0Alias)
@@ -48,5 +58,6 @@ composite STD2Anomaly
 				file : "anomaly_result.csv" ;
 				flush : 1u ;
 		}
+
 }
 
