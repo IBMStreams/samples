@@ -1,0 +1,52 @@
+namespace application ;
+
+use com.ibm.streams.timeseries.analysis::STD2 ;
+use com.ibm.streams.timeseries.analysis::AnomalyDetector ;
+
+/**
+ * This sample demonstrates how to use the STD2 operator in conjunction 
+ * with the AnomalyDetector operator in order to perform anomaly detection 
+ * on seasonal data.
+ */
+composite STD2Anomaly
+{
+	graph
+		(stream<float64 data> SrcStream) as SrcOp = FileSource()
+		{
+			param
+				file : "anomaly_input.csv" ;
+				format : csv ;
+		}
+
+		(stream<float64 data, float64 season, float64 trend, float64 residual>
+			STD2Stream) as STD2Op = STD2(SrcStream)
+		{
+			param
+				inputTimeSeries : data ;
+				seasonLength : 13u ;
+				algorithm : Additive ;
+				numSeasons : 20u ;
+			output
+				STD2Stream : season = season(), trend = trend(), residual = residuals() ;
+		}
+
+		(stream<float64 data, float64 season, float64 trend, float64 residual,
+			float64 score> AnomalyStream) as AnomalyDetectorOp =
+			AnomalyDetector(STD2Stream)
+		{
+			param
+				referenceLength : 26ul ;
+				inputTimeseries : residual ;
+				patternLength : 6ul ;
+			output
+				AnomalyStream : score = getScore() ;
+		}
+
+		() as SinkOp = FileSink(AnomalyStream as inPort0Alias)
+		{
+			param
+				file : "anomaly_result.csv" ;
+				flush : 1u ;
+		}
+}
+
