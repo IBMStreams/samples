@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<operatorInstanceModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator/instance" xmlns:an="http://www.ibm.com/xmlns/prod/streams/spl/annotation" xmlns:tt="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <context>
+    <kind>com.ibm.streams.geospatial::OSMCorrelator</kind>
+    <class>OSMPointMatcher_18::OSMCorrelator_3</class>
+    <operatorModelDirectory>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/spl/spl/utility/JavaOp</operatorModelDirectory>
+    <applicationDirectory>/home/bluemix/workspace/MapMatch</applicationDirectory>
+    <dataDirectory>/home/bluemix/workspace/MapMatch/data</dataDirectory>
+    <outputDirectory>/home/bluemix/workspace/MapMatch/output/com.ibm.streams.mapmatch.Main/Distributed</outputDirectory>
+    <toolkits>
+      <toolkit isCurrentToolkit="false">
+        <name>MapMatch</name>
+        <rootDirectory>/home/bluemix/workspace/MapMatch</rootDirectory>
+        <index>0</index>
+      </toolkit>
+      <toolkit isCurrentToolkit="false">
+        <name>spl</name>
+        <rootDirectory>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/spl</rootDirectory>
+        <index>1</index>
+      </toolkit>
+      <toolkit isCurrentToolkit="true">
+        <name>com.ibm.streams.geospatial</name>
+        <rootDirectory>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial</rootDirectory>
+        <index>2</index>
+      </toolkit>
+      <toolkit isCurrentToolkit="false">
+        <name>com.ibm.streamsx.inet</name>
+        <rootDirectory>/home/bluemix/com.ibm.streamsx.inet</rootDirectory>
+        <index>3</index>
+      </toolkit>
+    </toolkits>
+    <optimized>true</optimized>
+    <verbose>false</verbose>
+    <networkByteOrdering>false</networkByteOrdering>
+    <codeBeautification>false</codeBeautification>
+    <includes>
+      <include>"../../type/BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO.h"</include>
+      <include>"../../type/BeJwrMfI0NExPzUstSixJTfFM8TQ0yC_1KTM_1MS8zxTAEAlnoKBa.h"</include>
+    </includes>
+    <stateVariables/>
+    <runtimeConstants>
+      <runtimeConstant>
+        <name>lit$0</name>
+        <cppType>SPL::rstring</cppType>
+        <splType>rstring</splType>
+        <value>"-Xmx2048m"</value>
+      </runtimeConstant>
+    </runtimeConstants>
+    <sourceLocation>
+      <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+      <line>64</line>
+      <column>3</column>
+    </sourceLocation>
+    <productVersion>4.0.1.0</productVersion>
+    <types>
+      <type index="0" type="rstring"/>
+    </types>
+    <javaOperatorModelDirectory>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMCorrelator</javaOperatorModelDirectory>
+    <checkpointKind>none</checkpointKind>
+  </context>
+
+  <parameters>
+    <parameter>
+      <name>className</name>
+      <values>
+        <value>
+          <cppType>SPL::rstring</cppType>
+          <splType>rstring</splType>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>SPL::rstring("com.ibm.streams.geospatial.OSMCorrelator")</cppExpression>
+          <splExpression>"com.ibm.streams.geospatial.OSMCorrelator"</splExpression>
+          <hasFunctions>false</hasFunctions>
+          <hasSideEffects>false</hasSideEffects>
+          <readsState>false</readsState>
+          <hasStreamAttributes>false</hasStreamAttributes>
+          <parameterExpressionMode>AttributeFree</parameterExpressionMode>
+          <sourceLocation>
+            <file>&lt;invalid&gt;</file>
+            <line>-1</line>
+            <column>0</column>
+          </sourceLocation>
+        </value>
+      </values>
+      <sourceLocation>
+        <file>&lt;invalid&gt;</file>
+        <line>-1</line>
+        <column>0</column>
+      </sourceLocation>
+    </parameter>
+    <parameter>
+      <name>classLibrary</name>
+      <values>
+        <value>
+          <cppType>SPL::rstring</cppType>
+          <splType>rstring</splType>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>(getToolkitDirectory(SPL::rstring("com.ibm.streams.geospatial")) + SPL::rstring("/impl/lib/SpatialNativeFunctions.jar"))</cppExpression>
+          <splExpression>getToolkitDirectory("com.ibm.streams.geospatial") + "/impl/lib/SpatialNativeFunctions.jar"</splExpression>
+          <hasFunctions>true</hasFunctions>
+          <hasSideEffects>false</hasSideEffects>
+          <readsState>false</readsState>
+          <hasStreamAttributes>false</hasStreamAttributes>
+          <parameterExpressionMode>AttributeFree</parameterExpressionMode>
+          <sourceLocation>
+            <file>&lt;invalid&gt;</file>
+            <line>-1</line>
+            <column>0</column>
+          </sourceLocation>
+          <expressionTree>
+            <binary op="+" type="0">
+              <lhs>
+                <call fcn="getToolkitDirectory" type="0">
+                  <args count="1">
+                    <arg type="0">
+                      <literal type="0">"com.ibm.streams.geospatial"</literal>
+                    </arg>
+                  </args>
+                </call>
+              </lhs>
+              <rhs>
+                <literal type="0">"/impl/lib/SpatialNativeFunctions.jar"</literal>
+              </rhs>
+            </binary>
+          </expressionTree>
+        </value>
+      </values>
+      <sourceLocation>
+        <file>&lt;invalid&gt;</file>
+        <line>-1</line>
+        <column>0</column>
+      </sourceLocation>
+    </parameter>
+    <parameter>
+      <name>vmArg</name>
+      <values>
+        <value>
+          <cppType>SPL::rstring</cppType>
+          <splType>rstring</splType>
+          <hasRuntimeConstant>true</hasRuntimeConstant>
+          <cppExpression>lit$0</cppExpression>
+          <splExpression>"-Xmx2048m"</splExpression>
+          <hasFunctions>false</hasFunctions>
+          <hasSideEffects>false</hasSideEffects>
+          <readsState>false</readsState>
+          <hasStreamAttributes>false</hasStreamAttributes>
+          <parameterExpressionMode>Constant</parameterExpressionMode>
+          <sourceLocation>
+            <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+            <line>70</line>
+            <column>13</column>
+          </sourceLocation>
+          <expressionTree>
+            <literal type="0">"-Xmx2048m"</literal>
+          </expressionTree>
+        </value>
+      </values>
+      <sourceLocation>
+        <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+        <line>70</line>
+        <column>5</column>
+      </sourceLocation>
+    </parameter>
+  </parameters>
+
+  <inputPorts>
+    <inputPort>
+      <index>0</index>
+      <tupleCppName>iport$0</tupleCppName>
+      <tupleCppType>SPL::BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO</tupleCppType>
+      <tupleSPLType>tuple&lt;int64 matchedEdgeId,float64 latitude,float64 longitude,float64 distanceOnTrack,boolean directionOfTravel,int64 objectId,float64 origLatitude,float64 origLongitude&gt;</tupleSPLType>
+      <facade>false</facade>
+      <mutationAllowed>false</mutationAllowed>
+      <sourceLocation>
+        <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+        <line>66</line>
+        <column>36</column>
+      </sourceLocation>
+      <attributes>
+        <attribute>
+          <name>matchedEdgeId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+        <attribute>
+          <name>latitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>longitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>distanceOnTrack</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>directionOfTravel</name>
+          <cppType>SPL::boolean</cppType>
+          <splType>boolean</splType>
+        </attribute>
+        <attribute>
+          <name>objectId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+        <attribute>
+          <name>origLatitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>origLongitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+      </attributes>
+      <tuple>
+        <tt:attr name="matchedEdgeId" type="int64"/>
+        <tt:attr name="latitude" type="float64"/>
+        <tt:attr name="longitude" type="float64"/>
+        <tt:attr name="distanceOnTrack" type="float64"/>
+        <tt:attr name="directionOfTravel" type="boolean"/>
+        <tt:attr name="objectId" type="int64"/>
+        <tt:attr name="origLatitude" type="float64"/>
+        <tt:attr name="origLongitude" type="float64"/>
+      </tuple>
+    </inputPort>
+    <inputPort>
+      <index>1</index>
+      <tupleCppName>iport$1</tupleCppName>
+      <tupleCppType>SPL::BeJwrMfI0NExPzUstSixJTfFM8TQ0yC_1KTM_1MS8zxTAEAlnoKBa</tupleCppType>
+      <tupleSPLType>tuple&lt;int64 generatedId,int64 originalId&gt;</tupleSPLType>
+      <facade>false</facade>
+      <mutationAllowed>false</mutationAllowed>
+      <sourceLocation>
+        <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+        <line>67</line>
+        <column>4</column>
+      </sourceLocation>
+      <attributes>
+        <attribute>
+          <name>generatedId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+        <attribute>
+          <name>originalId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+      </attributes>
+      <tuple>
+        <tt:attr name="generatedId" type="int64"/>
+        <tt:attr name="originalId" type="int64"/>
+      </tuple>
+    </inputPort>
+  </inputPorts>
+
+  <outputPorts>
+    <outputPort>
+      <index>0</index>
+      <tupleCppName>oport$0</tupleCppName>
+      <tupleCppType>SPL::BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO</tupleCppType>
+      <tupleSPLType>tuple&lt;int64 matchedEdgeId,float64 latitude,float64 longitude,float64 distanceOnTrack,boolean directionOfTravel,int64 objectId,float64 origLatitude,float64 origLongitude&gt;</tupleSPLType>
+      <facade>false</facade>
+      <mutationAllowed>true</mutationAllowed>
+      <sourceLocation>
+        <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
+        <line>64</line>
+        <column>4</column>
+      </sourceLocation>
+      <attributes>
+        <attribute>
+          <name>matchedEdgeId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+        <attribute>
+          <name>latitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>longitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>distanceOnTrack</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>directionOfTravel</name>
+          <cppType>SPL::boolean</cppType>
+          <splType>boolean</splType>
+        </attribute>
+        <attribute>
+          <name>objectId</name>
+          <cppType>SPL::int64</cppType>
+          <splType>int64</splType>
+        </attribute>
+        <attribute>
+          <name>origLatitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+        <attribute>
+          <name>origLongitude</name>
+          <cppType>SPL::float64</cppType>
+          <splType>float64</splType>
+        </attribute>
+      </attributes>
+      <tuple>
+        <tt:attr name="matchedEdgeId" type="int64"/>
+        <tt:attr name="latitude" type="float64"/>
+        <tt:attr name="longitude" type="float64"/>
+        <tt:attr name="distanceOnTrack" type="float64"/>
+        <tt:attr name="directionOfTravel" type="boolean"/>
+        <tt:attr name="objectId" type="int64"/>
+        <tt:attr name="origLatitude" type="float64"/>
+        <tt:attr name="origLongitude" type="float64"/>
+      </tuple>
+      <finalPunctuationPortScope>
+        <port>0</port>
+        <port>1</port>
+      </finalPunctuationPortScope>
+    </outputPort>
+  </outputPorts>
+
+</operatorInstanceModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<peModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/pe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <context>
+    <class>BeJwzNAhPTQpKLSxNLS6JNweygzPzsuMBWOEIAR</class>
+    <javaVM>
+      <vmArgs/>
+    </javaVM>
+    <avoidRuntimeYield>Auto</avoidRuntimeYield>
+  </context>
+
+  <operators>
+    <operator>
+      <class>WebRequest</class>
+    </operator>
+    <operator>
+      <class>WebSink</class>
+    </operator>
+  </operators>
+
+</peModel>

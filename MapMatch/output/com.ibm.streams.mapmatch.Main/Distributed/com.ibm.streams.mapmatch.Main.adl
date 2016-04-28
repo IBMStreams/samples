@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" name="com.ibm.streams.mapmatch::Main.appset" productVersion="4.0.1.0" xmlns:tt="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <description>com.ibm.streams.mapmatch::Main application set</description>
+
+  <application adlPath="Distributed/com.ibm.streams.mapmatch.Main.adl" applicationDirectory="toolkits/MapMatch" applicationScope="Default" buildId="" bundle="./com.ibm.streams.mapmatch.Main.sab" checkpointDirectory="/home/bluemix/workspace/MapMatch/data/ckpt" dataDirectory="/home/bluemix/workspace/MapMatch/data" name="com.ibm.streams.mapmatch::Main" outputDirectory="Distributed" version="1.0.0">
+    <libraries/>
+    <hostpools>
+      <hostpool index="0" membershipMode="shared" name="$default"/>
+    </hostpools>
+    <tupleTypes>
+      <tupleType index="0">
+        <attribute name="objectId" type="int64"/>
+        <attribute name="latitude" type="float64"/>
+        <attribute name="longitude" type="float64"/>
+        <attribute name="timeStamp" type="int64"/>
+        <tuple>
+          <tt:attr name="objectId" type="int64"/>
+          <tt:attr name="latitude" type="float64"/>
+          <tt:attr name="longitude" type="float64"/>
+          <tt:attr name="timeStamp" type="int64"/>
+        </tuple>
+      </tupleType>
+      <tupleType index="1">
+        <attribute name="matchedEdgeId" type="int64"/>
+        <attribute name="latitude" type="float64"/>
+        <attribute name="longitude" type="float64"/>
+        <attribute name="distanceOnTrack" type="float64"/>
+        <attribute name="directionOfTravel" type="boolean"/>
+        <attribute name="objectId" type="int64"/>
+        <attribute name="origLatitude" type="float64"/>
+        <attribute name="origLongitude" type="float64"/>
+        <tuple>
+          <tt:attr name="matchedEdgeId" type="int64"/>
+          <tt:attr name="latitude" type="float64"/>
+          <tt:attr name="longitude" type="float64"/>
+          <tt:attr name="distanceOnTrack" type="float64"/>
+          <tt:attr name="directionOfTravel" type="boolean"/>
+          <tt:attr name="objectId" type="int64"/>
+          <tt:attr name="origLatitude" type="float64"/>
+          <tt:attr name="origLongitude" type="float64"/>
+        </tuple>
+      </tupleType>
+      <tupleType index="2">
+        <attribute name="updateType" type="enum{NODE,EDGE}"/>
+        <attribute name="updateFlags" type="enum{ADD,REMOVE,CLEAR}"/>
+        <attribute name="objectId" type="int64"/>
+        <attribute name="latitude" type="float64"/>
+        <attribute name="longitude" type="float64"/>
+        <attribute name="startNodeId" type="int64"/>
+        <attribute name="endNodeId" type="int64"/>
+        <attribute name="isOneWay" type="boolean"/>
+        <tuple>
+          <tt:attr name="updateType" type="enum{NODE,EDGE}"/>
+          <tt:attr name="updateFlags" type="enum{ADD,REMOVE,CLEAR}"/>
+          <tt:attr name="objectId" type="int64"/>
+          <tt:attr name="latitude" type="float64"/>
+          <tt:attr name="longitude" type="float64"/>
+          <tt:attr name="startNodeId" type="int64"/>
+          <tt:attr name="endNodeId" type="int64"/>
+          <tt:attr name="isOneWay" type="boolean"/>
+        </tuple>
+      </tupleType>
+      <tupleType index="3">
+        <attribute name="generatedId" type="int64"/>
+        <attribute name="originalId" type="int64"/>
+        <tuple>
+          <tt:attr name="generatedId" type="int64"/>
+          <tt:attr name="originalId" type="int64"/>
+        </tuple>
+      </tupleType>
+    </tupleTypes>
+    <pes>
+      <pe class="BeJwzNAhPTQpKLSxNLS6JNweygzPzsuMBWOEIAR" index="0" language="C++" optimized="true" relocatable="true" restartable="true" version="4010">
+        <envVars/>
+        <executable digest="AxqJDPVE432xJ0ghPeCjtcjlnAs=" dynamicLoad="true">
+          <wrapper>none</wrapper>
+          <executableUri>bin/com.ibm.streams.mapmatch.Main-a.dpe</executableUri>
+          <arguments/>
+          <dependencies/>
+        </executable>
+        <operInstances>
+          <operInstance class="WebRequest" definitionIndex="0" index="0" name="WebRequest" relocatable="true" restartable="true" singleThreadedOnInputs="true" singleThreadedOnOutputs="false">
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="8082"/>
+            </runtimeConstants>
+            <inputPorts/>
+            <outputPorts>
+              <outputPort index="0" isMutable="true" name="WebRequest" streamName="WebRequest" tupleTypeIndex="0" viewable="true">
+                <interPeConnection iportIndex="0" operInstanceIndex="3"/>
+              </outputPort>
+            </outputPorts>
+          </operInstance>
+          <operInstance class="WebSink" definitionIndex="1" index="1" name="WebSink" relocatable="true" restartable="true" singleThreadedOnInputs="true" singleThreadedOnOutputs="false">
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="8082"/>
+              <runtimeConstant name="lit$1" value="&quot;html&quot;"/>
+              <runtimeConstant name="lit$2" value="&quot;../opt/html&quot;"/>
+              <runtimeConstant name="lit$3" value="&quot;objectId&quot;"/>
+              <runtimeConstant name="lit$4" value="10"/>
+              <runtimeConstant name="lit$5" value="1"/>
+            </runtimeConstants>
+            <inputPorts>
+              <inputPort index="0" isMutable="false" name="OSMPointMatcher_18_out0" tupleTypeIndex="1">
+                <interPeConnection operInstanceIndex="4" oportIndex="0"/>
+              </inputPort>
+            </inputPorts>
+            <outputPorts/>
+          </operInstance>
+        </operInstances>
+        <tracing level="error"/>
+        <inputPorts>
+          <inputPort encoding="LE" index="0" transport="TCP" tupleTypeIndex="1">
+            <staticConnections>
+              <staticConnection oportIndex="0" peIndex="3"/>
+            </staticConnections>
+            <operInstanceConnection iportIndex="0" operInstanceIndex="1"/>
+          </inputPort>
+        </inputPorts>
+        <outputPorts>
+          <outputPort encoding="LE" index="0" singleThreadedOnOutput="false" transport="TCP" tupleTypeIndex="0">
+            <staticConnections>
+              <staticConnection iportIndex="0" peIndex="2"/>
+            </staticConnections>
+            <operInstanceConnection operInstanceIndex="0" oportIndex="0"/>
+          </outputPort>
+        </outputPorts>
+      </pe>
+      <pe class="BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDAyAopF_0Pq4p_0bnppYUVQbnlxYlp8YbxgMAYZkPDf" index="1" language="C++" optimized="true" relocatable="true" restartable="true" version="4010">
+        <envVars/>
+        <executable digest="eo3gfFihS1WVsh3zz/+/74ZUPNQ=" dynamicLoad="true">
+          <wrapper>none</wrapper>
+          <executableUri>bin/com.ibm.streams.mapmatch.Main-b.dpe</executableUri>
+          <arguments/>
+          <dependencies/>
+        </executable>
+        <operInstances>
+          <operInstance class="OSMPointMatcher_18::OSMXMLGeometrySource_1" definitionIndex="2" index="2" name="OSMPointMatcher_18.OSMXMLGeometrySource_1" relocatable="true" restartable="true" singleThreadedOnInputs="true" singleThreadedOnOutputs="false">
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;/etc/Seattle.osm&quot;"/>
+              <runtimeConstant name="lit$1" value="&quot;MapMatch&quot;"/>
+              <runtimeConstant name="lit$2" value="&quot;-Xmx2048m&quot;"/>
+            </runtimeConstants>
+            <inputPorts/>
+            <outputPorts>
+              <outputPort index="0" isMutable="true" name="OSMXMLGeometrySource_1_out0" streamName="OSMPointMatcher_18.OSMXMLGeometrySource_1_out0" tupleTypeIndex="2" viewable="true">
+                <interPeConnection iportIndex="1" operInstanceIndex="3"/>
+              </outputPort>
+              <outputPort index="1" isMutable="true" name="OSMXMLGeometrySource_1_out1" streamName="OSMPointMatcher_18.OSMXMLGeometrySource_1_out1" tupleTypeIndex="3" viewable="true">
+                <interPeConnection iportIndex="1" operInstanceIndex="4"/>
+              </outputPort>
+            </outputPorts>
+          </operInstance>
+        </operInstances>
+        <tracing level="error"/>
+        <inputPorts/>
+        <outputPorts>
+          <outputPort encoding="LE" index="0" singleThreadedOnOutput="false" transport="TCP" tupleTypeIndex="2">
+            <staticConnections>
+              <staticConnection iportIndex="1" peIndex="2"/>
+            </staticConnections>
+            <operInstanceConnection operInstanceIndex="2" oportIndex="0"/>
+          </outputPort>
+          <outputPort encoding="LE" index="1" singleThreadedOnOutput="false" transport="TCP" tupleTypeIndex="3">
+            <staticConnections>
+              <staticConnection iportIndex="1" peIndex="3"/>
+            </staticConnections>
+            <operInstanceConnection operInstanceIndex="2" oportIndex="1"/>
+          </outputPort>
+        </outputPorts>
+      </pe>
+      <pe class="BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDA0hwoUwMSM4gEb5w4z" index="2" language="C++" optimized="true" relocatable="true" restartable="true" version="4010">
+        <envVars/>
+        <executable digest="KgIKpUeG/BncVQ0aMplKDHrmSrE=" dynamicLoad="true">
+          <wrapper>none</wrapper>
+          <executableUri>bin/com.ibm.streams.mapmatch.Main-c.dpe</executableUri>
+          <arguments/>
+          <dependencies/>
+        </executable>
+        <operInstances>
+          <operInstance class="OSMPointMatcher_18::PointMapMatcher_2" definitionIndex="3" index="3" name="OSMPointMatcher_18.PointMapMatcher_2" relocatable="true" restartable="true" singleThreadedOnInputs="false" singleThreadedOnOutputs="false">
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="5"/>
+              <runtimeConstant name="lit$1" value="50"/>
+              <runtimeConstant name="lit$2" value="100"/>
+              <runtimeConstant name="lit$3" value="120000"/>
+            </runtimeConstants>
+            <inputPorts>
+              <inputPort index="0" isMutable="false" name="inPort0Alias" tupleTypeIndex="0">
+                <interPeConnection operInstanceIndex="0" oportIndex="0"/>
+              </inputPort>
+              <inputPort index="1" isMutable="false" name="OSMXMLGeometrySource_1_out0" tupleTypeIndex="2">
+                <interPeConnection operInstanceIndex="2" oportIndex="0"/>
+              </inputPort>
+            </inputPorts>
+            <outputPorts>
+              <outputPort index="0" isMutable="true" name="PointMapMatcher_2_out0" streamName="OSMPointMatcher_18.PointMapMatcher_2_out0" tupleTypeIndex="1" viewable="true">
+                <interPeConnection iportIndex="0" operInstanceIndex="4"/>
+              </outputPort>
+            </outputPorts>
+          </operInstance>
+        </operInstances>
+        <tracing level="error"/>
+        <inputPorts>
+          <inputPort encoding="LE" index="0" transport="TCP" tupleTypeIndex="0">
+            <staticConnections>
+              <staticConnection oportIndex="0" peIndex="0"/>
+            </staticConnections>
+            <operInstanceConnection iportIndex="0" operInstanceIndex="3"/>
+          </inputPort>
+          <inputPort encoding="LE" index="1" transport="TCP" tupleTypeIndex="2">
+            <staticConnections>
+              <staticConnection oportIndex="0" peIndex="1"/>
+            </staticConnections>
+            <operInstanceConnection iportIndex="1" operInstanceIndex="3"/>
+          </inputPort>
+        </inputPorts>
+        <outputPorts>
+          <outputPort encoding="LE" index="0" singleThreadedOnOutput="false" transport="TCP" tupleTypeIndex="1">
+            <staticConnections>
+              <staticConnection iportIndex="0" peIndex="3"/>
+            </staticConnections>
+            <operInstanceConnection operInstanceIndex="3" oportIndex="0"/>
+          </outputPort>
+        </outputPorts>
+      </pe>
+      <pe class="BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDA0BYo55xcVpeYkluQXxRvHAwD8sg1S" index="3" language="C++" optimized="true" relocatable="true" restartable="true" version="4010">
+        <envVars/>
+        <executable digest="BtIVmgdgfGj2ZhNSNKh5y0RgG9o=" dynamicLoad="true">
+          <wrapper>none</wrapper>
+          <executableUri>bin/com.ibm.streams.mapmatch.Main-d.dpe</executableUri>
+          <arguments/>
+          <dependencies/>
+        </executable>
+        <operInstances>
+          <operInstance class="OSMPointMatcher_18::OSMCorrelator_3" definitionIndex="4" index="4" name="OSMPointMatcher_18.OSMCorrelator_3" relocatable="true" restartable="true" singleThreadedOnInputs="false" singleThreadedOnOutputs="false">
+            <resources>
+              <poolLocation poolIndex="0"/>
+            </resources>
+            <runtimeConstants>
+              <runtimeConstant name="lit$0" value="&quot;-Xmx2048m&quot;"/>
+            </runtimeConstants>
+            <inputPorts>
+              <inputPort index="0" isMutable="false" name="PointMapMatcher_2_out0" tupleTypeIndex="1">
+                <interPeConnection operInstanceIndex="3" oportIndex="0"/>
+              </inputPort>
+              <inputPort index="1" isMutable="false" name="OSMXMLGeometrySource_1_out1" tupleTypeIndex="3">
+                <interPeConnection operInstanceIndex="2" oportIndex="1"/>
+              </inputPort>
+            </inputPorts>
+            <outputPorts>
+              <outputPort index="0" isMutable="true" name="Out0" streamName="OSMPointMatcher_18_out0" tupleTypeIndex="1" viewable="true">
+                <interPeConnection iportIndex="0" operInstanceIndex="1"/>
+              </outputPort>
+            </outputPorts>
+          </operInstance>
+        </operInstances>
+        <tracing level="error"/>
+        <inputPorts>
+          <inputPort encoding="LE" index="0" transport="TCP" tupleTypeIndex="1">
+            <staticConnections>
+              <staticConnection oportIndex="0" peIndex="2"/>
+            </staticConnections>
+            <operInstanceConnection iportIndex="0" operInstanceIndex="4"/>
+          </inputPort>
+          <inputPort encoding="LE" index="1" transport="TCP" tupleTypeIndex="3">
+            <staticConnections>
+              <staticConnection oportIndex="1" peIndex="1"/>
+            </staticConnections>
+            <operInstanceConnection iportIndex="1" operInstanceIndex="4"/>
+          </inputPort>
+        </inputPorts>
+        <outputPorts>
+          <outputPort encoding="LE" index="0" singleThreadedOnOutput="false" transport="TCP" tupleTypeIndex="1">
+            <staticConnections>
+              <staticConnection iportIndex="0" peIndex="0"/>
+            </staticConnections>
+            <operInstanceConnection operInstanceIndex="4" oportIndex="0"/>
+          </outputPort>
+        </outputPorts>
+      </pe>
+    </pes>
+    <operDefinitions>
+      <operDefinition index="0" kind="com.ibm.streamsx.inet.rest::HTTPTupleInjection">
+        <customMetricIndicies>
+          <customMetricIndex>0</customMetricIndex>
+          <customMetricIndex>1</customMetricIndex>
+        </customMetricIndicies>
+      </operDefinition>
+      <operDefinition index="1" kind="com.ibm.streamsx.inet.rest::HTTPTupleView">
+        <customMetricIndicies>
+          <customMetricIndex>0</customMetricIndex>
+          <customMetricIndex>1</customMetricIndex>
+        </customMetricIndicies>
+      </operDefinition>
+      <operDefinition index="2" kind="com.ibm.streams.geospatial::OSMXMLGeometrySource"/>
+      <operDefinition index="3" kind="com.ibm.streams.geospatial::PointMapMatcher"/>
+      <operDefinition index="4" kind="com.ibm.streams.geospatial::OSMCorrelator"/>
+    </operDefinitions>
+    <composites>
+      <sourceUris>
+        <uri index="0" path="file:///home/bluemix/workspace/MapMatch/com.ibm.streams.mapmatch/Main.spl"/>
+        <uri index="1" path="file:///home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl"/>
+      </sourceUris>
+      <compositeOpers>
+        <compositeOper endLine="67" index="0" kind="com.ibm.streams.mapmatch::Main" numberOfInputPorts="0" numberOfOutputPorts="0" sourceIndex="0" startLine="27" toolkitIndex="0">
+          <description>com.ibm.streams.mapmatch::Main Composite</description>
+        </compositeOper>
+        <compositeOper endLine="73" index="1" kind="com.ibm.streams.geospatial::OSMPointMatcher" numberOfInputPorts="1" numberOfOutputPorts="1" sourceIndex="1" startLine="10" toolkitIndex="2">
+          <description>The `OSMPointMapMatcher` composite analyzes time based object location data to heuristically project points on a network</description>
+        </compositeOper>
+      </compositeOpers>
+      <compositeOperInstances>
+        <compositeOperInstance compositeOperIndex="0" endLine="67" index="5" name="com.ibm.streams.mapmatch::Main" sourceIndex="0" startLine="27">
+          <compositeOperInstance compositeOperIndex="1" endLine="50" index="6" name="OSMPointMatcher_18" sourceIndex="0" startLine="39">
+            <inputPorts>
+              <port index="0">
+                <incomingConnections>
+                  <connection operIndex="0" operName="WebRequest" portIndex="0" portKind="output"/>
+                </incomingConnections>
+                <outgoingConnections>
+                  <connection operIndex="3" operName="OSMPointMatcher_18.PointMapMatcher_2" portIndex="0" portKind="input"/>
+                </outgoingConnections>
+              </port>
+            </inputPorts>
+            <outputPorts>
+              <port index="0">
+                <incomingConnections>
+                  <connection operIndex="4" operName="OSMPointMatcher_18.OSMCorrelator_3" portIndex="0" portKind="output"/>
+                </incomingConnections>
+                <outgoingConnections>
+                  <connection operIndex="1" operName="WebSink" portIndex="0" portKind="input"/>
+                </outgoingConnections>
+              </port>
+            </outputPorts>
+            <primitiveOperInstance endLine="44" index="2" kind="com.ibm.streams.geospatial::OSMXMLGeometrySource" name="OSMPointMatcher_18.OSMXMLGeometrySource_1" sourceIndex="1" startLine="35" toolkitIndex="2">
+              <outputPorts>
+                <port index="0">
+                  <connections>
+                    <connection operIndex="3" operName="OSMPointMatcher_18.PointMapMatcher_2" portIndex="1" portKind="input"/>
+                  </connections>
+                </port>
+                <port index="1">
+                  <connections>
+                    <connection operIndex="4" operName="OSMPointMatcher_18.OSMCorrelator_3" portIndex="1" portKind="input"/>
+                  </connections>
+                </port>
+              </outputPorts>
+            </primitiveOperInstance>
+            <primitiveOperInstance endLine="62" index="3" kind="com.ibm.streams.geospatial::PointMapMatcher" name="OSMPointMatcher_18.PointMapMatcher_2" sourceIndex="1" startLine="46" toolkitIndex="2">
+              <inputPorts>
+                <port index="0">
+                  <connections>
+                    <connection operIndex="6" operName="OSMPointMatcher_18" portIndex="0" portKind="input"/>
+                  </connections>
+                </port>
+                <port index="1">
+                  <connections>
+                    <connection operIndex="2" operName="OSMPointMatcher_18.OSMXMLGeometrySource_1" portIndex="0" portKind="output"/>
+                  </connections>
+                </port>
+              </inputPorts>
+              <outputPorts>
+                <port index="0">
+                  <connections>
+                    <connection operIndex="4" operName="OSMPointMatcher_18.OSMCorrelator_3" portIndex="0" portKind="input"/>
+                  </connections>
+                </port>
+              </outputPorts>
+            </primitiveOperInstance>
+            <primitiveOperInstance endLine="71" index="4" kind="com.ibm.streams.geospatial::OSMCorrelator" name="OSMPointMatcher_18.OSMCorrelator_3" sourceIndex="1" startLine="64" toolkitIndex="2">
+              <inputPorts>
+                <port index="0">
+                  <connections>
+                    <connection operIndex="3" operName="OSMPointMatcher_18.PointMapMatcher_2" portIndex="0" portKind="output"/>
+                  </connections>
+                </port>
+                <port index="1">
+                  <connections>
+                    <connection operIndex="2" operName="OSMPointMatcher_18.OSMXMLGeometrySource_1" portIndex="1" portKind="output"/>
+                  </connections>
+                </port>
+              </inputPorts>
+              <outputPorts>
+                <port index="0">
+                  <connections>
+                    <connection operIndex="6" operName="OSMPointMatcher_18" portIndex="0" portKind="output"/>
+                  </connections>
+                </port>
+              </outputPorts>
+            </primitiveOperInstance>
+          </compositeOperInstance>
+          <primitiveOperInstance endLine="37" index="0" kind="com.ibm.streamsx.inet.rest::HTTPTupleInjection" name="WebRequest" sourceIndex="0" startLine="30" toolkitIndex="3">
+            <outputPorts>
+              <port index="0">
+                <connections>
+                  <connection operIndex="6" operName="OSMPointMatcher_18" portIndex="0" portKind="input"/>
+                </connections>
+              </port>
+            </outputPorts>
+          </primitiveOperInstance>
+          <primitiveOperInstance endLine="65" index="1" kind="com.ibm.streamsx.inet.rest::HTTPTupleView" name="WebSink" sourceIndex="0" startLine="52" toolkitIndex="3">
+            <inputPorts>
+              <port index="0">
+                <connections>
+                  <connection operIndex="6" operName="OSMPointMatcher_18" portIndex="0" portKind="output"/>
+                </connections>
+              </port>
+            </inputPorts>
+          </primitiveOperInstance>
+        </compositeOperInstance>
+      </compositeOperInstances>
+    </composites>
+    <toolkits>
+      <toolkit index="0" name="MapMatch" uri="file:///home/bluemix/workspace/MapMatch" version="1.0.0"/>
+      <toolkit index="1" name="spl" uri="file:///home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/spl" version="1.2.0"/>
+      <toolkit index="2" name="com.ibm.streams.geospatial" uri="file:///home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial" version="3.0.0"/>
+      <toolkit index="3" name="com.ibm.streamsx.inet" uri="file:///home/bluemix/com.ibm.streamsx.inet" version="2.7.0"/>
+    </toolkits>
+    <customMetrics>
+      <customMetric index="0" kind="Gauge" name="https">
+        <description>Jetty SSL/TLS status: 0=HTTP, 1=HTTPS</description>
+      </customMetric>
+      <customMetric index="1" kind="Gauge" name="serverPort">
+        <description>Jetty (HTTP/HTTPS) server port</description>
+      </customMetric>
+    </customMetrics>
+  </application>
+
+</applicationSet>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<tupleModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/tuple" class="BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO" equalitySupported="true" facade="false" splType="tuple&lt;int64 matchedEdgeId,float64 latitude,float64 longitude,float64 distanceOnTrack,boolean directionOfTravel,int64 objectId,float64 origLatitude,float64 origLongitude>" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <headers/>
+
+  <attributes>
+    <attribute>
+      <name>matchedEdgeId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>latitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>longitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>distanceOnTrack</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>directionOfTravel</name>
+      <cppType>SPL::boolean</cppType>
+      <splType>boolean</splType>
+    </attribute>
+    <attribute>
+      <name>objectId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>origLatitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>origLongitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+  </attributes>
+
+</tupleModel>

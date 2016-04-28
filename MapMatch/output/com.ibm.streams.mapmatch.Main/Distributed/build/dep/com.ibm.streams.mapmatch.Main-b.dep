@@ -1,0 +1,6 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/com.ibm.streams.mapmatch.Main-b.dpe -fPIC -shared $(PEcom.ibm.streams.mapmatch.Main-b) -lstreams-stdtk-javaop -L /home/bluemix/InfoSphere_Streams/4.0.1.0/java/jre/lib/amd64/j9vm -Wl,-rpath -Wl,/home/bluemix/InfoSphere_Streams/4.0.1.0/java/jre/lib/amd64/j9vm -lpthread -ldl -lstreams-stdtk-runtime $(SPL_LDFLAGS)build/pe/BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDAyAopF_0Pq4p_0bnppYUVQbnlxYlp8YbxgMAYZkPDf.o \
+	    build/operator/OSMPointMatcher_18/OSMXMLGeometrySource_1.o \
+	    build/type/BeJwrMfI0NExPzUstSixJTfFM8TQ0yC_1KTM_1MS8zxTAEAlnoKBa.o \
+	    build/type/BeJyrNIo38fN3cTVxdXF3BQAbDgOu.o \
+	    build/type/BeJwlyVELgjAQAOC_11NJiPkq7xaAcSNSjnN0hytiknQ_1790W_0ffCJLseh7ryBGswV1GFbCYUfZeVSDVVrzLmHu3_1C6XKDtldqfxtwyk6nceG3OLI6oMyyEdsmpDj96ZTKgh_1p0s_1kGo60c9Rz9pFfWL5vcivj.o \
+	    build/type/BeJyrNI43dnRxMQty9fUPczV19nF1DAIAPG8FCo.o 

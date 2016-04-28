@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<tupleModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/tuple" class="BeJwrMfG0yE_1KSk0u8Uxxs8hJLMksKU1JdbPMyc9LBzM9LUsyc1ODSxJzCwBs2xCo" equalitySupported="true" facade="false" splType="tuple&lt;int64 objectId,float64 latitude,float64 longitude,int64 timeStamp>" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <headers/>
+
+  <attributes>
+    <attribute>
+      <name>objectId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>latitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>longitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>timeStamp</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+  </attributes>
+
+</tupleModel>

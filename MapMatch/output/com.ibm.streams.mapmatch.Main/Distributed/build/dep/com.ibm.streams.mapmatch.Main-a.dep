@@ -1,0 +1,5 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/com.ibm.streams.mapmatch.Main-a.dpe -fPIC -shared $(PEcom.ibm.streams.mapmatch.Main-a) -lstreams-stdtk-javaop -L /home/bluemix/InfoSphere_Streams/4.0.1.0/java/jre/lib/amd64/j9vm -Wl,-rpath -Wl,/home/bluemix/InfoSphere_Streams/4.0.1.0/java/jre/lib/amd64/j9vm -lpthread -ldl -lstreams-stdtk-runtime -lstreams-stdtk-javaop -lpthread -ldl -lstreams-stdtk-runtime $(SPL_LDFLAGS)build/pe/BeJwzNAhPTQpKLSxNLS6JNweygzPzsuMBWOEIAR.o \
+	    build/operator/WebRequest.o \
+	    build/type/BeJwrMfG0yE_1KSk0u8Uxxs8hJLMksKU1JdbPMyc9LBzM9LUsyc1ODSxJzCwBs2xCo.o \
+	    build/operator/WebSink.o \
+	    build/type/BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO.o 
