@@ -67,12 +67,6 @@
         <name>lit$4</name>
         <cppType>SPL::int32</cppType>
         <splType>int32</splType>
-        <value>10</value>
-      </runtimeConstant>
-      <runtimeConstant>
-        <name>lit$5</name>
-        <cppType>SPL::int32</cppType>
-        <splType>int32</splType>
         <value>1</value>
       </runtimeConstant>
     </runtimeConstants>
@@ -305,25 +299,6 @@
             <splType>int32</splType>
             <hasRuntimeConstant>true</hasRuntimeConstant>
             <cppExpression>lit$4</cppExpression>
-            <splExpression>10</splExpression>
-            <hasFunctions>false</hasFunctions>
-            <hasSideEffects>false</hasSideEffects>
-            <readsState>false</readsState>
-            <hasStreamAttributes>false</hasStreamAttributes>
-            <sourceLocation>
-              <file>com.ibm.streams.mapmatch/Main.spl</file>
-              <line>55</line>
-              <column>46</column>
-            </sourceLocation>
-          </size>
-        </evictionPolicy>
-        <triggerPolicy>
-          <type>count</type>
-          <size>
-            <cppType>SPL::int32</cppType>
-            <splType>int32</splType>
-            <hasRuntimeConstant>true</hasRuntimeConstant>
-            <cppExpression>lit$5</cppExpression>
             <splExpression>1</splExpression>
             <hasFunctions>false</hasFunctions>
             <hasSideEffects>false</hasSideEffects>
@@ -332,10 +307,10 @@
             <sourceLocation>
               <file>com.ibm.streams.mapmatch/Main.spl</file>
               <line>55</line>
-              <column>57</column>
+              <column>47</column>
             </sourceLocation>
           </size>
-        </triggerPolicy>
+        </evictionPolicy>
         <sourceLocation>
           <file>com.ibm.streams.mapmatch/Main.spl</file>
           <line>55</line>

@@ -39,14 +39,7 @@
       <include>"../../type/BeJwrMfI0NExPzUstSixJTfFM8TQ0yC_1KTM_1MS8zxTAEAlnoKBa.h"</include>
     </includes>
     <stateVariables/>
-    <runtimeConstants>
-      <runtimeConstant>
-        <name>lit$0</name>
-        <cppType>SPL::rstring</cppType>
-        <splType>rstring</splType>
-        <value>"-Xmx2048m"</value>
-      </runtimeConstant>
-    </runtimeConstants>
+    <runtimeConstants/>
     <sourceLocation>
       <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
       <line>64</line>
@@ -137,8 +130,8 @@
         <value>
           <cppType>SPL::rstring</cppType>
           <splType>rstring</splType>
-          <hasRuntimeConstant>true</hasRuntimeConstant>
-          <cppExpression>lit$0</cppExpression>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>SPL::rstring("-Xmx2048m")</cppExpression>
           <splExpression>"-Xmx2048m"</splExpression>
           <hasFunctions>false</hasFunctions>
           <hasSideEffects>false</hasSideEffects>

@@ -38,14 +38,7 @@
       <include>"../type/BeJwrMfG0yE_1KSk0u8Uxxs8hJLMksKU1JdbPMyc9LBzM9LUsyc1ODSxJzCwBs2xCo.h"</include>
     </includes>
     <stateVariables/>
-    <runtimeConstants>
-      <runtimeConstant>
-        <name>lit$0</name>
-        <cppType>SPL::int32</cppType>
-        <splType>int32</splType>
-        <value>8082</value>
-      </runtimeConstant>
-    </runtimeConstants>
+    <runtimeConstants/>
     <sourceLocation>
       <file>com.ibm.streams.mapmatch/Main.spl</file>
       <line>30</line>
@@ -137,8 +130,8 @@
         <value>
           <cppType>SPL::int32</cppType>
           <splType>int32</splType>
-          <hasRuntimeConstant>true</hasRuntimeConstant>
-          <cppExpression>lit$0</cppExpression>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>SPL::int32(8082)</cppExpression>
           <splExpression>8082</splExpression>
           <hasFunctions>false</hasFunctions>
           <hasSideEffects>false</hasSideEffects>

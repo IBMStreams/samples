@@ -103,8 +103,7 @@
               <runtimeConstant name="lit$1" value="&quot;html&quot;"/>
               <runtimeConstant name="lit$2" value="&quot;../opt/html&quot;"/>
               <runtimeConstant name="lit$3" value="&quot;objectId&quot;"/>
-              <runtimeConstant name="lit$4" value="10"/>
-              <runtimeConstant name="lit$5" value="1"/>
+              <runtimeConstant name="lit$4" value="1"/>
             </runtimeConstants>
             <inputPorts>
               <inputPort index="0" isMutable="false" name="OSMPointMatcher_18_out0" tupleTypeIndex="1">

@@ -52,7 +52,7 @@ composite Main
 		() as WebSink = HTTPTupleView(OSMPointMatcher_18_out0)
 		{
 			window
-				OSMPointMatcher_18_out0 : sliding, count(10), count(1), partitioned ;
+				OSMPointMatcher_18_out0 : tumbling, count(1), partitioned ;
 			param
 				port : 8082 ;
 				context : "html" ;

@@ -41,26 +41,7 @@
       <include>"../../type/BeJyrNIo38fN3cTVxdXF3BQAbDgOu.h"</include>
     </includes>
     <stateVariables/>
-    <runtimeConstants>
-      <runtimeConstant>
-        <name>lit$0</name>
-        <cppType>SPL::rstring</cppType>
-        <splType>rstring</splType>
-        <value>"/etc/Seattle.osm"</value>
-      </runtimeConstant>
-      <runtimeConstant>
-        <name>lit$1</name>
-        <cppType>SPL::rstring</cppType>
-        <splType>rstring</splType>
-        <value>"MapMatch"</value>
-      </runtimeConstant>
-      <runtimeConstant>
-        <name>lit$2</name>
-        <cppType>SPL::rstring</cppType>
-        <splType>rstring</splType>
-        <value>"-Xmx2048m"</value>
-      </runtimeConstant>
-    </runtimeConstants>
+    <runtimeConstants/>
     <sourceLocation>
       <file>/home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/com.ibm.streams.geospatial/OSMPointMapMatcher.spl</file>
       <line>35</line>
@@ -151,8 +132,8 @@
         <value>
           <cppType>SPL::rstring</cppType>
           <splType>rstring</splType>
-          <hasRuntimeConstant>true</hasRuntimeConstant>
-          <cppExpression>(getToolkitDirectory(lit$1) + lit$0)</cppExpression>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>(getToolkitDirectory(SPL::rstring("MapMatch")) + SPL::rstring("/etc/Seattle.osm"))</cppExpression>
           <splExpression>getToolkitDirectory("MapMatch") + "/etc/Seattle.osm"</splExpression>
           <hasFunctions>false</hasFunctions>
           <hasSideEffects>false</hasSideEffects>
@@ -194,8 +175,8 @@
         <value>
           <cppType>SPL::rstring</cppType>
           <splType>rstring</splType>
-          <hasRuntimeConstant>true</hasRuntimeConstant>
-          <cppExpression>lit$2</cppExpression>
+          <hasRuntimeConstant>false</hasRuntimeConstant>
+          <cppExpression>SPL::rstring("-Xmx2048m")</cppExpression>
           <splExpression>"-Xmx2048m"</splExpression>
           <hasFunctions>false</hasFunctions>
           <hasSideEffects>false</hasSideEffects>
