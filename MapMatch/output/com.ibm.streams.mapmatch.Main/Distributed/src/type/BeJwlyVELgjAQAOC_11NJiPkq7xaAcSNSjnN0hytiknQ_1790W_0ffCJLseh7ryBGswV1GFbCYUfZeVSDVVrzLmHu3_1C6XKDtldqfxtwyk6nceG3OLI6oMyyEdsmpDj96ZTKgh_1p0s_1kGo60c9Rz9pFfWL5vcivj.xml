@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<tupleModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/tuple" class="BeJwlyVELgjAQAOC_11NJiPkq7xaAcSNSjnN0hytiknQ_1790W_0ffCJLseh7ryBGswV1GFbCYUfZeVSDVVrzLmHu3_1C6XKDtldqfxtwyk6nceG3OLI6oMyyEdsmpDj96ZTKgh_1p0s_1kGo60c9Rz9pFfWL5vcivj" equalitySupported="true" facade="false" splType="tuple&lt;enum{NODE,EDGE} updateType,enum{ADD,REMOVE,CLEAR} updateFlags,int64 objectId,float64 latitude,float64 longitude,int64 startNodeId,int64 endNodeId,boolean isOneWay>" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <headers>
+    <header>BeJyrNIo38fN3cTVxdXF3BQAbDgOu</header>
+    <header>BeJyrNI43dnRxMQty9fUPczV19nF1DAIAPG8FCo</header>
+  </headers>
+
+  <attributes>
+    <attribute>
+      <name>updateType</name>
+      <cppType>SPL::BeJyrNIo38fN3cTVxdXF3BQAbDgOu</cppType>
+      <splType>enum{NODE,EDGE}</splType>
+    </attribute>
+    <attribute>
+      <name>updateFlags</name>
+      <cppType>SPL::BeJyrNI43dnRxMQty9fUPczV19nF1DAIAPG8FCo</cppType>
+      <splType>enum{ADD,REMOVE,CLEAR}</splType>
+    </attribute>
+    <attribute>
+      <name>objectId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>latitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>longitude</name>
+      <cppType>SPL::float64</cppType>
+      <splType>float64</splType>
+    </attribute>
+    <attribute>
+      <name>startNodeId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>endNodeId</name>
+      <cppType>SPL::int64</cppType>
+      <splType>int64</splType>
+    </attribute>
+    <attribute>
+      <name>isOneWay</name>
+      <cppType>SPL::boolean</cppType>
+      <splType>boolean</splType>
+    </attribute>
+  </attributes>
+
+</tupleModel>

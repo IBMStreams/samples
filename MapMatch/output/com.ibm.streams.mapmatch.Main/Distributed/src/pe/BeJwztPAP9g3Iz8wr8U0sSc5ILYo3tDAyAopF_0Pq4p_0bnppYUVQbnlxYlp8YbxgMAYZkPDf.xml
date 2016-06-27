@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<peModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/pe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <context>
+    <class>BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDAyAopF_0Pq4p_0bnppYUVQbnlxYlp8YbxgMAYZkPDf</class>
+    <javaVM>
+      <vmArgs>
+        <vmArg>"-Xmx2048m"</vmArg>
+      </vmArgs>
+    </javaVM>
+    <avoidRuntimeYield>Auto</avoidRuntimeYield>
+  </context>
+
+  <operators>
+    <operator>
+      <class>OSMPointMatcher_18::OSMXMLGeometrySource_1</class>
+    </operator>
+  </operators>
+
+</peModel>

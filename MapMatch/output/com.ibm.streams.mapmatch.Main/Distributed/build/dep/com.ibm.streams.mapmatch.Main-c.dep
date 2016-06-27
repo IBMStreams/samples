@@ -1,0 +1,7 @@
+	@$(CXX) $(SPL_CXXFLAGS) -o bin/com.ibm.streams.mapmatch.Main-c.dpe -fPIC -shared $(PEcom.ibm.streams.mapmatch.Main-c) -L /home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/impl/lib/external/proj4 -Wl,-rpath -Wl,\$$ORIGIN/../toolkits/com.ibm.streams.geospatial/impl/lib/external/proj4 -lproj -L /home/bluemix/InfoSphere_Streams/4.0.1.0/toolkits/com.ibm.streams.geospatial/impl/lib -Wl,-rpath -Wl,\$$ORIGIN/../toolkits/com.ibm.streams.geospatial/impl/lib -lst $(SPL_LDFLAGS)build/pe/BeJwztPAP9g3Iz8wr8U0sSc5ILYo3tDA0hwoUwMSM4gEb5w4z.o \
+	    build/operator/OSMPointMatcher_18/PointMapMatcher_2.o \
+	    build/type/BeJyrNI43dnRxMQty9fUPczV19nF1DAIAPG8FCo.o \
+	    build/type/BeJwrMfG0yE_1KSk0u8Uxxs8hJLMksKU1JdbPMyc9LBzM9LUsyc1ODSxJzCwBs2xCo.o \
+	    build/type/BeJw1zEEKgCAQheEzTRHZARKEoE0XMGeyKVOwqfMnRbv3_1sUnykB9WHErYY_0eDGoVrLBcSLoLKfpvQoN8io2Oxjhl6_1YZWuRMTjjFcSnppmBUmreSCgJVyuyHX4L6vT_13AB0iCwO.o \
+	    build/type/BeJyrNIo38fN3cTVxdXF3BQAbDgOu.o \
+	    build/type/BeJwlyVELgjAQAOC_11NJiPkq7xaAcSNSjnN0hytiknQ_1790W_0ffCJLseh7ryBGswV1GFbCYUfZeVSDVVrzLmHu3_1C6XKDtldqfxtwyk6nceG3OLI6oMyyEdsmpDj96ZTKgh_1p0s_1kGo60c9Rz9pFfWL5vcivj.o 
