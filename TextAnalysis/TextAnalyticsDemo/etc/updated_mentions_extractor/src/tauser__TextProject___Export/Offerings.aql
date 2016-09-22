@@ -1,0 +1,33 @@
+module tauser__TextProject___Export;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view _Document from module IEWTDocument as _Document;
+
+---------------------------------------------
+-- Rules for the extractor 'Offerings' --
+---------------------------------------------
+
+-- Create a dictionary (view) with required flag 
+-- settings from a .dict file or table
+create external dictionary Offerings_dict required false with case insensitive;
+
+-- Extract the text from the document that matches
+-- the dictionary terms
+-- Final view representing the extractor 'Offerings' as per the
+-- output specifications
+create view Offerings as
+  extract dictionary 'Offerings_dict'
+    on D.text as Offerings
+  from _Document D;
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Offerings;
+
+export dictionary Offerings_dict;
+

@@ -1,8 +1,19 @@
 namespace application ;
 
 use com.ibm.streams.text.analytics::TextExtract ;
-use com.ibm.streamsx.inet.rest::* ;
 
+type InputData = rstring inputLine, rstring source ;
+		/**
+		 * The span type is another way to represent the output of a given column.
+		 * Instead of viewing the data as a string,
+		 * We use a tuple that represents the start and end index of the extracted data.
+		 */
+type Span = tuple<int32 begin, int32 end> ;
+		/**
+		 * The output schema for the Mentions extractor that was created in the web tool. 
+		 */
+type MentionsExtractorOutput = Span Snippet, rstring Organizations,
+			rstring Offerings ;
 /**
  * This application demonstrates using the TextExtract operator
  * to load and run an extractor created in the BigInsights web tool.
@@ -11,24 +22,12 @@ use com.ibm.streamsx.inet.rest::* ;
  */
 public composite ProductSearch
 {
-	type
-		InputData = rstring inputLine, rstring source ;
-		/**
-		 * The span type is another way to represent the output of a given column.
-		 * Instead of viewing the data as a string,
-		 * We use a tuple that represents the start and end index of the extracted data.
-		 */
-		Span = tuple<int32 begin, int32 end> ;
-		/**
-		 * The output schema for the Mentions extractor that was created in the web tool. 
-		 */
-		MentionsExtractorOutput = Span Snippet, rstring Organizations,
-			rstring Offerings ;
+	
 	graph
 		stream<rstring file> FileNameStream = DirectoryScan()
 		{
 			param
-				directory : getApplicationDir() + "/etc/input" ;
+				directory : "input" ;
 				initDelay : 8.0 ;
 			config
 				placement : partitionColocation("dataSource") ;
@@ -43,90 +42,23 @@ public composite ProductSearch
 			config
 				placement : partitionColocation("dataSource") ;
 		}
-
-		/**
-		 * Invocation of the TextExtract operator that loads the extractor created in the web tool
-		 */
+		/** Invocation of the TextExtract operator that loads the extractor created in the web tool		
+		*/
 		stream<MentionsExtractorOutput, InputData> TextExtractOutputStream =
-			TextExtract(Input)
+			TextExtract(Throttle_6_out0 as inPort0Alias)
 		{
 			param
-				moduleSearchPath : "etc/mentions_extractor" ; //location of where the zip file was unpacked. the operator will load the extractor from that directory.
-				inputDoc : "inputLine" ; //name of the attribute on the input stream that contains the text to analyze
-				outputViews : "Mentions" ; //name(s) of the extractor(s) we created and what to load
+				moduleSearchPath : "etc/mentions_extractor" ;
+				inputDoc : "inputLine" ;
+				outputViews : "Mentions" ;
 				outputMode : "multiPort" ;
 		}
 
-		/**
-	 * Format the output -  editing the input text to highlight the occurrence of the match within the text before submitting to the tuple viewer
-	 */
-		stream<rstring match, rstring Organizations, rstring Offerings>
-			FormatOutput = Custom(TextExtractOutputStream)
+		//send data to web page, see WebOutput.spl for example.
+		() as WebOut = WebOutput(TextExtractOutputStream)
 		{
-			logic
-				onTuple TextExtractOutputStream :
-				{
-					int32 start = Snippet.begin ;
-					int32 end = Snippet.end ;
-					mutable rstring left = "" ;
-					mutable rstring formatted_line = "" ;
-					int32 len = length(inputLine) ;
-					if(start > 0)
-					{
-						left = substring(inputLine, 0, start - 1) ;
-					}
-
-					formatted_line = left + " <b> " ; //Surround the match with the html bold tag
-					rstring mention = substring(inputLine, start,(end - start)) ;
-					formatted_line = formatted_line + mention + "</b>" ;
-					formatted_line = formatted_line + substring(inputLine, end,(len - end)) ;
-					mutable FormatOutput T = { } ;
-					assignFrom(T, TextExtractOutputStream) ;
-					T.match = formatted_line ;
-					submit(T, FormatOutput) ;
-				}
-
 		}
 
-		/**
-		 * This is a simple helper to print the results of running the extractor to the console.
-		 * In the Streaming Analytics service, go to the Log Viewer and Click on the PE's Console Log to view output
-		 */
-		() as OutputPrinter = Custom(TextExtractOutputStream)
-		{
-			logic
-				onTuple TextExtractOutputStream :
-				{
-					printStringLn("Snippet: " + substring(inputLine, Snippet.begin,
-						Snippet.end - Snippet.begin) + ", Organization: " + Organizations +
-						", Offering: " + Offerings + ", Original Input: " + inputLine) ;
-				}
-
-		}
-		
-		(stream<rstring match, rstring Organizations, rstring Offerings>
-			Throttle_7_out0) as Throttle_7 = Throttle(FormatOutput)
-		{
-			param
-				rate : 0.5 ;
-		}
-		
-		
-		/**
-		 * Send the tuples to a web server so we can view them in a browser
-		 * go to : http://<pe_host>:$port/textAnalytics to view the app.
-		 * Not available if running this application in the Streaming Analytics service - u
-		 * */
-		() as data = HTTPTupleView(Throttle_7_out0 as inPort0Alias)
-		{
-			window
-				inPort0Alias : tumbling, count(2) ;
-			param
-				contextResourceBase : getThisToolkitDir() + "/etc/web" ;
-				context : "textAnalytics" ;
-				port : 9899 ; //port to open on browser - change this as needed.
-
-		}
 		() as FileSink_4 = FileSink(TextExtractOutputStream)
 		{
 			param
@@ -134,6 +66,11 @@ public composite ProductSearch
 				format : txt ;
 		}
 
-	
+		(stream<rstring inputLine, rstring source> Throttle_6_out0) as Throttle_6 =
+			Throttle(Input as inputStream)
+		{
+			param
+				rate : 0.7 ;
+		}
 
 }

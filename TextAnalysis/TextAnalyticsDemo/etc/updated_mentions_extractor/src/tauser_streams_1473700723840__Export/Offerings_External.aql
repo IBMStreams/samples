@@ -1,0 +1,30 @@
+module tauser_streams_1473700723840__Export;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view Offerings from module tauser__TextProject___Export;
+
+---------------------------------------------
+-- Rules for the extractor 'Offerings_External' --
+---------------------------------------------
+
+-- Select the columns from the corresponding input
+-- extractor or prebuilt extractor
+create view _Offerings_External_Projection as
+  select  O.Offerings
+  from  tauser__TextProject___Export.Offerings O;
+
+-- Final view representing the extractor 'Offerings_External' as per the
+-- output specifications
+create view Offerings_External as
+  select  O1.Offerings as Offerings
+  from  _Offerings_External_Projection O1;
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Offerings_External;
+

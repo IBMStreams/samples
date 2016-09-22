@@ -1,0 +1,77 @@
+namespace application;
+
+use com.ibm.streamsx.inet.rest::* ;
+/***
+ * This composite takes the output from the TextExtract operator used by both applications in this project and displays them on a web page.
+ */
+composite WebOutput (input TextExtractOutputStream) {
+	graph
+
+/**
+	 * Format the output -  editing the input text to highlight the occurrence of the match within the text before submitting to the tuple viewer
+	 */
+		stream<rstring match, rstring Organizations, rstring Offerings>
+			FormatOutput = Custom(TextExtractOutputStream)
+		{
+			logic
+				onTuple TextExtractOutputStream :
+				{
+					int32 start = Snippet.begin ;
+					int32 end = Snippet.end ;
+					mutable rstring left = "" ;
+					mutable rstring formatted_line = "" ;
+					int32 len = length(inputLine) ;
+					if(start > 0)
+					{
+						left = substring(inputLine, 0, start - 1) ;
+					}
+
+					formatted_line = left + " <b> " ; //Surround the match with the html bold tag
+					rstring mention = substring(inputLine, start,(end - start)) ;
+					formatted_line = formatted_line + mention + "</b>" ;
+					formatted_line = formatted_line + substring(inputLine, end,(len - end)) ;
+					mutable FormatOutput T = { } ;
+					assignFrom(T, TextExtractOutputStream) ;
+					T.match = formatted_line ;
+					submit(T, FormatOutput) ;
+				}
+				onPunct TextExtractOutputStream:{
+					submit(Sys.WindowMarker, FormatOutput);
+				}
+
+		}
+
+		/**
+		 * This is a simple helper to print the results of running the extractor to the console.
+		 * In the Streaming Analytics service, go to the Log Viewer and Click on the PE's Console Log to view output
+		 */
+		() as OutputPrinter = Custom(TextExtractOutputStream)
+		{
+			logic
+				onTuple TextExtractOutputStream :
+				{
+					printStringLn("Snippet: " + substring(inputLine, Snippet.begin,
+						Snippet.end - Snippet.begin) + ", Organization: " + Organizations +
+						", Offering: " + Offerings + ", Original Input: " + inputLine) ;
+				}
+
+		}
+		
+		
+		
+		/**
+		 * Send the tuples to a web server so we can view them in a browser
+		 * go to : http://<pe_host>:$port/textAnalytics to view the app.
+		 * Not available if running this application in the Streaming Analytics service - u
+		 * */
+		() as data = HTTPTupleView(FormatOutput as inPort0Alias)
+		{
+			window
+				inPort0Alias : tumbling, count(2) ;
+			param
+				contextResourceBase : getThisToolkitDir() + "/etc/web" ;
+				context : "textAnalytics" ;
+				port : 9899 ; //port to open on browser - change this as needed.
+
+		}
+}

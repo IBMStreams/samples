@@ -1,0 +1,81 @@
+namespace application ;
+
+use com.ibm.streams.text.analytics::ACTION ;
+use com.ibm.streams.text.analytics::TextExtract ;
+
+/**
+ * This application demonstrates using the resources port of the TextExtract operator to add content to external dictionaries at runtime.
+ * This is the application that goes along with the article "Real Time Text Analysis with Streams, part 2: " published on StreamsDev
+ * After launching the application, the results of running the application are updated dynamically in a web app accessible at : http://<pe_host>:9899/textAnalytics .
+ */
+public composite ProductSearchWithUpdate
+{
+	param
+		expression<rstring> $offerings_dict_name :
+			"tauser__TextProject___Export.Offerings_dict" ;
+	graph
+		stream<rstring file> InputScan = DirectoryScan()
+		{
+			param
+				directory : "input" ;
+				initDelay : 8.0 ;
+			config
+				placement : partitionColocation("dataSource") ;
+		}
+
+		stream<rstring inputLine, rstring source> Input = FileSource(InputScan)
+		{
+			param
+				format : line ;
+			output
+				Input : source = FileName() ;
+			config
+				placement : partitionColocation("dataSource") ;
+		}
+
+		stream<rstring names> UpdateScan = DirectoryScan()
+		{
+			param
+				directory : "updates" ;
+		}
+
+		stream<rstring dictionaryContents, rstring dictionaryName, ACTION action>
+			NewOfferings = FileSource(UpdateScan)
+		{
+			param
+				format : line ;
+			output
+				NewOfferings : dictionaryName = $offerings_dict_name, action = UPDATE ;
+		}
+		/** Invocation of the TextExtract operator that loads the extractor created in the web tool		
+		*/
+		stream<MentionsExtractorOutput, InputData> TextExtractOutputStream =
+			TextExtract(Throttle_10_out0 as inPort0Alias ; NewOfferings)
+		{
+			param
+				moduleSearchPath : "etc/updated_mentions_extractor" ;
+				inputDoc : "inputLine" ;
+				outputViews : "Mentions" ;
+				outputMode : "multiPort" ;
+				externalDictionary : $offerings_dict_name +	"=etc/Offerings_dict_initial.dict" ;
+		}
+
+		() as WebOut = WebOutput(TextExtractOutputStream){
+			
+		}
+			
+		() as FileSink_4 = FileSink(TextExtractOutputStream)
+		{
+			param
+				file : "productSearch_updateResults.txt" ;
+				format : txt ;
+		}
+
+		(stream<rstring inputLine, rstring source> Throttle_10_out0) as Throttle_10 =
+			Throttle(Input as inputStream)
+		{
+			param
+				rate : 0.5 ;
+		}
+
+}
