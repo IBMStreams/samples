@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="std2.samples" default="all">
+	<dirname property="std2.samples.DIR" file="${ant.file.std2.samples}"/>
+		
+	
+	<property environment="env" />
+	<fail unless="env.STREAMS_INSTALL" message="STREAMS_INSTALL not set." />
+	<property name="streams.install" value="${env.STREAMS_INSTALL}" />
+	<property name="streams.toolkit.dir" value="${streams.install}/toolkits" />
+	<property name="tk.name" value="STD2Samples" />
+	<property name="data.dir" value="${std2.samples.DIR}/data" />
+
+	<property name="sample.namespace" value="application" />
+	<property name="sample.maincomp.std2anomaly" value="STD2Anomaly" />
+	<property name="sample.maincomp.std2basic" value="STD2Basic" />
+	<property name="sample.maincomp.std2finite" value="STD2FiniteLength" />
+	<property name="sample.maincomp.std2random" value="STD2Random" />
+
+	<target name="all" depends="indexToolkit" />
+
+	<target name="indexToolkit">
+		<exec executable="${streams.install}/bin/spl-make-toolkit">
+			<arg value="-i" />
+			<arg value="." />
+		</exec>
+	</target>
+
+	<target name="compileAnomaly">
+		<antcall target="compile">
+			<param name="param.appname" value="${sample.maincomp.std2anomaly}" />
+		</antcall>
+	</target>
+
+	<target name="compileBasic">
+		<antcall target="compile">
+			<param name="param.appname" value="${sample.maincomp.std2basic}" />
+		</antcall>
+	</target>
+	
+	<target name="compileFiniteLength">
+		<antcall target="compile">
+			<param name="param.appname" value="${sample.maincomp.std2finite}" />
+		</antcall>
+	</target>
+	
+	<target name="compileRandom">
+		<antcall target="compile">
+			<param name="param.appname" value="${sample.maincomp.std2random}" />
+		</antcall>
+	</target>
+	
+	<target name="compileAll" depends="compileBasic,compileFiniteLength,compileRandom,compileAnomaly" />
+	
+	<target name="compile" depends="indexToolkit">
+		<echo message="Compiling ${sample.namespace}::${param.appname}..." />
+		<exec executable="${streams.install}/bin/sc">
+			<arg value="-M" />
+			<arg value="${sample.namespace}::${param.appname}" />
+			<arg value="-t" />
+			<arg value="${streams.toolkit.dir}/com.ibm.streams.timeseries" />
+			<arg value="--output-dir=output/${param.appname}_Output" />
+			<arg value="--data-dir=data" />
+		</exec>
+	</target>
+
+	<target name="clean">
+		<delete dir="output" />
+		
+		<!-- clean toolkit index -->
+		<exec executable="${streams.install}/bin/spl-make-toolkit">
+			<arg value="-c" />
+			<arg value="-i" />
+			<arg value="." />
+		</exec>		
+	</target>
+
+</project>

@@ -1,0 +1,39 @@
+namespace application ;
+
+use com.ibm.streams.timeseries.analysis::STD2 ;
+
+/**
+ * This sample demonstrates how to ingest time series data 
+ * from a file source and analyze it using the STD2 operator.
+ */
+composite STD2Basic
+{
+	graph
+		(stream<float64 data> SrcStream) as SrcOp = FileSource()
+		{
+			param
+				file : "simple_input.csv" ;
+				format : csv ;
+		}
+
+		(stream<float64 data, float64 season, float64 trend, float64 residual>
+			STDStream) as STD2Op = STD2(SrcStream)
+		{
+			param
+				inputTimeSeries : data ;
+				seasonLength : 50u ;
+				algorithm : Additive ;
+				numSeasons : 20u ;
+			output
+				STDStream : season = season(), trend = trend(), residual = residuals() ;
+		}
+
+		() as SinkOp = FileSink(STDStream)
+		{
+			param
+				file : "simple_result.csv" ;
+				flush : 1u ;
+		}
+
+}
+
