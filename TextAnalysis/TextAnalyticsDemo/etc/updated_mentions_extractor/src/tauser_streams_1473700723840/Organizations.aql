@@ -1,0 +1,13 @@
+module tauser_streams_1473700723840;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Organizations'
+import view Organizations from module tauser_streams_1473700723840__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Organizations'
+output view tauser_streams_1473700723840__Export.Organizations as 'Organizations';

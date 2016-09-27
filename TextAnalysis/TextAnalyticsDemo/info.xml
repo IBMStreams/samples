@@ -4,7 +4,7 @@
     <info:name>TextAnalyticsDemo</info:name>
     <info:description>This is a sample application demonstrating how to use the TextExtract operator and extractors created in the IBM BigInsights web tool to analyze text.</info:description>
     <info:version>1.0.0</info:version>
-    <info:requiredProductVersion>4.1.0.0</info:requiredProductVersion>
+    <info:requiredProductVersion>4.2.0.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>
     <info:toolkit>
