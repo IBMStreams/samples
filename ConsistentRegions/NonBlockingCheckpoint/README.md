@@ -1,7 +1,7 @@
 This directory contains sample codes to demonstrate the usage of non-blocking
 checkpointing in consistent regions. Non-blocking checkpointing for Consistent
 Regions are available in Streams since V4.2. Please refer to the [Streams documentation]
-(https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.dev.doc/doc/consistentoperatorsnonblockcheckpoint.html) for details. There is also a related blog post on Streamsdev (https://developer.ibm.com/streamsdev/).
+(https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.dev.doc/doc/consistentoperatorsnonblockcheckpoint.html) for details. There is also a related blog post on [Streamsdev](https://developer.ibm.com/streamsdev/).
 
 ## Included files: 
 The top directory contains the following sub-directories and files:
@@ -61,7 +61,9 @@ in MyToolkit/impl/include/NBUnorderedMap.h.
 ## How to compile:
 To compile, please run make from the top directory. For example:
 
- `make consistent=yes period=10.0 tupExpected=1000000000`
+```
+ make consistent=yes period=10.0 tupExpected=1000000000
+```
 
 There are three paramters to specify:
  - consistent: whether to enable consistent region
@@ -127,15 +129,21 @@ that you must restart the instance to make the new settings take effect.
 
 Step 4: start the instance.
 
- `streamtool startinstance`
+```
+ streamtool startinstance
+```
 
 Step 5: submit job.
 
- `streamtool submitjob output/test.Main.sab`
+```
+ streamtool submitjob output/test.Main.sab
+```
 
 You may turn on debug-level tracing at submission time:
 
- `streamtool submitjob output/test.Main.sab -C tracing=debug`
+```
+ streamtool submitjob output/test.Main.sab -C tracing=debug
+```
 
 In test/test.splmm code, we set `NBOp` operator to sleep for 10 seconds in its 
 `checkpoint()` function. From the traces of start operator (`CRSource`), we can see that tuple 
