@@ -1,6 +1,7 @@
 This directory contains sample codes to demonstrate the usage of non-blocking
-checkpointing in consistent regions. There is a related blog post on 
-Streamsdev (https://developer.ibm.com/streamsdev/).
+checkpointing in consistent regions. Non-blocking checkpointing for Consistent
+Regions are available in Streams since V4.2. Please refer to the [Streams documentation]
+(https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.dev.doc/doc/consistentoperatorsnonblockcheckpoint.html) for details. There is also a related blog post on Streamsdev (https://developer.ibm.com/streamsdev/).
 
 ## Included files: 
 The top directory contains the following sub-directories and files:
@@ -112,15 +113,15 @@ backend store, run the following streamtool commands before starting instance:
  streamtool setproperty instance.checkpointRepositoryConfiguration="{\"Dir\":\"$CHECKPOINT_ROOT_DIR\"}"
 ```
 To configure the instance to use Redis or IBM Hyperstate Accelerator, please 
-follow the instructions in Streams document. Here are related references:
+follow the instructions in Streams documentation. Here are related references:
 
-[Streams V4.2 documentation](https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.cfg.doc/doc/ibminfospherestreams-configuring-checkpoint-data-store.html)
+[Streams documentation](https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.cfg.doc/doc/ibminfospherestreams-configuring-checkpoint-data-store.html)
 
 [How to install and configure Redis](https://developer.ibm.com/streamsdev/docs/install-configure-redis/)
 
 [How to setup Redis replication with InfoSphere Streams](https://developer.ibm.com/streamsdev/docs/setup-redis-replication-infosphere-streams-4-0/)
 
-You can also run streamtool setproperty to change the checkpoint backend 
+You can also run `streamtool setproperty` commands to change the checkpoint backend 
 store type and/or configuration after instance is started, but please note 
 that you must restart the instance to make the new settings take effect.
 
