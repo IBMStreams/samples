@@ -1,0 +1,351 @@
+/**
+ * Copyright (C) 2016, International Business Machines Corporation
+ * All Rights Reserved
+ */
+
+<%
+   my $outputPort = $model->getOutputPortAt(0); 
+   my $tupleType = $outputPort->getCppTupleType();
+   my $period = $model->getParameterByName("period");
+   $period = $period->getValueAt(0)->getCppExpression() if $period;
+   my $iterations = $model->getParameterByName("iterations");
+   $iterations = $iterations->getValueAt(0)->getCppExpression() if $iterations;
+   my $initDelay = $model->getParameterByName("initDelay");
+   $initDelay = $initDelay->getValueAt(0)->getCppExpression() if $initDelay;
+   my $usesIterationCount = 0;
+   my $ctorAssignments = getOutputTupleCppAssignmentsWithSideEffects ("_tuple", $outputPort, 0);
+   my $loopAssignments = getOutputTupleCppAssignmentsWithSideEffects ("_tuple", $outputPort, 1);
+   my $hasLoopAssignments = $loopAssignments ne "";
+   SPL::CodeGen::implementationPrologue($model);
+   my $loopNeedsMutex = $hasLoopAssignments || $iterations;
+
+   my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+   my $isTriggerOperator = $model->getContext()->getOptionalContext("ConsistentRegion")->isTriggerOperator() 
+       if $isInConsistentRegion;
+   my $triggerCount = $model->getParameterByName("triggerCount");
+   $triggerCount = $triggerCount->getValueAt(0)->getCppExpression() if $triggerCount;
+
+   my $batchSize = $model->getParameterByName("permitBatchSize");
+   if ($batchSize) {
+       $batchSize = $batchSize->getValueAt(0)->getCppExpression();
+   } else {
+       $batchSize = 1;
+   }
+   my $fileName = $model->getParameterByName("fileName");
+   $fileName = $fileName->getValueAt(0)->getCppExpression();
+
+   my $delayFileName = $model->getParameterByName("delayFileName");
+   $delayFileName = $delayFileName->getValueAt(0)->getCppExpression() if $delayFileName;
+
+   my $coreID = $model->getParameterByName("coreID");
+   $coreID = $coreID->getValueAt(0)->getCppExpression();
+%>
+
+#include <fstream>
+#include <sstream>
+#include <string>
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#include <sched.h>
+#include <sys/time.h>
+
+MY_OPERATOR::MY_OPERATOR()
+: _iterationCount(0)
+  <%if ($isInConsistentRegion && $triggerCount) {%>
+      , _triggerCount(0)
+  <%}%>
+{
+    <%if ($iterations) {%>
+        _iters = <%=$iterations%>;
+    <%}%>
+    <%=$ctorAssignments%>
+    <%if ($isInConsistentRegion) {%>
+        _crContext = static_cast<ConsistentRegionContext *> 
+            (getContext().getOptionalContext(CONSISTENT_REGION));
+    <%}%>
+
+    // load input tuples
+    _tuples.clear();
+}
+
+void MY_OPERATOR::allPortsReady()
+{
+    createThreads (1);
+}
+
+void MY_OPERATOR::process(uint32_t) 
+{
+    SPLAPPTRC(L_DEBUG, "CRSource startup...", SPL_OPER_DBG);
+    ProcessingElement& pe = getPE();
+    <%if ($period) {%>
+        const double period = <%=$period%>;
+    <%}%>
+    <%if ($initDelay) {%>
+        pe.blockUntilShutdownRequest(<%=$initDelay%>);
+    <%}%>
+    uint32_t batchSize = <%=$batchSize%>;
+
+    cpu_set_t set;
+    CPU_ZERO(&set);
+    CPU_SET(<%=$coreID%>, &set);
+    if (sched_setaffinity(0, sizeof(set), &set) == -1) {
+        SPLAPPTRC(L_ERROR, "Cannot set CPU affinity to core " << <%=$coreID%>, SPL_OPER_DBG);
+    }
+    SPLAPPTRC(L_INFO, "Set CPU affinity to core " << <%=$coreID%>, SPL_OPER_DBG);
+
+    uint64_t N = 0;
+    {
+        std::string inputFileStr = getContext().getPE().getDataDirectory() + "/" + <%=$fileName%>.string();
+        SPLAPPTRC(L_INFO, "CRSource load data from file " << inputFileStr, SPL_OPER_DBG);
+        std::ifstream infile(inputFileStr.c_str());
+        if (infile.is_open()) {
+            std::string line;
+            while (std::getline(infile, line)) {
+                std::istringstream iss(line);
+                <%=$ctorAssignments%>
+                iss >> _tuple;
+                //SPLAPPTRC(L_DEBUG, "tuple: " << _tuple, SPL_OPER_DBG);
+                _tuples.push_back(_tuple);
+            }
+            infile.close();
+            _iter = _tuples.begin();
+            N = _tuples.size();
+            SPLAPPTRC(L_INFO, "CRSource loaded " << _tuples.size() << " tuples from file " << inputFileStr, SPL_OPER_DBG);
+        }
+        else {
+            SPLAPPTRC(L_ERROR, "CRSource cannot load delay time from file " << inputFileStr, SPL_OPER_DBG);
+            throw -1;
+        }
+    }
+
+    <%if ($delayFileName) {%>
+    _countCount = 0;
+    _countIndex = 0;
+    {
+        std::string delayFileStr = getContext().getPE().getDataDirectory() + "/" + <%=$delayFileName%>.string();
+        SPLAPPTRC(L_INFO, "CRSource load delay time from file " << delayFileStr, SPL_OPER_DBG);
+        std::ifstream is(delayFileStr.c_str());
+        if (is.is_open()) {
+            uint64_t prefixCount = 0;
+            uint64_t c, d;
+            char space;
+            std::string line;
+            while (getline(is, line)) {
+                std::istringstream ss(line);
+                ss >> c >> space >> d;
+                _count.push_back(c);
+                _delay.push_back(d);
+                _count[_countCount] += prefixCount;
+                prefixCount += c;
+                _countCount ++;
+            }
+            is.close();
+            SPLAPPTRC(L_INFO, "CRSource loaded delay time (tuple count " << prefixCount << " countCount " <<
+                _countCount << ") from file " << delayFileStr, SPL_OPER_DBG);
+        }
+        else {
+            SPLAPPTRC(L_ERROR, "CRSource cannot load delay time from file " << delayFileStr, SPL_OPER_DBG);
+            throw -1;
+        }
+
+        for (uint64_t i = 0; i < _countCount; i ++)
+            std::cerr << "delay i=" << i << " " << _count[i] << " " << _delay[i] << std::endl;
+
+    }
+    struct timeval tv;
+    <%}%>
+    _i = 0;
+    while(!pe.getShutdownRequested()) {
+        <%if ($isInConsistentRegion) {%>
+            bool doMakeConsistent = false;
+            {  
+                ConsistentRegionPermit crp(_crContext);
+                // For perf reasons
+                //for (uint32_t i = 0; !pe.getShutdownRequested() && i < batchSize; i++) { 
+        <%}%>
+                <%if ($loopNeedsMutex) {%>
+                {
+                    AutoMutex am (_mutex);
+                <%}%>
+                <%if ($iterations) {%>
+                    if (_iters != 0) {
+                        _iters--;
+                <%}%>
+                <%if ($delayFileName) {%>
+                {
+                    // busy loop to delay
+                    gettimeofday(&tv, NULL);
+                    double dueTime = tv.tv_sec + (tv.tv_usec / 1000000.0);
+                    dueTime += (double)_delay[_countIndex]/1000000000.0;
+                    double newTime;
+                    do {
+                        gettimeofday(&tv, NULL);
+                        newTime = tv.tv_sec + (tv.tv_usec / 1000000.0);
+                    }
+                    while (newTime < dueTime);
+                }
+                <%}%>
+                // submit one tuple
+                submit (*_iter, 0); 
+                ++_iter;
+                if (_iter == _tuples.end()) {
+                    _iter = _tuples.begin();   
+                }
+                _i ++;
+                <%if ($delayFileName) {%>
+                if (_i >= _count[_countIndex]) {
+                    _countIndex ++;
+                }
+                <%}%>
+                if (_i == N) {
+                    _i = 0;
+                    <%if ($delayFileName) {%>
+                    _countIndex = 0;
+                    <%}%>
+                }
+
+                <%if ($usesIterationCount) {%>
+                    _iterationCount++;
+                <%}%>
+                <%if ($isInConsistentRegion && $triggerCount) {%>
+                    _triggerCount++;
+                    if (_triggerCount == <%=$triggerCount%>)
+                        doMakeConsistent = true;
+                <%}%>
+                <%if ($iterations) {%>
+                    if (_iters == 0) {
+                        submit(Punctuation::WindowMarker, 0);
+                        <%if ($isInConsistentRegion) {%>
+                            doMakeConsistent = true;
+                        <%} else {%>
+                            submit(Punctuation::FinalMarker, 0);
+                            goto exit;
+                        <%}%>
+                    }
+                    }
+                <%}%>
+                <%if ($loopNeedsMutex) {%>
+                } 
+                <%}%>
+	<%if ($isInConsistentRegion) {%>
+                    if (doMakeConsistent) {
+                        _crContext->makeConsistent();
+                        AutoMutex am (_mutex);
+                        <%if ($iterations) {%>
+                            if (_iters == 0) {
+                                goto exit;
+                            }
+                        <%}%>
+                        <%if ($triggerCount) {%>
+                            _triggerCount = 0;
+                        <%}%>
+                    }
+                //}  // for loop for batching tuples
+            } // permit
+        <%}%>
+        <%if ($period) {%>
+            pe.blockUntilShutdownRequest(period);
+        <%}%>
+    }
+exit:
+    SPLAPPTRC(L_DEBUG, "CRSource exiting...", SPL_OPER_DBG);
+}
+
+void MY_OPERATOR::checkpoint(Checkpoint & ckpt)
+{
+    AutoMutex am(_mutex);
+
+    SPLAPPTRC(L_DEBUG, "Executing checkpoint()", SPL_OPER_DBG);
+
+    <%if ($iterations) {%>
+        ckpt << _iters;
+    <%}%>
+    <%if ($usesIterationCount) {%>
+        ckpt << _iterationCount;
+        SPLAPPTRC(L_DEBUG, "iterationCount: " << _iterationCount, SPL_OPER_DBG);
+    <%}%>
+}
+
+void MY_OPERATOR::reset(Checkpoint & ckpt)
+{
+    AutoMutex am(_mutex);
+
+    <%if ($iterations) {%>
+        ckpt >> _iters;
+        _iter = _tuples.begin();
+        for (SPL::uint32 i = <%=$iterations%>; i < _iters; i --) {
+            ++_iter;
+            if (_iter == _tuples.end()) { 
+                _iter = _tuples.begin();
+            }
+        }
+    <%}%>
+    <%if ($usesIterationCount) {%>
+        ckpt >> _iterationCount;
+        SPLAPPTRC(L_DEBUG, "iterationCount: " << _iterationCount, SPL_OPER_DBG);
+    <%}%>
+
+    <%if ($triggerCount) {%>
+        _triggerCount = 0;
+    <%}%>
+    SPLAPPTRC(L_INFO, "After restoring: iters: " << _iters << " iterationCount: " << _iterationCount << " size: " << _tuples.size(), SPL_OPER_DBG);
+}
+
+void MY_OPERATOR::resetToInitialState()
+{
+    AutoMutex am(_mutex);
+
+    _iterationCount = 0;
+    <%if ($iterations) {%>
+        _iters = <%=$iterations%>;
+    <%}%>
+
+    <%=$ctorAssignments%>
+    <%if ($triggerCount) {%>
+        _triggerCount = 0;
+    <%}%>
+}
+
+void MY_OPERATOR::regionCheckpointed(int64_t id)
+{
+    SPLAPPTRC(L_INFO, "The Consistent Region has been checkpointed. Checkpoint sequence ID = " << id, SPL_OPER_DBG);
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);
+
+sub getOutputTupleCppAssignmentsWithSideEffects($$$)
+{
+    my ($tupleName, $outputPort, $sideEffects) = @_;
+    my $numAttrs = $outputPort->getNumberOfAttributes();
+    my $assignments = "";
+    for (my $i = 0; $i < $numAttrs; ++$i) {
+      my $attr = $outputPort->getAttributeAt($i);
+      if($attr->hasAssignmentWithOutputFunction()) {
+        my $of = $attr->getAssignmentOutputFunctionName();
+        if ($of eq 'IterationCount') {
+          next if !$sideEffects;
+          $assignments .= "$tupleName.set_" . $attr->getName() . "(IterationCount()); ";
+          $usesIterationCount = 1;
+        } else {
+          # Must be AsIs
+          my $exp = $attr->getAssignmentOutputFunctionParameterValueAt(0);
+          my $cppExpn = $exp->getCppExpression();
+          my $hasIterationCount = 0;
+          if ($cppExpn =~ m/::Beacon::/) {
+            $cppExpn =~ s/::Beacon:://g;
+            $hasIterationCount = 1;
+            $usesIterationCount = 1;
+          }
+          if ($hasIterationCount || $exp->hasStreamAttributes() || $exp->hasSideEffects() || $exp->readsState()) {
+             $assignments .= "$tupleName.set_" . $attr->getName() . "($cppExpn); " if $sideEffects;
+          } 
+          elsif (!$sideEffects) {
+             $assignments .= "$tupleName.set_" . $attr->getName() . "($cppExpn); ";
+          }
+        }
+      }
+    }
+    return $assignments;
+}
+%>
