@@ -1,0 +1,64 @@
+/**
+ * Copyright (C) 2016, International Business Machines Corporation
+ * All Rights Reserved
+ */
+#include <vector>
+#include <SPL/Runtime/Utility/Mutex.h>
+<%
+   my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+   my $triggerCount = $model->getParameterByName("triggerCount");
+   my @includes;
+   push @includes, "#include <SPL/Runtime/Operator/State/StateHandler.h>";
+   if ($isInConsistentRegion) {
+       push @includes, "#include <SPL/Runtime/Operator/State/ConsistentRegionContext.h>";
+   }
+   my $outputPort = $model->getOutputPortAt(0);
+   my $tupleType = $outputPort->getCppTupleType();
+   SPL::CodeGen::headerPrologue($model,\@includes);
+%>
+
+// A C++ primitive operator which loads input tuples from a file into memory, 
+// and repetitively sends the tuples downstream.
+class MY_OPERATOR : public MY_BASE_OPERATOR, public StateHandler
+{
+public:
+   MY_OPERATOR();
+  
+   void allPortsReady();
+   void process(uint32_t index);
+
+   // StateHandler callbacks
+   virtual void checkpoint(Checkpoint & ckpt);
+   virtual void reset(Checkpoint & ckpt);
+   virtual void resetToInitialState();
+   virtual void regionCheckpointed(int64_t id);
+
+private:
+   uint64_t IterationCount() const { return _iterationCount;}
+
+   Mutex _mutex;
+   // input tuples are loaded into _tuples vector
+   std::vector< <%=$tupleType%> > _tuples;
+   std::vector< <%=$tupleType%> >::iterator _iter;
+   <%=$tupleType%> _tuple;
+   SPL::uint32 _iters;
+   uint64_t _iterationCount;
+
+   <%if ($isInConsistentRegion) {%>
+       <%if ($triggerCount) {%>
+          uint32_t _triggerCount;
+       <%}%>
+       ConsistentRegionContext *_crContext;
+   <%}%>
+
+   // _count and _delay are loaded from the delayFile and 
+   // used to control inter-tuple delays
+   std::vector<uint64_t> _count;
+   std::vector<uint64_t> _delay;
+   uint64_t _countCount;
+   uint64_t _countIndex;
+   uint64_t _i;
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>
+
