@@ -76,19 +76,23 @@ and instance, then submit the job via streamtool submitjob command.
 
 Step 1: create your Streams domain and start the domain. For example:
 
- `export STREAMS_DOMAIN_ID=MyDomainName`
+```
+ export STREAMS_DOMAIN_ID=MyDomainName
 
- `streamtool mkdomain --property jmx.port=0 --property sws.port=0`
+ streamtool mkdomain --property jmx.port=0 --property sws.port=0
 
- `streamtool genkey`
+ streamtool genkey
 
- `streamtool startdomain`
+ streamtool startdomain
+```
 
 Step 2: create your Streams instance. For example:
 
- `export STREAMS_INSTANCE_ID=MyInstanceName`
+```
+ export STREAMS_INSTANCE_ID=MyInstanceName
 
- `streamtool mkinstance`
+ streamtool mkinstance
+```
 
 Step 3: to support consistent region and checkpointing, the instance must be 
 configured with a checkpoint backend store. In Streams V4.2, there are three 
@@ -98,16 +102,18 @@ data store.
 For example, to configure the instance to use file system as the checkpoint 
 backend store, run the following streamtool commands before starting instance:
 
- `CHECKPOINT_ROOT_DIR=/absolute/path/to/directory/for/storing/checkpoints/`
+```
+ CHECKPOINT_ROOT_DIR=/absolute/path/to/directory/for/storing/checkpoints/
 
- `mkdir -p $CHECKPOINT_ROOT_DIR`
+ mkdir -p $CHECKPOINT_ROOT_DIR
 
- `streamtool setproperty instance.checkpointRepository=fileSystem`
+ streamtool setproperty instance.checkpointRepository=fileSystem
  
- `streamtool setproperty instance.checkpointRepositoryConfiguration="{\"Dir\":\"$CHECKPOINT_ROOT_DIR\"}"`
-
+ streamtool setproperty instance.checkpointRepositoryConfiguration="{\"Dir\":\"$CHECKPOINT_ROOT_DIR\"}"
+```
 To configure the instance to use Redis or IBM Hyperstate Accelerator, please 
 follow the instructions in Streams document. Here are related references:
+
 [Streams V4.2 documentation](https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.cfg.doc/doc/ibminfospherestreams-configuring-checkpoint-data-store.html)
 
 [How to install and configure Redis](https://developer.ibm.com/streamsdev/docs/install-configure-redis/)
@@ -135,13 +141,13 @@ In test/test.splmm code, we set `NBOp` operator to sleep for 10 seconds in its
 processing is resumed while `NBOp`'s checkpointing is ongoing in the background:
 
 ```
-# Start operator resumes tuple flow
+# CRSource operator resumes tuple flow
 27 Sep 2016 23:27:28.454 [19346] DEBUG #splapptrc,J[1],P[3],Source,consistentRegion_0 M[ConsistentRegionEventHandler.cpp:executeResumeSequence:275]  - Submitting ResumeMarker to output ports.
 
 # NBOp finishes checkpointing 10 seoncds later
 27 Sep 2016 23:27:38.598 [19312] INFO #splapptrc,J[1],P[4],MyOp,spl_ckpt M[CheckpointContextImpl.cpp:createCheckpoint:353]  - Operator checkpointing is complete: SequenceID = 2, Size = 5550004 Bytes (non-incremental checkpoint data: 5550004 Bytes, incremental checkpoint data: 0 Bytes), Time = 10.1592 Seconds
 
-# Start operator gets notified via regionCheckpointed() callback
+# CRSource operator gets notified via regionCheckpointed() callback
 27 Sep 2016 23:27:38.622 [19346] INFO #splapptrc,J[1],P[3],Source,spl_operator M[Source.cpp:regionCheckpointed:259]  - The Consistent Region has been checkpointed. Checkpoint sequence ID = 2
 ```
 
