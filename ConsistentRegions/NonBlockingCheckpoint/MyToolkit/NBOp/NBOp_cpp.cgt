@@ -1,0 +1,137 @@
+/**
+ * Copyright (C) 2016, International Business Machines Corporation
+ * All Rights Reserved
+ */
+<%
+    my $inputPort = $model->getInputPortAt(0);
+    my $outputPort = $model->getOutputPortAt(0);
+    my $inputName = $inputPort->getCppTupleName();
+    my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+    my $checkpointDelay = $model->getParameterByName("checkpointDelay");
+    $checkpointDelay = $checkpointDelay->getValueAt(0)->getCppExpression() if $checkpointDelay;
+%>
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+#include <utility>
+#include <unistd.h>
+
+using namespace std;
+
+MY_OPERATOR::MY_OPERATOR()
+ : _tupleCount(0)
+{
+#if USE_NON_BLOCKING_CHECKPOINT
+<% if ($isInConsistentRegion) {%>
+    // Operator must explicitly call ConsistentRegionContext::enableNonBlockingCheckpoint() 
+    // in ctor to enable non-blocking checkpointing.
+    ConsistentRegionContext * crContext = 
+        static_cast<ConsistentRegionContext *>(getContext().getOptionalContext(CONSISTENT_REGION));
+    crContext->enableNonBlockingCheckpoint();
+<% } %>
+#endif
+}
+
+MY_OPERATOR::~MY_OPERATOR()
+{
+}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+    AutoMutex am(_mutex);
+    const IPort0Type& <%=$inputName%> = static_cast<const IPort0Type&>(tuple);
+
+    // Emulated computation. This is the minimal computation to modify operator state.
+    // Please note that NBUnorderedMap has compatible APIs with STL's unordered_map 
+    // (e.g, find(), insert(), iterator).
+    // Also note that access to per-instrument state must go through find(). That's
+    // how accesses are tracked and copy-on-write are triggered.
+    MapType::iterator iter = _map.find(<%=$inputName%>.get_ric());
+    if (iter != _map.end()) {
+        MyData & data = iter->second;
+        // do computation on the data
+        for (int i = 0; i < STATE_SIZE; i ++) {
+            data.values[i] = (float)_tupleCount;
+        }
+    }
+    else {
+        MyData data;
+        for (int i = 0; i < STATE_SIZE; i ++) {
+            data.values[i] = (float)_tupleCount;
+        }
+        _map.insert(std::make_pair(<%=$inputName%>.get_ric(), data));
+    }
+    _tupleCount ++;
+    submit(tuple, 0);
+}
+
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+    forwardWindowPunctuation(punct);
+}
+
+// StateHandler::resetToInitialState() callback is invoked when the operator
+// needs to be resetted before the first checkpoint occurs; it resets operator
+// to its initial state.
+void MY_OPERATOR::resetToInitialState()
+{
+    AutoMutex am(_mutex);
+
+    _map.clear();
+}
+
+#if USE_NON_BLOCKING_CHECKPOINT
+// StateHandler::prepareForNonBlockingCheckpoint() callback is invoked when
+// the operator receives drain marker; It prepares the operator state so that
+// the operator state can be checkpointed while new tuples are being processed.
+void MY_OPERATOR::prepareForNonBlockingCheckpoint(int64_t id)
+{
+    AutoMutex am(_mutex);
+
+    // call NBUnorderedMap::prepareForNonBlockingCheckpoint()
+    // to prepare the map for checkpointing and copy-on-write.
+    _map.prepareForNonBlockingCheckpoint(id);
+    SPLAPPTRC(L_TRACE, "Finish preparing for checkpoint sequence id " << id, "CHECKPOINT");
+}
+#endif
+
+// StateHandler::checkpoint() callback is invoked to seriailize and store 
+// operator state to backend store. If non-blocking checkpointing is enabled,
+// checkpoint() callback is executed by SPL Runtime's internal background
+// thread, possibly while new tuples are being processed (by process()).
+void MY_OPERATOR::checkpoint(Checkpoint & ckpt) 
+{
+<% if ($checkpointDelay) { %>
+    sleep(<%=$checkpointDelay%>);
+<% } %>
+
+#if USE_NON_BLOCKING_CHECKPOINT
+    // Do non-blocking checkpointing of the operator state.
+    // The operator <<() function has been overloaded for NBUnorderedMap to 
+    // internally checkpoint the "old" version of the map, that is, the version
+    // prepared by prepareForNonBlockingCheckpoint().
+    // There is no need to use mutex lock since checkpointing and tuple processing
+    // access different copies of data
+    ckpt << _map;
+#else
+    AutoMutex am(_mutex);
+
+    // Do blocking checkpointing of the opreator state.
+    // serialize and write the map by using overloaded operator <<() 
+    // function for std::tr1::unordered_map
+    ckpt << _map; 
+#endif
+    SPLAPPTRC(L_TRACE, "Finish checkpoint sequence id " << ckpt.getSequenceId(), "CHECKPOINT");
+}
+
+// StateHandler::reset() callback is invoked to restore operator state to
+// a previous checkpoint.
+void MY_OPERATOR::reset(Checkpoint & ckpt)
+{
+    AutoMutex am(_mutex);
+
+    ckpt >> _map;
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

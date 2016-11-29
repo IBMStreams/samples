@@ -1,0 +1,98 @@
+/**
+ * Copyright (C) 2016, International Business Machines Corporation
+ * All Rights Reserved
+ */
+<%
+    # the 'useNonBlockingCheckpoint' parameter specifies whether to use
+    # non-blocking checkpointing
+    my $useNonBlockingCheckpoint = $model->getParameterByName("useNonBlockingCheckpoint");
+    $useNonBlockingCheckpoint = $useNonBlockingCheckpoint ? 
+        $useNonBlockingCheckpoint->getValueAt(0)->getSPLExpression() eq "true" : 0;
+
+    my @includes;
+    push @includes, "#include <SPL/Runtime/Operator/State/StateHandler.h>";
+    SPL::CodeGen::headerPrologue($model, \@includes);
+%>
+
+<% if ($useNonBlockingCheckpoint) { %>
+/// Set USE_NON_BLOCKING_CHECKPOINT macro to use NBUnorderedMap data structure
+/// and enable non-blocking checkpointing. Otherwise use STL's unordered_map
+/// and blocking checkpointing.
+#define USE_NON_BLOCKING_CHECKPOINT 1
+<% } %>
+#if USE_NON_BLOCKING_CHECKPOINT
+#include "NBUnorderedMap.h"
+#else
+#include <tr1/unordered_map>
+#endif
+#include <vector>
+
+// number of float-pointing numbers as per-instrument state
+#define STATE_SIZE 25
+
+/// A C++ primitive operator which maintains a map from ric to 100-Byte data
+/// as its state and exercises non-blocking checkpointing in consistent region
+class MY_OPERATOR : public MY_BASE_OPERATOR,
+    public StateHandler // implements the SPL::StateHandler interface
+{
+public:
+    MY_OPERATOR();
+    ~MY_OPERATOR();
+
+    virtual void process(Punctuation const & punct, uint32_t port);
+    virtual void process(Tuple const & tuple, uint32_t port);
+
+    // StateHandler callbacks
+    virtual void checkpoint(Checkpoint & ckpt);
+    virtual void reset(Checkpoint & ckpt);
+    virtual void resetToInitialState();
+
+#if USE_NON_BLOCKING_CHECKPOINT
+    virtual void prepareForNonBlockingCheckpoint(int64_t id);
+#endif
+
+private:
+    /// Function used for performance measurement
+    void updateMetrics();
+
+    /// Emulated per-instrument state data
+    struct MyData {
+        float values[STATE_SIZE]; // 100 Bytes of data
+
+        /// Default constructor
+        MyData() { }
+
+        /// Overloaded operator << () function for serialization
+        template<typename S>
+        friend SPL::ByteBuffer<S> & operator<<(SPL::ByteBuffer<S> & sbuf, const MyData & data) 
+        {
+            for (int i = 0; i < STATE_SIZE; i ++) {
+                sbuf << data.values[i];
+            }
+            return sbuf;
+        };
+
+        /// Overloaded operator >> () function for de-serialization
+        template<typename S>
+        friend SPL::ByteBuffer<S> & operator>>(SPL::ByteBuffer<S> & sbuf, MyData & data)
+        {
+            for (int i = 0; i < STATE_SIZE; i ++) {
+                sbuf >> data.values[i];
+            }
+            return sbuf;
+        };
+    };
+
+#if USE_NON_BLOCKING_CHECKPOINT
+    typedef NBCkpt::NBUnorderedMap<SPL::rstring, MyData> MapType;
+#else
+    typedef std::tr1::unordered_map<SPL::rstring, MyData> MapType;
+#endif
+    MapType _map; // map from ric to per-instument data
+
+    Mutex _mutex; // mutex lock
+
+    uint64_t _tupleCount; // counter for number of tuples received
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>

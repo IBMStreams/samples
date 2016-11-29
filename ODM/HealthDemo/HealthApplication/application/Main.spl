@@ -1,0 +1,79 @@
+// (C) Copyright IBM Corp.  2016    All Rights Reserved.  
+
+namespace application ;
+
+use generated::HealthRules ;
+use generated.demo::Patient ;
+
+composite Main
+{
+	graph
+		(stream<Patient o_Patient> HealthRules_1_out0) as HealthRules_1 =
+			HealthRules(Functor_6_out0 as inPort0Alias ; DirectoryScan_3_out0 as
+			InputStreamName1)
+		{
+		}
+
+		(stream<rstring path> DirectoryScan_3_out0) as DirectoryScan_3 =
+			DirectoryScan()
+		{
+			param
+				directory :
+					"updatedRules" ;
+		}
+
+		() as FileSink_4 = FileSink(HealthRules_1_out0 as inputStream)
+		{
+			param
+				file : "result.txt" ;
+				flush : 10u ;
+		}
+
+		(stream<Patient> Custom_1_out0) as Custom_1 = Custom()
+		{
+			logic
+				onProcess :
+				{
+					mutable int32 i = 0;
+					while( i < 10000000) {
+						mutable Patient tup = {};
+						
+						float64 rNum = random();
+						
+						tup.age = (int32)(rNum * 60.0);
+						tup.alert=false;
+						tup.bpDiastolic = 40 + (int32)(rNum * 60.0);
+						tup.bpSystolic = 80 + (int32)(rNum * 60.0);
+						tup.heartRate = (float32)60.0 + (float32)(rNum * 60.0);
+						tup.hrAverage = (float32)0.0;
+						tup.name = "John Smith"u;
+						tup.spO2 = 80 + (int32)(rNum * 19.0);
+						tup.temperature = (float32)34.0 + (float32)(rNum * 9.0);
+						
+						submit(tup, Custom_1_out0);
+						i++;
+					}
+				}
+
+		}
+
+		(stream<Patient> Aggregate_5_out0) as Aggregate_5 = Aggregate(Custom_1_out0
+			as inputStream)
+		{
+			window
+				inputStream : sliding, time(0.1), count(1) ;
+			output
+				Aggregate_5_out0 : hrAverage =
+					Average(inputStream.heartRate);
+		}
+
+		(stream<Patient i_Patient> Functor_6_out0) as Functor_6 = Functor(Aggregate_5_out0 as
+			inputStream)
+		{
+			output
+				Functor_6_out0 : i_Patient = {age = inputStream.age, alert = inputStream.alert, bpDiastolic = inputStream.bpDiastolic, bpSystolic = inputStream.bpSystolic, heartRate = inputStream.heartRate, hrAverage = inputStream.hrAverage,
+				messages = inputStream.messages, name = inputStream.name, roomInfo = inputStream.roomInfo,spO2 = inputStream.spO2, temperature = inputStream.temperature};
+		}
+
+}
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<!-- (C) Copyright IBM Corp.  2016  All Rights Reserved.              -->
+<operatorModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator"
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context> 
+      <libraryDependencies>
+        <library>
+          <cmn:description>Non-Blocking Checkpointing utility</cmn:description>
+          <cmn:managedLibrary>
+            <cmn:includePath>../impl/include</cmn:includePath>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      <providesSingleThreadedContext>Always</providesSingleThreadedContext>
+    </context>  
+    <parameters>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>useNonBlockingCheckpoint</name>
+        <description>
+Whether to use non-blocking checkpointing.</description>
+        <optional>false</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>checkpointDelay</name>
+        <description>
+Specifies the number of seconds that the operator delays in checkpoint().</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>int32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+    </parameters>
+    <inputPorts>
+      <inputPortSet>
+        <description>
+The `NBOp` operator has one input port.</description>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortSet>
+        <expressionMode>Expression</expressionMode> 
+        <autoAssignment>true</autoAssignment>
+        <completeAssignment>true</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>    
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>
