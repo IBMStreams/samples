@@ -1,3 +1,6 @@
+/* Copyright (C) 2016, International Business Machines Corporation */
+/* All Rights Reserved */
+
 namespace hangoutsample;
 
 use com.ibm.streams.geospatial::*;
@@ -147,12 +150,12 @@ composite Main
 	 */
 	stream<AggregatedData> HangoutStatistics as O = Aggregate(HangoutsAnonymized as I)
 	{
-        window I:
-        	tumbling,punct();
-        param
-        	groupBy: I.anonGeoHash;
-        output O:
-            entityCount = Count();
+		window I:
+			tumbling,punct();
+		param
+			groupBy: I.anonGeoHash;
+		output O:
+			entityCount = Count();
 	}
 
 	/**
