@@ -1,0 +1,185 @@
+/* Copyright (C) 2016, International Business Machines Corporation */
+/* All Rights Reserved */
+
+namespace hangoutsample;
+
+use com.ibm.streams.geospatial::*;
+use com.ibm.streams.teda.utility::*;
+
+/**
+ * This sample shows how to anonymize geohashes produced by the Geospatial toolkit Hangout operator.
+ * It implements the following processing steps :
+ * 
+ * 1) simulate location data for 6 different entities
+ * 2) detect hangout areas for the entities, resulting in 6 character geohashes
+ * 3) anonymize the calculated geohashes using a secret key and a crypto hash function
+ * 4) aggregate the number of entities per anonymized geohash and print the resulting numbers
+ * 
+ * If the sample runs correctly you should see the following output in the console :
+ * (the anonGeoHash values may vary, based on the secretKey you supply at submission time)  
+ * 
+ * "Location traces ---------------------------------------------------------------"
+ * {id="Greenwich1",latitude=51.47879,longitude=-0.010677,timeStamp=3000,isInHangout=true,hangoutGeohash="gcpuzg",anonGeoHash="b52b434a0f8a2d7200ac28a7ebe2479cff270d15636861646f394234"}
+ * {id="Greenwich2",latitude=51.47879,longitude=-0.010677,timeStamp=3000,isInHangout=true,hangoutGeohash="gcpuzg",anonGeoHash="b52b434a0f8a2d7200ac28a7ebe2479cff270d15636861646f394234"}
+ * {id="Greenwich3",latitude=51.47879,longitude=-0.010677,timeStamp=3000,isInHangout=true,hangoutGeohash="gcpuzg",anonGeoHash="b52b434a0f8a2d7200ac28a7ebe2479cff270d15636861646f394234"}
+ * {id="Yorktown1",latitude=41.21618,longitude=-73.805878,timeStamp=3000,isInHangout=true,hangoutGeohash="dr7d2x",anonGeoHash="e096605530d1f218b40303046698824f109ba7a5f1d985a6999810c9"}
+ * {id="Yorktown2",latitude=41.21618,longitude=-73.805878,timeStamp=3000,isInHangout=true,hangoutGeohash="dr7d2x",anonGeoHash="e096605530d1f218b40303046698824f109ba7a5f1d985a6999810c9"}
+ * {id="Berlin1",latitude=52.521402,longitude=13.401947,timeStamp=3000,isInHangout=true,hangoutGeohash="u33dbc",anonGeoHash="c33b139169a69c5fcc7dd56cfc319f6ed228d0247cdb7ec0a7a34ec5"}
+ * "Aggregation results -----------------------------------------------------------"
+ * {anonGeoHash="c33b139169a69c5fcc7dd56cfc319f6ed228d0247cdb7ec0a7a34ec5",entityCount=1}
+ * {anonGeoHash="b52b434a0f8a2d7200ac28a7ebe2479cff270d15636861646f394234",entityCount=3}
+ * {anonGeoHash="e096605530d1f218b40303046698824f109ba7a5f1d985a6999810c9",entityCount=2}
+ * 
+ */
+composite Main
+{
+	type
+	
+		// schema for the location trace data
+		EntityData = tuple<
+			rstring id,					// the ID of the entity
+			float64 latitude,			// latitude of the location trace
+			float64 longitude,			// longitude of the location trace
+			int64 timeStamp,			// the timestamp of the location trace in ms
+			boolean isInHangout,		// flag to indicate if a hangout was detected, filled by the Hangout operator
+			rstring hangoutGeohash,		// the geohash of the hangout (if detected), filled by the Hangout operator
+			rstring anonGeoHash			// the anonymized geohash, filled by the custom operator 
+		>;
+		
+		// schema for the aggregation results
+		AggregatedData = tuple <
+			rstring anonGeoHash,		// the group by key for the aggregation
+			int32 entityCount			// the number of entities in the hangout area given by the key	
+		>;
+	
+	graph
+
+	/**
+	 * This custom operator simulates 6 different entities. 3 of them hanging out in Greenwich,
+	 * two in Yorktown and one in Berlin. The location for the entities do not change, so a hangout is guaranteed to be detected. 
+	 * For each entity we need to send two tuples with different timestamps. Only on the second
+	 * tuple the hangout is detected, because the entity needs to be in the same area for some amount of time.
+	 * The timestamp is in milliseconds, so the time difference between the two location traces is 2 seconds,
+	 * which is larger than the configured dwell time of 1 second at the Hangout operator.
+	 */
+	stream<EntityData> Entities as O = Custom()
+	{
+		logic
+		onProcess :
+		{
+			println("Location traces ---------------------------------------------------------------");
+
+			// these three entities hang out in Greenwich
+			submit( { id="Greenwich1", latitude=51.47879, longitude=-0.010677, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Greenwich1", latitude=51.47879, longitude=-0.010677, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Greenwich2", latitude=51.47879, longitude=-0.010677, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Greenwich2", latitude=51.47879, longitude=-0.010677, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Greenwich3", latitude=51.47879, longitude=-0.010677, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Greenwich3", latitude=51.47879, longitude=-0.010677, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+
+			// these two entities hangout in Yorktown Heights
+			submit( { id="Yorktown1", latitude=41.21618000, longitude=-73.80587800, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Yorktown1", latitude=41.21618000, longitude=-73.80587800, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Yorktown2", latitude=41.21618000, longitude=-73.80587800, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Yorktown2", latitude=41.21618000, longitude=-73.80587800, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+
+			// this entity hangs out in Berlin
+			submit( { id="Berlin1", latitude=52.521402, longitude=13.401947, timeStamp=1000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+			submit( { id="Berlin1", latitude=52.521402, longitude=13.401947, timeStamp=3000l, isInHangout=false, hangoutGeohash="", anonGeoHash="" } , O);
+
+			// finally send a punctuation, to trigger output of the aggregated values
+			block(2.0);
+			println("Aggregation results -----------------------------------------------------------");
+			submit(Sys.WindowMarker, O);			
+		}
+	}	
+
+	/**
+	 * Detect if the entity is in a hangout. The hangout area is determined by the 30 bit geohash area
+	 * the entity is currently in. In addition the entity needs to stay in this area for at least one second  
+	 */
+	stream<I> HangoutEntities as O = Hangout(Entities as I)
+	{
+		param
+			minimumDwellTime : 1u;
+			geohashBitDepth : 32u;
+		output O:
+			isInHangout = IsInHangout(),
+			hangoutGeohash = HangoutGeohashBase32();
+	}	
+
+	/**
+	 * Remove entities that are actually not hanging out
+	 */
+	stream<I> InHangoutEntities as O = Filter(HangoutEntities as I)
+	{
+		param filter : I.isInHangout == true;
+	}
+
+	/**
+	 * Anonymize the geohash using a key supplied at submission time and a SHA2 hash function
+	 * The key is appended and prepended to the original geohash, to prevent dictionary attacks.
+	 */
+	stream<I> HangoutsAnonymized as O = Custom(InHangoutEntities as I)
+	{
+		logic
+		state:
+		{
+			// get the key from the submission time parameter secretKey
+			rstring key = getSubmissionTimeValue("secretKey");
+		}
+		onTuple I:
+		{
+			// calculate the new hash
+			I.anonGeoHash = sha2hash224(key + I.hangoutGeohash + key);
+			// to optionally empty out the original hash, uncomment the next line
+			// I.hangoutGeohash = "";
+			submit(I,O);
+		}
+		onPunct I:
+		{
+			// preserve the punctuation, so the aggregate operator will flush the results
+			// upon receipt of the punctuation
+			submit(currentPunct(),O);
+		}
+	}	
+
+	/**
+	 * Count the number of entities within each geohash. The anonymized geohash is the aggregation key.
+	 * The aggregation results are flushed on receipt of a punctuation
+	 */
+	stream<AggregatedData> HangoutStatistics as O = Aggregate(HangoutsAnonymized as I)
+	{
+		window I:
+			tumbling,punct();
+		param
+			groupBy: I.anonGeoHash;
+		output O:
+			entityCount = Count();
+	}
+
+	/**
+	 * Print the location traces
+	 */
+	() as Sink = Custom(HangoutsAnonymized as I)
+	{
+		logic
+		onTuple I:
+		{
+			println(I);		
+		}
+	}
+	
+	/**
+	 * Print the aggregation results
+	 */
+	() as StatSink = Custom(HangoutStatistics as I)
+	{
+		logic
+		onTuple I:
+		{
+			println(I);		
+		}
+	}
+
+}
