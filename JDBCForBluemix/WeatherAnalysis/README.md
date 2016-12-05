@@ -1,6 +1,6 @@
-This sample SPL application demonstrates how to store analyzed data into a database using the JDBCRun operator.  The application first uses a HTTPGetStream operator from the inet source toolkit to retrieve 48 hours weather information in Markham by using the REST end point http://weatherappkandu.mybluemix.net/rest/weather/48hours_xml.    After analyzes the weather data , the JDBCRun operator is used to insert the data in to target database. 
+This sample SPL application is discussed in [this article on StreamsDev](https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/).  It demonstrates how to store analyzed data into a database using the JDBCRun operator.  The application first uses a HTTPGetStream operator from the inet source toolkit to retrieve 48 hours weather information in Markham by using the REST end point http://weatherappkandu.mybluemix.net/rest/weather/48hours_xml.    After analyzing the weather data , the JDBCRun operator is used to insert the data in to the target database. 
 
-Step to deploy the sample application on bluemix 
+Steps to deploy the sample application on Bluemix 
 
 1. Import this sample project to streams studio.
 
@@ -22,6 +22,8 @@ create table weather(maxtemp int, mintemp int, maxtempfeelslike int, mintempfeel
 9. After the job becomes healthy, you should be able to see tuples being stored in the weather table you created in step 5 from dashDB service's monitoring console.
 
 
-To compile the application, you need the following toolkit: 
-streams 4.0 : com.ibm.streamx.inet [2.0.2]
-streams 4.0 : com.ibm.streamsx.jdbc [1.0.0]
+To compile this application on Streams 4.0 and 4.1, you need the following toolkits: 
+* [com.ibm.streamx.inet](https://github.com/IBMStreams/streamsx.inet) [2.0.2]
+* [com.ibm.streamsx.jdbc](https://github.com/IBMStreams/streamsx.jdbc) [1.0.0]
+
+You do not need any additional toolkits for Streams 4.2+.
