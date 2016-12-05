@@ -1,0 +1,47 @@
+namespace com.ibm.streamsx.geospatial.sample ;
+
+use com.ibm.streamsx.mapviewer::* ;
+
+/**This sample uses the GPXToTuple operator to load a GPX file and show the movement of the entity 
+ * recorded in the file on a map.
+ */
+composite ParseSingleGPXFile
+{
+param
+		/**Optional parameter that allows you to change the port on which the map viewer application runs. */
+		expression<int32> $port : (int32) getSubmissionTimeValue("mapViewerPort", "8081") ;
+
+	graph
+		stream<EntityLocationData> ConvertedGPXData = GPXFileToTuple()
+		{
+			param
+				fileName : "sample.gpx" ; //name of the file to read
+				entityId : "Natasha" ; //name of the moving entity
+
+		}
+
+		stream<rstring id, rstring wkt, uint32 updateAction, rstring note,
+			MARKER_TYPE markerType> MapDataStream = Custom(ConvertedGPXData)
+		{
+			logic
+				onTuple  ConvertedGPXData :
+				{
+				// submit to MapViewr, set upactionAction to 1 to add point to the map
+				//use the same id for every 10 seconds
+					submit({ id = entityId+"_"+(rstring)(timeStamp/10000l), wkt = pointAsWKT, updateAction = 1u, note =
+						"Location at " +  ConvertedGPXData.timeStampStr, markerType = RED },
+						MapDataStream) ;
+					block(0.5) ;
+				}
+
+		}
+
+		() as MapView = MapViewer(MapDataStream as inPort0Alias)
+		{
+			param
+				port: $port;
+		}
+
+		
+
+}
