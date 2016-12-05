@@ -1,0 +1,78 @@
+/* Copyright (C) 2016, International Business Machines Corporation */
+/* All Rights Reserved */
+
+namespace com.ibm.streamsx.geospatial.sample;
+
+use com.ibm.streams.geospatial.ext::*;
+/**
+ * 
+ * Type describing the extracted location data
+ * entityId - a string id of the moving entity
+ * latitude - latitude of the object at the recorded time
+ * longitude - longitude of the object at the recorded time
+ * timestamp - timestamp in milliseconds since the Epoch of the time at which location was recorded
+ * pointAsWKT - WKT representation of the point
+ * timeStampStr - human readable timestamp of the time at which the location was recorded
+ * event_id - 1 based index of this point in the history of the object's movement 
+ */
+type EntityLocationData =  rstring entityId, float64 latitude, float64 longitude, int64 timeStamp ,  rstring pointAsWKT, rstring timeStampStr, uint64 event_id ;
+type GPX_Data = rstring entityId, float64 latitude, float64 longitude, rstring time ;
+
+/**
+ * This composite reads a single GPX file and converts it to a stream of tuples 
+ */
+ public composite GPXFileToTuple(output EntityLocationStream) {
+	param
+		expression<rstring> $fileName ;
+		expression<rstring> $entityId ;
+		
+	graph
+		stream<rstring line> Input = FileSource()
+		{
+			param
+				file: $fileName;
+				format : line ;
+		}	
+		stream<GPX_Data> ParsedXML = XMLParse(Input)
+		{
+			param
+				trigger : "/gpx/trk/trkseg/trkpt" ;
+				parsing : permissive ; // log and ignore errors
+				ignoreNamespaces : true ;
+			output
+				ParsedXML : entityId = $entityId, longitude =(float64) XPath("@lon"),
+					latitude =(float64) XPath("@lat"), time = XPath("time/text()") ;
+		}
+	
+	
+		stream<EntityLocationData> EntityLocationStream = Functor(ParsedXML)
+		{
+			logic
+				state :
+				{
+					mutable uint64 count = 0 ;
+					mutable int64 ts = 0l ;
+					mutable rstring timeStr;
+				}
+
+				onTuple ParsedXML :
+				{
+					count ++ ;
+					timeStr = regexReplace(time, "T", " ", true); //some timestamps are of the form 2014-11-07T02:08:40.905Z, need to remove the T, Z, and account for milliseconds
+					timeStr = regexReplace(timeStr, "Z", "", true);
+					if (size(regexMatch(timeStr, "[0-9][0-9][0-9]$")) > 0){
+						//the timestamp includes milliseconds
+							ts =(int64)(((float64) toTimestamp(Sys.YYYY_MM_DD_hh_mm_ss_mmm, timeStr))
+						* 1000.0) ;
+					} else {
+					ts =(int64)(((float64) toTimestamp(Sys.YYYY_MM_DD_hh_mm_ss, timeStr))
+						* 1000.0) ;
+						}
+				}
+
+			output
+				EntityLocationStream : event_id = count, pointAsWKT = point(longitude,	latitude), timeStampStr = timeStr, timeStamp = ts ;
+		}
+ }
+
+
