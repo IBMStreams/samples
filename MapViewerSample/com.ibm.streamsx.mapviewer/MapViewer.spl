@@ -34,6 +34,8 @@ public composite MapViewer(input stream<MapViewerT> In0 )
 {
 	param
 		expression $windowSize : 1 ;
+		expression<int32> $port : 8080 ;
+		
 	graph
 		() as data = HTTPTupleView(In0 as inPort0Alias)
 		{
@@ -43,6 +45,7 @@ public composite MapViewer(input stream<MapViewerT> In0 )
 				contextResourceBase : getThisToolkitDir() + "/etc" ;
 				context : "map" ;
 				partitionKey : "id" ;
+				port: $port;
 			config
 				placement : partitionColocation("mapviewer") ;
 		}
