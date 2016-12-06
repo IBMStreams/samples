@@ -1,3 +1,5 @@
+To learn more about this application, see [this article](https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/) on [StreamsDev](https://developer.ibm.com/streamsdev/).
+
 ## SGFilter operator
 
 * Non-generic C++ primitive operator which digitally filters an input time series represented as tuple values.  The filter is applied on the first tuple attribute (expected type float64.)
