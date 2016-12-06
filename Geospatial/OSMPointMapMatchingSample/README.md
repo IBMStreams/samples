@@ -1,0 +1,2 @@
+This sample application is discussed in this [StreamsDev article.](https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/)
+It demonstrates how to use the [OSMPointMatcher operator](http://www.ibm.com/support/knowledgecenter/en/SSCRJU_4.2.0/com.ibm.streams.toolkits.doc/spldoc/dita/tk$com.ibm.streams.geospatial/spl$com.ibm.streams.geospatial$OSMPointMapMatcher.html#spldoc_compilationunit__composite_operator__OSMPointMatcher) in the Geospatial toolkit.
