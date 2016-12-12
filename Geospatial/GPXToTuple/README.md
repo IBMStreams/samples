@@ -1,4 +1,4 @@
-This project  demonstrates how to parse trip histories recorded in GPX [GPS Exchange](http://www.topografix.com/gpx.asp) format.  
+This project  demonstrates how to parse trip histories recorded in [GPS Exchange](http://www.topografix.com/gpx.asp) (GPX) format.  
 It includes the GPXToTuple operator that produces a stream of tuples from a GPX file.  The project is discussed in this article on StreamsDev.
 
  The use of this operator is demonstrated in the ParseSingleGPXFile application that plots the trip history from a sample GPX file on a map. 
