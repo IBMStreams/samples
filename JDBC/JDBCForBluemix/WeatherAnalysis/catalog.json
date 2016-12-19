@@ -1,0 +1,13 @@
+{"State" : "live",
+	"name": "Use JDBC operator in Bluemix",
+	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
+	"language": ["SPL"],
+	"category": ["Beginner/General"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
+	"tags": [],
+    "optional": [],
+		"services":   ["Bluemix", "dashDB"],
+		"toolkits": ["JDBC", "inet"],
+		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate"]
+}
