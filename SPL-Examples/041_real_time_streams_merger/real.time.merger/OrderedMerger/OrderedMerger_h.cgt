@@ -1,0 +1,38 @@
+#include <PriorityQueue.h>
+#include <vector>
+#include <deque>
+
+<%SPL::CodeGen::headerPrologue($model);%>
+
+<%
+  use OrderedMergerCommon;                                                                                                                 
+  OrderedMergerCommon::verify($model); 
+  my $keyExpr = $model->getParameterByName("key")->getValueAt(0);
+  my $keyType = $keyExpr->getCppType();
+%>
+
+class MY_OPERATOR : public MY_BASE_OPERATOR 
+{
+public:
+  MY_OPERATOR();
+  virtual ~MY_OPERATOR();
+  void process(Tuple const & tuple, uint32_t port);
+  void process(Punctuation const & punct, uint32_t port);
+
+private:
+  typedef <%=$keyType%> KeyType;
+  typedef pf::PriorityQueue<KeyType, uint32_t> KeyHeap;
+  typedef std::deque<IPort0Type *> TupleQueue;
+  // Members
+  bool blocking_;
+  uint32_t bufferSize_;
+  uint32_t numDone_;
+  KeyHeap seenHeap_;
+  KeyHeap nextHeap_;
+  Mutex mutex_;
+  std::vector<CV> cvs_;
+  std::vector<TupleQueue> queues_;
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>
+

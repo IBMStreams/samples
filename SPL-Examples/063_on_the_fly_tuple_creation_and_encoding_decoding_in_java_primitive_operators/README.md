@@ -1,0 +1,2 @@
+This example shows how to create a tuple on the fly inside a Java primitive operator. In addition, this example also shows how to convert a tuple into a blob (Java byte buffer) and how to convert a blob (Java byte buffer) in to a tuple. It is an interesting concept that a Java primitive operator developer can put into use in certain situations that warrant dynamic tuple creation, tuple encoding and decoding all inside Java.
+

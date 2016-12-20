@@ -1,0 +1,2 @@
+This example demonstrates how two different SPL applications can share streams between them. This is an important feature that is elegantly done using two pseudo operators called Export and Import. This application also shows how two different main composites can be part of the same application by using two different namespaces. As an aside, there is also a demonstration of using a Custom operator to customize the Beacon generated tuples by involving state variables.
+

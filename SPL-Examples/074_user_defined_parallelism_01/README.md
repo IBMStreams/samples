@@ -1,0 +1,1 @@
+User Defined Parallelism (UDP) is an excellent feature introduced in Streams version 3.2 and it provides a very simple way to run either a part or a full flow graph in a concurrent manner. It is an easy mechanism to scale and speed up the Streams flow graph. This is the first of 12 different (samples 74-85) examples that provide a walk through of various UDP scenarios.

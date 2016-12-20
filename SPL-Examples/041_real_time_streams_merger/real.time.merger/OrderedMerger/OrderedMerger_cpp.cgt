@@ -1,0 +1,135 @@
+#include <iostream>
+
+using namespace std;
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+<%
+  use OrderedMergerCommon;                                                                                                                 
+  OrderedMergerCommon::verify($model); 
+  my $keyExpr = $model->getParameterByName("key")->getValueAt(0);
+  my $keyType = $keyExpr->getCppType();
+  my $keyValue = $keyExpr->getCppExpression();
+  my $bufferSizeParam = $model->getParameterByName("bufferSize");
+  my $blocking = (defined($bufferSizeParam)) ? 1 : 0;
+  my $bufferSizeValue = ($blocking==1) ? $bufferSizeParam->getValueAt(0)->getCppExpression() : "1000u";
+  my $iport = $model->getInputPortAt(0);
+  my $ituple = $iport->getCppTupleName();
+  my $oport = $model->getOutputPortAt(0);
+  my $otupleInit = SPL::CodeGen::getOutputTupleCppInitializer($oport);
+%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{
+  numDone_ = 0;
+  blocking_ = <%=$blocking%>;
+  bufferSize_ = max(<%=$bufferSizeValue%>, 1u);
+  uint32_t numInputs = getNumberOfInputPorts();
+  queues_.resize(numInputs);
+  cvs_.resize(numInputs);
+}
+
+// Desructor
+MY_OPERATOR::~MY_OPERATOR()
+{
+  uint32_t numInputs = getNumberOfInputPorts();
+  for (uint32_t i=0; i<numInputs; ++i) {
+    TupleQueue & queue = queues_[i];
+    for (size_t j=0, ju=queue.size(); j<ju; ++j)
+      delete queue[j];
+  }
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+  AutoPortMutex apm(mutex_, *this);
+
+  { 
+    IPort0Type const & <%=$ituple%> = static_cast<IPort0Type const &>(tuple);
+    KeyType key = <%=$keyValue%>;
+    TupleQueue & queue = queues_[port];
+    while (blocking_ && queue.size()==bufferSize_)
+      cvs_[port].wait(mutex_);
+    // update the next heap if the queue for the channel is empty
+    if (queue.empty())
+      nextHeap_.updateItem(key, port);
+    // create a new copy and add to the proper channel queue
+    queue.push_back(new IPort0Type(<%=$ituple%>));
+    // update the seen heap with the new seq no for the channel 
+    seenHeap_.updateItem(key, port);
+  }
+  
+  while (!nextHeap_.empty()) { 
+    // check if next tuple is ready to be sent
+    KeyHeap::KeyIdPair const & next = nextHeap_.getTopItem(); 
+    KeyType const & nextKey = next.key();
+    uint32_t const & nextPort = next.id();
+    KeyHeap::KeyIdPair const & seen = seenHeap_.getTopItem(); 
+    KeyType const & seenKey = seen.key(); 
+    uint32_t numInputs = getNumberOfInputPorts();
+    bool steady = (seenHeap_.size() == (numInputs - numDone_));
+    if (steady && nextKey <= seenKey) { 
+      // find the right channel and get the tuple
+      TupleQueue & queue = queues_[nextPort];
+      auto_ptr<IPort0Type> rtuple(queue.front());
+      queue.erase(queue.begin());
+      // update the next heap
+      if (queue.empty()) {
+        nextHeap_.removeItem(nextPort);
+      } else {
+        IPort0Type const & <%=$ituple%> = *queue.front();
+        KeyType key = <%=$keyValue%>;
+        nextHeap_.updateItem(key, nextPort);
+      }
+      { // send the tuple
+        IPort0Type & <%=$ituple%> = *rtuple;
+        OPort0Type otuple(<%=$otupleInit%>);
+        submit(otuple, 0);
+      }
+      if (blocking_ && queue.size()==bufferSize_-1)
+        cvs_[nextPort].signal();
+    } else break;
+  }
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+  if(punct!=Punctuation::FinalMarker)
+    return;
+  
+  AutoPortMutex apm(mutex_, *this);
+  numDone_++;
+  seenHeap_.removeItem(port);
+  uint32_t numInputs = getNumberOfInputPorts();
+  if (numDone_==numInputs) {
+    while (!nextHeap_.empty()) {
+      KeyHeap::KeyIdPair const & next = nextHeap_.getTopItem(); 
+      KeyType const & nextKey = next.key();
+      uint32_t const & nextPort = next.id();
+      TupleQueue & queue = queues_[nextPort];
+      auto_ptr<IPort0Type> rtuple(queue.front());
+      queue.erase(queue.begin());
+      // update the next heap
+      if (queue.empty()) {
+        nextHeap_.removeItem(nextPort);
+      } else {
+        IPort0Type const & <%=$ituple%> = *queue.front();
+        KeyType key = <%=$keyValue%>;
+        nextHeap_.updateItem(key, nextPort);
+      }
+      { // send the tuple
+        IPort0Type & <%=$ituple%> = *rtuple;
+        OPort0Type otuple(<%=$otupleInit%>);
+        submit(otuple, 0);
+      }
+      if (blocking_ && queue.size()==bufferSize_-1)
+        cvs_[port].signal();
+    }
+  } 
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

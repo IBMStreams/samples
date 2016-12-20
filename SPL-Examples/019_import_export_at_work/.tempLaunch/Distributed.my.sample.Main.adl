@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/application/augmented" xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/runtime/sam" xmlns:ns5="http://www.ibm.com/xmlns/prod/streams/runtime/utils" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" productVersion="3.0.0.0" name="my.sample::Main.appset" xsi:noNamespaceSchemaLocation="http://www.ibm.com/xmlns/prod/streams/application">
+    <description>my.sample::Main application set</description>
+    <application version="1.0.0" outputDirectory="/home/streamsadmin/SPL-Examples-For-Beginners/019_import_export_at_work/output/my.sample.Main/Distributed" name="my.sample::Main" dataDirectory="../../../data" checkpointDirectory="../../../data/ckpt" applicationScope="Default" applicationDirectory="../../../.">
+        <libraries/>
+        <hostpools>
+            <hostpool name="$default" membershipMode="shared" index="0"/>
+        </hostpools>
+        <tupleTypes>
+            <tupleType index="0">
+                <attribute type="rstring" name="name"/>
+                <attribute type="uint32" name="employeeDepartment"/>
+                <tuple>
+                    <ns2:attr type="rstring" name="name"/>
+                    <ns2:attr type="uint32" name="employeeDepartment"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="1">
+                <attribute type="uint32" name="departmentId"/>
+                <attribute type="rstring" name="departmentName"/>
+                <tuple>
+                    <ns2:attr type="uint32" name="departmentId"/>
+                    <ns2:attr type="rstring" name="departmentName"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="2">
+                <attribute type="rstring" name="name"/>
+                <attribute type="uint32" name="employeeDepartment"/>
+                <attribute type="uint32" name="departmentId"/>
+                <attribute type="rstring" name="departmentName"/>
+                <tuple>
+                    <ns2:attr type="rstring" name="name"/>
+                    <ns2:attr type="uint32" name="employeeDepartment"/>
+                    <ns2:attr type="uint32" name="departmentId"/>
+                    <ns2:attr type="rstring" name="departmentName"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="3">
+                <attribute type="rstring" name="symbol"/>
+                <attribute type="float32" name="price"/>
+                <attribute type="uint32" name="quantity"/>
+                <attribute type="rstring" name="tradeType"/>
+                <tuple>
+                    <ns2:attr type="rstring" name="symbol"/>
+                    <ns2:attr type="float32" name="price"/>
+                    <ns2:attr type="uint32" name="quantity"/>
+                    <ns2:attr type="rstring" name="tradeType"/>
+                </tuple>
+            </tupleType>
+        </tupleTypes>
+        <pes>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="0" class="BeJwzNHHNLcjJr0xNDUpNzi9KiQcANksGBk">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="dLgAtSgTIfhY6ocgKDTXQV6S74g=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-a.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="EmployeeRecord" index="0" definitionIndex="0" class="EmployeeRecord">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;EmployeeRecords.txt&quot;" name="lit$0"/>
+                            <runtimeConstant value="20" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="EmployeeRecord" tupleTypeIndex="0" name="EmployeeRecord" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="1" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <exportedStream name="ExportedEmployeeRecord" exportOperName="ExportedEmployeeRecord"/>
+                        <staticConnections>
+                            <staticConnection peIndex="1" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="0"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="1" class="BeJwzNPDMy0st8srPzDOMBwAd8wR_0">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="gbOybld2xWfDt34PHJZ41VdPvok=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-b.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="false" singleThreadedOnInputs="false" name="InnerJoin1" index="1" definitionIndex="1" class="InnerJoin1">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="14" name="lit$0"/>
+                            <runtimeConstant value="1" name="lit$1"/>
+                            <runtimeConstant value="14" name="lit$2"/>
+                            <runtimeConstant value="1" name="lit$3"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="0" name="EmployeeRecord" isMutable="false" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="0"/>
+                            </inputPort>
+                            <inputPort tupleTypeIndex="1" name="DepartmentRecord" isMutable="false" index="1"/>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="InnerJoin1" tupleTypeIndex="2" name="InnerJoin1" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="2" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="0" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="0" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="0"/>
+                    </inputPort>
+                    <inputPort tupleTypeIndex="1" transport="TCP" index="1" encoding="LE">
+                        <importedStreams>
+                            <nameBasedImport streamName="ExportedDepartmentRecord" index="1" importOperName="DepartmentRecord" applicationName="my.sample2::Main"/>
+                        </importedStreams>
+                        <staticConnections/>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="1"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="2" transport="TCP" singleThreadedOnOutput="false" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="2" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="1"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="2" class="BeJwzNA5OLkpNzQsvyixJLTKMBwAvaAXS">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="lyoTSIyDKBuNDj3VgFy6Ab5MmnI=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-c.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="ScreenWriter1" index="2" definitionIndex="2" class="ScreenWriter1">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="0" name="lit$0"/>
+                            <runtimeConstant value="&quot;\na)Tuples joined during Inner Join with sliding count(14)&quot;" name="lit$1"/>
+                            <runtimeConstant value="&quot;a)&quot;" name="lit$2"/>
+                            <runtimeConstant value="0" name="lit$3"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="2" name="InnerJoin1" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="1"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts/>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="2" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="2" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts/>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="3" class="BeJwzNHFKTUzOz0tNCclMzk4tigcANBQGA4">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="Y11qlub82YzDB8/ID7x7aEEOGXc=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-d.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="BeaconedTicker" index="3" definitionIndex="3" class="BeaconedTicker">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="20" name="lit$0"/>
+                            <runtimeConstant value="80000" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="BeaconedTicker" tupleTypeIndex="3" name="BeaconedTicker" isMutable="false" index="0">
+<interPeConnection operInstanceIndex="4" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="3" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="4" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="3"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="4" class="BeJwzC8lMzk4tigcADIcCD4">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="3L2RLzeFwGwRQHG6Z1P+g/W7sAI=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-e.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="Ticker" index="4" definitionIndex="2" class="Ticker">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="5" name="lit$0"/>
+                            <runtimeConstant value="100" name="lit$1"/>
+                            <runtimeConstant value="0" name="lit$2"/>
+                            <runtimeConstant value="1" name="lit$3"/>
+                            <runtimeConstant value="0" name="lit$4"/>
+                            <runtimeConstant value="0" name="lit$5"/>
+                            <runtimeConstant value="0" name="lit$6"/>
+                            <runtimeConstant value="[&quot;GM&quot;, &quot;PFE&quot;, &quot;F&quot;, &quot;LLY&quot;, &quot;BMS&quot;]" name="lit$7"/>
+                            <runtimeConstant value="[170.34, 23.12, 620.34, 54.67, 68.34]" name="lit$8"/>
+                            <runtimeConstant value="[0.34, 0.03, 0.14, 0.08, 0.12]" name="lit$9"/>
+                            <runtimeConstant value="[156, 215, 100, 165, 178]" name="lit$10"/>
+                            <runtimeConstant value="[6, 3, 2, 5, 4]" name="lit$11"/>
+                            <runtimeConstant value="[&quot;buy&quot;, &quot;sell&quot;]" name="lit$12"/>
+                            <runtimeConstant value="0" name="lit$13"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="3" name="BeaconedTicker" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="3"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="Ticker" tupleTypeIndex="3" name="Ticker" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="5" iportIndex="0"/>
+<interPeConnection operInstanceIndex="6" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="3" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="3" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="4" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="3" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="5" iportIndex="0"/>
+                            <staticConnection peIndex="6" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="4"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="5" class="BeJwzNHMsLcnPzS_1JLEsNyUzOTi2KBwBF8QdW">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="pk+Ir4cr7AUilIfWSgPy/1FHR+M=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-f.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="AutomotiveTicker" index="5" definitionIndex="4" class="AutomotiveTicker">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;F&quot;" name="lit$0"/>
+                            <runtimeConstant value="&quot;GM&quot;" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="3" name="Ticker" isMutable="false" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="4"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="AutomotiveTicker" tupleTypeIndex="3" name="AutomotiveTicker" isMutable="true" index="0"/>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="3" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="4" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="5" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="3" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <exportedStream exportOperName="ExportedAutomativeTickers">
+                            <properties>
+<property type="rstring" name="sector">
+    <value>&quot;Automotive&quot;</value>
+</property>
+<property type="list&lt;rstring&gt;" name="symbols">
+    <value>&quot;GM&quot;</value>
+    <value>&quot;F&quot;</value>
+</property>
+                            </properties>
+                        </exportedStream>
+                        <staticConnections/>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="5"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="6" class="BeJwzNArISCzKTQzJTM5OLYoHACjlAV_0">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="KVqND6RjIYQCp7tIlyrsMtmmHP0=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/my.sample.Main-g.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="PharmaTicker" index="6" definitionIndex="4" class="PharmaTicker">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;BMS&quot;" name="lit$0"/>
+                            <runtimeConstant value="&quot;LLY&quot;" name="lit$1"/>
+                            <runtimeConstant value="&quot;PFE&quot;" name="lit$2"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="3" name="Ticker" isMutable="false" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="4"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="PharmaTicker" tupleTypeIndex="3" name="PharmaTicker" isMutable="true" index="0"/>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="3" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="4" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="6" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="3" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <exportedStream exportOperName="ExportedPharmaTickers">
+                            <properties>
+<property type="rstring" name="sector">
+    <value>&quot;Pharma&quot;</value>
+</property>
+<property type="list&lt;rstring&gt;" name="symbols">
+    <value>&quot;PFE&quot;</value>
+    <value>&quot;LLY&quot;</value>
+    <value>&quot;BMS&quot;</value>
+</property>
+                            </properties>
+                        </exportedStream>
+                        <staticConnections/>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="6"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+        </pes>
+        <operDefinitions>
+            <operDefinition kind="spl.adapter::FileSource" index="0">
+                <customMetricIndicies>
+                    <customMetricIndex>0</customMetricIndex>
+                    <customMetricIndex>1</customMetricIndex>
+                </customMetricIndicies>
+            </operDefinition>
+            <operDefinition kind="spl.relational::Join" index="1">
+                <customMetricIndicies>
+                    <customMetricIndex>2</customMetricIndex>
+                    <customMetricIndex>3</customMetricIndex>
+                </customMetricIndicies>
+            </operDefinition>
+            <operDefinition kind="spl.utility::Custom" index="2"/>
+            <operDefinition kind="spl.utility::Beacon" index="3"/>
+            <operDefinition kind="spl.relational::Functor" index="4"/>
+        </operDefinitions>
+        <composites>
+            <sourceUris>
+                <uri path="file:///home/streamsadmin/SPL-Examples-For-Beginners/019_import_export_at_work/my.sample/Main.spl" index="0"/>
+            </sourceUris>
+            <compositeOpers>
+                <compositeOper toolkitIndex="0" numberOfOutputPorts="0" numberOfInputPorts="0" kind="my.sample::Main" index="0" startLine="22" sourceIndex="0" endLine="145">
+                    <description>my.sample::Main Composite</description>
+                </compositeOper>
+            </compositeOpers>
+            <compositeOperInstances>
+                <compositeOperInstance name="my.sample::Main" index="7" compositeOperIndex="0" startLine="22" sourceIndex="0" endLine="145">
+                    <primitiveOperInstance toolkitIndex="2" name="EmployeeRecord" kind="spl.adapter::FileSource" index="0" startLine="29" sourceIndex="0" endLine="35">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="InnerJoin1" operIndex="1"/>
+    <connection portKind="input" portIndex="0" operName="ExportedEmployeeRecord" operIndex="8"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ExportedEmployeeRecord" kind="spl.adapter::Export" index="8" startLine="37" sourceIndex="0" endLine="40">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="EmployeeRecord" operIndex="0"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="DepartmentRecord" kind="spl.adapter::Import" index="9" startLine="42" sourceIndex="0" endLine="46">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="1" operName="InnerJoin1" operIndex="1"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="InnerJoin1" kind="spl.relational::Join" index="1" startLine="49" sourceIndex="0" endLine="57">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="EmployeeRecord" operIndex="0"/>
+</connections>
+                            </port>
+                            <port index="1">
+<connections>
+    <connection portKind="output" portIndex="0" operName="DepartmentRecord" operIndex="9"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ScreenWriter1" operIndex="2"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ScreenWriter1" kind="spl.utility::Custom" index="2" startLine="59" sourceIndex="0" endLine="71">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="InnerJoin1" operIndex="1"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="BeaconedTicker" kind="spl.utility::Beacon" index="3" startLine="75" sourceIndex="0" endLine="79">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="Ticker" operIndex="4"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="Ticker" kind="spl.utility::Custom" index="4" startLine="82" sourceIndex="0" endLine="115">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="BeaconedTicker" operIndex="3"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="AutomotiveTicker" operIndex="5"/>
+    <connection portKind="input" portIndex="0" operName="PharmaTicker" operIndex="6"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="AutomotiveTicker" kind="spl.relational::Functor" index="5" startLine="118" sourceIndex="0" endLine="121">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="Ticker" operIndex="4"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ExportedAutomativeTickers" operIndex="10"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="PharmaTicker" kind="spl.relational::Functor" index="6" startLine="124" sourceIndex="0" endLine="127">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="Ticker" operIndex="4"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ExportedPharmaTickers" operIndex="11"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ExportedAutomativeTickers" kind="spl.adapter::Export" index="10" startLine="132" sourceIndex="0" endLine="135">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="AutomotiveTicker" operIndex="5"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ExportedPharmaTickers" kind="spl.adapter::Export" index="11" startLine="140" sourceIndex="0" endLine="143">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="PharmaTicker" operIndex="6"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                </compositeOperInstance>
+            </compositeOperInstances>
+        </composites>
+        <toolkits>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/SPL-Examples-For-Beginners/019_import_export_at_work" name="019_import_export_at_work" index="0"/>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/com.ibm.streams.db" name="com.ibm.streams.db" index="1"/>
+            <toolkit version="1.1" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl" name="spl" index="2"/>
+        </toolkits>
+        <customMetrics>
+            <customMetric name="nFilesOpened" kind="Counter" index="0">
+                <description>Number of files opened by the FileSource operator</description>
+            </customMetric>
+            <customMetric name="nInvalidTuples" kind="Counter" index="1">
+                <description>Number of tuples that failed to read correctly</description>
+            </customMetric>
+            <customMetric name="nCurrentPartitionsLHS" kind="Gauge" index="2">
+                <description>Number of partitions in the left input port window</description>
+            </customMetric>
+            <customMetric name="nCurrentPartitionsRHS" kind="Gauge" index="3">
+                <description>Number of partitions in the right input port window</description>
+            </customMetric>
+        </customMetrics>
+    </application>
+</applicationSet>

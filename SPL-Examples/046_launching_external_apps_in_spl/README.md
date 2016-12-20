@@ -1,0 +1,2 @@
+This example shows how to launch/execute an external application within the Streams SPL code. In this case, we defined a simple C++ native function in which we have the required C++ code to launch an external application. That C++ code uses pipes to execute a given application. This function would be useful to launch any custom script within the Streams application logic when certain application specific conditions arise.
+

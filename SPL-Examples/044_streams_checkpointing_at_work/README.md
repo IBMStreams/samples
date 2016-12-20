@@ -1,0 +1,2 @@
+This example shows a key feature of Streams by which an operator's state variables can be preserved when a PE fails and gets restarted. This is done through a combination of the SPL configuration directives named "checkpointing" and "restartable". Developers can protect their critical operator data by taking advantage of this built-in checkpointing feature. When you run this example, you will see data flows without any gaps or interruption, when a PE is killed manually and then gets restored automatically by the Streams runtime.
+

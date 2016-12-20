@@ -1,0 +1,10 @@
+{s="IBM",d=200.34,q="Technology"}
+{s="AMZN",d=290.45,q="Retail"}
+{s="EBAY",d=50.10,q="Auction"}
+{s="AAPL",d=595.23,q="Consumer"}
+{s="GOOG",d=506.23,q="Search"}
+{s="HPQ",d=34.00,q="Manufacturing"}
+{s="F",d=15.67,q="Automotive"}
+{s="BA",d=132.36,q="Aerospace"}
+{s="KO",d=42.14,q="Beverages"}
+{s="HLT",d=22.24,q="Hospitality"}

@@ -1,0 +1,2 @@
+This example shows how to synchronize the incoming tuples using a Barrier operator. It uses a bank deposit/debit scenario to split the deposit/debit requests, perform that account activity, and then combine the post-activity result with the incoming requests. Barrier operator does what is needed to accomplish that i.e. it waits for the streams to arrive at all the configured input ports before emitting an output tuple.
+

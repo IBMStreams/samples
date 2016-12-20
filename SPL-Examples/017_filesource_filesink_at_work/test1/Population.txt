@@ -1,0 +1,53 @@
+#tuple<rstring city, rstring country, uint32 population, uint32 medianAge, uint32 percentageEducated>
+0.0, Los Angeles, USA, 14000000, 42, 69
+0.0, Cairo, Egypt, 2600000, 46, 35
+0.0, New York, USA, 9000000, 41, 76
+0.0, London, UK, 2500000, 62, 51
+0.0, Dublin, Ireland, 1300000, 63, 59
+0.0, Florence, Italy, 1200000, 66, 46
+0.0, Brussels, Belgium, 987000, 62, 56
+0.0, Chicago, USA, 2590000, 51, 67
+0.0, Lisbon, Portugal, 1200430, 59, 49
+0.0, Stockholm, Sweden, 1100000, 57, 53
+0.0, Seattle, USA, 1356000, 42, 72
+0.0, Oslo, Norway, 734000, 53, 49
+0.0, Sau Palo, Brazil, 3561230, 43, 37
+0.0, Mexico City, Mexico, 1986451, 49, 29
+0.0, Singapore, Singapore, 4987000, 45, 76
+0.0, Manila, Philippines, 1984333, 41, 28
+0.0, Hanoi, Vietnam, 6500000, 44, 30
+0.0, Bangalore, India, 5438000, 35, 45
+0.0, Islamabad, Pakistan, 4500000, 39, 27
+0.0, Colombo, Sri Lanka, 5648000, 43, 42
+0.0, Beijing, China, 22000000, 34, 68
+0.0, Tokyo, Japan, 13450000, 39, 63
+0.0, New Delhi, India, 14000000, 43, 39
+0.0, Dubai, UAE, 2620000, 42, 27
+0.0, Calcutta, India, 5132000, 37, 40
+0.0, Rio de Janeiro, Brazil, 6100000, 41, 35
+0.0, Chennai, India, 8240234, 43, 52
+0.0, Berlin, Germany, 3440000, 52, 53
+0.0, Mumbai, India, 14234013, 46, 38
+0.0, Paris, France, 2193000, 49, 48
+0.0, Moscow, Russia, 10345000, 50, 39
+0.0, Muscat, Oman, 6300000, 43, 19
+0.0, Istanbul, Turkey, 13456923, 45, 59
+0.0, Frankfurt, Germany, 671927, 53, 54
+0.0, Vienna, Austria, 1756000, 59, 39
+0.0, Budapest, Hungary, 1721000, 58, 42
+0.0, Baghdad, Iraq, 7500000, 48, 28
+0.0, Tel Aviv, Israel, 404000, 42, 74
+0.0, Tehran, Iran, 7800000, 47, 24
+0.0, Haifa, Israel, 265000, 43, 69
+0.0, Seoul, South Korea, 10422000, 48, 53
+0.0, Hamburg, Germany, 1800000, 48, 43
+0.0, Johannasburg, South Africa, 3888345, 45, 39
+0.0, Santiago, Chile, 5278000, 47, 38
+0.0, Havana, Cuba, 2141000, 48, 39
+0.0, Bogota, Columbia, 7304000, 49, 22
+0.0, Sophia, Bulgaria, 1400000, 48, 25
+0.0, Bucharest, Romania, 1944345, 50, 42
+0.0, Boston, USA, 4500300, 47, 69
+0.0, Amman, Jordan, 2800000, 48, 51
+7.0, DummyCity, NA, 0, 0, 0
+ 

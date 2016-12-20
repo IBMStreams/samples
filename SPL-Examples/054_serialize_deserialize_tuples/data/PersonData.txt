@@ -1,0 +1,5 @@
+Joe,Walsh,045-13-6982,"145 JFK Street, Elmsford, New York",29,5.6,true
+Mary,Fernandez,918-34-8123,"109 Cathy Lane, Mt.Kisco, New York",25,5.2,true
+John,Cooper,218-31-9318,"25 Washington Avenue, Pleasantville, New York",27,5.8,false
+Angela,Smith,721-56-2392,"314 King Street, Chappaqua, New York",52,5.3,true
+ 

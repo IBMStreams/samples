@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd">
+  <functionSet>
+    <headerFileName>Functions.h</headerFileName>
+    <cppNamespaceName>datagen_utils</cppNamespaceName>
+    <functions>
+      <function>
+        <description>Datagen C++ utilities</description>
+        <prototype column="0" cppName="my_sprintf" line="0">public rstring sprintf(uint64 number, uint16 numberOfZeroPaddingsNeeded)</prototype>
+      </function>
+    </functions>
+    <dependencies>
+      <library>
+        <cmn:description/>
+        <cmn:managedLibrary>
+          <cmn:includePath>../../impl/include</cmn:includePath>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet>
+</functionModel>

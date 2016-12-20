@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/application/augmented" xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/runtime/sam" xmlns:ns5="http://www.ibm.com/xmlns/prod/streams/runtime/utils" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" productVersion="3.0.0.0" name="dynamic.importing.exporting::dynamic_export.appset" xsi:noNamespaceSchemaLocation="http://www.ibm.com/xmlns/prod/streams/application">
+    <description>dynamic.importing.exporting::dynamic_export application set</description>
+    <application version="1.0.0" outputDirectory="/home/streamsadmin/SPL-Examples-For-Beginners/042_dynamic_import_export_api_at_work/output/dynamic.importing.exporting.dynamic_export/Distributed" name="dynamic.importing.exporting::dynamic_export" dataDirectory="../../../data" checkpointDirectory="../../../data/ckpt" applicationScope="Default" applicationDirectory="../../../.">
+        <libraries/>
+        <hostpools>
+            <hostpool name="$default" membershipMode="shared" index="0"/>
+        </hostpools>
+        <tupleTypes>
+            <tupleType index="0">
+                <attribute type="int32" name="number"/>
+                <attribute type="rstring" name="string"/>
+                <tuple>
+                    <ns2:attr type="int32" name="number"/>
+                    <ns2:attr type="rstring" name="string"/>
+                </tuple>
+            </tupleType>
+        </tupleTypes>
+        <pes>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="0" class="BeJwzNAnOzC3ISQ2pCC4pSk3MjQcANmcGBn">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="nVRSWw22MCZ231YOuMNJmQOPXPw=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/dynamic.importing.exporting.dynamic_export-a.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="SimpleTxStream" index="0" definitionIndex="0" class="SimpleTxStream">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="7000" name="lit$0"/>
+                            <runtimeConstant value="10" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="SimpleTxStream" tupleTypeIndex="0" name="SimpleTxStream" isMutable="false" index="0">
+<interPeConnection operInstanceIndex="1" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="0"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="1" class="BeJwzMvLNT8lMy0xNCc7MLchJDakILilKTcyNBwB2RgmH">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="bn+rsaYu4z0uRGNvKIyX1REuTaU=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/dynamic.importing.exporting.dynamic_export-b.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="ModifiedSimpleTxStream" index="1" definitionIndex="1" class="ModifiedSimpleTxStream">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;String &quot;" name="lit$0"/>
+                            <runtimeConstant value="10" name="lit$1"/>
+                            <runtimeConstant value="60" name="lit$2"/>
+                            <runtimeConstant value="0" name="lit$3"/>
+                            <runtimeConstant value="0" name="lit$4"/>
+                            <runtimeConstant value="0" name="lit$5"/>
+                            <runtimeConstant value="&quot;SetOutputPortExportProperties API failed with return code &quot;" name="lit$6"/>
+                            <runtimeConstant value="&quot;dynamic.importing.exporting/dynamic_export.spl&quot;" name="lit$7"/>
+                            <runtimeConstant value="58" name="lit$8"/>
+                            <runtimeConstant value="&quot;dynamic.importing.exporting/dynamic_export.spl&quot;" name="lit$9"/>
+                            <runtimeConstant value="59" name="lit$10"/>
+                            <runtimeConstant value="0" name="lit$11"/>
+                            <runtimeConstant value="0" name="lit$12"/>
+                            <runtimeConstant value="0" name="lit$13"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="0" name="STS" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="0"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="ModifiedSimpleTxStream" tupleTypeIndex="0" name="ModifiedSimpleTxStream" isMutable="true" index="0"/>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="0" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="0" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <exportedStream exportOperName="ExportedSimpleTxStream">
+                            <properties>
+<property type="int64" name="AllowedMinimumNumber">
+    <value>0</value>
+</property>
+                            </properties>
+                        </exportedStream>
+                        <staticConnections/>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="1"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+        </pes>
+        <operDefinitions>
+            <operDefinition kind="spl.utility::Beacon" index="0"/>
+            <operDefinition kind="spl.utility::Custom" index="1"/>
+        </operDefinitions>
+        <composites>
+            <sourceUris>
+                <uri path="file:///home/streamsadmin/SPL-Examples-For-Beginners/042_dynamic_import_export_api_at_work/dynamic.importing.exporting/dynamic_export.spl" index="0"/>
+                <uri path="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl/spl/Sys.spl" index="1"/>
+            </sourceUris>
+            <compositeOpers>
+                <compositeOper toolkitIndex="0" numberOfOutputPorts="0" numberOfInputPorts="0" kind="dynamic.importing.exporting::dynamic_export" index="0" startLine="14" sourceIndex="0" endLine="75">
+                    <description>dynamic.importing.exporting::dynamic_export Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Sys" index="1" startLine="16" sourceIndex="1" endLine="68">
+                    <description>spl::Sys Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Log" index="2" startLine="70" sourceIndex="1" endLine="74">
+                    <description>spl::Log Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Trace" index="3" startLine="76" sourceIndex="1" endLine="80">
+                    <description>spl::Trace Composite</description>
+                </compositeOper>
+            </compositeOpers>
+            <compositeOperInstances>
+                <compositeOperInstance name="dynamic.importing.exporting::dynamic_export" index="2" compositeOperIndex="0" startLine="14" sourceIndex="0" endLine="75">
+                    <primitiveOperInstance toolkitIndex="2" name="SimpleTxStream" kind="spl.utility::Beacon" index="0" startLine="20" sourceIndex="0" endLine="24">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ModifiedSimpleTxStream" operIndex="1"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ModifiedSimpleTxStream" kind="spl.utility::Custom" index="1" startLine="28" sourceIndex="0" endLine="66">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="SimpleTxStream" operIndex="0"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ExportedSimpleTxStream" operIndex="3"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ExportedSimpleTxStream" kind="spl.adapter::Export" index="3" startLine="69" sourceIndex="0" endLine="74">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="ModifiedSimpleTxStream" operIndex="1"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                </compositeOperInstance>
+            </compositeOperInstances>
+        </composites>
+        <toolkits>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/SPL-Examples-For-Beginners/042_dynamic_import_export_api_at_work" name="042_dynamic_import_export_api_at_work" index="0"/>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/com.ibm.streams.db" name="com.ibm.streams.db" index="1"/>
+            <toolkit version="1.1" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl" name="spl" index="2"/>
+        </toolkits>
+    </application>
+</applicationSet>

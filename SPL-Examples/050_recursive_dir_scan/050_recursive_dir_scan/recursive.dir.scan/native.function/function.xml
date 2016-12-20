@@ -1,0 +1,25 @@
+<functionModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd"> 
+  <functionSet>
+    <headerFileName>RecursiveDirScanWrappers.h</headerFileName>
+    <cppNamespaceName>recursive_dir_scan</cppNamespaceName>
+    <functions>
+      <function>
+        <description>Get names of the files in a given directory.</description>
+        <prototype cppName="">public boolean getFileNamesInDirectory(rstring dirName, list&lt;rstring> listOfFileNamesToBeIgnored, list&lt;rstring> listOfFileNamesFound, int32 recursionLevel)</prototype>
+      </function>
+    </functions>
+    <dependencies>
+      <library>
+        <cmn:description sampleUri="">Get File Names</cmn:description>
+        <cmn:managedLibrary>
+          <cmn:lib>RecursiveDirScanLib</cmn:lib>
+         <cmn:command>../../impl/bin/archLevel</cmn:command>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet> 
+</functionModel> 

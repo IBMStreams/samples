@@ -1,0 +1,1 @@
+{"books" : {"book" : [ {"title" : "Code Generation in Action", "author" : {"first" : "Jack", "last" : "Herrington"}, "publisher" : "Manning"}, {"title" : "PHP Hacks", "author" : {"first" : "Jack", "last" : "Herrington"}, "publisher" : "O'Reilly"}, {"title" : "Podcasting Hacks", "author" : {"first" : "Jack", "last" : "Herrington"}, "publisher" : "O'Reilly"}]}}

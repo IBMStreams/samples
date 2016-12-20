@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>039_application_set_at_work</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>com.ibm.streams.studio.splproject.SPLApplicationSetProjectNature</nature>
+	</natures>
+</projectDescription>

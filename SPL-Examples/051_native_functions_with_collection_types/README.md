@@ -1,0 +1,3 @@
+This example shows an important feature of Streams. In Streams applications, it may be necessary to accept and return collection types in and out of the C++ native functions. This will require native function code that can directly deal with types such as list, map, and tuple. Streams provides C++ reflection APIs to directly deal with such collection types. In this example, developers can learn how to build native functions inside of a C++ class and then pass list, map, and tuple types to those native functions. In order to run this example, please follow the instructions specified in the README.txt file in the SPL project directory.
+[This example has a companion C++ project called NativeFunctionsWithCollectionTypesLib.]
+

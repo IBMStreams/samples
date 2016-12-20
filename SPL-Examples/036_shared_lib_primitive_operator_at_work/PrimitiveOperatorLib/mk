@@ -1,0 +1,46 @@
+#!/bin/bash
+# Add -x to the line above to display the status of the statements below as they get executed.
+CPP_BUILD_TARGET="NameServerLookup"
+FINAL_LIB_NAME="PrimitiveOperatorLib"
+SPL_PROJECT_DIR="036_shared_lib_primitive_operator_at_work"
+
+CXX=g++
+PLATFORM=`uname -i`
+
+if [ "$PLATFORM" == "ppc64" ];
+then
+   CXX=/opt/at5.0/bin/g++
+fi
+
+SPL_PKGCFG=$STREAMS_INSTALL/bin/dst-pe-pkg-config.sh
+SPL_PKG=dst-spl-pe-install
+SPL_COMPILE_OPTIONS=`$SPL_PKGCFG --cflags $SPL_PKG`
+SPL_LINK_OPTIONS=`$SPL_PKGCFG --libs $SPL_PKG`
+
+$CXX -O3 -Wall -fPIC -D_REENTRANT -I include $SPL_COMPILE_OPTIONS -c $CPP_BUILD_TARGET.cpp
+$CXX -shared -o lib$FINAL_LIB_NAME.so $SPL_LINK_OPTIONS $CPP_BUILD_TARGET.o
+rm -f $CPP_BUILD_TARGET.o
+
+if [ -f /etc/redhat-release ] ; then
+ OSDIST=`awk 'FNR == 1 {print substr($1, 0)}' /etc/redhat-release`
+ if [ "$OSDIST" == 'Red' ]; then
+    OSDIST='RHEL'
+ fi
+
+ OSVER=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
+ OSLVL="$OSDIST${OSVER%%.*}"
+elif [ -f /etc/SuSE-release ] ; then
+ OSVER=`awk 'FNR == 2 {print $3}' /etc/SuSE-release`
+ OSLVL=SLES${OSVER}
+else
+  OSLVL="unsupported Linux distribution"
+fi
+
+if [ ! -d "../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL" ]; then
+   mkdir ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
+fi
+
+mv lib$FINAL_LIB_NAME.so ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
+cp *.h ../$SPL_PROJECT_DIR/impl/include
+cp *.cpp ../$SPL_PROJECT_DIR/impl/src
+

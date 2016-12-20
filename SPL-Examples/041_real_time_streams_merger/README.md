@@ -1,0 +1,2 @@
+This example shows how two or more incoming streams with a common schema can be merged to flow in a sequence one after the other. This merger is done using a common tuple attribute in those multiple incoming streams as a key. We will use a C++ primitive operator called OrderedMerger that is included in this project. In order for the OrderedMerger to work correctly, it is assumed that multiple input streams for this primitive operator should already be in sorted order based on the key used to merge and sequence them together.
+

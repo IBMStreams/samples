@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application"  xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/runtime/sam"  xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/sharedvar"  xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/application/augmented"  productVersion="2.0.0.0" name="039_application_set_at_work">
+    <description>Application Set: 039_application_set_at_work</description>
+</applicationSet>

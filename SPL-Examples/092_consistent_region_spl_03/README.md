@@ -1,0 +1,2 @@
+This example demonstrates how a consistent region can be defined for the entire application topology starting from a Beacon with an operator driven checkpoint trigger. One of the Aggregate operators in this application is forcefully aborted inside the application multiple times to prove that application survive those multiple crashes at different times and yet will continue processing tuples normally after an automatic restart of that failed operator. In addition, during those crashes Streams will preserve the windows contents of that Aggregate operator.
+

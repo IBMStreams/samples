@@ -1,0 +1,5 @@
+#!/bin/bash
+# Add -x to the line above to display the status of the statements below as they get executed.
+# This script compiles the SPL project.
+
+sc -T -M com.ibm.nf.test::native_functions_with_collection_types  --output-directory=output/com.ibm.nf.test.native_functions_with_collection_types/Standalone -- data-directory=data

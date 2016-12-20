@@ -1,0 +1,1 @@
+This example demonstrates how to assign tuple attributes at the time of job submission inside a custom operator. When the incoming tuples arrive at the Custom operator in this example, values entered by the user at the application startup are assigned to the tuple attributes.

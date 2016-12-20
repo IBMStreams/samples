@@ -1,0 +1,16 @@
+# tuple<uint32 productId, rstring productName, uint32 quantity, float32 price>
+0.0, 37, Printer, 25, 47.87
+0.0, 687, Pearl Necklace, 15, 278.34
+0.0, 316, Crystal Doll, 25, 3541.56
+0.0, 18, iPhone, 34, 56.76
+0.0, 290, Lightsaber, 78, 450.15
+0.0, 52, Winter Coat, 20, 110.56
+0.0, 962, Gold Pen, 10, 5630.58
+0.0, 125, Television, 57, 790.00
+0.0, 176, Airplane Engine, 9, 67980.14
+0.0, 167, Stapler, 15, 3.56
+0.0, 264, Space Suite, 45, 5410.52
+0.0, 510, iPod, 34, 367.16
+0.0, 456, Knife Set, 45, 279.34
+0.0, 890, Camera, 134, 450.25
+10.0, 111, Dummy Product, 1, 11.11

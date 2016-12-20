@@ -1,0 +1,3 @@
+This example shows how to ingest nested tuple data via input files specified in a CSV format. There are certain syntactical rules that need to be followed in specifying data for nested tuples inside a CSV formatted input file. This example is a good one for developers to get an idea about how to do this.
+
+

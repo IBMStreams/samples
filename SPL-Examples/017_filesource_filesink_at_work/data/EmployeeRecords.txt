@@ -1,0 +1,16 @@
+# tuple<rstring name, uint32 departmentId>
+0.0, Peter Mars, 345
+0.0, Mary Katz, 769
+0.0, Larry Tamo, 921
+0.0, Marcia Karo, 281
+0.0, Sophia Aren, 458
+0.0, Gary Wall, 193
+0.0, Marvin Tal, 810
+0.0, John Natz, 983
+0.0, Alan Mira, 410
+0.0, Vera Zales, 350
+0.0, Bon Pinto, 148
+0.0, Kevin Mayo, 739
+0.0, David Taco, 818
+0.0, Robert Netz, 0
+0.0, Laura Jila, 458

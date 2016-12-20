@@ -1,0 +1,2 @@
+This example shows an important operator that brings Java into the C++ dominated world of Streams!!! That operator is called JavaOp, which is used to call out to other operators implemented in Java using the Java Operator API. In this example, we will have a tiny Java logic that will calculate the current time and add that time string to a tuple attribute and output that tuple. There is another example that shows the Java primitive operator that is different from the JavaOp operator.
+

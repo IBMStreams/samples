@@ -1,0 +1,2 @@
+This example demonstrates how a consistent region can be defined for two different composites acting as sources for this application. These consistent regions have a periodic checkpoint trigger. Couple of different Custom operators connected to those sources are forcefully aborted inside the application. Output streams of those operators will be combined using a Join operator. This application will ensure that the application will continue normally without losing any tuples by withstanding the random crash of those two Custom operators.
+

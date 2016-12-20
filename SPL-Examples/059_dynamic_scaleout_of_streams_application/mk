@@ -1,0 +1,6 @@
+#!/bin/bash
+# If you want to display the compiler commands, then add -x to the first line.
+
+sc -M com.ibm.streams.pricing.test::DynamicScaleOut --output-directory=output/com.ibm.streams.pricing.test.DynamicScaleOut/Distributed --data-directory=data -a
+
+sc -M com.ibm.streams.pricing::Pricer --output-directory=output/com.ibm.streams.pricing.Pricer/Distributed --data-directory=data -a 

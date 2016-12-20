@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/application/augmented" xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/runtime/sam" xmlns:ns5="http://www.ibm.com/xmlns/prod/streams/runtime/utils" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" productVersion="3.0.0.0" name="importing.exporting.filter::export_with_filter.appset" xsi:noNamespaceSchemaLocation="http://www.ibm.com/xmlns/prod/streams/application">
+    <description>importing.exporting.filter::export_with_filter application set</description>
+    <application version="1.0.0" outputDirectory="/home/streamsadmin/SPL-Examples-For-Beginners/043_import_export_filter_at_work/output/importing.exporting.filter.export_with_filter/Distributed" name="importing.exporting.filter::export_with_filter" dataDirectory="../../../data" checkpointDirectory="../../../data/ckpt" applicationScope="Default" applicationDirectory="../../../.">
+        <libraries/>
+        <hostpools>
+            <hostpool name="$default" membershipMode="shared" index="0"/>
+        </hostpools>
+        <tupleTypes>
+            <tupleType index="0">
+                <attribute type="int64" name="number"/>
+                <attribute type="rstring" name="string"/>
+                <tuple>
+                    <ns2:attr type="int64" name="number"/>
+                    <ns2:attr type="rstring" name="string"/>
+                </tuple>
+            </tupleType>
+        </tupleTypes>
+        <pes>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="0" class="BeJwzNAnOzC3ISQ2pCC4pSk3MjQcANmcGBn">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="mJ3fpGOvjEoaUmVxRAxCYhrDx0A=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/importing.exporting.filter.export_with_filter-a.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="SimpleTxStream" index="0" definitionIndex="0" class="SimpleTxStream">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="7000" name="lit$0"/>
+                            <runtimeConstant value="5" name="lit$1"/>
+                            <runtimeConstant value="&quot;String&quot;" name="lit$2"/>
+                            <runtimeConstant value="0" name="lit$3"/>
+                            <runtimeConstant value="0" name="lit$4"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="SimpleTxStream" tupleTypeIndex="0" name="SimpleTxStream" isMutable="false" index="0"/>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <exportedStream exportOperName="ExportedSimpleTxStream">
+                            <properties>
+<property type="int64" name="exportedStreams">
+    <value>1</value>
+</property>
+                            </properties>
+                        </exportedStream>
+                        <staticConnections/>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="0"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+        </pes>
+        <operDefinitions>
+            <operDefinition kind="spl.utility::Beacon" index="0"/>
+        </operDefinitions>
+        <composites>
+            <sourceUris>
+                <uri path="file:///home/streamsadmin/SPL-Examples-For-Beginners/043_import_export_filter_at_work/importing.exporting.filter/export_with_filter.spl" index="0"/>
+            </sourceUris>
+            <compositeOpers>
+                <compositeOper toolkitIndex="0" numberOfOutputPorts="0" numberOfInputPorts="0" kind="importing.exporting.filter::export_with_filter" index="0" startLine="18" sourceIndex="0" endLine="47">
+                    <description>importing.exporting.filter::export_with_filter Composite</description>
+                </compositeOper>
+            </compositeOpers>
+            <compositeOperInstances>
+                <compositeOperInstance name="importing.exporting.filter::export_with_filter" index="1" compositeOperIndex="0" startLine="18" sourceIndex="0" endLine="47">
+                    <primitiveOperInstance toolkitIndex="2" name="SimpleTxStream" kind="spl.utility::Beacon" index="0" startLine="24" sourceIndex="0" endLine="37">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="ExportedSimpleTxStream" operIndex="2"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ExportedSimpleTxStream" kind="spl.adapter::Export" index="2" startLine="40" sourceIndex="0" endLine="46">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="SimpleTxStream" operIndex="0"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                </compositeOperInstance>
+            </compositeOperInstances>
+        </composites>
+        <toolkits>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/SPL-Examples-For-Beginners/043_import_export_filter_at_work" name="043_import_export_filter_at_work" index="0"/>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/com.ibm.streams.db" name="com.ibm.streams.db" index="1"/>
+            <toolkit version="1.1" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl" name="spl" index="2"/>
+        </toolkits>
+    </application>
+</applicationSet>

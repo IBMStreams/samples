@@ -1,0 +1,1 @@
+This is a simple SPL application that explains the steps required to use the view annotation and then how to visualize the view annotated stream in the Streams web console. Detailed steps to view the annotated stream are shown in the commentary section of this SPL file.

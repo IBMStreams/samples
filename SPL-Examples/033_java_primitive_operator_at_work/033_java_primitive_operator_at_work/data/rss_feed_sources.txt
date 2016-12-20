@@ -1,0 +1,49 @@
+# =============================================================
+# Description:
+# ************
+# This is a CSV file that is used as an input feed
+# to a SPL program (Main.spl).
+#
+# Data format:
+#
+# 1  RSS provider name (Any string that identifies the RSS provider)
+# 2  RSS provider URL
+# 3  Maximum RSS items to be returned
+#
+# PLEAE NOTE THAT THE DATA USED HERE IS PURELY MADE-UP AND NOT REAL.
+#
+# Created on:
+# ***********
+# Mar/03/2011
+#
+# Last modified:
+# **************
+# Mar/03/2011
+# =============================================================
+0,Barron's: Markets,http://online.barrons.com/xml/rss/3_7517.xml,5
+0,NPR: Business News,http://www.npr.org/rss/rss.php?id=1006,6
+0,BBC: Business News,http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/business/rss.xml,8
+0,CNN: Latest Financial News,http://rss.cnn.com/rss/money_latest.rss,4
+0,NY Times: Business,http://www.nytimes.com/services/xml/rss/nyt/Business.xml,40
+0,The Financial Times Business - USA Markets,http://www.ft.com/rss/markets/us,10
+0,Wall Street Journal: US Business,http://feeds.wsjonline.com/wsj/xml/rss/3_7014.xml,6
+0,Washington Post: Business,http://www.washingtonpost.com/wp-dyn/rss/business/index.xml,5
+# 0,Kiplinger: Business,http://kiplinger.com/rss/s.php/k472a025fb81f7/business.rss,6
+# 0,The Economist: Business,http://www.economist.com/rss/business_rss.xml,7 
+0,CNBC: Fast Money Rapid Recap,http://www.cnbc.com/id/17629760/device/rss/rss.xml,10
+0,Yahoo: US Market News,http://finance.yahoo.com/rss/usmarkets,12
+0,MarketWatch: Real-time Headlines,http://feeds.marketwatch.com/marketwatch/realtimeheadlines?format=xml,20
+0,Reuters: Business News,http://feeds.reuters.com/reuters/businessNews?format=xml,18
+# 0,United Press International: Business,http://www.upi.com/rss/NewsTrack/Business,150
+0,UBS: United States Highlights,http://rss.ibb.ubs.com/rss/rss-unitedstates.xml,12
+0,MSN Money Central: Market Commentary,http://articles.moneycentral.msn.com/Feeds/RSS/jubakrss.aspx,4
+0,BusinessWeek: Top News,http://rss.businessweek.com/bw_rss/bwdaily,25
+0,Smart Money: Headlines,http://feeds.smartmoney.com/smartmoney/headlines,8
+0,Chicago Tribune: Business,http://feeds.chicagotribune.com/chicagotribune/business,5
+0,Associated Press: Top Business News,http://hosted.ap.org/lineups/BUSINESSHEADS-rss_2.0.xml?SITE=MAHYC&amp;SECTION=HOME,17
+#
+# THIS RSS PROVIDER IS DIFFERENT FROM OTHERS. BECAUSE, IT USES THE RDF FORMAT, WHICH IS BASED ON RSS 1.0 
+# It is included here to demonstrate the fact that our RSS UDOP Supports several formats.
+# Refer to the UDOP source code for comments about supporting RSS versions 0.91, 0.92, 1.0 and 2.0
+#
+0,Network World: IBM News,http://www.networkworld.com/rss/ibm.xml,15

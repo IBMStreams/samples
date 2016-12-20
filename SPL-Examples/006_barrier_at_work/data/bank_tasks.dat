@@ -1,0 +1,54 @@
+#==================================================================
+# This is the input file that will feed the SOURCE operator of
+# the barrier_at_work application.
+# The format of the input file is as shown below:
+# The first Integer value is for inter-arrival delay. That value
+# is used only by the Source operator. It is not propagated 
+# downstream to the other operators in the application.
+# Data format:
+#
+# 1  Bank account number
+# 2  Transaction type (Deposit or Debit)
+# 3  Current balance
+# 4  Transaction amount
+#
+# PLEAE NOTE THAT THE DATA USED HERE IS PURELY MADE-UP AND NOT REAL.
+#
+# Created on:
+# -----------
+# Oct/01/2007
+#
+# Last modified:
+# --------------
+# Oct/12/2007
+#==================================================================
+3243243,Deposit,1432.34,345.23
+3424532,Deposit,3454.36,231.76
+4563256,Debit,6453.33,674.53
+7546563,Deposit,7564.45,985.34
+6573646,Debit,2352.76,100.56
+9834532,Debit,8654.00,452.65
+2346245,Deposit,442.56,3452.42
+8435341,Deposit,4353.54,245.35
+3245244,Debit,2343.43,1239.31
+5633454,Deposit,7783.34,1875.34
+4563276,Debit,2514.76,23.54
+3452357,Deposit,4534.76,598.45
+2342345,Deposit,3425.98,425.98
+9232145,Debit,1245.54,324.24
+8743523,Debit,5633.65,675.87
+7657345,Deposit,7434.54,984.37
+2342345,Debit,9834.65,2896.67
+8435258,Deposit,8923.87,5420.21
+5432345,Deposit,2452.98,238.76
+7534524,Debit,2390.45,390.05
+2432345,Deposit,9853.43,6984.38
+2340953,Debit,2532.65,876.46
+8732434,Deposit,3253.24,5564.87
+1453245,Deposit,8733.25,34.76
+7878355,Debit,543.25,87.62
+8432435,Debit,5643.75,3975.96
+4356324,Deposit,2464.86,4555.65
+8702344,Debit,3452.66,265.87
+7683454,Deposit,4567.53,2354.87
+2745656,Deposit,6578.24,983.12

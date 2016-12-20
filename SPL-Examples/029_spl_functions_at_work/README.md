@@ -1,0 +1,1 @@
+This example shows how helper and utility functions can be written using the SPL language. It also shows how such SPL functions can be put to use inside the context of an application. Learning this simple concept will go a long way in doing a lot of neat stuff in real-world applications.

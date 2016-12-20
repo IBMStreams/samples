@@ -1,0 +1,2 @@
+This example demonstrates two different features of the Java primitive operator framework. It first shows how operator parameters can be easily processed inside the Java operators via the @Parameter annotations. Then, it shows how multiple input and output ports can be accessed inside the Java operators. As a bonus, it also shows a better approach for on the fly creation of the output tuples made with complex nested types.
+

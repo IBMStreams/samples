@@ -1,0 +1,20 @@
+# ==========================================
+# This file is used to demonstrate the DynamicFilter operator.
+# If you want to allow a tuple match to happen i.e. not getting filtered,
+# you can simply add a CSV tuple data at the very last line of this file.
+#
+# tuple<rstring symbol, rstring tradeType>;
+#
+# The following are the supported ticker symbols by this application:
+# GM, PFE, F, LLY, BMS, IBM, GOOG, AMAT, GE, AMZN
+#
+# For example, if you want to match all the IBM stocks with Buy, you have to
+# add a line as shown below without the # character at the beginning.
+# After adding that line, press Enter and save the file.
+# IBM, buy
+#
+# For example, if you want to match all the GE stocks with Sell, you have to
+# add a line as shown below without the # character at the beginning.
+# After adding that line, press Enter and save the file.
+# GE, sell
+# ==========================================

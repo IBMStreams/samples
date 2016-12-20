@@ -1,0 +1,27 @@
+# ============================================================
+# This data file will be used in the application for
+# merging the shipment data defined in this file with the
+# tuples read from the database table named "Order".
+# This data enrichment is done using the ODBCEnrich operator.
+#
+# Format of the CSV record in this file:
+# OrderId:Integer, ShipmentStatus:Integer, ShippingDate:String
+# ============================================================
+34567, 1, Sat Feb 19 21:31:12 2011
+633623, 0, None
+6576323, 1,  Fri Feb 18 20:30:11 2011
+4537284, 1,  Fri Feb 18 20:30:10 2011
+7272399, 0, None
+7344234, 0, None
+109463, 1, Thu Feb 17 19:29:07 2011
+3452454, 1,  Thu Feb 17 19:29:10 2011
+4563456, 0, None
+5463454, 1,  Wed Feb 16 18:28:09 2011
+819620, 0, None
+298415, 1, Wed Feb 16 18:28:15 2011
+84564534, 0, None
+56564567, 1, Tue Feb 15 17:27:08 2011
+719863, 0, None
+6214916, 1, Tue Feb 15 17:27:49 2011
+64536345, 0, None
+3632873, 1,  Mon Feb 14 16:26:48 2011

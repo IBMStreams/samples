@@ -1,0 +1,2 @@
+This example deals with an interesting standard toolkit operator called DynamicFilter. This operator is a special version of the Filter operator that you have already seen in another example; it decides at runtime which input tuples will be passed through, based on the control input it receives. This operator is applicable in many real-life scenarios. This example also demonstrates using a second composite operator to perform a sub-task that the main composite will make use of. There is also coverage to show how the second composite can take its own operator parameters.
+

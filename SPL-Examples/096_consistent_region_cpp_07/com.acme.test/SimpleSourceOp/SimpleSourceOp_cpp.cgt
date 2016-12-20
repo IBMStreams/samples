@@ -1,0 +1,119 @@
+/* Additional includes go here */
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// To support the consistent regions, this operator must do this check.
+<%
+   my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR() : serialNumber(0), productId(100), productName(""), quantity(10)
+{
+	// This operator must do this registration needed for consistent regions.
+    <%if ($isInConsistentRegion) {%>
+      getContext().registerStateHandler(*this);
+    <%}%>
+    
+   serialNumber = 0;
+   productId = 100;
+   productName = "";
+   quantity = 10;     
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+    // Finalization code goes here
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+      createThreads(1); // Create source thread
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+	// Do an init delay of 4 seconds for other operators to get connected.
+	sleep(4);
+	
+    // A typical implementation will loop until shutdown
+      while(!getPE().getShutdownRequested()) {
+    	// Let us update our internal state.
+    	// Then, submit our tuple.
+    	AutoPortMutex am(myMutex, *this);
+    	
+    	// Sleep a second before submitting each tuple.
+    	sleep(1);
+    	
+    	// Don't submit more than 100 tuples since it is only a very simple test.
+    	if (serialNumber >= 100) {
+    		continue;
+        }
+    	
+    	OPort0Type oTuple;
+    	ValueHandle handle0 = oTuple.getAttributeValue(0);
+		int32_t & _serialNumber = handle0;
+		_serialNumber = ++serialNumber;
+    	
+    	ValueHandle handle1 = oTuple.getAttributeValue(1);
+    	int32_t & _productId = handle1;
+    	_productId = ++productId;    
+    	
+    	ValueHandle handle2 = oTuple.getAttributeValue(2);
+    	std::string & _productName = handle2;
+    	char productNameBuffer[200];
+    	sprintf(productNameBuffer, "%d", productId);
+    	_productName = "Product" + std::string(productNameBuffer);
+    	
+    	ValueHandle handle3 = oTuple.getAttributeValue(3);
+    	int32_t & _quantity = handle3;
+    	_quantity = ++quantity;
+    	
+    	// Send this tuple away.
+    	submit(oTuple, 0);	
+    }
+}
+
+// To support the consistent regions, this operator must implement the following methods.
+<%if ($isInConsistentRegion) {%>
+// Persist state to shared file system
+void MY_OPERATOR::checkpoint(Checkpoint & ckpt)
+{
+	// cout << "Performing a checkpoint." << endl;
+    ckpt << serialNumber << productId << productName << quantity << "\n";
+}
+
+// Restore state from shared file system
+void MY_OPERATOR::reset(Checkpoint & ckpt)
+{
+	// cout << "Performing a reset." << endl;
+    ckpt >> serialNumber >> productId >> productName >> quantity;
+}
+
+// Sets operator state to its initial state
+// This is needed only when there is a crash anywhere in the application before the
+// very first checkpoint is done.
+void MY_OPERATOR::resetToInitialState()
+{
+   // cout << "Performing a resetToInitialState." << endl;
+   serialNumber = 0;
+   productId = 100;
+   productName = "";
+   quantity = 10;    
+}
+<%}%>
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

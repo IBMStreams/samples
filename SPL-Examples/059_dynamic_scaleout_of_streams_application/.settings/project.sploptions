@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>SPL Build Options for Project</comment>
+<entry key="com.ibm.streams.studio.splproject:EXT_FULL_BUILD_CMD"></entry>
+<entry key="com.ibm.streams.studio.splproject:EXT_CLEAN_BUILD_CMD"></entry>
+<entry key="com.ibm.streams.studio.splproject:DATA_DIR">data</entry>
+<entry key="com.ibm.streams.studio.splproject:EXT_BUILD_OUTPUT">F</entry>
+<entry key="com.ibm.streams.studio.splproject:OUTPUT_DIR">output</entry>
+<entry key="com.ibm.streams.studio.splproject:DERIVED_OUTPUT_DIR">T</entry>
+<entry key="com.ibm.streams.studio.splproject:EXT_INCR_BUILD_CMD"></entry>
+<entry key="com.ibm.streams.studio.splproject:BUILDER_TYPE">0</entry>
+</properties>

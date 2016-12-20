@@ -1,0 +1,2 @@
+This example describes the use of an important operator that is highly applicable in many Telco scenarios. That operator is called DeDuplicate, which eliminates duplicate tuples for a specified duration of time. It also has an optional second output port on which duplicate tuples could be sent out for additional processing.
+

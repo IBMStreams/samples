@@ -1,0 +1,24 @@
+<functionModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd"> 
+  <functionSet>
+    <headerFileName>Functions.h</headerFileName>
+    <cppNamespaceName>cpp_app_launcher</cppNamespaceName>
+    <functions> 
+      <function>
+        <description>Launch an application</description>
+        <prototype>public int32 launch_app(rstring appName)</prototype>
+      </function>
+    </functions> 
+    <dependencies>
+      <library>
+        <cmn:description/>
+        <cmn:managedLibrary>
+           <cmn:includePath>../../impl/include</cmn:includePath>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet> 
+</functionModel> 

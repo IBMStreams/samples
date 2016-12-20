@@ -1,0 +1,2 @@
+This example shows how a Split operator can be used to split the incoming tuples based on a key. In this example, the split condition (which tuples comes out on which port) is pre configured through a text file. Alternatively, one can compute the index of the output port on the fly inside the Split operator parameter section.
+
