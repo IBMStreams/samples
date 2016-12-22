@@ -1,2 +1,30 @@
-This example shows how to create a tuple on the fly inside a Java primitive operator. In addition, this example also shows how to convert a tuple into a blob (Java byte buffer) and how to convert a blob (Java byte buffer) in to a tuple. It is an interesting concept that a Java primitive operator developer can put into use in certain situations that warrant dynamic tuple creation, tuple encoding and decoding all inside Java.
+~~~~~~
+/*
+======================================================================
+This example shows how to create a tuple on the fly within a 
+Java primitive operator. After that it shows how to encode a
+tuple into a blob and decode a blob into a tuple.
+======================================================================
+*/
+namespace application;
 
+composite Main {
+	graph
+		stream<int32 dummy> Dummy1 = Beacon() {
+			param
+				iterations: 1u;
+		}
+		
+		// Invoke the Java primitive operator.
+		stream<Dummy1> Dummy2 = MyJavaEncodeDecode(Dummy1) {
+		}
+		
+		() as MySink1 = Custom(Dummy2) {
+			logic
+				onTuple Dummy2: {
+					printStringLn("Result=" + (rstring)Dummy2);
+				}
+		}
+}
+
+~~~~~~

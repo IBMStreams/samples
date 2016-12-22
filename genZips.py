@@ -28,18 +28,18 @@ if __name__ == '__main__':
     for category in sub_dirs:
         #every top level folder is a category
         os.chdir(category)
-
-        #print os.getcwd()
-        #print category
-        #  print glob("*/")
         for dir in glob('*/'): #if it doesn't, check its sub directories
         #    print dir
             project_name = dir[:-1]
             zip_name = project_name +".zip"
-            #zipf = ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
+            zipf = ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED)
             print "Creating " + zip_name  + " in " + os.getcwd()
-            #zipdir(dir, zipf)
-            #zipf.close()
-            #shutil.move(zip_name, dir)
-            #break
+            zipdir(dir, zipf)
+            zipf.close()
+            print "moving " + zip_name + "to " + dir
+	    try:
+	            os.remove(dir+zip_name)
+		    shutil.move(zip_name, dir)
+            except (OSError,RuntimeError):
+		print "oops"#break
         os.chdir("..")
