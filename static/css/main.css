@@ -359,6 +359,15 @@ footer {
   color: #000;
   background-color: #cc6633;
 }
+.service-filter.search-body button.tagFilter.btn.btn-sm.active{
+  background: #4c2613;
+  color: #cc6633;
+}
+
+.type-filter.search-body button.tagFilter.btn.btn-sm.active{
+  background: #4667b4;
+  color: #fff;
+}
 
 .type-filter.search-body button.tagFilter.btn.btn-sm {
   padding: 1px 10px;
@@ -480,7 +489,6 @@ a.hrefLink {
 .tag-holder {
   margin-bottom: 1.5rem;
 }
-
 .tag-holder span, .tag-holder a {
   color: #162935;
 }

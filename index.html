@@ -143,7 +143,8 @@
         </table>
       </div>
     </div>
-    <div class="inside filter-category">
+
+    <!---div class="inside filter-category">
       <span class="filter-text">Sample type:</span><br/>
       <div class="type-filter search-body">
         <table>
@@ -156,7 +157,7 @@
 
         </table>
       </div>
-    </div>
+    </div>-->
 
   </div>
 </div>
@@ -167,23 +168,20 @@
 
 <div class="page-container main outer">
   <meta name="keywords" content="Testing">
-
   <div class="TotHome">
     Total of <b>{{links.length}}</b> code samples found</span> <span ng-if="filteredLinks.length != links.length">, <b>{{filteredLinks.length}}</b> and code samples matching the search/filter criteria.</span>
   </div>
 
-  <ul class="items-wrapper"><!-- START FULL PAGE -->
+  <ul class="items-wrapper" id="itemsList"><!-- START FULL PAGE -->
 
     <li class="inside project-item" ng-repeat-start="link in (filteredLinks = (links | filter:searchText | filterPanel:filterConfiguration))">
-      <div class="project-outer" ng-class="{demo: link.tags.indexOf('demo')>=0}">
+      <div class="project-outer">
         <div class="link-title">
           <a data-track-action="link-title" data-track-label="{{link.urlLink}}"  href="{{link.url}}" target="_blank" data-track-action="Select" data-track-label="{{service.entity.label}}">{{link.name}}</a>
-          <a href="{{link.homepage}}" ng-if="link.homepage">
-            <span class="e1a-link e1a-sm"></span>
-          </a>
         </div>
+
         <div class="project-content description">
-          <span ng-bind-html="link.description | emoji"></span>
+          <span ng-bind-html="link.description | emoji"></span> <span> <img  ng-if="link.featured" src="static/img/feat.png"/></span>
         </div>
 
         <div  class="project-content tag-group">

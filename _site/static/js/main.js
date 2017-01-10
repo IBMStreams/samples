@@ -164,9 +164,16 @@ $scope.tagFilter = function (tag) {
         link.tags = link.tags.concat(link.category);
       }
 
-      // if state is live
-      if (link.State == "live") {
-        keepLink = false;
+      if (link.services){
+
+        link.tags = link.tags.concat(link.services);
+      }
+
+      if (link.category) {
+        link.tags = link.tags.concat(link.category);
+      }
+      if (link.toolkits) {
+        link.tags = link.tags.concat(link.toolkits);
       }
 
     })
@@ -186,12 +193,15 @@ $scope.tagFilter = function (tag) {
 
 
 
-
-
-
-    $scope.links.sort(function (link1, link2) {
-      return link1.name.localeCompare(link2.name);
-    });
+    $scope.links.sort( function(link1, link2){
+      if (link1.featured && link2.featured){
+        return 0;
+      } else if (link1.featured && !link2.featured){
+        return -1;
+      } else if (link2.featured &&  !link1.featured){
+        return 1;
+      } //link1.name.localeCompare(link2.name);
+});
   });
 });
 });
