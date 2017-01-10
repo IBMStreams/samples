@@ -21,6 +21,7 @@
 		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
 	"tags": [],
     "optional": [],
+		"sabFile": "link to sab file",
 		"type": ["Basic","Full"],
 		"services":   ["Bluemix", "dashDB"],
 		"toolkits": ["JDBC", "inet"],
