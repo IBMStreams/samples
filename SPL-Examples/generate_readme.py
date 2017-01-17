@@ -1,3 +1,5 @@
+#this script parses the MD file for each sample (which was on the  documentation page)
+#and generates a Readme.md file for each sample based on the header comments in the
 import os
 
 def generate_readme_md():
@@ -5,11 +7,12 @@ def generate_readme_md():
     #for each md_File
     github_list=  open(md_dir + "/file_list")
     md_file_list = github_list.readlines()
-    #>>> files = [f.strip() for f in L if f.startswith("028")]
     with open("/Users/natashad/Documents/dev/git/samples/SPL-Examples/Sample_List") as sample_list_file :
         sample_list = sample_list_file.readlines()
         for sample_name in sample_list:
             sample_name=sample_name.strip()
+            #get the sample name
+            #see how many .md files start with that sample name, that tells us how many spl files are in the sample.
             sample_source_files = [spl_file.strip() for spl_file in md_file_list if spl_file.startswith(sample_name)]
             with open("/Users/natashad/Documents/dev/git/samples/SPL-Examples/" + sample_name + "/README.md", "w") as readme:
                 skip_line_break = True #some samples have multiple spl files, show them all in the readme with a line_Break
@@ -20,7 +23,6 @@ def generate_readme_md():
                         if skip_line_break is True:
                             skip_line_break = False
                     found_delimiter = False
-                    #print "for " + sample_name + ", opening " + md_dir + "/" + md_file
                     with open(md_dir + "/" + md_file) as source:
                         for line in source.readlines():
                             if found_delimiter is True:
