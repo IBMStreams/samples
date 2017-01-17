@@ -1,0 +1,9 @@
+{	"name": "Visualize location data in a Streaming application",
+	"description": "This example shows how to use the HTTPTupleView operator to create an application that shows moving objects on a map in a web browser.",
+	"language": ["SPL"],
+	"category": ["3", "7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2015/03/05/visualizing-location-data-streaming-application/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample",
+	"tags": [],
+		"toolkits": ["geospatial", "inet"]
+}

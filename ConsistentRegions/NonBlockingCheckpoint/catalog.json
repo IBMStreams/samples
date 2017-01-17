@@ -1,0 +1,9 @@
+{
+	"name": "Non-Blocking Checkpointing for consistent regions",
+	"description": "This application demonstrates the usage of non-blocking checkpointing in consistent regions. Non-blocking checkpointing for Consistent Regions are available in Streams since V4.2.",
+	"language": ["SPL","C++"],
+	"category": ["5"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
+	"tags": []
+}

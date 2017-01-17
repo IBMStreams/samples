@@ -1,1 +1,1 @@
-{"category": ["1", "6"], "name": "primitive round robin split", "language": ["C++"], "tags": ["spl"], "url": "http://ibmstreams.github.io/streamsx.documentation/samples/spl-for-beginner/904_primitive_round_robin_split_Main_spl", "description": "SPL Introductory Tutorial sample"}
+{"category": ["1", "6"], "name": "Primitive Round Robin SPLit", "language": ["C++"], "tags": ["spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/904_primitive_round_robin_split", "description": "SPL Introductory Tutorial sample"}

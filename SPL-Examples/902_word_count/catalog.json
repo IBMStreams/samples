@@ -1,1 +1,1 @@
-{"category": ["1"], "name": "word count", "language": ["SPL"], "tags": ["beginner", "spl", ""], "url": "http://ibmstreams.github.io/streamsx.documentation/samples/spl-for-beginner/902_word_count_word_count_WordCount_spl", "description": "SPL Introductory Tutorial sample"}
+{"category": ["1"], "name": "Word Count", "language": ["SPL"], "tags": ["beginner", "spl", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/902_word_count", "description": "SPL Introductory Tutorial sample"}

@@ -1,0 +1,11 @@
+{
+	"name": "Use the Geofence operator in a smart marketing campaign",
+	"description": "This application shows how the Geofence operator can be used to determine when users enter a shopping center and offer them promotions when that happens",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/geofence-smart-marketing",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GeofenceMarketing",
+	"tags": ["polygons"],
+		"toolkits": ["Geospatial", "inet"],
+		"operators": ["Geofence","HTTPTupleView"]
+}

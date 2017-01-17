@@ -1,1 +1,1 @@
-{"category": ["1"], "name": "cat example", "language": ["SPL"], "tags": ["beginner", "spl"], "url": "http://ibmstreams.github.io/streamsx.documentation/samples/spl-for-beginner/901_cat_example_NumberedCat_spl", "description": "SPL Introductory Tutorial sample"}
+{"category": ["1"], "name": "Cat Example", "language": ["SPL"], "tags": ["beginner", "spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/901_cat_example", "description": "SPL Introductory Tutorial sample"}

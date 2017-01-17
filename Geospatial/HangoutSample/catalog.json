@@ -1,0 +1,10 @@
+{	"name": "Anonymize geohashes with the Hangout operator",
+	"description": "This sample shows how to use a SHA hash function to anonymize geohashes produced by the Hangout operator.",
+	"language": ["SPL"],
+	"category": ["3","7"],
+	"blogPost": "",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/HangoutSample",
+	"tags": [],
+		"toolkits": ["geospatial"],
+		"operators": ["Hangout"]
+}

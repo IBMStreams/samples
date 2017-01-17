@@ -1,0 +1,1 @@
+{"category": ["1"], "description": "This example shows how arguments supplied during the application compile time can be accessed inside of the SPL applications.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/010_get_compile_time_value", "name": "Get Compile-Time Value"}

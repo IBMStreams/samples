@@ -1,0 +1,2 @@
+This example shows how multiple SPL applications can be grouped together so that they can be started, monitored, and stopped together. It launches the main applications of the [SPL Config at Work](https://github.com/natashadsilva/samples/tree/master/SPL-Examples/030_spl_config_at_work) and [Import Export at Work](https://github.com/natashadsilva/samples/tree/master/SPL-Examples/019_import_export_at_work) samples. There is no code that needs to be written to accomplish this grouping.
+Try this by importing this project into Streams Studio and launching the build config.
