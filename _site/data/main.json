@@ -1,0 +1,342 @@
+[{
+	"name": "Non-Blocking Checkpointing for consistent regions",
+	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to stop processing tuples.",
+	"language": ["SPL","C++"],
+	"category": ["5"],"featured": true,
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
+	"tags": []
+}
+
+,{
+	"name": "Operator driven consistent region example",
+	"description": "This is an example application that uses an operator-driven consistent region.",
+	"language": ["SPL"],
+	"category": ["5"],
+	"blogPost": "",
+		"url": "https://github.com/IBMStreams/samples/blob/master/ConsistentRegions/OddEven",
+	"tags": ["performance","consistent regions"],
+    "optional": []
+}
+
+,{
+	"name": "Simple consistent region example using a FileSource",
+	"description": "Example application using a periodic consistent region. The application counts how many times a word occurs in an input file.",
+	"language": ["SPL"],
+	"category": ["5"],
+	"blogPost": "http://developer.ibm.com/streamsdev/2015/02/20/processing-tuples-least-infosphere-streams-consistent-regions/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/WordCount",
+	"tags": []
+}
+
+,{
+	"name": "Learn how to use the application dashboard with this sample",
+	"description": "Use this sample to follow along with the application dashboard tutorial on Streamsdev.",
+	"language": ["SPL"],
+	"category": ["1","4"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/getting-started-with-application-dashboards/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/IndexAnalyzer",
+	"tags": []
+}
+
+,{
+	"name": "Load data into Oracle, DB2 or Netezza",
+	"description": "This application uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader to load files directly into the database.",
+	"language": ["SPL"],
+	"category": ["2"],
+		"url": "https://github.com/IBMStreams/samples/tree/master/DbLoader",
+	"tags": ["db2","oracle","netezza"]
+}
+
+,{
+	"name": "Use the Geofence operator in a smart marketing campaign",
+	"description": "This application shows how the Geofence operator can be used to determine when users enter a shopping center and offer them promotions when that happens",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/geofence-smart-marketing",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GeofenceMarketing",
+	"tags": ["polygons"],
+		"toolkits": ["Geospatial", "inet"],
+		"operators": ["Geofence","HTTPTupleView"]
+}
+
+,{
+	"name": "Parse GPX data in Streams",
+	"description": "Demonstrate how to parse GPX data for use in geospatial apps",
+	"language": ["SPL"],
+	"category": ["1","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/tip-consuming-gpx-data-in-your-streams-application",
+	"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GPXToTuple",
+	"tags": ["parse xml"],
+    "optional": [], "featured": true,
+		"toolkits": ["geospatial"],
+		"operators": ["XMLParse"]
+}
+
+,{	"name": "Anonymize geohashes with the Hangout operator",
+	"description": "This sample shows how to use a SHA hash function to anonymize geohashes produced by the Hangout operator.",
+	"language": ["SPL"],
+	"category": ["3","7"],
+	"blogPost": "",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/HangoutSample",
+	"tags": [],
+		"toolkits": ["geospatial"],
+		"operators": ["Hangout"]
+}
+
+
+,{	"name": "Visualize location data in a Streaming application",
+	"description": "This example shows how to use the HTTPTupleView operator to create an application that shows moving objects on a map in a web browser.",
+	"language": ["SPL"],
+	"category": ["3", "7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2015/03/05/visualizing-location-data-streaming-application/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample",
+	"tags": [],
+		"toolkits": ["geospatial", "inet"]
+}
+
+,{"name": "Real-time map matching application",
+	"description": "This application demonstrates how to use the PointMapMatcher operator to match a moving object to the nearest road.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/OSMPointMapMatchingSample",
+	"tags": [],
+		"toolkits": ["geospatial"]
+}
+
+,{
+	"name": "Java application API example",
+	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.",
+	"language": ["Java"],
+	"category": ["2","10"],"featured": true,
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/source-operator-read-hdfs-files-java-application-api/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/JavaTopology/ReadFromHdfs",
+	"tags": []
+}
+
+,{
+	"name": "Use JDBC operator in Bluemix",
+	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
+	"language": ["SPL"],
+	"category": ["2"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
+	"tags": [],
+	"featured": true,
+		"services":   ["Bluemix", "dashDB"],
+		"toolkits": ["JDBC", "inet"],
+		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate"]
+}
+
+,{
+	"name": "Sample application for the ODM rules compiler",
+	"description": "This sample demonstrates how to use the rules compiler to generate an SPL composite and then write an SPL application that uses that composite.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/rules-based-processing-in-real-time-streaming-applications",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ODM/HealthDemo",
+	"tags": [],
+		"toolkits": ["rules"]
+}
+
+,{
+	"name": "C++ operator with sliding window",
+	"description": "This is an example of a C++ primitive operator which uses a sliding window to filter data received on its input port.",
+	"language": ["SPL","C++"],
+	"category": ["10","7","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/CppWindowSamples/SGFilter",
+	"tags": []
+}
+
+,{
+	"name": "How to use an operator as a parameter in a composite",
+	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so.",
+	"language": ["SPL"],
+	"category": ["2","10","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/HDFSFormatter/",
+	"tags": [],
+		"operators": ["HDFS2FilesSink"]
+}
+
+,{	"name": "C++ Native functions example",
+	"description": "This example shows how to add functionality to Streams using native functions.  This example creates functions for AES encryption and decryption",
+	"language": ["SPL", "C++"],
+	"category": ["10"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/NativeFunctions",
+	"tags": []
+}
+
+,{	"name": "Java operator with a tumbling window",
+	"description": "This is a very simple example of how to create a Java operator that has a tumbling window.",
+	"language": ["SPL","Java"],
+	"category": ["10","1","7","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/WindowTest",
+	"tags": []
+}
+
+,{
+	"name": "Faster data parsing using the Parse operator and the @parallel annotation",
+	"description": "Sometimes, the biggest slowdown in reading data from a source opereator such as FileSource is not in reading the data, but in parsing it.  This application shows how to eliminate these bottlenecks using the Parse operator and user-defined parallelism.",
+	"language": ["SPL"],
+	"category": ["3","2","6","8"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/parallelized-file-processing-parse-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Performance/ParallelParse",
+	"tags": ["udp"],
+		"operators": ["FileSource","Parse"]
+}
+
+,{"name": "Simple beginner application for Quick Start Guide",
+	"description": "This is the sample application from the Streams Quick Start Guide on StreamsDev.  It reads stock trade data from a CSV file and demonstrates how to use the Aggregate operator to compute max, min, and averages for each company.",
+	"language": ["SPL"],
+	"category": ["1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/TradesApp",
+	"tags": [],
+		"operators": ["Filter", "Custom","Aggregate"]
+}
+
+,{"category": ["1"], "description": "This example is the simplest possible SPL application. It uses a Beacon operator to generate tuples that carry Hello World' messages. A custom sink operator receives the tuples from Beacon and displays it on the console.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/001_hello_world_in_spl", "name": "'Hello World' in SPL"}
+,{"category": ["1", "2"], "name": "Source/Sink at work", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/002_source_sink_at_work", "description": "This example shows how a FileSource operator can be used to read CSV formatted records from a file and then receive those tuples in a FileSink to be written to a file in the data directory of this application."}
+,{"category": ["1", "2"], "description": "This example shows how FileSink and Custom sinks can be employed in applications. It also shows how a Beacon operator can be used to customize tuple attributes. In addition, it introduces the Filter operator to route the incoming tuples by inspecting their attributes using a conditional statement specified in the filter parameter. ", "language": ["SPL"], "tags": ["files", "read", "write"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/003_sink_at_work", "name": "Sink at work"}
+,{"category": ["1", "6"], "description": "This example shows how a Delay standard toolkit operator can be used to delay a stream. This example also introduces the Custom operator that can be used to perform custom logic. You can also notice the use of a state variable that is mutable inside the Custom operator. It also shows how to create a new tuple on the fly and do your own submissions onto the output ports.", "language": ["SPL"], "tags": ["filesink"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/004_delay_at_work", "name": "Delay at work"}
+,{"category": ["1", "6"], "description": "This example shows how a stream can be throttled to flow at a specified rate. This example also mixes other operators such as Beacon, Custom, and FileSink.", "language": ["SPL"], "tags": ["delay", "synchronize", "coordinate", "create tuple", "custom", "slow down"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/005_throttle_at_work", "name": "Throttle at work"}
+,{"category": ["1", "6"], "description": "This example shows how to synchronize the incoming tuples using a Barrier operator. It uses a bank deposit/debit scenario to split the deposit/debit requests, perform that account activity, and then combine the post-activity result with the incoming requests. Barrier operator does what is needed to accomplish that i.e. it waits for the streams to arrive at all the configured input ports before emitting an output tuple.", "language": ["SPL"], "tags": ["delay", "synchronize", "coordinate", "slow down stream", "slow down tuples", "custom", "create tuple"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/006_barrier_at_work", "name": "Barrier at work"}
+,{"category": ["1", "6"], "description": "This example shows how a Split operator can be used to split the incoming tuples based on a key. In this example, the split condition (which tuples comes out on which port) is pre configured through a text file. Alternatively, one can compute the index of the output port on the fly inside the Split operator parameter section.", "language": ["SPL"], "tags": ["split", "split stream", "divide stream"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/007_split_at_work", "name": "SPLit at work"}
+,{"category": ["1"], "description": "This example shows how the tuple attributes can be assigned values that were supplied by the user at the application/job submission time. It employs the getSubmissionTimeValue function to obtain different values made of different SPL data types. ", "language": ["SPL"], "tags": ["parameters", "submission time", "parameter lists"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/008_get_submission_time_value", "name": "Get Submission Time Value"}
+,{"category": ["1"], "description": "This example demonstrates how to assign tuple attributes at the time of job submission inside a custom operator. When the incoming tuples arrive at the Custom operator in this example, values entered by the user at the application startup are assigned to the tuple attributes.", "language": ["SPL"], "tags": ["create tuple", "custom", "parameters", "submission time", "parameter lists"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/009_custom_operator_using_get_submission_time_value", "name": "Custom Operator Using Get Submission Time Value"}
+,{"category": ["1"], "description": "This example shows how arguments supplied during the application compile time can be accessed inside of the SPL applications.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/010_get_compile_time_value", "name": "Get Compile-Time Value"}
+,{"category": ["12", "3"], "name": "Compiler Intrinsic Functions", "language": ["SPL"], "tags": ["print line number", "print debug info", "utility", "get file name", "print file name", "print line number", "current line number"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/011_compiler_intrinsic_functions", "description": "Streams compiler provides several intrinsic functions to query the SPL filename, file path, absolute path of the directory, source code line number, composite instance name etc. This example shows the use of the compiler intrinsic functions inside of a Functor operator."}
+,{"category": ["1", "6"], "name": "Filter Functor at work", "language": ["SPL"], "tags": ["filter tuples", "remove tuples", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/012_filter_functor_at_work", "description": "Learn how to use the Filter and Functor operators."}
+,{"category": ["1", "6", "3"], "name": "Punctor at work", "language": ["SPL"], "tags": ["custom logic", "punctuation", "generate punctuation"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/013_punctor_at_work", "description": "This example shows how a Punctor operator could be used in an application. Punctor operator allows us to transform the input tuples and then inject puncuation markers either before or after the output tuple as configured."}
+,{"category": ["1", "transform", "6"], "name": "Sort at work", "language": ["SPL"], "tags": ["sort", "sort with windowing", "Time-based", "count-based", "punctuation-based Count based", "time based", "punctuation based", "delta based", "sliding window", "tumbling window"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/014_sort_at_work", "description": "This example shows the use of the Sort operator in the context of an application. Sort operator is highly configurable with all kinds of windowing support. In this example, the following window configurations are applied for sorting the incoming tuples:a) Count-based tumbling window.b) Time-based tumbling window.c) Punctuation-based tumbling window.d) Delta-based tumbling window.e) Count-based sliding window."}
+,{"category": ["1", "6"], "name": "Join at work", "language": ["SPL"], "tags": ["join", "inner join", "join stream", "merge stream"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/015_join_at_work", "description": "This example provides coverage to the following Join operator features.a) Inner Join,b) Inner (Equi) Join,c) Left Outer Join,d) Right Outer Join,e) Full Outer Join"}
+,{"category": ["1", "6"], "name": "Aggregate at work", "language": ["SPL"], "tags": ["aggregate", "average", "rolling average", "window", "windowing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/016_aggregate_at_work", "description": "This example shows how to use the Aggregate operator. It is very good in computing on the fly aggregate values after collecting a set of tuples. This example also shows how to use the built-in assignment functions provided by this operator to compute regular statistical calculations such as min, max, average, standard deviation etc."}
+,{"category": ["1", "2"], "name": "Filesource Filesink at work", "language": ["SPL"], "tags": ["advanced file operations", "automatic deletion", "delete a file", "flush", "move file", "hot file", "reread file"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/017_filesource_filesink_at_work", "description": "See some more advanced features of the FileSource and FileSink operators, including: Automatic deletion of a file, flushing the sink file on demand ,moving a file after reading all the content in that file, reading hot files, and more."}
+,{"category": ["1", "2"], "name": "Directory Scan at work", "language": ["SPL"], "tags": ["read directory repeatedly", "scan directory", "list directory"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/018_directory_scan_at_work", "description": "This example demonstrates how the DirectoryScan operator picks up a new file as soon as it appears inside an input directory. "}
+,{"category": ["2", 11], "name": "Import Export at work", "language": ["SPL"], "tags": ["microservices", "export stream", "import stream"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/019_import_export_at_work", "description": "This example demonstrates how two different SPL applications can share streams between them. This is an important feature that is elegantly done using two pseudo operators called Export and Import. This application also shows how two different main composites can be part of the same application by using two different namespaces. As an aside, there is also a demonstration of using a Custom operator to customize the Beacon generated tuples by involving state variables. "}
+,{"category": ["4"], "name": "Metrics Sink at work", "language": ["SPL"], "tags": ["metrics", "application monitoring", "custom metrics", "custom statistics"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/020_metrics_sink_at_work", "description": "This example shows how one can use the MetricsSink standard toolkit operator to create application-specific custom metrics that can be viewed in real-time when the application is running. Viewing of custom metrics is typically done inside Streams Explorer view of the Streams Studio or by using the capturestate option in streamtool."}
+,{"category": ["1", "6"], "name": "Pair at work", "language": ["SPL"], "tags": ["merge streams", "join two streams", "synchronize streams"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/021_pair_at_work", "description": "This example shows off the Pair operator that is used for pairing tuples arriving on different input ports. Only when all the tuples arrive at all the input ports, this operator will emit them one after the other in their order of arrival."}
+,{"category": ["1", "6"], "name": "Deduplicate at work", "language": ["SPL"], "tags": ["separate two streams", "remove duplicates", "split streams"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/022_deduplicate_at_work", "description": "This example describes the use of an important operator that is highly applicable in many Telco scenarios. That operator is called DeDuplicate, which eliminates duplicate tuples for a specified duration of time. It also has an optional second output port on which duplicate tuples could be sent out for additional processing."}
+,{"category": ["1", "6"], "name": "Union at work", "language": ["SPL"], "tags": ["merge streams", "join two streams", "synchronize streams"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/023_union_at_work", "description": "This example demonstrates an utility operator called Union. This operator combines all the tuples from several input ports as they arrive and emits a single output stream. All the input ports must have a schema that contains attributes of the same name and type as those of the output port. The order of the attributes in the input ports need not match the order in the output port."}
+,{"category": ["1", "6", "5"], "name": "Threaded SPLit at work", "language": ["SPL"], "tags": ["threaded split", "split stream", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/024_threaded_split_at_work", "description": "This example demonstrates an important standard toolkit operator named ThreadedSplit. It is a multi-threaded split that is different from the other content-based Split operator. ThreadedSplit uses its own algorithm to split the incoming tuples to the available output ports to improve concurrency. This will speed up the distribution of tuples by using individual threads assigned to each of the output ports."}
+,{"category": ["1", "6"], "name": "Dynamic Filter at work", "language": ["SPL"], "tags": ["filter", "dynamic filter", "filter based on input"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/025_dynamic_filter_at_work", "description": "This example deals with an interesting standard toolkit operator called DynamicFilter. This operator is a special version of the Filter operator that you have already seen in another example; it decides at runtime which input tuples will be passed through, based on the control input it receives. This operator is applicable in many real-life scenarios. This example also demonstrates using a second composite operator to perform a sub-task that the main composite will make use of. There is also coverage to show how the second composite can take its own operator parameters.  "}
+,{"category": ["1", "6"], "name": "Gate at work", "language": ["SPL"], "tags": ["control tuple flow", "wait for tuples", "hold tuples until signal", "wait"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/026_gate_at_work", "description": "This is an example that uses the Gate operator from the standard toolkit. This operator delays the incoming tuples until a downstream operator signals with an acknowledgment to receive any further tuples. This is a great way to have a feedback through which we can control the rate at which tuples are passed through. (Please refer to another example named 905_gate_load_balancer that shows the effectiveness of the Gate operator in combination with the ThreadedSplit operator to provide load balancing the incoming tuples.)"}
+,{"category": ["3"], "name": "Java op at work", "language": ["Java"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/027_java_op_at_work", "description": "This example shows an important operator that brings Java into the C++ dominated world of Streams!!! That operator is called JavaOp, which is used to call out to other operators implemented in Java using the Java Operator API. In this example, we will have a tiny Java logic that will calculate the current time and add that time string to a tuple attribute and output that tuple. There is another example that shows the Java primitive operator that is different from the JavaOp operator."}
+,{"category": ["8", "10"], "name": "Multiple Composites at work", "language": ["SPL"], "tags": ["best practices", "application design", "reuse composites", "modularization"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/028_multiple_composites_at_work", "description": "This example shows the use of multiple composites in a single application. There is a main composite that in turn uses two other composites. This application shows how the additional composites in different namespaces get included into the main composite via the 'use' directive. It also demonstrates how the additional composites can accept their own operator parameters. It teaches the basics of an important feature that will come handy when big applications need to be componentized. "}
+,{"category": ["8"], "name": "SPL Functions at work", "language": ["SPL"], "tags": ["best practices", "application design", "reuse composites", "modularization"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/029_spl_functions_at_work", "description": "This example shows how helper and utility functions can be written using the SPL language. It also shows how such SPL functions can be put to use inside the context of an application. Learning this simple concept will go a long way in doing a lot of neat stuff in real-world applications."}
+,{"category": ["3", "Configuration", "5"], "name": "SPL Config at work", "language": ["SPL"], "tags": ["spl", "spl config clause", "resource allocation", "application deployment", "job submission", "operator fusion", "threading", "host colocation", "host exlocation", "threaded port", "threading", "concurrency", "load balancing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/030_spl_config_at_work", "description": "This example introduces one of the must-learn features of the SPL language. SPL language offers an extensive list of options to do configuration at the operator level as well as at the composite level. This application attempts to sprinkle many of the available configuration parameters as shown below.a) host,b) hostColocation,c) partitionColocation,d) placement,e) threadedPort and queue,f) relocatable and many more.In addition, this example shows how to make this application toolkit dependent on another (025_dynamic_filter_at_work) SPL toolkit project."}
+,{"category": ["8"], "name": "SPL Mixed Mode at work", "language": ["Perl", "SPL"], "tags": ["mixed mode", "code generation", "spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/031_spl_mixed_mode_at_work", "description": "This example shows a cool SPL feature called mixed-mode support. In this, developers can mix PERL code islands inside of an SPL application. Mixed-mode enables the easy parameterization of SPL applications. This example gives a slight flavor of how a PERL code snippet inter-mixed with SPL allows us to parameterize the SPL Stream names and the number of output stream definitions for an SPL operator. "}
+,{"category": ["10", "1", "8"], "name": "Native Function at work", "language": ["C++"], "tags": ["native functions", "c++", "native function model"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/032_native_function_at_work", "description": "This application shows how native functions written in C++ can be called within an SPL application.There are two ways in which native functions can be written in C++.1) Code for the C++ functions can be written in a C++ header file.2) C++ functions can be written outside of the SPL project and packaged into a shared library (.so) file. All the SPL developer will have to work with are an .so file and a C++ header file.This application demonstrates incorporating native functions built in both of those ways.[THIS EXAMPLE HAS A COMPANION C++ PROJECT CALLED NativeFunctionLib.]"}
+,{"category": ["10"], "name": "Java Primitive Operator at work", "language": ["Java"], "tags": ["java operators", "application development", "primitive java operator"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/033_java_primitive_operator_at_work", "description": "This example shows how to create a Java primitive operator is created from scratch. Java primitive operator is different from JavaOp that you have seen earlier in a different example. Java primitive operator is a first class operator in SPL, whereas JavaOp only permits a callout to another Java operator. In addition, Java primitive operator has the advantage of keeping its name as the operator\u2019s runtime instance name.[THIS EXAMPLE HAS A COMPANION JAVA PROJECT NAMED RSS_Reader_Primitive.]"}
+,{"category": ["2"], "name": "Odbc Adapters For Db2 at work", "language": ["SPL"], "tags": ["odbc", "database", "db2", "jdbc"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/034_odbc_adapters_for_db2_at_work", "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to access a particular test DB2 database."}
+,{"category": ["1", "10", "8"], "name": "C++ Primitive Operator at work", "language": ["C++"], "tags": ["c++ operator model", "c++ example", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/035_c++_primitive_operator_at_work", "description": "This example shows the steps required to create a C++ primitive operator from scratch. In this application, a C++ primitive operator model XML file can be explored to learn how the different fields in that file are configured. Then, the code generation template header and implementation files (*_h.cgt and *_cpp.cgt) can be browsed to learn about the primitive operator logic. Additionally, this example demonstrates about including a Java operator and a C++ primitive operator as part of the application flow."}
+,{"category": ["10", "8"], "name": "Shared Lib Primitive Operator at work", "language": ["C++"], "tags": ["shared library", "library", "operator dependencies", "c++", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/036_shared_lib_primitive_operator_at_work", "description": "This example demonstrates two important techniques that will be commonly used in real-world use cases.1) Creating a C++ primitive operator.2) Calling a function available inside a .so shared library from the C++ primitive operator logic.Application logic here is to receive input tuples as hostnames and then make the C++ primitive operator logic invoke a shared library function that does a name server lookup.[THIS EXAMPLE HAS A COMPANION C++ PROJECT CALLED PrimitiveOperatorLib.]"}
+,{"category": ["2"], "name": "Odbc Adapters For Solid db at work", "language": ["SPL"], "tags": ["odbc", "database", "soliddb", "jdbc"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/037_odbc_adapters_for_solid_db_at_work", "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to connect to a SolidDB in-memory database."}
+,{"category": ["8", "9", "3"], "name": "SPL Built in Functions at work", "language": ["SPL"], "tags": ["list", "map", "mutable", "timestamps", "convert timestamp", "convert time stamp", "utility functions", "spl functions"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/038_spl_built_in_functions_at_work", "description": "This is a very simple example that showcases a random collection of powerful built-in SPL functions that are available out of the box. This application demonstrates how time, math, and collection type functions can be used inside of an SPL application."}
+,{"category": ["1", "3"], "name": "Application Set at work", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/039_application_set_at_work", "description": "This example shows how multiple SPL applications can be grouped together so that they can be started, monitored, and stopped together. It launches the main applications of the 'SPL Config at Work' and 'Import Export at Work' samples. There is no code that needs to be written to accomplish this grouping."}
+,{"category": ["9", "3"], "name": "Ingest Data Generation in SPL", "language": ["SPL"], "tags": ["parameters", "submission time", "parameter lists", "test data generation", "sample data"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/040_ingest_data_generation_in_spl", "description": "This example shows how SPL provides rich features to generate synthetic data required for large scale testing. "}
+,{"category": ["6", "3"], "name": "Real Time Streams Merger", "language": ["C++"], "tags": ["merge  streams", "ordered merge", "join streams", "c++ operator model", "c++ example", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/041_real_time_streams_merger", "description": "This example shows how two or more incoming streams with a common schema can be merged to flow in a sequence one after the other. This merger is done using a common tuple attribute in those multiple incoming streams as a key."}
+,{"category": ["2", 11], "name": "Dynamic Import Export Api at work", "language": ["SPL"], "tags": ["dynamic import", "dynamic export", "microservices", "export stream", "import stream"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/042_dynamic_import_export_api_at_work", "description": "This example shows how to use the SPL APIs for dynamically importing and exporting streams. This is achieved by changing the import and export properties on the fly. This powerful feature in Streams provides a way to change the streams producing and consuming operators to change the way in which they publish and subscribe to streams while the application is running."}
+,{"category": ["2", 11], "name": "Import Export Filter at work", "language": ["SPL"], "tags": ["filtered import", "filter imports", "dynamic import", "dynamic export", "microservices", "export stream", "import stream"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/043_import_export_filter_at_work", "description": "This example shows how to use the SPL feature to apply a filter for what gets exported and what gets imported. This powerful feature lets the downstream import operators to specify what kind of tuples they want to receive by specifying conditional expressions involving tuple attributes. That lets the Streams runtime to apply content-based filtering at the point of export. Those who need such a feature to control what information should be sent downstream based on the tuple contents can make use of this flexible feature. This can be done on the fly without stopping and restarting the application."}
+,{"category": ["5"], "name": "Streams Checkpointing at work", "language": ["SPL"], "tags": ["automatic checkpointing", "checkpoint", "fail over", "data consistency"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/044_streams_checkpointing_at_work", "description": "This example shows a key feature of Streams by which an operator's state variables can be preserved when a PE fails and gets restarted. This is done through a combination of the SPL configuration directives named 'checkpointing' and 'restartable'. Developers can protect their critical operator data by taking advantage of this built-in checkpointing feature. When you run this example, you will see data flows without any gaps or interruption, when a PE is killed manually and then gets restored automatically by the Streams runtime."}
+,{"category": ["1", "10", "2", "3"], "name": "File Source Using SPL Custom Operator", "language": ["SPL"], "tags": ["spl utility functions", "open a file", "read a file", "parse a file", "custom", "filesource"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/045_file_source_using_spl_custom_operator", "description": "This example shows how to create source operators using the Custom operator available in the SPL standard toolkit. Starting in Streams 3.x, it is possible to create source operators without writing primitive source operators in C++ or Java. Simple source operators can be written using the built-in SPL Custom operator. This will come handy for those who don't want to do an extra layer of C++ or Java code for satisfying simple needs for a source operator. You will see a function of a file source operator being implemented all using SPL code in this example."}
+,{"category": ["3"], "name": "Launching External Apps in SPL", "language": ["C++"], "tags": ["execute program", "launch a program", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/046_launching_external_apps_in_spl", "description": "This example shows how to launch/execute an external application within the Streams SPL code. In this case, we defined a simple C++ native function in which we have the required C++ code to launch an external application. That C++ code uses pipes to execute a given application. This function would be useful to launch any custom script within the Streams application logic when certain application specific conditions arise."}
+,{"category": ["5"], "name": "Streams Host Tags at work", "language": ["SPL"], "tags": ["config clause", "operator placement", "host pools", "tcpsource", "tcpsink"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/047_streams_host_tags_at_work", "description": "This example shows how to create host tags for a given Streams instance and then use those host tags inside an SPL application. By using host tags, it is possible to avoid hard-coding the host names inside the SPL application code. Detailed instructions about creating and using host tags are explained in this example."}
+,{"category": ["2", "10"], "name": "Source Operator With Control Port", "language": ["C++"], "tags": ["c++ primitive operator", "control port", "custom source operator", "spl utility functions", "open a file", "read a file", "parse a file", "custom", "filesource"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/048_source_operator_with_control_port", "description": "This example shows a way to create a C++ primitive source operator and then provide a control input port for it. Certain classes of applications can make use of this facility to control the kind of data a source operator generates. In addition, this example shows how to pass one or more string literals to the C++ primitive operator as invocation time parameters. As a bonus, this example also shows a simple way to do performance measurement inside the SPL code using the built-in SPL high precision timestamp functions."}
+,{"category": ["2"], "name": "Json to Tuple to Json Using Java", "language": ["Java"], "tags": ["json", "parse json", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/049_json_to_tuple_to_json_using_java", "description": "This example shows how an SPL application can consume JSON formatted data and convert it to SPL tuples. It also shows how to do the reverse action i.e. converting SPL tuples to JSON formatted data."}
+,{"category": ["2", "10"], "name": "Recursive Dir Scan", "language": ["C++"], "tags": ["c++", "c++ native functions example", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/050_recursive_dir_scan", "description": "This example shows how to use the Streams C++ native function facility to recursively scan a given directory and obtain the names of the files present."}
+,{"category": ["9", "10"], "name": "Native Functions With Collection Types", "language": ["C++"], "tags": ["c++", "c++ native functions example", "application development", "collections", "list", "map", "tuple"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/051_native_functions_with_collection_types", "description": "In this example, developers can learn how to build native functions inside of a C++ class and then pass list, map, and tuple types to those native functions."}
+,{"category": ["3"], "name": "Streams to Python", "language": ["Python", "SPL"], "tags": ["call python from cpp", "python", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/052_streams_to_python", "description": "This example shows a powerful feature of Streams to wrap existing code assets written using the Python programming language. "}
+,{"category": ["9", "10"], "name": "Java Primitive Operator With Complex Output Tuple Types", "language": ["Java"], "tags": ["tuple", "java operator", "tuple in java operator", "complex tuple", "submit tuple from java"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/053_java_primitive_operator_with_complex_output_tuple_types", "description": "This example shows important features that can be done via a Java primitive operator. It shows how we can create an output tuple inside a Java primitive operator to have a list of tuple objects carrying complex typed attributes."}
+,{"category": ["3", "5"], "name": "Serialize Deserialize Tuples", "language": ["C++"], "tags": ["blob", "data types", "serialization", "c++ native function"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/054_serialize_deserialize_tuples", "description": "This example shows a simple mechanism to serialize and deserialize SPL tuples to cut down the memory consumption by converting the large tuples into compact blobs."}
+,{"category": ["3", "2"], "name": "Json to Tuple to Json Using C++", "language": ["C++"], "tags": ["parse json from c++", "jsontotuple", "c++ native function"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/055_json_to_tuple_to_json_using_c++", "description": "This example shows how an SPL application can consume JSON formatted data and convert it to SPL tuples. It also shows how to do the reverse action i.e. converting SPL tuples to JSON formatted data. "}
+,{"category": ["2", "9"], "name": "Reading Nested Tuple Data Via File Source", "language": ["SPL"], "tags": ["nested tuple", "nested tuple", "parse", "filesource"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/057_reading_nested_tuple_data_via_file_source", "description": "This example shows how to ingest nested tuple data via input files specified in a CSV format. There are certain syntactical rules that need to be followed in specifying data for nested tuples inside a CSV formatted input file. This example is a good one for developers to get an idea about how to do this."}
+,{"category": ["3", "8", 11, "2"], "name": "Dynamic Scaleout of Streams Application", "language": ["C++"], "tags": ["import", "export", "ingest"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/059_dynamic_scaleout_of_streams_application", "description": "This example shows a particular style of writing Streams applications that can be scaled up or scaled down as the application input workload changes. It uses a familiar scenario from the Financial Services Sector, where the price calculation engines will require scaling up when the market data load increases."}
+,{"category": ["5", "3"], "name": "Simple pe Failover Technique at work", "language": ["SPL"], "tags": ["recovery", "crash", "fail over", "redundancy"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/060_simple_pe_failover_technique_at_work", "description": "This example shows a way to protect the logic in an analytic operator  when its PE (Processing Element) or its host machine crashes. "}
+,{"category": ["10", "9"], "name": "on The Fly Tuple Creation And Encoding Decoding in Java Primitive Operators", "language": ["Java"], "tags": ["java", "create tuple", "blob", "create tuple in java", "blob java"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/063_on_the_fly_tuple_creation_and_encoding_decoding_in_java_primitive_operators", "description": "This example shows how to create a tuple on the fly inside a Java primitive operator. In addition, this example also shows how to convert a tuple into a blob (Java byte buffer) and how to convert a blob (Java byte buffer) in to a tuple. "}
+,{"category": ["10"], "name": "Using SPL Composite Params", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/064_using_spl_composite_params", "description": "This example shows different ways in which parameters can be passed to SPL composites. It is very useful to pass parameters as attributes, expressions, functions, operators, and types. These different ways of passing parameters to the composites is the focus of this example."}
+,{"category": ["5"], "name": "Using Multiple Threads in Java Operator", "language": ["Java"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/065_using_multiple_threads_in_java_operator", "description": "This example shows how to spawn multiple threads within a Java primitive operator and then submit tuples from within those threads concurrently."}
+,{"category": ["5"], "name": "Load Balancing Using Gate", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/066_load_balancing_using_gate", "description": "As documented in the Streams Info Center for a ThreadedSplit, if the processing time of a tuple varies considerably depending on the tuple data, it may cause problems where a tuple with a long processing time may cause subsequent tuples to be backed up in the stream. This example shows how a Gate operator can be combined with the ThreadedSplit can be used to ensure load balancing."}
+,{"category": ["10"], "name": "Simple Java Source Operator", "language": ["Java"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/067_simple_java_source_operator", "description": "This example shows a basic source operator implemented in Java. There are specific steps required for implementing a source operator and it can be learned in this example."}
+,{"category": ["10", "9"], "name": "Tuple Introspection Inside Java Operator", "language": ["Java"], "tags": ["tuples java", "spl data types", "collections", "java operator", "parse tuple in java", "tuples"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/068_tuple_introspection_inside_java_operator", "description": "This example shows how a tuple can be introspected to learn about its structure and its attribute names and their types. Inside a Java operator, this example illustrates how it is possible to recursively look through a tuple to understand its composition."}
+,{"category": ["9", "3"], "name": "Changing Map Value During Iteration", "language": ["SPL"], "tags": ["change map value", "change map", "iteration", "iterate over map"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/069_changing_map_value_during_iteration", "description": "Until the release of Streams version 3.2.1, it was not possible to modify the value of a map inside an iteration loop. This example shows a new feature available in Streams version 3.2.1 that permits the value of a map to be modified inside a for loop."}
+,{"category": ["2", "9"], "name": "Convert Block Data Into Tuples Using Parse", "language": ["SPL"], "tags": ["tuples", "convert blob to tuple", "parse blob", "parse operator"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/070_convert_block_data_into_tuples_using_parse", "description": "This example shows how a block of data ingested as a blob type can be converted into individual tuples using the Parse operator."}
+,{"category": ["10", "1"], "name": "Java Native Functions", "language": ["Java"], "tags": ["create java native function", "java function"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/071_java_native_functions", "description": "Java native functions provide a cool way to add user-defined functions in Java and then call them directly within the SPL code. This example shows how easy it is to create java native functions."}
+,{"category": ["4"], "name": "Using Streams Rest Apis", "language": ["Java"], "tags": ["monitoring", "rest api example", "get job info", "jobs", "rest"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/072_using_streams_rest_apis", "description": "Streams provides REST APIs to query different kinds of metrics about the instances, jobs, resources during the runtime operation. It is a comprehensive set of APIs that can be used with proper security configuration. This example shows a few different REST APIs in action by invoking them within Java code."}
+,{"category": ["5"], "name": "Java Operator Fusion", "language": ["Java"], "tags": ["java operator fusion", "fuse multiple operators"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/073_java_operator_fusion", "description": "This example shows how two different Java operators one performing the Sink operation and the other performing the analytics operation can be fused to operate within a single PE."}
+,{"category": ["5"], "name": "User Defined Parallelism #1", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/074_user_defined_parallelism_01", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP). Replication is done in this UDP scenario where every operator runs on its own PE. (non-fused)"}
+,{"category": ["5"], "name": "User Defined Parallelism #2", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/075_user_defined_parallelism_02", "description": "In this example of user-defined parallelism, two operators in a composite are fused and then the resulting PE is replicated"}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/076_user_defined_parallelism_03", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/077_user_defined_parallelism_04", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/078_user_defined_parallelism_05", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/079_user_defined_parallelism_06", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/080_user_defined_parallelism_07", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/081_user_defined_parallelism_08", "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application."}
+,{"category": ["5"], "name": "User Defined Parallelism", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/082_user_defined_parallelism_09", "description": "This is example 9 in the series of 12 User Defined Parallelism (UDP) scenarios.  In this example, no operators from outside the parallel region are fused with the operators in the parallel region. The parallel region has no incoming streams. The processing element (PE) is replicated because no operators from outside the parallel region are fused with the operators in the parallel region."}
+,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/083_user_defined_parallelism_10", "name": "User Defined Parallelism"}
+,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/084_user_defined_parallelism_11", "name": "User Defined Parallelism"}
+,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/085_user_defined_parallelism_12", "name": "User Defined Parallelism"}
+,{"category": ["2"], "description": "This example shows how the JMSSource and JMSSink operators from the Streams standard toolkit can be put to use for sending messages from Streams into the Apache ActiveMQ queues and topics as well as reading messages from there into Streams.", "language": ["SPL"], "tags": ["jms", "activemq", "messaging", "messaging server", "read from activemq"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/086_jms_source_sink_using_activemq", "name": "Jms Source Sink Using Activemq"}
+,{"category": ["3"], "description": "This example shows a way to send email alerts from an SPL application. It is done via a Java native function by using the email API available in the standard Java platform. If an SMTP server is present in the same   network where Streams servers are connected, the technique shown in this example can be put to use for sending email alerts.", "language": ["Java"], "tags": ["email", "send email java", "send email"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/087_email_alerts_via_java_native_function", "name": "Email Alerts Via Java Native Function"}
+,{"category": ["10", "9"], "description": "This example demonstrates two different features of the Java primitive operator framework. It first shows how operator parameters can be easily processed inside the Java operators via the @Parameter annotations. Then, it shows how multiple input and output ports can be accessed inside the Java operators. As a bonus, it also shows a better approach for on the fly creation of the output tuples made with complex nested types.", "language": ["Java"], "tags": ["nested tuple", "create tuple", "multiple input ports", "java", "java operator", "java operator parameters"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/088_java_operator_params_and_multiple_input_output_ports", "name": "Java Operator Params And Multiple Input Output Ports"}
+,{"category": ["2", 11], "description": "This example demonstrates one of the Streams open source toolkits (com.ibm.streamsx.inet). Using this toolkit one can integrate Streams applications with web applications. Please read the comments in the SPL file for this example project to download that toolkit, install it, and then use that toolkit inside a simple SPL application.", "language": ["SPL"], "tags": ["post to streams app", "streams web app", "rest", "send tuples to browser"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/089_integrating_streams_apps_with_web_apps", "name": "Integrating Streams Apps With Web Apps"}
+,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined for a Beacon with an operator driven checkpoint trigger.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/090_consistent_region_spl_01", "name": "Consistent Region SPL Sample #1"}
+,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined using a FileSource with a periodic checkpoint trigger.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/091_consistent_region_spl_02", "name": "Consistent Region SPL Sample #2"}
+,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined for the entire application topology with an operator driven checkpoint trigger. The application survives multiple crashes at different times and Streams will preserve the windows contents of the Aggregate operator.", "language": ["SPL"], "tags": ["consistent region", "consistent region window"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/092_consistent_region_spl_03", "name": "Consistent Region SPL Sample #3"}
+,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined for two different composites acting as sources for this application. These consistent regions have a periodic checkpoint trigger.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/093_consistent_region_spl_04", "name": "Consistent Region SPL Sample #4"}
+,{"category": ["5"], "description": "This example shows how to have an autonomous section in the application graph. ", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/094_consistent_region_spl_05", "name": "Consistent Region SPL Sample #5"}
+,{"category": ["5"], "description": "This example shows how to use the ReplaybleStart operator when you have a source operator that does not support consistent regions.", "language": ["SPL"], "tags": ["replayablestart", "high availability", "guaranteed processing", "crash", "failure"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/095_consistent_region_spl_06", "name": "SPL Consistent Region Sample #6"}
+,{"category": ["5"], "description": "This particular example shows how to write a C++ primitive operator that can be the start of a consistent region.", "language": ["C++", "SPL"], "tags": ["high availability", "guaranteed processing", "crash", "fail"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/096_consistent_region_cpp_07", "name": "Consistent Region C++ Source Operator Sample"}
+,{"category": ["5"], "description": "This example shows how a C++ operator can be within a consistent region when it is not the start of the region.", "language": ["C++", "SPL"], "tags": ["high availability", "guaranteed processing", "crash", "fail"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/097_consistent_region_cpp_08", "name": "Consistent Region C++ Sample"}
+,{"category": ["5"], "name": "Java Source Operator in a Consistent Region", "language": ["Java", "SPL"], "tags": ["java consistent region"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/098_consistent_region_java_09", "description": "This particular example shows how to write  Java primitive operator that can be the start of a consistent region."}
+,{"category": ["5"], "name": "Java Operator in Consistent Region", "language": ["Java", "SPL"], "tags": ["java consistent region"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/099_consistent_region_java_10", "description": "This particular example shows how a Java operator can be within a consistent region when it is not the start of the region."}
+,{"category": ["4"], "name": "Using Jmx Api", "language": ["Java"], "tags": ["jmx api", "jmx", "monitoring", "domains"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/100_using_jmx_api_01", "description": "This example shows how one can use the Streams JMX APIs to query information about the Streams domain and the Streams instance."}
+,{"category": ["4"], "name": "Using Jmx Api", "language": ["Java"], "tags": ["jmx api", "get log file using jmx", "monitoring"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/101_using_jmx_api_02", "description": "This example shows how one can use the Streams JMX APIs to fetch the bulk contents from a log file for a given domain."}
+,{"category": ["4"], "name": "Using Jmx Api", "language": ["Java"], "tags": ["jmx", "monitoring", "use jmx to get alerts"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/102_using_jmx_api_03", "description": "This example shows how one can use the Streams JMX API notifications to get alerted via callback functions about an inactivity timeout in a given Streams domain."}
+,{"category": ["4"], "name": "View Annotation at work", "language": ["SPL"], "tags": ["application development", "visualization", "reporting", "visualize", "views", "view annotation", "views example", "console", "microsoft excel", "visualization"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/103_view_annotation_at_work", "description": "This is a simple SPL application that explains the steps required to use the view annotation and then how to visualize the view annotated stream in the Streams web console. See the comments section of this SPL file."}
+,{"category": ["1"], "name": "Cat Example", "language": ["SPL"], "tags": ["beginner", "spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/901_cat_example", "description": "SPL Introductory Tutorial sample"}
+,{"category": ["1"], "name": "Word Count", "language": ["SPL"], "tags": ["beginner", "spl", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/902_word_count", "description": "SPL Introductory Tutorial sample"}
+,{"category": ["1"], "description": "SPL Introductory Tutorial sample", "language": ["SPL"], "tags": ["beginner", "spl", ""], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/903_unique", "name": "Unique"}
+,{"category": ["1", "6"], "name": "Primitive Round Robin SPLit", "language": ["C++"], "tags": ["spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/904_primitive_round_robin_split", "description": "SPL Introductory Tutorial sample"}
+,{"category": ["6", "5"], "name": "Gate Load Balancer", "language": ["SPL"], "tags": ["threadedsplit", "gate", "threadedsplit operator", "gate operator", "improve performance"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/905_gate_load_balancer", "description": "SPL Introductory Tutorial sample\""}
+,{	"name": "Sentiment analysis in BigInsights",
+	"description": "Use the TextExtract operator to run the BigInsights starter kit application that analyzes the sentiment of tweets.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/BigInsightsStarterKitApp",
+	"tags": [],
+	"featured": true,
+		"toolkits": ["text"],
+		"operators": ["TextExtract"]
+}
+
+,{
+	"name": "BigInsights Text Analytics and Streams",
+	"description": "Use the TextExtract operator to analyze data for mentions of Streams, displaying the search results in a web browser.  Also demonstrates how to update the dictionaries used by the operator.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/real-time-text-analysis-using-streams-part-2-updating-dictionaries-and-tables/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsDemo",
+	"tags": [],
+		"toolkits": ["text"],
+		"operators": ["TextExtract"]
+}
+
+,{"name": "Normalize and tokenize text using TextExtract operator",
+	"description": "See how to normalize terms when multiple words refer to the same keyword, and tokenize a string using BigInsights Text Analytics",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/text-analytics-go/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsToGo",
+	"tags": [],
+		"toolkits": ["text"],
+		"operators": ["TextExtract"]
+}
+
+]

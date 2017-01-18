@@ -1,8 +1,8 @@
 [{
 	"name": "Non-Blocking Checkpointing for consistent regions",
-	"description": "This application demonstrates the usage of non-blocking checkpointing in consistent regions. Non-blocking checkpointing for Consistent Regions are available in Streams since V4.2.",
+	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to stop processing tuples.",
 	"language": ["SPL","C++"],
-	"category": ["5"],
+	"category": ["5"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
 	"tags": []
@@ -146,17 +146,17 @@
 	"language": ["SPL","C++"],
 	"category": ["10","7","1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/CppWindowSamples/SGFilter",
+		"url": "https://github.com/IBMStreams/samples/tree/master/CppWindowSamples/SGFilter",
 	"tags": []
 }
 
 ,{
 	"name": "How to use an operator as a parameter in a composite",
-	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so by creating a set of formatters for the HDFS2FilesSink operator.",
+	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so.",
 	"language": ["SPL"],
 	"category": ["2","10","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/HDFSFormatter/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/HDFSFormatter/",
 	"tags": [],
 		"operators": ["HDFS2FilesSink"]
 }
@@ -166,7 +166,7 @@
 	"language": ["SPL", "C++"],
 	"category": ["10"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/NativeFunctions",
+		"url": "https://github.com/IBMStreams/samples/tree/master/NativeFunctions",
 	"tags": []
 }
 
