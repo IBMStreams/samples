@@ -90,7 +90,7 @@
 	"language": ["SPL"],
 	"category": ["3", "7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2015/03/05/visualizing-location-data-streaming-application/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample",
+		"url": "https://github.com/IBMStreams/samples/tree/master/MapViewerSample",
 	"tags": [],
 		"toolkits": ["geospatial", "inet"]
 }
@@ -175,7 +175,7 @@
 	"language": ["SPL","Java"],
 	"category": ["10","1","7","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/WindowTest",
+		"url": "https://github.com/IBMStreams/samples/tree/master/WindowTest",
 	"tags": []
 }
 
