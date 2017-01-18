@@ -125,7 +125,7 @@
 	"tags": [],
 	"featured": true,
 		"services":   ["Bluemix", "dashDB"],
-		"toolkits": ["JDBC", "inet"],
+		"toolkits": ["JDBC", "inet"], "sabFile" : "http://link",
 		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate"]
 }
 
