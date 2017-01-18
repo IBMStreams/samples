@@ -1,5 +1,5 @@
 {	"name": "Sentiment analysis in BigInsights",
-	"description": "Demonstrates how to use the TextExtract operator to load and run the extractor from the BigInsights Text Analytics starter kit. Analyzes the sentiment on fictional tweets.",
+	"description": "Use the TextExtract operator to run the BigInsights starter kit application that analyzes the sentiment of tweets.",
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/",
