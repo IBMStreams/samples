@@ -1,6 +1,6 @@
 [{
 	"name": "Non-Blocking Checkpointing for consistent regions",
-	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to stop processing tuples.",
+	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to stop processing tuples.   ",
 	"language": ["SPL","C++"],
 	"category": ["5"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
@@ -62,7 +62,7 @@
 
 ,{
 	"name": "Parse GPX data in Streams",
-	"description": "Demonstrate how to parse GPX data for use in geospatial apps",
+	"description": "Demonstrate how to parse GPX data for use in geospatial applications.    ",
 	"language": ["SPL"],
 	"category": ["1","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/tip-consuming-gpx-data-in-your-streams-application",
@@ -107,7 +107,7 @@
 
 ,{
 	"name": "Java application API example",
-	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.",
+	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.   ",
 	"language": ["Java"],
 	"category": ["2","10"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/source-operator-read-hdfs-files-java-application-api/",
@@ -117,7 +117,7 @@
 
 ,{
 	"name": "Use JDBC operator in Bluemix",
-	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
+	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator.  ",
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
