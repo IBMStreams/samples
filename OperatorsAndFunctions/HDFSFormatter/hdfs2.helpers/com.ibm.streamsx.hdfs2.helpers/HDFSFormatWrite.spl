@@ -7,7 +7,7 @@
  * to a string as specified by the formatter, and then sends it to
  * HDFS2FileSink.
  */
- 
+
 namespace com.ibm.streamsx.hdfs2.helpers;
 
 /**
@@ -17,7 +17,7 @@ namespace com.ibm.streamsx.hdfs2.helpers;
  * It includes a default conversion using SPL's tuple
  * format, but allows you to supply a operator
  * to do the conversion from tuple to rstring.
- *  
+ *
  * @input inStream Stream to be written to HDFS
  * @param formatter (optional) operator to be used for converting from tuple to string
  * @param writer (optional) operator to be used to write to HDFS
@@ -35,17 +35,17 @@ public composite HDFSFormatWrite(input inStream )
 		// It defaults to HDFS2FileSink.  If you need to use
 		// an option not available in the composite (such as
 		// hdfsURI, bytesPerFile, closeOnPunct, or tuplesPerFile)
-		// You'll need to supply your own composite.  The 
+		// You'll need to supply your own composite.  The
 		// ScanReadWrite sample shows an how to do this.
-		operator $writer : com.ibm.streams.bigdata.hdfs2::HDFS2FileSink ;
+		operator $writer : com.ibm.streamsx.hdfs::HDFS2FileSink ;
 
-		// The file to be written.  This is required by the 
-		// composite.  
+		// The file to be written.  This is required by the
+		// composite.
 		expression<rstring> $file ;
 
 		// If a user is supplied, the operator uses that value.
-		// If no user is supplied, it pulls the user from the 
-		// environment variable.  
+		// If no user is supplied, it pulls the user from the
+		// environment variable.
 		expression<rstring> $hdfsUser : getEnvironmentVariable("USER", "") ;
 
 		// If not timeFormat is supplied, the operator uses this
@@ -58,7 +58,7 @@ public composite HDFSFormatWrite(input inStream )
 		{
 		}
 
-		// Now those strings are written to the sink operator. 
+		// Now those strings are written to the sink operator.
 		// The file, hdfsUser, and timeformat parameters are passed through.
 		() as Sink = $writer(stringStream)
 		{

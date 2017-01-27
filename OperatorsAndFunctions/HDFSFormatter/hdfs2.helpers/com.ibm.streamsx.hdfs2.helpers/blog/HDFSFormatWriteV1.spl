@@ -11,7 +11,7 @@
  * * **HDFSFormatWrite_V3** The above, but now the formatting operator has a
  * default, so that we can use it just as we used V1.
  */
- 
+
 namespace com.ibm.streamsx.hdfs2.helpers.blog;
 
 /**
@@ -24,8 +24,8 @@ namespace com.ibm.streamsx.hdfs2.helpers.blog;
 public composite HDFSFormatWrite_V1(input inStream )
 {
 	param
-		// The file to be written.  This is required by the 
-		// composite.  
+		// The file to be written.  This is required by the
+		// composite.
 		expression<rstring> $file ;
 
 	graph
@@ -37,9 +37,9 @@ public composite HDFSFormatWrite_V1(input inStream )
 		astring = (rstring)inStream;
 		}
 
-		// Now those strings are written to the sink operator. 
+		// Now those strings are written to the sink operator.
 		// The file, hdfsUser, and timeformat parameters are passed through.
-		() as Sink = com.ibm.streams.bigdata.hdfs2::HDFS2FileSink(stringStream)
+		() as Sink = com.ibm.streamsx.hdfs::HDFS2FileSink(stringStream)
 		{
 			param
 				file : $file ;

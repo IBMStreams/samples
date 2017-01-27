@@ -3,24 +3,24 @@
 
 namespace sample ;
 
-use com.ibm.streams.bigdata.hdfs2::HDFS2FileSink ;
-use com.ibm.streams.bigdata.hdfs2::HDFS2DirectoryScan ;
+use com.ibm.streamsx.hdfs::HDFS2FileSink ;
+use com.ibm.streamsx.hdfs::HDFS2DirectoryScan ;
 use com.ibm.streamsx.hdfs2.helpers::HDFSReadFormatInputStream ;
 use com.ibm.streamsx.hdfs2.helpers::HDFSFormatWrite ;
 
 /** Demonstrates the use of the HFDSHelpers, showing how options like closeOnPunct can be supported.
  * To use this composite, place `data/testread1.txt` and `data/testread2.txt`
  * in the scanDir (defaults to hdfsHelpersTest_scan/in).
- * 
- * The HDFSDirectoryScan reads the directory, and passes the filenames off to 
+ *
+ * The HDFSDirectoryScan reads the directory, and passes the filenames off to
  * HDFSReadFormatInputStream.  The results of that read are written locally (testRead.csv),
  * and also passed to two instantiations of HDFSWriteFormat.  The first instantiation works
  * the same as in the ReadFormatWrite example.
- * 
+ *
  * In the second, we want to have the HDFS2FileSink close the file on punctation, so we use the
- * HDFSFormatWrite composite with writer parameter.  The operator we pass in as the writer is a 
- * a wrapper around HDFS2FileSink with the closeOnPunct set to true.  
- * 
+ * HDFSFormatWrite composite with writer parameter.  The operator we pass in as the writer is a
+ * a wrapper around HDFS2FileSink with the closeOnPunct set to true.
+ *
  * When run, three output files appear in the hdfs output directory:
  * `basic.txt`, which contains the tuples from both files.  This is written by the first
  *            HDFSWriteFormat invocation.
@@ -28,8 +28,8 @@ use com.ibm.streamsx.hdfs2.helpers::HDFSFormatWrite ;
  * `punct0.txt`, which contains tuples from only the first file (since a punctuation is sent between
  *             the first and second file, and a punctuation close the file and starts a new one)
  * `punct1.txt`, which contains tuples from only the second file
- * 
- * Locally, in the data directory testRead.cvs is produced. 
+ *
+ * Locally, in the data directory testRead.cvs is produced.
  */
 composite ScanReadFormatWrite
 {
@@ -44,7 +44,7 @@ composite ScanReadFormatWrite
 				directory : $path+$scanDir ;
 				strictMode : true ;
 		}
-	
+
 
 		stream<rstring aString, int64 n> tupleString =
 			HDFSReadFormatInputStream(Filenames)
@@ -83,7 +83,7 @@ composite ScanReadFormatWrite
 /** HDFS2FileSink with closeOnPunct set to true.
  *  This wraps HDFS2FileSink, setting closeOnPunct
  * to true.  This allows us to pass it the HDFSWriteFormat
- * and get close-on-punct semantics.  
+ * and get close-on-punct semantics.
  */
 composite HDFSFileSinkCloseOnPunct(input inStream )
 {
@@ -98,7 +98,7 @@ composite HDFSFileSinkCloseOnPunct(input inStream )
 		{
 			param
 			// Set closeOnPunct to true.  If you want to set bytesPerFile
-			// or tuplesPerFile, replace this line with that.  
+			// or tuplesPerFile, replace this line with that.
 				closeOnPunct : true ;
 				file : $file ;
 				timeFormat : $timeFormat ;

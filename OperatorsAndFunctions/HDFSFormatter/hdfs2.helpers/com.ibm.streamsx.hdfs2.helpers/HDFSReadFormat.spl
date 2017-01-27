@@ -2,19 +2,19 @@
 /* All Rights Reserved                                	                 */
 
 /**
- *  This file contains the HDFSReadFormat composites.  Because 
+ *  This file contains the HDFSReadFormat composites.  Because
  * HDFSFileSource can either be with and input port or without an
  * input port, we have two different composites to wrap it,
  * one without an input port (HDFSReadFormat) and one with an input
  * port HDFSReadInputPort
  */
- 
+
 namespace com.ibm.streamsx.hdfs2.helpers ;
 
 
 
 /** Read a line from HDFS and convert it to a tuple.
- *  The operator reads a line from HDFS and converts 
+ *  The operator reads a line from HDFS and converts
  * it to a tuple.  By default, it use's SPL's cast
  * function to convert from a tuple to a string.
  * @output myStream the output stream of tuples
@@ -31,15 +31,15 @@ public composite HDFSReadFormat(output myStream )
 	param
 	// The file to be read from HDFS.
 		expression<rstring> $file ;
-		// The type of the output stream.  This type has to be 
+		// The type of the output stream.  This type has to be
 		// passed to the composite.
 		type $streamType ;
-		// Optional initial delay, passed on to the HDFS2FileSource 
-		// operator.  Defaults to zero. 
+		// Optional initial delay, passed on to the HDFS2FileSource
+		// operator.  Defaults to zero.
 		expression<float64> $initDelay : 0.0 ;
-		// Optional user to use to connect to HDFS. 
-		// If no user is supplied, it pulls the user from the 
-		// environment variable.  
+		// Optional user to use to connect to HDFS.
+		// If no user is supplied, it pulls the user from the
+		// environment variable.
 		expression<rstring> $hdfsUser : getEnvironmentVariable("USER", "") ;
 
 		// Optional operator used to take a string and convert it to
@@ -48,7 +48,7 @@ public composite HDFSReadFormat(output myStream )
 		// Optional operator used to read from HDFS.  Defaults
 		// to HDFS2FileSource.  You would need to overwrite this
 		// operator if you need to supply the hdfsURI parameter.
-		operator $reader : com.ibm.streams.bigdata.hdfs2::HDFS2FileSource ;
+		operator $reader : com.ibm.streamsx.hdfs::HDFS2FileSource ;
 	graph
 	// Read the lines from HDFS
 		stream<rstring line> lineStream = $reader()
@@ -59,8 +59,8 @@ public composite HDFSReadFormat(output myStream )
 				initDelay : $initDelay ;
 		}
 
-		// Convert the lines to a tuple type.  This is where the 
-		// streamType parameter is used. 
+		// Convert the lines to a tuple type.  This is where the
+		// streamType parameter is used.
 		stream<$streamType> myStream = $decoder(lineStream)
 		{
 			param
@@ -71,10 +71,10 @@ public composite HDFSReadFormat(output myStream )
 
 /** Read from HDFS with filenames supplied on the command line and covert strings to tuples.
  * Treat each tuple on the input stream as a file name, open the file, and
- * convert each line to a tuple.  
+ * convert each line to a tuple.
  * @input filenames a stream of rstrings representing files in HDFS
  * @output myStream a stream of tuples.  Each tuple corresponds to a line read from HDFS.
- * @param streamType type of the output stream. 
+ * @param streamType type of the output stream.
  * @param initDelay optional initial delay before reading files.
  * @param hdfsUser optional parameter specifying user to connect to HDFS
  * @param reader optional parameter to override default operator to use for reading from HDFS.
@@ -89,14 +89,14 @@ public composite HDFSReadFormatInputStream(input filenames ; output myStream)
 		// Optional operator to use to read from HDFS.  Defaults to HDFS2FileSource.
 		// You may need to supply a different composite if you wish to supply the HDFSUri
 		// parameter.
-		operator $reader : com.ibm.streams.bigdata.hdfs2::HDFS2FileSource ;
+		operator $reader : com.ibm.streamsx.hdfs::HDFS2FileSource ;
 		// Optional initial delay. Delay before opening file.
 		expression<float64> $initDelay : 0.0 ;
-		// The type of the output stream.  (Required.) 
+		// The type of the output stream.  (Required.)
 		type $streamType ;
-		// Optional user to use to connect to HDFS. 
-		// If no user is supplied, it pulls the user from the 
-		// environment variable.  
+		// Optional user to use to connect to HDFS.
+		// If no user is supplied, it pulls the user from the
+		// environment variable.
 		expression<rstring> $hdfsUser : getEnvironmentVariable("USER", "") ;
 	graph
 
@@ -108,7 +108,7 @@ public composite HDFSReadFormatInputStream(input filenames ; output myStream)
 				hdfsUser : $hdfsUser ;
 		}
 
-		// Convert each line to a tuple. 
+		// Convert each line to a tuple.
 		stream<$streamType> myStream = $decoder(lineStream)
 		{
 			param

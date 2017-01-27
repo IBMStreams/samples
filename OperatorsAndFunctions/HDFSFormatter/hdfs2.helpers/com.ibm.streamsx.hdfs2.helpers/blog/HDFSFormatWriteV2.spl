@@ -54,7 +54,7 @@ public composite HDFSFormatWrite_V2(input inStream )
 
 		// Now those strings are written to the sink operator. 
 		// The file, hdfsUser, and timeformat parameters are passed through.
-		() as Sink = com.ibm.streams.bigdata.hdfs2::HDFS2FileSink (stringStream)
+		() as Sink = com.ibm.streamsx.hdfs.hdfs2::HDFS2FileSink (stringStream)
 		{
 			param
 				file : $file ;
