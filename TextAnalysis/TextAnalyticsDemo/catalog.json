@@ -6,6 +6,6 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/real-time-text-analysis-using-streams-part-2-updating-dictionaries-and-tables/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsDemo",
 	"tags": [],
-		"toolkits": ["text"],
-		"operators": ["TextExtract"]
+		"toolkits": ["text", "inet"],
+		"operators": ["TextExtract", "HTTPTupleView"]
 }
