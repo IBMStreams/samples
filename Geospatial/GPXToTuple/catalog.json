@@ -7,6 +7,6 @@
 	"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GPXToTuple",
 	"tags": ["parse xml"],
     "optional": [],
-		"toolkits": ["geospatial"],
-		"operators": ["XMLParse"]
+		"toolkits": ["geospatial","mapviewer","inet"],
+		"operators": ["XMLParse", "HTTPTupleView"]
 }

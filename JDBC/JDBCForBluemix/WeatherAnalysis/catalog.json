@@ -8,5 +8,5 @@
 	"tags": [],
 		"services":   ["Bluemix", "dashDB"],
 		"toolkits": ["JDBC", "inet"],
-		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate"]
+		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate","InetSource"]
 }

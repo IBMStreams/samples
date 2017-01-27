@@ -1,8 +1,9 @@
 {
 	"name": "Load data into Oracle, DB2 or Netezza",
-	"description": "This application uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader to load files directly into the database. ",
+	"description": "This application uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader to load files directly into the database. Also uses the shell toolkit. ",
 	"language": ["SPL"],
 	"category": ["2"],
+	"toolkits": ["shell"],
 		"url": "https://github.com/IBMStreams/samples/tree/master/DbLoader",
 	"tags": ["db2","oracle","netezza"]
 }

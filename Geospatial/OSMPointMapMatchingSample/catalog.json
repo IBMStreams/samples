@@ -5,5 +5,6 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/OSMPointMapMatchingSample",
 	"tags": [],
-		"toolkits": ["geospatial"]
+	"operators": ["HTTPTupleView","OSMPointMatcher"],
+		"toolkits": ["geospatial","inet"]
 }

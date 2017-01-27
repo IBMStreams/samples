@@ -1,1 +1,4 @@
-{"category": ["2"], "description": "This example shows how the JMSSource and JMSSink operators from the Streams standard toolkit can be put to use for sending messages from Streams into the Apache ActiveMQ queues and topics as well as reading messages from there into Streams.", "language": ["SPL"], "tags": ["jms", "activemq", "messaging", "messaging server", "read from activemq"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/086_jms_source_sink_using_activemq", "name": "Jms Source Sink Using Activemq"}
+{"category": ["2"], "toolkits": ["messaging"], "operators": ["JMSSource", "JMSSink"],
+  "description": "This example shows how the JMSSource and JMSSink operators can be put to use for sending and receiving messages from/to Streams and Apache ActiveMQ queues and topics.",
+  "language": ["SPL"], "tags": ["jms", "activemq", "messaging", "messaging server", "read from activemq"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/086_jms_source_sink_using_activemq",
+   "name": "Jms Source Sink Using Activemq"}

@@ -5,6 +5,6 @@
 	"blogPost": "",
 		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/HangoutSample",
 	"tags": [],
-		"toolkits": ["geospatial"],
+		"toolkits": ["geospatial","teda"],
 		"operators": ["Hangout"]
 }
