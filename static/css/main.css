@@ -246,8 +246,9 @@ h2.blog-title-pro:after {
 .aboutUsHome p{
   text-align: center;
 }
-.aboutUsHome h1{
+ h1{
   text-align: center;
+  color: white;
 }
 #AbountInfo div{
 
@@ -339,9 +340,9 @@ footer {
   margin-bottom: 1rem;
 }
 
-.language.search-body button.tagFilter.btn.btn-sm {
+.category.search-body button.tagFilter.btn.btn-sm {
   padding: 1px 10px;
-  font-size: 11px;
+  font-size: 12px;
   margin-right: 5px;
   border-bottom: none;
   border-radius: 10px;
@@ -379,14 +380,14 @@ footer {
   color: #fff;
   background-color: #4682B4;
 }
-.language.search-body button.tagFilter.btn.btn-sm.active {
+.category.search-body button.tagFilter.btn.btn-sm.active {
   background: #238070;
   color: #aaf9e6;
 }
 
-.category.search-body button.tagFilter.btn.btn-sm {
+.language.search-body button.tagFilter.btn.btn-sm {
   padding: 1px 10px;
-  font-size: 11px;
+  font-size: 12px;
   margin-right: 5px;
   border-bottom: none;
   border-radius: 10px;
@@ -395,7 +396,7 @@ footer {
   color: #7c4f9e;
 }
 
-.category.search-body button.tagFilter.btn.btn-sm.active{
+.language.search-body button.tagFilter.btn.btn-sm.active{
   background: #7c4f9e;
   color: #eed3fe;
 }
@@ -413,10 +414,9 @@ footer {
 }
 
 .tag-filter {
-  padding: 3px 12px;
+  padding: 3px 5px 4px 5px;
   font-size: 12px;
-  margin-right: 1px;
-  border-radius: 10px;
+  margin-bottom: 3px;
 }
 
 .tag-filter.language {

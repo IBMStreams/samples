@@ -13,8 +13,6 @@
   <!-- FontAwesome icons -->
   <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
   <link rel="stylesheet" href="./static/css/bootstrap.css">
-  <link rel="stylesheet" href="./static/css/emojione-awesome.css" />
-  <link rel="stylesheet" href="./fancyplayer_code/css/jquery.fancybox.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="./static/css/main.css">
 
 </head>
@@ -27,35 +25,15 @@
     <!-- End Google Tag Manager (noscript) -->
 
 
-    <div class="header-panel shadow-z-2">
-      <div class="header-container">
-        <div class="header-row">
-          <div class="header01 header-logo">
-            <div class="row-picture">
-              <a href="index"><img id="about" src="./static/img/Streams-32x.png" ></a>
-            </div>
-            <div class="row-details">
-              <p class="list-group-item-text">IBM Bluemix | GitHub.io</p>
-            </div>
+    <div class="header-panel shadow-z-2"><h1> Streams Samples Catalog</h1>
+      <div class="social-icons">
+  <a class="icon" href="https://developer.ibm.com/streamsdev/"><img id="about" src="./static/img/Streams-32x.png" /></a>
 
-          </div>
-          <div class="header02">
-            <div class="social-icons">
-              <a class="icon" href="https://developer.ibm.com/streamsdev/" data-track-action="Icon" data-track-label="Bluemix" target="_blank"><img id="bluemix" class="logo-icon" alt="StreamsDev home" src="./static/icons/bluemix_logo_white.svg" ></a>
-              <a class="icon" data-track-action="Icon" data-track-label="DW" target="_blank" href="https://developer.ibm.com/answers/smart-spaces/22/streamsdev.html"><i class="fa fa-stack-overflow"></i></a>
-              <a class="icon" data-track-action="Icon" data-track-label="github" target="_blank" href="https://github.com/IBMStreams"><i class="fa fa-github"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<a class="icon" data-track-action="Icon" data-track-label="github" target="_blank" href="https://github.com/IBMStreams/samples"><i class="fa fa-github"></i></a>
+      </div></div>
 
-    <div class="header-panel shadow-z-2-banner">
-      <img class="header-image" src="./static/img/banner-background.svg" >
-      <div class="page-container">
-        <h1>Featured Samples</h1>
-      </div>
-    </div>
+
+
 
     <div class="header-panel shadow-z-2-filter">
       <div class="page-container">
@@ -98,16 +76,16 @@
           <td>
             <button type="button" data-track-action="Filter" data-track-label="SPL" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('SPL', true)">SPL</button>
             <button type="button" data-track-action="Filter" data-track-label="Java" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('Java', true)">Java</button>
-            <button type="button" data-track-action="Filter" data-track-label="Python" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('Python', true)">Python</button>
+            <!--button type="button" data-track-action="Filter" data-track-label="Python" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('Python', true)">Python</button-->
 
             <button type="button" data-track-action="Filter" data-track-label="C++" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('C++', true)">C++</button>
-            <button type="button" data-track-action="Filter" data-track-label="Scala" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('Scala', true)">Scala</button>
+            <!--button type="button" data-track-action="Filter" data-track-label="Scala" class="tagFilter btn btn-sm" data-toggle="button" ng-click="toggleTagConfiguration('Scala', true)">Scala</button-->
 
           </td></tr>
         </table>
       </div>
     </div>
-    <div class="inside filter-category">
+  <!--  <div class="inside filter-category">
       <span class="filter-text">Services/Integration points:</span><br/>
       <div class="service-filter search-body">
         <table>
@@ -122,7 +100,7 @@
       </div>
     </div>
 
-    <div class="inside">
+  -->  <div class="inside">
       <span class="filter-text">Categories:</span>
       <div class="category search-body">
         <table>
@@ -174,14 +152,14 @@
 
   <ul class="items-wrapper" id="itemsList"><!-- START FULL PAGE -->
 
-    <li class="inside project-item" ng-repeat-start="link in (filteredLinks = (links | filter:searchText | filterPanel:filterConfiguration))">
+    <li class="inside project-item" ng-repeat-start="link in (filteredLinks = (links| filter:searchText | filterPanel:filterConfiguration))">
       <div class="project-outer">
         <div class="link-title">
           <a data-track-action="link-title" data-track-label="{{link.urlLink}}"  href="{{link.url}}" target="_blank" data-track-action="Select" data-track-label="{{service.entity.label}}">{{link.name}}</a>
         </div>
 
         <div class="project-content description">
-          <span ng-bind-html="link.description | emoji"></span> <span  ng-if="link.featured" > <img  src="static/img/feat.png"/></span>
+          <span ng-bind-html="link.description"></span><!-- <span  ng-if="link.featured" > <img  src="static/img/feat.png"/></span>-->
         </div>
 
         <div  class="project-content tag-group">
@@ -197,8 +175,8 @@
           <span class="FirSpanLeft">CATEGORIES: </span>
           <div class="tag-holder">
             <span ng-repeat="item in link.category">
-            <span class="tag-filter category" ng-repeat="c in getCat(item)">{{ c}}<br/></span>
-            </span>
+            <span  class="tag-filter category" ng-repeat="c in getCat(item)">-{{c}}&nbsp;<br/></span>
+          </span>
           </div>
 
 <!--
@@ -237,9 +215,8 @@
   <div class="row">
     <div class="col-md-12 col-xs-12 footer">
       <footer>
-        Made with <i class="fa fa-heart" aria-hidden="true"></i> by The Bluemix Developer Advocacy team</br>
-        Powered by <a href="https://www.ibm.com/cloud-computing/bluemix" onclick="_gaq.push(['_trackEvent', 'button3', 'clicked'])" >IBM Bluemix.</a> See all of our samples on <a href="https://github.com/IBM-Bluemix">IBM-Bluemix GitHub</a><br>
-        Copyright © IBM 2016
+        Forked from the <a href="https://ibm-bluemix.github.io/">IBM Bluemix Featured samples page </a><br/><br/>
+        Copyright © IBM 2017
       </footer>
     </div>
   </div>
