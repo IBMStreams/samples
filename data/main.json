@@ -1,8 +1,9 @@
 [{
 	"name": "Non-Blocking Checkpointing for consistent regions",
-	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to stop processing tuples.   ",
+	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to suspend tuple processing.",
 	"language": ["SPL","C++"],
-	"category": ["5"],"featured": true,
+	"category": ["5"],
+"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
 	"tags": []
@@ -10,7 +11,7 @@
 
 ,{
 	"name": "Operator driven consistent region example",
-	"description": "This is an example application that uses an operator-driven consistent region.",
+	"description": "This is an example application that uses an operator-driven consistent region. ",
 	"language": ["SPL"],
 	"category": ["5"],
 	"blogPost": "",
@@ -41,9 +42,10 @@
 
 ,{
 	"name": "Load data into Oracle, DB2 or Netezza",
-	"description": "This application uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader to load files directly into the database.",
+	"description": "This application uses the DB2, Informix load command tool, the Oracle SQL Loader or the Netezza Loader to load files directly into the database. Also uses the shell toolkit. ",
 	"language": ["SPL"],
 	"category": ["2"],
+	"toolkits": ["shell"],
 		"url": "https://github.com/IBMStreams/samples/tree/master/DbLoader",
 	"tags": ["db2","oracle","netezza"]
 }
@@ -62,15 +64,15 @@
 
 ,{
 	"name": "Parse GPX data in Streams",
-	"description": "Demonstrate how to parse GPX data for use in geospatial applications.    ",
-	"language": ["SPL"],
+	"description": "Demonstrate how to parse GPX data for use in geospatial apps",
+	"language": ["SPL"],"featured": true,
 	"category": ["1","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/tip-consuming-gpx-data-in-your-streams-application",
 	"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GPXToTuple",
 	"tags": ["parse xml"],
-    "optional": [], "featured": true,
-		"toolkits": ["geospatial"],
-		"operators": ["XMLParse"]
+    "optional": [],
+		"toolkits": ["geospatial","mapviewer","inet"],
+		"operators": ["XMLParse", "HTTPTupleView"]
 }
 
 ,{	"name": "Anonymize geohashes with the Hangout operator",
@@ -80,18 +82,30 @@
 	"blogPost": "",
 		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/HangoutSample",
 	"tags": [],
-		"toolkits": ["geospatial"],
+		"toolkits": ["geospatial","teda"],
 		"operators": ["Hangout"]
 }
 
+,{	"name": "Use JDBC operator in Bluemix",
+	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
+	"language": ["SPL"],
+	"category": ["2"],"featured": true,
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
+	"tags": [],
+		"services":   ["Bluemix"],
+		"toolkits": ["geospatial"], "sabFile" : "http://link",
+		"operators": ["OSMPointMapMatcher"]
+}
 
 ,{	"name": "Visualize location data in a Streaming application",
 	"description": "This example shows how to use the HTTPTupleView operator to create an application that shows moving objects on a map in a web browser.",
 	"language": ["SPL"],
 	"category": ["3", "7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2015/03/05/visualizing-location-data-streaming-application/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/MapViewerSample",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample",
 	"tags": [],
+	"operators": ["HTTPTupleView"],
 		"toolkits": ["geospatial", "inet"]
 }
 
@@ -102,12 +116,13 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/OSMPointMapMatchingSample",
 	"tags": [],
-		"toolkits": ["geospatial"]
+	"operators": ["HTTPTupleView","OSMPointMatcher"],
+		"toolkits": ["geospatial","inet"]
 }
 
 ,{
 	"name": "Java application API example",
-	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.   ",
+	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.",
 	"language": ["Java"],
 	"category": ["2","10"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/source-operator-read-hdfs-files-java-application-api/",
@@ -117,16 +132,15 @@
 
 ,{
 	"name": "Use JDBC operator in Bluemix",
-	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator.  ",
+	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
 	"tags": [],
-	"featured": true,
 		"services":   ["Bluemix", "dashDB"],
-		"toolkits": ["JDBC", "inet"], "sabFile" : "http://link",
-		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate"]
+		"toolkits": ["JDBC", "inet"],
+		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate","InetSource"]
 }
 
 ,{
@@ -146,19 +160,20 @@
 	"language": ["SPL","C++"],
 	"category": ["10","7","1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/CppWindowSamples/SGFilter",
+		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/CppWindowSamples/SGFilter",
 	"tags": []
 }
 
 ,{
 	"name": "How to use an operator as a parameter in a composite",
-	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so.",
+	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so by creating a set of formatters for the HDFS2FilesSink operator.",
 	"language": ["SPL"],
 	"category": ["2","10","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/HDFSFormatter/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/HDFSFormatter/",
 	"tags": [],
-		"operators": ["HDFS2FilesSink"]
+	"toolkits": ["hdfs","json"],
+		"operators": ["HDFS2FilesSink","JSONToTuple","TupleToJSON"]
 }
 
 ,{	"name": "C++ Native functions example",
@@ -166,7 +181,7 @@
 	"language": ["SPL", "C++"],
 	"category": ["10"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/NativeFunctions",
+		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/NativeFunctions",
 	"tags": []
 }
 
@@ -175,7 +190,7 @@
 	"language": ["SPL","Java"],
 	"category": ["10","1","7","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/WindowTest",
+		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/WindowTest",
 	"tags": []
 }
 
@@ -233,10 +248,21 @@
 ,{"category": ["8"], "name": "SPL Mixed Mode at work", "language": ["Perl", "SPL"], "tags": ["mixed mode", "code generation", "spl"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/031_spl_mixed_mode_at_work", "description": "This example shows a cool SPL feature called mixed-mode support. In this, developers can mix PERL code islands inside of an SPL application. Mixed-mode enables the easy parameterization of SPL applications. This example gives a slight flavor of how a PERL code snippet inter-mixed with SPL allows us to parameterize the SPL Stream names and the number of output stream definitions for an SPL operator. "}
 ,{"category": ["10", "1", "8"], "name": "Native Function at work", "language": ["C++"], "tags": ["native functions", "c++", "native function model"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/032_native_function_at_work", "description": "This application shows how native functions written in C++ can be called within an SPL application.There are two ways in which native functions can be written in C++.1) Code for the C++ functions can be written in a C++ header file.2) C++ functions can be written outside of the SPL project and packaged into a shared library (.so) file. All the SPL developer will have to work with are an .so file and a C++ header file.This application demonstrates incorporating native functions built in both of those ways.[THIS EXAMPLE HAS A COMPANION C++ PROJECT CALLED NativeFunctionLib.]"}
 ,{"category": ["10"], "name": "Java Primitive Operator at work", "language": ["Java"], "tags": ["java operators", "application development", "primitive java operator"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/033_java_primitive_operator_at_work", "description": "This example shows how to create a Java primitive operator is created from scratch. Java primitive operator is different from JavaOp that you have seen earlier in a different example. Java primitive operator is a first class operator in SPL, whereas JavaOp only permits a callout to another Java operator. In addition, Java primitive operator has the advantage of keeping its name as the operator\u2019s runtime instance name.[THIS EXAMPLE HAS A COMPANION JAVA PROJECT NAMED RSS_Reader_Primitive.]"}
-,{"category": ["2"], "name": "Odbc Adapters For Db2 at work", "language": ["SPL"], "tags": ["odbc", "database", "db2", "jdbc"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/034_odbc_adapters_for_db2_at_work", "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to access a particular test DB2 database."}
+,{"category": ["2"],
+   "name": "Odbc Adapters For Db2 at work",
+   "language": ["SPL"], "tags": ["odbc", "database", "db2", "jdbc"],
+   "toolkits": ["db", "database"],
+   "operators": ["ODBCSource","ODBCAppend","ODBCEnrich"],
+   "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/034_odbc_adapters_for_db2_at_work",
+    "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to access a particular test DB2 database."}
+
 ,{"category": ["1", "10", "8"], "name": "C++ Primitive Operator at work", "language": ["C++"], "tags": ["c++ operator model", "c++ example", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/035_c++_primitive_operator_at_work", "description": "This example shows the steps required to create a C++ primitive operator from scratch. In this application, a C++ primitive operator model XML file can be explored to learn how the different fields in that file are configured. Then, the code generation template header and implementation files (*_h.cgt and *_cpp.cgt) can be browsed to learn about the primitive operator logic. Additionally, this example demonstrates about including a Java operator and a C++ primitive operator as part of the application flow."}
 ,{"category": ["10", "8"], "name": "Shared Lib Primitive Operator at work", "language": ["C++"], "tags": ["shared library", "library", "operator dependencies", "c++", "application development"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/036_shared_lib_primitive_operator_at_work", "description": "This example demonstrates two important techniques that will be commonly used in real-world use cases.1) Creating a C++ primitive operator.2) Calling a function available inside a .so shared library from the C++ primitive operator logic.Application logic here is to receive input tuples as hostnames and then make the C++ primitive operator logic invoke a shared library function that does a name server lookup.[THIS EXAMPLE HAS A COMPANION C++ PROJECT CALLED PrimitiveOperatorLib.]"}
-,{"category": ["2"], "name": "Odbc Adapters For Solid db at work", "language": ["SPL"], "tags": ["odbc", "database", "soliddb", "jdbc"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/037_odbc_adapters_for_solid_db_at_work", "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to connect to a SolidDB in-memory database."}
+,{"category": ["2"], "name": "Odbc Adapters For Solid db at work", "language": ["SPL"],
+   "tags": ["odbc", "database", "soliddb", "jdbc"],   "toolkits": ["db", "database"],
+      "operators": ["ODBCSource","ODBCAppend","ODBCEnrich"],
+   "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/037_odbc_adapters_for_solid_db_at_work", "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to connect to a SolidDB in-memory database."}
+
 ,{"category": ["8", "9", "3"], "name": "SPL Built in Functions at work", "language": ["SPL"], "tags": ["list", "map", "mutable", "timestamps", "convert timestamp", "convert time stamp", "utility functions", "spl functions"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/038_spl_built_in_functions_at_work", "description": "This is a very simple example that showcases a random collection of powerful built-in SPL functions that are available out of the box. This application demonstrates how time, math, and collection type functions can be used inside of an SPL application."}
 ,{"category": ["1", "3"], "name": "Application Set at work", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/039_application_set_at_work", "description": "This example shows how multiple SPL applications can be grouped together so that they can be started, monitored, and stopped together. It launches the main applications of the 'SPL Config at Work' and 'Import Export at Work' samples. There is no code that needs to be written to accomplish this grouping."}
 ,{"category": ["9", "3"], "name": "Ingest Data Generation in SPL", "language": ["SPL"], "tags": ["parameters", "submission time", "parameter lists", "test data generation", "sample data"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/040_ingest_data_generation_in_spl", "description": "This example shows how SPL provides rich features to generate synthetic data required for large scale testing. "}
@@ -281,10 +307,22 @@
 ,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/083_user_defined_parallelism_10", "name": "User Defined Parallelism"}
 ,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/084_user_defined_parallelism_11", "name": "User Defined Parallelism"}
 ,{"category": ["5"], "description": "This is one of 12 examples showing various features of User Defined Parallelism (UDP), which allows you to introduce concurrency to either a part of, or an entire Streams application.", "language": ["SPL"], "tags": ["scale application", "performance", "parallel processing"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/085_user_defined_parallelism_12", "name": "User Defined Parallelism"}
-,{"category": ["2"], "description": "This example shows how the JMSSource and JMSSink operators from the Streams standard toolkit can be put to use for sending messages from Streams into the Apache ActiveMQ queues and topics as well as reading messages from there into Streams.", "language": ["SPL"], "tags": ["jms", "activemq", "messaging", "messaging server", "read from activemq"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/086_jms_source_sink_using_activemq", "name": "Jms Source Sink Using Activemq"}
+,{"category": ["2"], "toolkits": ["messaging"], "operators": ["JMSSource", "JMSSink"],
+  "description": "This example shows how the JMSSource and JMSSink operators can be put to use for sending and receiving messages from/to Streams and Apache ActiveMQ queues and topics.",
+  "language": ["SPL"], "tags": ["jms", "activemq", "messaging", "messaging server", "read from activemq"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/086_jms_source_sink_using_activemq",
+   "name": "Jms Source Sink Using Activemq"}
+
 ,{"category": ["3"], "description": "This example shows a way to send email alerts from an SPL application. It is done via a Java native function by using the email API available in the standard Java platform. If an SMTP server is present in the same   network where Streams servers are connected, the technique shown in this example can be put to use for sending email alerts.", "language": ["Java"], "tags": ["email", "send email java", "send email"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/087_email_alerts_via_java_native_function", "name": "Email Alerts Via Java Native Function"}
 ,{"category": ["10", "9"], "description": "This example demonstrates two different features of the Java primitive operator framework. It first shows how operator parameters can be easily processed inside the Java operators via the @Parameter annotations. Then, it shows how multiple input and output ports can be accessed inside the Java operators. As a bonus, it also shows a better approach for on the fly creation of the output tuples made with complex nested types.", "language": ["Java"], "tags": ["nested tuple", "create tuple", "multiple input ports", "java", "java operator", "java operator parameters"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/088_java_operator_params_and_multiple_input_output_ports", "name": "Java Operator Params And Multiple Input Output Ports"}
-,{"category": ["2", 11], "description": "This example demonstrates one of the Streams open source toolkits (com.ibm.streamsx.inet). Using this toolkit one can integrate Streams applications with web applications. Please read the comments in the SPL file for this example project to download that toolkit, install it, and then use that toolkit inside a simple SPL application.", "language": ["SPL"], "tags": ["post to streams app", "streams web app", "rest", "send tuples to browser"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/089_integrating_streams_apps_with_web_apps", "name": "Integrating Streams Apps With Web Apps"}
+,{"category": ["2", 11],
+   "description": "This example demonstrates how to use the inet toolkit to integrate Streams applications with web applications", "language": ["SPL"],
+"tags": ["post to streams app", "streams web app", "rest", "send tuples to browser"],
+ "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/089_integrating_streams_apps_with_web_apps",
+ "name": "Integrating Streams Apps With Web Apps",
+ "toolkits": ["inet"],
+ "operators": ["HTTPTupleView", "HTTPTupleInjection"]
+}
+
 ,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined for a Beacon with an operator driven checkpoint trigger.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/090_consistent_region_spl_01", "name": "Consistent Region SPL Sample #1"}
 ,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined using a FileSource with a periodic checkpoint trigger.", "language": ["SPL"], "tags": [], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/091_consistent_region_spl_02", "name": "Consistent Region SPL Sample #2"}
 ,{"category": ["5"], "description": "This example demonstrates how a consistent region can be defined for the entire application topology with an operator driven checkpoint trigger. The application survives multiple crashes at different times and Streams will preserve the windows contents of the Aggregate operator.", "language": ["SPL"], "tags": ["consistent region", "consistent region window"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/092_consistent_region_spl_03", "name": "Consistent Region SPL Sample #3"}
@@ -307,11 +345,10 @@
 ,{	"name": "Sentiment analysis in BigInsights",
 	"description": "Use the TextExtract operator to run the BigInsights starter kit application that analyzes the sentiment of tweets.",
 	"language": ["SPL"],
-	"category": ["7"],
+	"category": ["7"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/BigInsightsStarterKitApp",
 	"tags": [],
-	"featured": true,
 		"toolkits": ["text"],
 		"operators": ["TextExtract"]
 }
@@ -321,11 +358,12 @@
 	"description": "Use the TextExtract operator to analyze data for mentions of Streams, displaying the search results in a web browser.  Also demonstrates how to update the dictionaries used by the operator.",
 	"language": ["SPL"],
 	"category": ["7"],
+
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/real-time-text-analysis-using-streams-part-2-updating-dictionaries-and-tables/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsDemo",
 	"tags": [],
-		"toolkits": ["text"],
-		"operators": ["TextExtract"]
+		"toolkits": ["text", "inet"],
+		"operators": ["TextExtract", "HTTPTupleView"]
 }
 
 ,{"name": "Normalize and tokenize text using TextExtract operator",
