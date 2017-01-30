@@ -93,9 +93,9 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
 	"tags": [],
-		"services":   ["Bluemix"],
-		"toolkits": ["geospatial"], "sabFile" : "http://link",
-		"operators": ["OSMPointMapMatcher"]
+		"services":   ["Bluemix", "dashDB"],
+		"toolkits": ["JDBC", "inet"],
+		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate","InetSource"]
 }
 
 ,{	"name": "Visualize location data in a Streaming application",
@@ -130,18 +130,6 @@
 	"tags": []
 }
 
-,{
-	"name": "Use JDBC operator in Bluemix",
-	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
-	"language": ["SPL"],
-	"category": ["2"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/JDBCForBluemix/WeatherAnalysis",
-	"tags": [],
-		"services":   ["Bluemix", "dashDB"],
-		"toolkits": ["JDBC", "inet"],
-		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate","InetSource"]
-}
 
 ,{
 	"name": "Sample application for the ODM rules compiler",
