@@ -152,7 +152,7 @@
 
   <ul class="items-wrapper" id="itemsList"><!-- START FULL PAGE -->
 
-    <li class="inside project-item" ng-repeat-start="link in (filteredLinks = (links| filter:searchText | filterPanel:filterConfiguration))">
+    <li class="inside project-item" ng-repeat-start="link in (filteredLinks = (links| filter: {tags: searchText} | filterPanel:filterConfiguration))">
       <div class="project-outer">
         <div class="link-title">
           <a data-track-action="link-title" data-track-label="{{link.urlLink}}"  href="{{link.url}}" target="_blank" data-track-action="Select" data-track-label="{{service.entity.label}}">{{link.name}}</a>
