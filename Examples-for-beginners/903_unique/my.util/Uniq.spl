@@ -1,0 +1,24 @@
+namespace my.util;
+
+public composite Uniq (output Out; input In) {
+	param 
+		type $key;
+	
+	graph
+		stream <In> Out = Custom(In) {
+			logic	state: 	{
+								mutable boolean first = true;
+								mutable $key prev;
+							} // End of logic state				
+							
+			onTuple	In:		{
+								$key curr = ($key)In;
+								
+								if (first || prev != curr) {
+									submit (In, Out);
+									first = false;
+									prev = curr;
+								} // End of if (first ...
+							} // End of onTuple											
+		} // End of Custom(In)
+} // End of composite Uniq

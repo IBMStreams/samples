@@ -1,0 +1,12 @@
+#!/bin/sh
+# Output appropriate libPath information for toolkits  
+# that support multiple platforms.
+
+if [ "$1" == "libPath" ]; then
+  OSSTR="../../impl/java/bin"
+  echo ${OSSTR}
+else
+  echo "unsupported option"
+fi
+# end of archLevel script
+# <cmn:libPath>../../impl/java/bin</cmn:libPath>

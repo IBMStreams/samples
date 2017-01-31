@@ -1,0 +1,9 @@
+# tuple<float32 price, rstring state1, float32 tax, float32 totalPrice>;
+234.12, NY, 0.0, 0.0
+459.12, FL, 0.0, 0.0
+589.67, CO, 0.0, 0.0
+39.17, IA, 0.0, 0.0
+999.69, NC, 0.0, 0.0
+106.92, CA, 0.0, 0.0
+61.57, MA, 0.0, 0.0
+86.15, NJ, 0.0, 0.0

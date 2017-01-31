@@ -1,0 +1,17 @@
+#tuple<rstring name, int32 id, rstring title, float32 salary>
+0.0, Peter Mars, 345, Design Engineer, 145.23
+0.0, Mary Katz, 769, Project Manager, 120.32
+0.0, Larry Tamo, 921, Software Engineer, 243.12
+0.0, Marcia Karo, 281, Administrative Assistant, 33.15
+0.0, Gary Wall, 193, Delivery Manager, 129.52
+0.0, Marvin Tal, 810, Test Engineer, 105.29
+0.0, Marcia Karo, 290, Executive Assistant, 93.20
+0.0, John Natz, 983, Hardware Engineer, 140.84
+0.0, Alan Mira, 410, Accounting Manager, 193.14
+0.0, Peter Mars, 332, Chemical Engineer, 117.29
+0.0, Vera Zales, 350, Demo Engineer, 98.34
+0.0, Bon Pinto, 148, Security Officer, 59.54
+0.0, Marcia Karo, 149, Nurse, 75.20
+0.0, Peter Mars, 278, Physicist, 132.23
+0.0, Kevin Mayo, 739, Documentation Specialist, 39.45
+18.0,David Taco, 818, System Admin, 90.54

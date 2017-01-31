@@ -1,0 +1,74 @@
+/* Additional includes go here */
+#include <string>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+
+using namespace std;
+
+// To be able to support consistent regions, a primitive operator must have the following checks.
+<%
+   my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+   my @includes;
+   if ($isInConsistentRegion) {
+       push @includes, "#include <SPL/Runtime/Operator/State/StateHandler.h>";
+   }
+   SPL::CodeGen::headerPrologue($model, \@includes);
+%>
+
+class MY_OPERATOR : public MY_BASE_OPERATOR 
+// To support consistent regions, this operator class must inherit from one other parent class.
+<%if ($isInConsistentRegion) {%>
+    , StateHandler
+<%}%>
+{
+public:
+  // Constructor
+  MY_OPERATOR();
+
+  // Destructor
+  virtual ~MY_OPERATOR(); 
+
+  // Notify port readiness
+  void allPortsReady(); 
+
+  // Notify pending shutdown
+  void prepareToShutdown(); 
+
+  // Processing for source and threaded operators   
+  void process(uint32_t idx);
+    
+  // Tuple processing for mutating ports 
+  void process(Tuple & tuple, uint32_t port);
+    
+  // Tuple processing for non-mutating ports
+  void process(Tuple const & tuple, uint32_t port);
+
+  // Punctuation processing
+  void process(Punctuation const & punct, uint32_t port);
+  
+  // To support consistent regions, this operator must implement these virtual member functions.  
+  <%if ($isInConsistentRegion) {%>
+      // Implements checkpointing callbacks to persist and restore
+      // operator state
+      virtual void drain();
+      virtual void checkpoint(Checkpoint & ckpt);
+      virtual void reset(Checkpoint & ckpt);
+      virtual void resetToInitialState();
+  <%}%>  
+  
+private:
+  // We will keep our intermediate calculator results in our member variables.
+  // When this C++ operator crashes and comes back, we will prove that the intermediate
+  // results will stay intact through our checkpoint and reset activities supported by the 
+  // consistent region feature.
+  list<int32_t> x;
+  list<int32_t> y;
+  list<string> operation;
+  list<int32_t> result;
+  int32_t tupleCnt;
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>
+

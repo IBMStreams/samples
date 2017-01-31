@@ -1,0 +1,195 @@
+/* Additional includes go here */
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// To support the consistent regions, this operator must do this check.
+<%
+   my $isInConsistentRegion = $model->getContext()->getOptionalContext("ConsistentRegion");
+%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{
+	// This operator must do this registration needed for consistent regions.
+    <%if ($isInConsistentRegion) {%>
+      getContext().registerStateHandler(*this);
+    <%}%>
+    
+    tupleCnt = 0;
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+    // Finalization code goes here
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+    /*
+      createThreads(1); // Create source thread
+    */
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+    // A typical implementation will loop until shutdown
+    /*
+      while(!getPE().getShutdownRequested()) {
+          // do work ...
+      }
+    */
+}
+
+// Tuple processing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+    // Sample submit code
+    /* 
+      submit(otuple, 0); // submit to output port 0
+    */
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+	// 1) We will receive the calculation requests and perform the simple calculations.
+	// 
+	// 2) Results from those calculations will be kept inside the local 
+	// state (member) variables of this operator. We will not submit any result.  
+	// 
+	// 3) When we receive the 21st tuple, we will forcefully crash this operator.
+	// 
+	// 4) After recovery, everything should proceed normally.
+	//
+	// 5) When the final punctuation arrives, in the punctuation processing method below,
+	//    all the stored results in the local state variables will be sent at once.
+	//
+	// 6) User can check the final results to see if there are no gaps in the results due to
+	//    the operator failure and recovery process.
+	//
+	//
+	// If the newly arrived tuple is the 21st tuple, then we will forcefully crash this operator.
+		if ((tupleCnt == 20) && (SPL::Functions::Utility::getRelaunchCount() == 0)) {
+		SPL::Functions::Utility::abort("", 0);
+	}
+	
+	tupleCnt++;
+	
+	int32_t _result = 0;
+	int32_t _x = tuple.getAttributeValue(0);
+	int32_t _y = tuple.getAttributeValue(1);
+	string _operation = tuple.getAttributeValue(2);
+	// Perform the requested operation and compute the result.
+	if (_operation == "add") {
+		_result = _x + _y;
+	} else if (_operation == "subtract") {
+		_result = _x - _y;
+	} else if (_operation == "multiply") {
+		_result = _x * _y;
+	} else if (_operation == "divide") {
+		_result = _x / _y;
+	}
+	
+	// Save the results in our local state (member) variables. We are done.
+	// We will not submit any results at this time.
+	x.push_back(_x);
+	y.push_back(_y);
+	operation.push_back(_operation);
+	result.push_back(_result);
+    /* 
+      OPort0Type otuple;
+      submit(otuple, 0); // submit to output port 0
+    */
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+	  // If you participate in a consistent region, you will not even get a FinalMarker.
+	  // Hence, use the window marker.
+      if(punct==Punctuation::WindowMarker) {
+		// This is the end of all tuple processing.
+		// Let us now submit all the calculation results.
+		OPort0Type oTuple;
+		
+		for (int32_t cnt = 0; cnt < tupleCnt; cnt++) {
+			// This is the request sequence number attribute.
+			ValueHandle handle0 = oTuple.getAttributeValue(0);
+			int32 & sequence = handle0;
+			sequence = cnt+1;
+			
+			// This is x attribute
+			ValueHandle handle1 = oTuple.getAttributeValue(1);
+			int32 & _x = handle1;
+			_x = x.at(cnt);
+			
+			// This is y attribute
+			ValueHandle handle2 = oTuple.getAttributeValue(2);
+			int32 & _y = handle2;
+			_y = y.at(cnt);			
+			
+			// This is operation attribute
+			ValueHandle handle3 = oTuple.getAttributeValue(3);
+			rstring & _operation = handle3;
+			_operation = operation.at(cnt);
+			
+			// This is result attribute
+			ValueHandle handle4 = oTuple.getAttributeValue(4);
+			int32 & _result = handle4;
+			_result = result.at(cnt);			
+			
+			// Send it away.
+			submit(oTuple, 0);
+		}
+		
+		// We submitted all the calculation results.
+		// Let us now submit the punctuation marker.
+		submit(punct, 0);
+      }
+}
+
+// To support the consistent regions, this operator must implement the following methods.
+<%if ($isInConsistentRegion) {%>
+
+// Drain any pending tuples.
+void MY_OPERATOR::drain()
+{
+	// Do nothing.
+}
+
+// Persist state to shared file system
+void MY_OPERATOR::checkpoint(Checkpoint & ckpt)
+{
+    ckpt << x << y << operation << result << tupleCnt << "\n";
+}
+
+// Restore state from shared file system
+void MY_OPERATOR::reset(Checkpoint & ckpt)
+{
+	// We must be coming back after a crash.
+    ckpt >> x >> y >> operation >> result >> tupleCnt;
+}
+
+// Sets operator state to its initial state
+// This is needed only when there is a crash anywhere in the application before the
+// very first checkpoint is done.
+void MY_OPERATOR::resetToInitialState()
+{
+	tupleCnt = 0;
+}
+<%}%>
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

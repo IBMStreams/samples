@@ -1,0 +1,29 @@
+<functionModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd"> 
+  <functionSet>
+    <headerFileName>Functions.h</headerFileName>
+    <cppNamespaceName>tuple_serializer_deserializer</cppNamespaceName>
+    <functions> 
+      <function>
+        <description>Serialize a given tuple to a blob</description>
+        <prototype><![CDATA[<tuple T> public void serializeTuple(T myTuple, mutable blob myBlob)]]></prototype>
+      </function>
+      
+      <function>
+        <description>Deserialize the blob into a tuple</description>
+        <prototype><![CDATA[<tuple T> public void deserializeTuple(mutable T myTuple, blob myBlob)]]></prototype>
+      </function>      
+    </functions> 
+    <dependencies>
+       <library>
+          <cmn:description/>
+           <cmn:managedLibrary>
+              <cmn:includePath>../../impl/include</cmn:includePath>
+           </cmn:managedLibrary>
+       </library>
+    </dependencies>
+  </functionSet> 
+</functionModel> 

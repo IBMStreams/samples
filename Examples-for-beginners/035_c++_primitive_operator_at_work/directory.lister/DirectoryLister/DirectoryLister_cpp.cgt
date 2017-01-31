@@ -1,0 +1,153 @@
+/* Additional includes go here */
+/*
+=====================================================
+This C++ primitive operator code does exactly the
+same logic done in the DirLister Java primitive
+operator that can be found in one of the SPL examples.
+(samples/spl/feature/JavaOperators)
+=====================================================
+*/
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{	
+	// Let us parse the operator parameter named listDirectory.
+	// This parameter may have zero or more input values.
+	<%
+		my $listDirectoryParam = $model->getParameterByName("listDirectory");
+		
+		if ($listDirectoryParam) {
+			my $numberOfParamValues = $listDirectoryParam->getNumberOfValues();
+			
+			for (my $cnt = 0; $cnt < $numberOfParamValues; $cnt++) {
+				print ("listDirectoryParam.push_back(" . $listDirectoryParam->getValueAt($cnt)->getSPLExpression() . ");\n");
+			} # End of for (my $cnt = 0; $cnt < $numberOfParamValues; $cnt++)
+		} # End of if (not $listDirectoryParam)
+	%>
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+    // Finalization code goes here
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+    /*
+      createThreads(1); // Create source thread
+    */
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+    // A typical implementation will loop until shutdown
+    /*
+      while(!getPE().getShutdownRequested()) {
+          // do work ...
+      }
+    */
+}
+
+// Tuple processing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+	// Define a output tuple variable.
+	OPort0Type otuple;
+	// Assign the values from the input tuple to the output tuple for all
+	// the attributes that have the same name in both of those tuples.
+	// Second parameter false in assignFrom method allows us to copy the 
+	// attribute values between two tuples that are of different types (i.e. differ in their schema).
+	otuple.assignFrom(tuple, false);
+    
+	// Get the value of the first attribute which is called "name".
+	// In this case, the "name" attribute carries the name of the Java property.
+	// We can also get the tuple attribute values using the attribute position rather than the attribute names.
+	ValueHandle handle0 = otuple.getAttributeValue(0);
+	ustring const & dirPropertyName = handle0;
+	
+	// Convert the ustring to rstring.
+	rstring dirPropertyName_rstring = SPL::ustring::toUTF8(dirPropertyName);
+	
+	// Check if this system property is in the group of directories from where the user wants to list files.
+	// We have collected that user preferecnce in the constructor by reading the 
+	// operator parameter named "listDirectory".
+	std::vector<std::string>::iterator it;
+	SPL::list<ustring> fileList;	
+	
+	it = std::find(listDirectoryParam.begin(), listDirectoryParam.end(), dirPropertyName_rstring);
+		
+	// If the name attribute is found in the group of directory names, let us find the files in that directory.
+	if (it != listDirectoryParam.end()) {
+		// Get the second attribute in the tuple that has the directory name.
+		// That tuple attribute's name is "value".	
+	    ValueHandle handle1 = otuple.getAttributeValue("value");
+	    ustring const & dirName = handle1;
+		// Convert it to rstring.
+		rstring dirName_rstring = SPL::ustring::toUTF8(dirName);
+		// Now, cast it to a regular std::string
+		std::string & directoryName = static_cast<std::string &> (dirName_rstring);
+		
+		// Go and collect all the files in that directory.
+		DIR *dp;
+		struct dirent *dirp;
+		
+		if((dp  = opendir(directoryName.c_str())) != NULL) {
+			while ((dirp = readdir(dp)) != NULL) {
+				char const *d_name = dirp->d_name;
+				fileList.push_back(SPL::ustring::fromUTF8(d_name));
+			} // End of while ((dirp = readdir(dp)) != NULL)
+
+			closedir(dp);
+		} // End of if((dp  = opendir(dirName.c_str())) != NULL)                                   
+	} // End of if (it != listDirectory.end())
+	
+	// If there are files found in the directory, let us add it to the 
+	// "files" attribute of the output tuple (located at the very last position). 
+	if (!fileList.empty()) {
+		ValueHandle handle3 = otuple.getAttributeValue(3);
+		List & list = handle3;
+		SPL::list<ustring> & ustringList = static_cast<SPL::list<ustring> &> (list);
+		ustringList = fileList;
+	} // End of if (!fileList.empty())
+	
+	// Send this tuple away now.
+	submit(otuple, 0);
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+    // Sample submit code
+    /* 
+      OPort0Type otuple;
+      submit(otuple, 0); // submit to output port 0
+    */
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+    /*
+      if(punct==Punctuation::WindowMarker) {
+        // ...;
+      } else if(punct==Punctuation::FinalMarker) {
+        // ...;
+      }
+    */
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

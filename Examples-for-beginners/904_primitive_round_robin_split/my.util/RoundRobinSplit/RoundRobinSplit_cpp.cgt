@@ -1,0 +1,26 @@
+/* Additional includes go here */
+
+#pragma SPL_NON_GENERIC_OPERATOR_IMPLEMENTATION_PROLOGUE
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR() : _count(0)
+{
+    // Initialization code goes here    
+}
+
+
+// Tuple procressing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+	uint32_t const nOutputs = getNumberOfOutputPorts();
+	uint32_t const batchSize = getParameter("batch");
+	
+	AutoPortMutex apm(_mutex, *this);
+	
+	uint32 outputPort = (_count / batchSize) % nOutputs;
+	_count = (_count + 1) % (batchSize * nOutputs);
+	assert(outputPort < nOutputs);
+	submit(tuple, outputPort);
+} // End of process method.
+
+#pragma SPL_NON_GENERIC_OPERATOR_IMPLEMENTATION_EPILOGUE

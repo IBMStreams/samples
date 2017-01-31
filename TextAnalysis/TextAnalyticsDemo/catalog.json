@@ -1,0 +1,11 @@
+{
+	"name": "BigInsights Text Analytics and Streams",
+	"description": "Use the TextExtract operator to analyze data for mentions of Streams, displaying the search results in a web browser.  Also demonstrates how to update the dictionaries used by the operator.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/real-time-text-analysis-using-streams-part-2-updating-dictionaries-and-tables/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsDemo",
+	"tags": [],
+		"toolkits": ["text", "inet"],
+		"operators": ["TextExtract", "HTTPTupleView"]
+}

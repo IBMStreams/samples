@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<operatorModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context>
+      <!-- some optional elements
+      <description>Brief description of the operator</description>
+      <metrics>
+        <metric>
+          <name>metricName</name>
+          <description>Metric description</description>
+          <kind>Counter</kind>
+        </metric>
+      </metrics>
+      <customLiterals>
+        <enumeration>
+          <name>CustomLiteralTypeName</name>
+          <value>enumLiteral1</value>
+          <value>enumLiteral2</value>
+        </enumeration>
+      </customLiterals>
+      <customOutputFunctions>
+        <customOutputFunction>
+          <name>CustomOutputFunctionTypeName</name>
+          <function>
+            <description>What does this sample function do?</description>
+            <prototype><![CDATA[int32 SampleFunc()]]></prototype>
+          </function>
+        </customOutputFunction>
+      </customOutputFunctions>
+      <libraryDependencies>
+        <library>
+          <cmn:description>my-lib</cmn:description>
+          <cmn:managedLibrary>
+            <cmn:lib>mylib</cmn:lib>
+            <cmn:libPath>../../impl/lib</cmn:libPath>
+            <cmn:includePath>../../impl/mylib/include</cmn:includePath>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      -->
+      <providesSingleThreadedContext>Never</providesSingleThreadedContext>
+    </context>  
+    <parameters>
+      <allowAny>false</allowAny>
+      <!-- some optional elements
+      <parameter>
+        <name>paramName</name>
+        <description>brief description of the parameter</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      -->
+    </parameters>
+    <inputPorts>
+      <!-- some optional elements
+      <inputPortSet>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>2</cardinality>
+        <optional>false</optional>
+      </inputPortSet>      
+      -->
+      <inputPortOpenSet>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>OptionallyWindowed</windowingMode>
+        <windowPunctuationInputMode>WindowBound</windowPunctuationInputMode>
+      </inputPortOpenSet>
+    </inputPorts>
+    <outputPorts>
+      <!-- some optional elements
+      <outputPortSet>
+        <expressionMode>Expression</expressionMode> 
+        <autoAssignment>true</autoAssignment>
+        <completeAssignment>true</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <windowPunctuationOutputMode>Free</windowPunctuationOutputMode>
+        <tupleMutationAllowed>true</tupleMutationAllowed>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>          
+      -->
+      <outputPortOpenSet>
+        <expressionMode>Expression</expressionMode> 
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
+        <tupleMutationAllowed>true</tupleMutationAllowed>
+      </outputPortOpenSet>    
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

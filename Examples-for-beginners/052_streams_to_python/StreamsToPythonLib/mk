@@ -1,0 +1,51 @@
+#!/bin/bash
+# Add -x to the line above to display the status of the statements below as they get executed.
+# This script compiles the C++ class containing the native functions.
+# Then, it creates a .so file and copies the .so file and the C++ include files to
+# the SPL project's impl directory.
+#
+# This script takes care of checking the RHEL version (RHEL5 versus RHEL6) and also
+# the CPU architecture (32 bit versus 64 bit) so that the .so file can be copied to
+# the SPL project's impl directory corresponding to the given RHEL version and CPU type.
+CPP_BUILD_TARGET="StreamsToPython"
+FINAL_LIB_NAME="StreamsToPythonLib"
+SPL_PROJECT_DIR="052_streams_to_python"
+
+CXX=g++
+PLATFORM=`uname -i`
+
+if [ "$PLATFORM" == "ppc64" ];
+then
+   CXX=/opt/at5.0/bin/g++
+fi
+
+SPL_PKGCFG=$STREAMS_INSTALL/bin/dst-pe-pkg-config.sh
+SPL_PKG=dst-spl-pe-install
+SPL_COMPILE_OPTIONS=`$SPL_PKGCFG --cflags $SPL_PKG`
+SPL_LINK_OPTIONS=`$SPL_PKGCFG --libs $SPL_PKG`
+
+$CXX -O3 -Wall -fPIC -D_REENTRANT -I include $SPL_COMPILE_OPTIONS -I $(python -c 'import distutils.sysconfig as sc; print sc.get_python_inc()') -c $CPP_BUILD_TARGET.cpp
+$CXX -shared -o lib$FINAL_LIB_NAME.so $SPL_LINK_OPTIONS $CPP_BUILD_TARGET.o
+rm -f $CPP_BUILD_TARGET.o
+
+if [ -f /etc/redhat-release ] ; then
+ OSDIST=`awk 'FNR == 1 {print substr($1, 0)}' /etc/redhat-release`
+ if [ "$OSDIST" == 'Red' ]; then
+    OSDIST='RHEL'
+ fi
+
+ OSVER=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
+ OSLVL="$OSDIST${OSVER%%.*}"
+elif [ -f /etc/SuSE-release ] ; then
+ OSVER=`awk 'FNR == 2 {print $3}' /etc/SuSE-release`
+ OSLVL=SLES${OSVER}
+else
+  OSLVL="unsupported Linux distribution"
+fi
+
+if [ ! -d "../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL" ]; then
+   mkdir ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
+fi
+
+mv lib$FINAL_LIB_NAME.so ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
+cp *.h ../$SPL_PROJECT_DIR/impl/include

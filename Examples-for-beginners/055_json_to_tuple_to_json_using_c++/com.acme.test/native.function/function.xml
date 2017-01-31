@@ -1,0 +1,30 @@
+<functionModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd"> 
+  <functionSet>
+    <headerFileName>Functions.h</headerFileName>
+    <cppNamespaceName>json_utils</cppNamespaceName>
+    <functions>
+      <function>
+        <description>Convert the tuple attributes to JSON</description>
+        <prototype cppName="">public boolean convertTupleAttributesToJson(mutable rstring jsonString, rstring firstName, rstring lastName, rstring ssn, rstring streetAddress, uint32 age, float32 height, boolean isEmployed, list&lt;rstring&gt; favoriteMovies)</prototype>
+      </function>
+      <function>
+        <description>Convert a JSON string to tuple attribute values.</description>
+        <prototype cppName="">public boolean convertJsonToTupleAttributes(rstring jsonString, mutable rstring firstName, mutable rstring lastName, mutable rstring ssn, mutable rstring streetAddress, mutable uint32 age, mutable float32 height, mutable boolean isEmployed, mutable list&lt;rstring&gt; favoriteMovies)</prototype>
+      </function>
+    </functions>
+
+    <dependencies>
+      <library>
+        <cmn:description>JSON Utilities</cmn:description>
+        <cmn:managedLibrary>
+          <cmn:includePath>../../impl/include</cmn:includePath>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+    
+  </functionSet> 
+</functionModel> 

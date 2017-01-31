@@ -1,0 +1,2 @@
+This is the sample application from the [Streams Quick Start Guide](https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/), published on StreamsDev.
+It processes stock trades from a CSV file.  The application will filter out some of the stocks based on ticker names.  It will then calculate the average, maximum and minimum ask price for each of the stocks.  The results will be written to a file.

@@ -1,0 +1,15 @@
+# tuple<uint32 departmentId, rstring name>
+0.0, 739, Documentation
+0.0, 921, Software Engineering
+0.0, 810, Test Engineering
+0.0, 769, Project Management
+0.0, 983, Hardware Engineering
+0.0, 350, Demo Engineering
+0.0, 148, Nursing
+0.0, 345, Design Engineering
+0.0, 193, Delivery
+0.0, 410, Accounting
+0.0, 818, System Administration
+0.0, 281, Administration
+0.0, 999, Marketing
+9.0, 458, Media Relations

@@ -1,0 +1,16 @@
+# tuple<uint32 orderId, rstring customerName, rstring orderDate, rstring product, uint32 quantity>
+0.0, 101, Tom Cruise, 2011-01-23 04:23:12.456, Stapler, 5
+0.0, 102, Nicole Kidman, 2011-01-23 04:25:15.412, Printer, 3
+0.0, 103, Johnny Depp, 2011-02-03 11:30:00.123, Laptop, 4
+0.0, 104, Dustin Hoffman, 2011-01-25 15:12:20.218, Television, 4
+0.0, 105, Natalie Portman, 2011-01-26 13:15:26.765, Space Suite, 5
+0.0, 106, Mark Hamill, 2011-01-26 16:19:34.512, Lightsaber, 10
+0.0, 107, Carrie Fisher, 2011-01-29 08:12:34.356, iPod, 6
+0.0, 108, Harrison Ford, 2011-01-29 10:15:00.000, Airplane Engine, 5
+0.0, 109, Kiera Knightley, 2011-01-30 08:12:34.517, Pearl Necklace, 6
+0.0, 110, Liam Neesan, 2011-01-31 04:34:12.315, Winter Coat, 5
+0.0, 111, Halle Berry, 2011-02-03 15:12:15.626, iPad, 5
+0.0, 112, Samuel Jackson, 2011-01-31 17:23:12.479, iPhone, 7
+0.0, 113, Matt Damon, 2011-02-01 11:45:16.517, Television, 6
+0.0, 114, Nicholas Cage, 2011-02-02 12:56:12.710, iPod, 3
+10.0, 115, Dummy Actor, 2011-02-03 11:11:11.111, No Product, 1

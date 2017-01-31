@@ -1,0 +1,123 @@
+// This file contains dummy logic for a price calculation engine.
+// One can substitute a sophisticated real-world pricing calculation here.
+/* Additional includes go here */
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{
+    // Initialization code goes here
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+    /*
+      createThreads(1); // Create source thread
+    */
+    // Since there could be several dozens of pricing engines being started
+    // in parallel, it is very hard to predict how long the source operator
+    // has to perform an initDelay before start sending out tuples.
+    // Guessing a particular initDelay value will not work in all cases.
+    // Hence, we are doing the following workaround.
+    // Every instance of this C++ primitive operator will create a dummy file in the data
+    // directory (data/PricingEngine-Started-JobId.txt).
+    // An external shell script (start_dynamic_scaleout_app.sh) that starts all
+    // the pricing engines will count the number of such start-up completion signal files. That shell script
+    // will wait until all the newly started pricing engines to create their own signal file.
+    // When the shell script determines that all the pricing engines have 
+    // really started, as a final step, it will start the source/sink Streams job.
+    // That will ensure the starting of the source operator at the correct time
+    // so that source operator will not send data before all the pricing engines
+    // are ready to receive input data tuples.
+    // It is a necessary hack to hold off the source operator from sending data
+    // before the entire application topology is connected through Streams network transport.
+    SPL::uint64 jobId = getPE().getJobId();
+    SPL::rstring fileName = SPL::rstring("PricingEngine-Started-") + 
+    	SPL::rstring::toString(jobId) + SPL::rstring(".txt");
+    SPL::rstring fileMode = "a+";
+    SPL::int32 fileError = -1;
+    SPL::uint64 fileHandle;
+    fileHandle = SPL::Functions::File::fopen(fileName, fileMode, fileError);
+    
+    if (fileHandle == 0) {
+    	SPL::Functions::File::fclose(fileHandle, fileError);
+    } // End of if (fileHandle == 0)
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+    // A typical implementation will loop until shutdown
+    /*
+      while(!getPE().getShutdownRequested()) {
+          // do work ...
+      }
+    */
+}
+
+// Tuple processing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+    // Sample submit code
+    /* 
+      submit(otuple, 0); // submit to output port 0
+    */
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+	// Parse the "spotPrice" attribute from the input tuple.
+	ConstValueHandle handle0 = tuple.getAttributeValue("spotPrice");
+	float32 const & spotPrice = handle0;	
+	
+	OPort0Type otuple;
+	// Assign the values from the input tuple to the output tuple for all
+	// the attributes that have the same name in both of those tuples.
+	// Second parameter false in assignFrom method allows us to copy the 
+	// attribute values between two tuples that are of different types (i.e. differ in their schema).
+	otuple.assignFrom(tuple, false);
+	
+	otuple.set_price(23.67);
+	otuple.set_delta(0.0653);
+	otuple.set_gamma(1.532);
+	otuple.set_theta(0.289);
+	otuple.set_vega(2.67);
+	otuple.set_aoxb(0.028);
+	otuple.set_rho(1.23);
+	
+	// You can wait here randomly (say 35 milliseconds) to simulate the calculation time.
+	double waitTime = 0.035;
+	SPL::Functions::Utility::block(waitTime);
+	submit(otuple, 0); // submit to output port 0
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+    /*
+      if(punct==Punctuation::WindowMarker) {
+        // ...;
+      } else if(punct==Punctuation::FinalMarker) {
+        // ...;
+      }
+    */
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

@@ -1,0 +1,21 @@
+/* Additional includes go here */
+
+#pragma SPL_NON_GENERIC_OPERATOR_HEADER_PROLOGUE
+
+class MY_OPERATOR : public MY_BASE_OPERATOR 
+{
+public:
+  // Constructor
+  MY_OPERATOR();
+
+  // Tuple processing for mutating ports 
+  void process(Tuple & tuple, uint32_t port);
+
+private:
+  Mutex 	_mutex;
+  uint32_t 	_count;
+}; 
+
+#pragma SPL_NON_GENERIC_OPERATOR_HEADER_EPILOGUE
+
+

@@ -1,0 +1,10 @@
+{
+	"name": "Faster data parsing using the Parse operator and the @parallel annotation",
+	"description": "Sometimes, the biggest slowdown in reading data from a source opereator such as FileSource is not in reading the data, but in parsing it.  This application shows how to eliminate these bottlenecks using the Parse operator and user-defined parallelism.",
+	"language": ["SPL"],
+	"category": ["3","2","6","8"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/parallelized-file-processing-parse-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Performance/ParallelParse",
+	"tags": ["udp"],
+		"operators": ["FileSource","Parse"]
+}

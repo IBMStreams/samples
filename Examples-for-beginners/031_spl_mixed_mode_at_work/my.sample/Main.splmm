@@ -1,0 +1,48 @@
+/*
+This example shows a cool SPL feature called mixed-mode support. In this,
+developers can mix PERL code islands inside of an SPL application.
+Mixed-mode enables the easy parameterization of SPL applications. This 
+example gives a small flavor of how a PERL code snippet inter-mixed
+with SPL allows us to parameterize the SPL Stream names and the
+number of output stream definitions for an SPL operator. 
+*/
+namespace my.sample;
+
+composite Main {
+	type StockReportSchema = tuple <rstring symbol, rstring dateTime, float64 closingPrice, uint32 volume>;
+
+	graph
+		stream<StockReportSchema> StockReport = FileSource() {
+			param
+				file: "stock_report.dat";
+				format: csv;
+				hasDelayField: true;
+		} // End of FileSource.
+
+		<% my $cnt=0; %>
+		(<% for ($cnt=1; $cnt<=26; $cnt++) {%>
+			stream<StockReportSchema> StockReportOutput<%=$cnt%>
+ 
+			<% if ($cnt < 26) { %>
+				;
+			<% }%>
+		<% } %>) 
+		= Split(StockReport) {
+			param
+			// index: hashCode(toCharacterCode(symbol, 0) - toCharacterCode("A", 0));
+			file: "mapping.txt";
+			key:  symbol;
+		} // End of Split
+
+		() as FileWriter1 = FileSink(StockReportOutput1) {
+			param file: "split_ticker_output_stream_1.result";
+		} // End of FileSink(StockReportOutput1)
+
+		() as FileWriter2 = FileSink(StockReportOutput7) {
+			param file: "split_ticker_output_stream_7.result";
+		} // End of FileSink(StockReportOutput7)
+
+		() as FileWriter3 = FileSink(StockReportOutput9) {
+			param file: "split_ticker_output_stream_9.result";
+		} // End of FileSink(StockReportOutput9)
+} // End of composite Main

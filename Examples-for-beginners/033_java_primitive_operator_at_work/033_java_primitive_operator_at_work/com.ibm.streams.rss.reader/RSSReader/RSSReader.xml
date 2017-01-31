@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <javaOperatorModel>
+    <context>
+      <executionSettings>
+        <className>com.ibm.streams.rss.reader.RSSReader</className>
+        <vmArgs/>
+      </executionSettings>
+      <libraryDependencies>
+        <library>
+          <cmn:description>Java operator class library</cmn:description>
+          <cmn:managedLibrary>
+            <cmn:libPath>../../impl/java/bin</cmn:libPath>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+    </context>
+    <parameters/>
+    <inputPorts>
+      <inputPortOpenSet>
+        <description></description>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+      </inputPortOpenSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortOpenSet>
+        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>-1</windowPunctuationInputPort>
+      </outputPortOpenSet>
+    </outputPorts>
+  </javaOperatorModel>
+</operatorModel>

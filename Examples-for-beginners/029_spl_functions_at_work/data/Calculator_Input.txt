@@ -1,0 +1,16 @@
+# tuple<rstring operation, uint32 operand1, uint32 operand2, uint32 result>
+0.0, Add, 456, 569, 0
+0.0, Subtract, 69034, 23985, 0
+0.0, Multiply, 3456, 845, 0
+0.0, Divide, 453453, 2442, 0
+0.0, Add, 4523, 2434, 0
+0.0, Subtract, 93233, 24343, 0
+0.0, Add, 42343, 23434, 0
+0.0, Divide, 3434132, 23423, 0
+0.0, Multiply, 34523, 4354, 0
+0.0, Divide, 2341, 324, 0
+0.0, Subtract, 234232, 45453, 0
+0.0, Subtract, 4366215, 345343, 0
+0.0, Multiply, 345113, 342, 0
+0.0, Multiply, 23342, 9583, 0
+0.0, Divide, 952345, 3234, 0

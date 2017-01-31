@@ -1,0 +1,9 @@
+# There are certain rules to be followed while trying to create input data that is in compliance with a nested tuple definition.
+#
+# a) Top level tuple attribute names should NOT be mentioned here.
+# b) Empty nested tuples must be fully expanded with their correct attribute names assigned to dummy values i.e. {name1=dummyValue1, name2=dummyValue2}
+# c) Non-empty nested tuples must be fully expanded with their correct attribute names assigned to actual values i.e. {name1=value1, name2=value2} 
+# d) Empty lists and maps can be indicated by [] and {} respectively.
+# e) For non-empty maps, use the (name1:value1, name2:value2} notation.
+#
+{sInitDataFile="/home/asabhar/aoms-src/opro-dte/test/TestCases/OPRO_Prepos/StreamsPrepos/Inputs/prepos_rps_initfile.dat"}, {iHorizon=72, fCriticalRestrPt=90.0, iMaxPrimCasesPerCct=10, iEscalationLevel=8, iStartTimeOffset=0, ltCrewShiftsRegional={}, ltCrewShiftsContract={}, ltCrewShiftsForeign={}, ltCrewShiftsPrRegional={"DT_CAN":{"OHLine":[{tCrewShift={iStart=8, iEnd=16, iNCrew=4}, iPeriodicity=24, iNReps=5}, {tCrewShift={iStart=16, iEnd=24, iNCrew=4}, iPeriodicity=24, iNReps=5}], "PubSafety":[{tCrewShift={iStart=0, iEnd=8, iNCrew=2}, iPeriodicity=24, iNReps=5}, {tCrewShift={iStart=8, iEnd=16, iNCrew=2}, iPeriodicity=24, iNReps=5}, {tCrewShift={iStart=16, iEnd=24, iNCrew=2}, iPeriodicity=24, iNReps=5}]}}, ltCrewShiftsPrContract={}, ltCrewShiftsPrForeign={}, ltDamagesSimpl={"DT_CAN":[{iStart=8, iEnd=16, iNDamages={"Multi_OH":97}}, {iStart=16, iEnd=24, iNDamages={"Multi_OH":90}}, {iStart=24, iEnd=32, iNDamages={"Multi_OH":90}}]}, ltDamages={}}, true, {tCrewShift={iStart=0, iEnd=0, iNCrew=0}, tCrewShiftPr={tCrewShift={iStart=0, iEnd=0, iNCrew=0}, iPeriodicity=0, iNReps=0}, tDamagePredSimpl={iStart=0, iEnd=0, iNDamages={}}, tDamagePred={iStart=0, iEnd=0, iNCustomers={}, iUrgency={}}}

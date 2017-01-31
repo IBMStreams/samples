@@ -1,0 +1,46 @@
+<functionModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" 
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd"> 
+  <functionSet>
+    <headerFileName>NativeFunctionsWithCollectionTypesWrappers.h</headerFileName>
+    <cppNamespaceName>native_functions_with_collection_types</cppNamespaceName>
+    <functions> 
+      <function>
+        <description>Initialize a singleton NativeFunctionsWithCollectionTypes object per PE</description>
+        <prototype>int32 initializeNativeFunctionsWithCollectionTypes()</prototype>
+      </function>    
+    
+      <function>
+        <description>Store random numbers in a list</description>
+        <prototype>public boolean getNewRandomNumbers(mutable list&lt;float64&gt; randomNumberList, mutable int32 countOfNewRandomNumbers)</prototype>
+      </function>
+ 
+       <function>
+        <description>Convert the map values to upper case.</description>
+        <prototype>public boolean toUpperOfMapValues(mutable map&lt;rstring, rstring&gt; myMap, mutable int32 countOfMapValues)</prototype>
+      </function>
+ 
+        <function>
+        <description>
+        	Create a new employee record by filling out the tuple attributes. It is important to expand the full tuple definition inside the prototype below.
+        </description>
+        <prototype>
+        	<![CDATA[public boolean createEmployeeRecord(tuple<rstring name, uint8 age, float32 salary, list<rstring> companyDevicesOwned>)]]>
+        </prototype>
+      </function> 
+    </functions> 
+
+	<dependencies>
+       <library>
+          <cmn:description>NativeFunctionsWithCollectionTypes Shared Library</cmn:description>
+             <cmn:managedLibrary>
+                <cmn:lib>NativeFunctionsWithCollectionTypesLib</cmn:lib>
+                <cmn:command>../../impl/bin/archLevel</cmn:command>
+             </cmn:managedLibrary>
+       </library>
+   </dependencies>
+   
+  </functionSet> 
+</functionModel> 

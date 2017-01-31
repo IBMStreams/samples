@@ -1,0 +1,10 @@
+{
+	"name": "Operator driven consistent region example",
+	"description": "This is an example application that uses an operator-driven consistent region. ",
+	"language": ["SPL"],
+	"category": ["5"],
+	"blogPost": "",
+		"url": "https://github.com/IBMStreams/samples/blob/master/ConsistentRegions/OddEven",
+	"tags": ["performance","consistent regions"],
+    "optional": []
+}

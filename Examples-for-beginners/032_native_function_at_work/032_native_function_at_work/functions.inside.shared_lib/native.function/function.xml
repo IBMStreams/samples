@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd">
+  <functionSet>
+    <headerFileName>LibFunctions.h</headerFileName>
+    <cppNamespaceName>test2</cppNamespaceName>
+    <functions>
+      <function>
+        <description sampleUri="">A C++ library function to calculate tax.</description>
+        <prototype cppName="calculateTax">public float32 taxCalculation2(float32, rstring)</prototype>
+      </function>
+    </functions>
+    <dependencies>
+      <library>
+        <cmn:description>Shared library containing the tax calculation function.</cmn:description>
+        <cmn:managedLibrary>
+          <cmn:lib>NativeFunctionLib</cmn:lib>
+          <cmn:command>../../impl/bin/archLevel</cmn:command>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet>
+</functionModel>

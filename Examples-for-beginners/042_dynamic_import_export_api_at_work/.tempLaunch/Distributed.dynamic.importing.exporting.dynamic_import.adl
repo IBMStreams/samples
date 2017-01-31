@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/application/augmented" xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/runtime/sam" xmlns:ns5="http://www.ibm.com/xmlns/prod/streams/runtime/utils" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" productVersion="3.0.0.0" name="dynamic.importing.exporting::dynamic_import.appset" xsi:noNamespaceSchemaLocation="http://www.ibm.com/xmlns/prod/streams/application">
+    <description>dynamic.importing.exporting::dynamic_import application set</description>
+    <application version="1.0.0" outputDirectory="/home/streamsadmin/Examples-for-beginners-For-Beginners/042_dynamic_import_export_api_at_work/output/dynamic.importing.exporting.dynamic_import/Distributed" name="dynamic.importing.exporting::dynamic_import" dataDirectory="../../../data" checkpointDirectory="../../../data/ckpt" applicationScope="Default" applicationDirectory="../../../.">
+        <libraries/>
+        <hostpools>
+            <hostpool name="$default" membershipMode="shared" index="0"/>
+        </hostpools>
+        <tupleTypes>
+            <tupleType index="0">
+                <attribute type="int32" name="subscriptionChangeSignal"/>
+                <tuple>
+                    <ns2:attr type="int32" name="subscriptionChangeSignal"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="1">
+                <attribute type="int32" name="number"/>
+                <attribute type="rstring" name="string"/>
+                <tuple>
+                    <ns2:attr type="int32" name="number"/>
+                    <ns2:attr type="rstring" name="string"/>
+                </tuple>
+            </tupleType>
+        </tupleTypes>
+        <pes>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="0" class="BeJwzNvDMLcgvKgkuTSpOLsosKMnMz3POSMxLTw3OTM9LzIkHANaGAzn">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="Vj4NkY12PL3TKT+QO/e2O7QOvU4=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/dynamic.importing.exporting.dynamic_import-a.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="ImportSubscriptionChangeSignal" index="0" definitionIndex="0" class="ImportSubscriptionChangeSignal">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="5" name="lit$0"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="ImportSubscriptionChangeSignal" tupleTypeIndex="0" name="ImportSubscriptionChangeSignal" isMutable="false" index="0">
+<interPeConnection operInstanceIndex="1" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="0"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="1" class="BeJwzMg7OzC3ISQ2pCC4pSk3Mdcsv8i8tKSgtiQcAghUKAf">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="TyCZP3+eP/eq6dxMCcWmKod1nxo=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/dynamic.importing.exporting.dynamic_import-b.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="false" singleThreadedOnInputs="false" name="SimpleTxStreamForOutput" index="1" definitionIndex="1" class="SimpleTxStreamForOutput">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="5" name="lit$0"/>
+                            <runtimeConstant value="30" name="lit$1"/>
+                            <runtimeConstant value="0" name="lit$2"/>
+                            <runtimeConstant value="false" name="lit$3"/>
+                            <runtimeConstant value="true" name="lit$4"/>
+                            <runtimeConstant value="&quot;AllowedMinimumNumber &gt;= 0&quot;" name="lit$5"/>
+                            <runtimeConstant value="false" name="lit$6"/>
+                            <runtimeConstant value="&quot;AllowedMinimumNumber &lt; 0&quot;" name="lit$7"/>
+                            <runtimeConstant value="1" name="lit$8"/>
+                            <runtimeConstant value="0" name="lit$9"/>
+                            <runtimeConstant value="&quot;New Subscription=&quot;" name="lit$10"/>
+                            <runtimeConstant value="&quot;dynamic.importing.exporting/dynamic_import.spl&quot;" name="lit$11"/>
+                            <runtimeConstant value="84" name="lit$12"/>
+                            <runtimeConstant value="&quot;SetInputPortImportSubscription API failed with return code &quot;" name="lit$13"/>
+                            <runtimeConstant value="&quot;dynamic.importing.exporting/dynamic_import.spl&quot;" name="lit$14"/>
+                            <runtimeConstant value="85" name="lit$15"/>
+                            <runtimeConstant value="&quot;dynamic.importing.exporting/dynamic_import.spl&quot;" name="lit$16"/>
+                            <runtimeConstant value="86" name="lit$17"/>
+                            <runtimeConstant value="0" name="lit$18"/>
+                            <runtimeConstant value="0" name="lit$19"/>
+                            <runtimeConstant value="false" name="lit$20"/>
+                            <runtimeConstant value="&quot;&quot;" name="lit$21"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="0" name="ISCS" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="0"/>
+                            </inputPort>
+                            <inputPort tupleTypeIndex="1" name="ISTS" isMutable="true" index="1"/>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="SimpleTxStreamForOutput" tupleTypeIndex="1" name="SimpleTxStreamForOutput" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="2" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="0" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="0" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="0"/>
+                    </inputPort>
+                    <inputPort tupleTypeIndex="1" transport="TCP" index="1" encoding="LE">
+                        <importedStreams>
+                            <propertyBasedImport subscription="AllowedMinimumNumber &lt; 0" index="0" importOperName="ImportedSimpleTxStream"/>
+                        </importedStreams>
+                        <staticConnections/>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="1"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="1" transport="TCP" singleThreadedOnOutput="false" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="2" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="1"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="2" class="BeJwzDc7MyzaMBwAJMwJb">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="wzRRIVb3JsyxmDgNPgsdJPBDFBk=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/dynamic.importing.exporting.dynamic_import-c.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="Sink1" index="2" definitionIndex="1" class="Sink1">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;SimpleTxStream = &quot;" name="lit$0"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="1" name="STSFO" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="1"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts/>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="1" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="2" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts/>
+            </pe>
+        </pes>
+        <operDefinitions>
+            <operDefinition kind="spl.utility::Beacon" index="0"/>
+            <operDefinition kind="spl.utility::Custom" index="1"/>
+        </operDefinitions>
+        <composites>
+            <sourceUris>
+                <uri path="file:///home/streamsadmin/Examples-for-beginners-For-Beginners/042_dynamic_import_export_api_at_work/dynamic.importing.exporting/dynamic_import.spl" index="0"/>
+                <uri path="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl/spl/Sys.spl" index="1"/>
+            </sourceUris>
+            <compositeOpers>
+                <compositeOper toolkitIndex="0" numberOfOutputPorts="0" numberOfInputPorts="0" kind="dynamic.importing.exporting::dynamic_import" index="0" startLine="14" sourceIndex="0" endLine="103">
+                    <description>dynamic.importing.exporting::dynamic_import Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Sys" index="1" startLine="16" sourceIndex="1" endLine="68">
+                    <description>spl::Sys Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Log" index="2" startLine="70" sourceIndex="1" endLine="74">
+                    <description>spl::Log Composite</description>
+                </compositeOper>
+                <compositeOper toolkitIndex="2" numberOfOutputPorts="0" numberOfInputPorts="0" kind="spl::Trace" index="3" startLine="76" sourceIndex="1" endLine="80">
+                    <description>spl::Trace Composite</description>
+                </compositeOper>
+            </compositeOpers>
+            <compositeOperInstances>
+                <compositeOperInstance name="dynamic.importing.exporting::dynamic_import" index="3" compositeOperIndex="0" startLine="14" sourceIndex="0" endLine="103">
+                    <primitiveOperInstance toolkitIndex="2" name="ImportedSimpleTxStream" kind="spl.adapter::Import" index="4" startLine="20" sourceIndex="0" endLine="24">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="1" operName="SimpleTxStreamForOutput" operIndex="1"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="ImportSubscriptionChangeSignal" kind="spl.utility::Beacon" index="0" startLine="27" sourceIndex="0" endLine="30">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="SimpleTxStreamForOutput" operIndex="1"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="SimpleTxStreamForOutput" kind="spl.utility::Custom" index="1" startLine="33" sourceIndex="0" endLine="95">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="ImportSubscriptionChangeSignal" operIndex="0"/>
+</connections>
+                            </port>
+                            <port index="1">
+<connections>
+    <connection portKind="output" portIndex="0" operName="ImportedSimpleTxStream" operIndex="4"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="Sink1" operIndex="2"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="Sink1" kind="spl.utility::Custom" index="2" startLine="97" sourceIndex="0" endLine="102">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="SimpleTxStreamForOutput" operIndex="1"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                </compositeOperInstance>
+            </compositeOperInstances>
+        </composites>
+        <toolkits>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Examples-for-beginners-For-Beginners/042_dynamic_import_export_api_at_work" name="042_dynamic_import_export_api_at_work" index="0"/>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/com.ibm.streams.db" name="com.ibm.streams.db" index="1"/>
+            <toolkit version="1.1" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl" name="spl" index="2"/>
+        </toolkits>
+    </application>
+</applicationSet>
