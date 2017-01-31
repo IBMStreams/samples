@@ -154,9 +154,8 @@ $scope.tagFilter = function (tag) {
       if (!link.tags) {
         link.tags = [];
       }
-      link.tags = link.tags.concat(source.tags);
-
-
+      link.tags.push(link.name);
+      link.tags.push(link.description);
       if (link.language) {
         link.tags = link.tags.concat(link.language);
       }
