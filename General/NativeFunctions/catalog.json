@@ -1,0 +1,8 @@
+{	"name": "C++ Native functions example",
+	"description": "This example shows how to add functionality to Streams using native functions.  This example creates functions for AES encryption and decryption",
+	"language": ["SPL", "C++"],
+	"category": ["10"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/NativeFunctions",
+	"tags": []
+}

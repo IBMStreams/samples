@@ -1,0 +1,1 @@
+{"category": ["3"], "name": "Streams to Python", "language": ["Python", "SPL"], "tags": ["call python from cpp", "python", ""], "url": "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/052_streams_to_python", "description": "This example shows a powerful feature of Streams to wrap existing code assets written using the Python programming language. "}

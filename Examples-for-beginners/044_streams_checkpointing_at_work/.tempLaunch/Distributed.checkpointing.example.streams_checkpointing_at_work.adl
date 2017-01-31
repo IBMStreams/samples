@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<applicationSet xmlns="http://www.ibm.com/xmlns/prod/streams/application" xmlns:ns2="http://www.ibm.com/xmlns/prod/streams/spl/tupleType" xmlns:ns3="http://www.ibm.com/xmlns/prod/streams/application/augmented" xmlns:ns4="http://www.ibm.com/xmlns/prod/streams/runtime/sam" xmlns:ns5="http://www.ibm.com/xmlns/prod/streams/runtime/utils" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" productVersion="3.0.0.0" name="checkpointing.example::streams_checkpointing_at_work.appset" xsi:noNamespaceSchemaLocation="http://www.ibm.com/xmlns/prod/streams/application">
+    <description>checkpointing.example::streams_checkpointing_at_work application set</description>
+    <application version="1.0.0" outputDirectory="/home/streamsadmin/Examples-for-beginners-For-Beginners/044_streams_checkpointing_at_work/output/checkpointing.example.streams_checkpointing_at_work/Distributed" name="checkpointing.example::streams_checkpointing_at_work" dataDirectory="../../../data" checkpointDirectory="../../../data/ckpt" applicationScope="Default" applicationDirectory="../../../.">
+        <libraries/>
+        <hostpools>
+            <hostpool name="$default" membershipMode="shared" index="0"/>
+        </hostpools>
+        <tupleTypes>
+            <tupleType index="0">
+                <attribute type="rstring" name="str"/>
+                <attribute type="int64" name="i"/>
+                <tuple>
+                    <ns2:attr type="rstring" name="str"/>
+                    <ns2:attr type="int64" name="i"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="1">
+                <attribute type="rstring" name="str"/>
+                <attribute type="int64" name="i"/>
+                <attribute type="int64" name="j"/>
+                <tuple>
+                    <ns2:attr type="rstring" name="str"/>
+                    <ns2:attr type="int64" name="i"/>
+                    <ns2:attr type="int64" name="j"/>
+                </tuple>
+            </tupleType>
+            <tupleType index="2">
+                <attribute type="int64" name="minValue"/>
+                <attribute type="int64" name="maxValue"/>
+                <attribute type="int64" name="avgValue"/>
+                <tuple>
+                    <ns2:attr type="int64" name="minValue"/>
+                    <ns2:attr type="int64" name="maxValue"/>
+                    <ns2:attr type="int64" name="avgValue"/>
+                </tuple>
+            </tupleType>
+        </tupleTypes>
+        <pes>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="0" class="BeJwzDUktLjGMBwAJVAJm">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="Rrt4HgHseG3PoZL4P9nrXJrinz4=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/checkpointing.example.streams_checkpointing_at_work-a.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="Test1" index="0" definitionIndex="0" class="Test1">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="1" name="lit$0"/>
+                            <runtimeConstant value="4000" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts/>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="Test1" tupleTypeIndex="0" name="Test1" isMutable="false" index="0">
+<interPeConnection operInstanceIndex="1" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts/>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="0" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="0"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="true" relocatable="true" optimized="true" language="C++" index="1" class="BeJwztHDOSE3OLsjPzCtJTQkuKUpNzI0HAFOyAgG">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="VP+MxFoSCmPfX5NFs6kjKGJBw4I=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/checkpointing.example.streams_checkpointing_at_work-b.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" restartable="true" relocatable="true" name="CheckpointedStream" index="1" definitionIndex="1" class="CheckpointedStream">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <checkpointing policy="periodic" period="2.0"/>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;_oTuple = &quot;" name="lit$0"/>
+                            <runtimeConstant value="0" name="lit$1"/>
+                            <runtimeConstant value="0" name="lit$2"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="0" name="Test1" isMutable="true" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="0"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="CheckpointedStream" tupleTypeIndex="1" name="CheckpointedStream" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="2" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="0" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="0" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="1" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="1" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="2" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="1"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="true" relocatable="true" optimized="true" language="C++" index="2" class="BeJwzNHNMTy9KTU8sSU0JLilKTcyNBwBDBAce">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="I0eZDuP2lyLqb2n8y9c5oSVdOD8=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/checkpointing.example.streams_checkpointing_at_work-c.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" restartable="true" relocatable="true" name="AggregatedStream" index="2" definitionIndex="2" class="AggregatedStream">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <checkpointing policy="periodic" period="2.0"/>
+                        <runtimeConstants>
+                            <runtimeConstant value="50" name="lit$0"/>
+                            <runtimeConstant value="1" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="1" name="CheckpointedStream" isMutable="false" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="1"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts>
+                            <outputPort viewable="true" streamName="AggregatedStream" tupleTypeIndex="2" name="AggregatedStream" isMutable="true" index="0">
+<interPeConnection operInstanceIndex="3" iportIndex="0"/>
+                            </outputPort>
+                        </outputPorts>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="1" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="1" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="2" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts>
+                    <outputPort tupleTypeIndex="2" transport="TCP" singleThreadedOnOutput="true" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="3" iportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection oportIndex="0" operInstanceIndex="2"/>
+                    </outputPort>
+                </outputPorts>
+            </pe>
+            <pe restartable="false" relocatable="false" optimized="true" language="C++" index="3" class="BeJwzNHDLzEkNL8osSS2KBwAeNgS_0">
+                <envVars>
+                    <envVar value="/opt/ibm/java-x86_64-60/" name="STREAMS_JAVA_HOME"/>
+                </envVars>
+                <executable dynamicLoad="true" digest="/ydsYi2jV3/M7aa2hCLwXSMcd/Y=">
+                    <wrapper>none</wrapper>
+                    <executableUri>bin/checkpointing.example.streams_checkpointing_at_work-d.dpe</executableUri>
+                    <arguments></arguments>
+                    <dependencies/>
+                </executable>
+                <operInstances>
+                    <operInstance singleThreadedOnOutputs="true" singleThreadedOnInputs="true" name="FileWriter" index="3" definitionIndex="3" class="FileWriter">
+                        <resources>
+                            <poolLocation poolIndex="0"/>
+                        </resources>
+                        <runtimeConstants>
+                            <runtimeConstant value="&quot;AggOutput.csv&quot;" name="lit$0"/>
+                            <runtimeConstant value="true" name="lit$1"/>
+                        </runtimeConstants>
+                        <inputPorts>
+                            <inputPort tupleTypeIndex="2" name="AggregatedStream" isMutable="false" index="0">
+<interPeConnection oportIndex="0" operInstanceIndex="2"/>
+                            </inputPort>
+                        </inputPorts>
+                        <outputPorts/>
+                    </operInstance>
+                </operInstances>
+                <tracing level="error"/>
+                <inputPorts>
+                    <inputPort tupleTypeIndex="2" transport="TCP" index="0" encoding="LE">
+                        <staticConnections>
+                            <staticConnection peIndex="2" oportIndex="0"/>
+                        </staticConnections>
+                        <operInstanceConnection operInstanceIndex="3" iportIndex="0"/>
+                    </inputPort>
+                </inputPorts>
+                <outputPorts/>
+            </pe>
+        </pes>
+        <operDefinitions>
+            <operDefinition kind="spl.utility::Beacon" index="0"/>
+            <operDefinition kind="spl.utility::Custom" index="1"/>
+            <operDefinition kind="spl.relational::Aggregate" index="2">
+                <customMetricIndicies>
+                    <customMetricIndex>0</customMetricIndex>
+                </customMetricIndicies>
+            </operDefinition>
+            <operDefinition kind="spl.adapter::FileSink" index="3">
+                <customMetricIndicies>
+                    <customMetricIndex>1</customMetricIndex>
+                    <customMetricIndex>2</customMetricIndex>
+                </customMetricIndicies>
+            </operDefinition>
+        </operDefinitions>
+        <composites>
+            <sourceUris>
+                <uri path="file:///home/streamsadmin/Examples-for-beginners-For-Beginners/044_streams_checkpointing_at_work/checkpointing.example/streams_checkpointing_at_work.spl" index="0"/>
+            </sourceUris>
+            <compositeOpers>
+                <compositeOper toolkitIndex="0" numberOfOutputPorts="0" numberOfInputPorts="0" kind="checkpointing.example::streams_checkpointing_at_work" index="0" startLine="10" sourceIndex="0" endLine="72">
+                    <description>checkpointing.example::streams_checkpointing_at_work Composite</description>
+                </compositeOper>
+            </compositeOpers>
+            <compositeOperInstances>
+                <compositeOperInstance name="checkpointing.example::streams_checkpointing_at_work" index="4" compositeOperIndex="0" startLine="10" sourceIndex="0" endLine="72">
+                    <primitiveOperInstance toolkitIndex="2" name="Test1" kind="spl.utility::Beacon" index="0" startLine="12" sourceIndex="0" endLine="20">
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="CheckpointedStream" operIndex="1"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="CheckpointedStream" kind="spl.utility::Custom" index="1" startLine="22" sourceIndex="0" endLine="49">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="Test1" operIndex="0"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="AggregatedStream" operIndex="2"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="AggregatedStream" kind="spl.relational::Aggregate" index="2" startLine="51" sourceIndex="0" endLine="62">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="CheckpointedStream" operIndex="1"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                        <outputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="input" portIndex="0" operName="FileWriter" operIndex="3"/>
+</connections>
+                            </port>
+                        </outputPorts>
+                    </primitiveOperInstance>
+                    <primitiveOperInstance toolkitIndex="2" name="FileWriter" kind="spl.adapter::FileSink" index="3" startLine="64" sourceIndex="0" endLine="69">
+                        <inputPorts>
+                            <port index="0">
+<connections>
+    <connection portKind="output" portIndex="0" operName="AggregatedStream" operIndex="2"/>
+</connections>
+                            </port>
+                        </inputPorts>
+                    </primitiveOperInstance>
+                </compositeOperInstance>
+            </compositeOperInstances>
+        </composites>
+        <toolkits>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Examples-for-beginners-For-Beginners/044_streams_checkpointing_at_work" name="044_streams_checkpointing_at_work" index="0"/>
+            <toolkit version="1.0.0" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/com.ibm.streams.db" name="com.ibm.streams.db" index="1"/>
+            <toolkit version="1.1" uri="file:///home/streamsadmin/Streams-3.0.0.0/toolkits/spl" name="spl" index="2"/>
+        </toolkits>
+        <customMetrics>
+            <customMetric name="nCurrentPartitions" kind="Gauge" index="0">
+                <description>Number of partitions in the window</description>
+            </customMetric>
+            <customMetric name="nFilesOpened" kind="Counter" index="1">
+                <description>Number of files opened by the FileSink operator</description>
+            </customMetric>
+            <customMetric name="nTupleWriteErrors" kind="Counter" index="2">
+                <description>Number of tuple writes that failed</description>
+            </customMetric>
+        </customMetrics>
+    </application>
+</applicationSet>

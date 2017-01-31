@@ -1,1 +1,0 @@
-{"category": ["4"], "name": "Using Jmx Api", "language": ["Java"], "tags": ["jmx api", "get log file using jmx", "monitoring"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/101_using_jmx_api_02", "description": "This example shows how one can use the Streams JMX APIs to fetch the bulk contents from a log file for a given domain."}

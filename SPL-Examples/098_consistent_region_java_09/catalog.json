@@ -1,1 +1,0 @@
-{"category": ["5"], "name": "Java Source Operator in a Consistent Region", "language": ["Java", "SPL"], "tags": ["java consistent region"], "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/098_consistent_region_java_09", "description": "This particular example shows how to write  Java primitive operator that can be the start of a consistent region."}

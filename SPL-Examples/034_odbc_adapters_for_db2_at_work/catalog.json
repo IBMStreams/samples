@@ -1,7 +1,0 @@
-{"category": ["2"],
-   "name": "Odbc Adapters For Db2 at work",
-   "language": ["SPL"], "tags": ["odbc", "database", "db2", "jdbc"],
-   "toolkits": ["db", "database"],
-   "operators": ["ODBCSource","ODBCAppend","ODBCEnrich"],
-   "url": "https://github.com/natashadsilva/samples/tree/master/SPL-Examples/034_odbc_adapters_for_db2_at_work",
-    "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to access a particular test DB2 database."}
