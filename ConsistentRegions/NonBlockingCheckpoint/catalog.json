@@ -2,7 +2,7 @@
 	"name": "Non-Blocking Checkpointing for consistent regions",
 	"description": "Non-blocking checkpointing allows you to save your operator's state in a consistent region without having to suspend tuple processing.",
 	"language": ["SPL","C++"],
-	"category": ["5"],
+	"category": ["11"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
 	"tags": []

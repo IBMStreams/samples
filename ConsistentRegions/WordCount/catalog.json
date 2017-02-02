@@ -2,7 +2,7 @@
 	"name": "Simple consistent region example using a FileSource",
 	"description": "Example application using a periodic consistent region. The application counts how many times a word occurs in an input file",
 	"language": ["SPL"],
-	"category": ["5"],
+	"category": ["11"],
 	"blogPost": "http://developer.ibm.com/streamsdev/2015/02/20/processing-tuples-least-infosphere-streams-consistent-regions/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/WordCount",
 	"tags": []
