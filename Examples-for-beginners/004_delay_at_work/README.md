@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala
 /*
 This example shows how a Delay standard toolkit operator can be
 used to delay a stream. This example also introduces the
