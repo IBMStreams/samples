@@ -191,6 +191,46 @@
 ,{"category": ["1", "6"], "name": "Primitive Round Robin SPLit", "language": ["C++"], "tags": ["spl"], "url": "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/904_primitive_round_robin_split", "description": "SPL Introductory Tutorial sample"}
 ,{"category": ["6", "5"], "name": "Gate Load Balancer", "language": ["SPL"], "tags": ["threadedsplit", "gate", "threadedsplit operator", "gate operator", "improve performance"], "url": "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/905_gate_load_balancer", "description": "SPL Introductory Tutorial sample\""}
 ,{
+	"name": "C++ operator with sliding window",
+	"description": "This is an example of a C++ primitive operator which uses a sliding window to filter data received on its input port.",
+	"language": ["SPL","C++"],
+	"category": ["10","7","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/CppWindowSamples/SGFilter",
+	"tags": []
+}
+
+,{
+	"name": "How to use an operator as a parameter in a composite",
+	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so by creating a set of formatters for the HDFS2FilesSink operator.",
+	"language": ["SPL"],
+	"category": ["2","10","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/HDFSFormatter/",
+	"tags": [],
+	"toolkits": ["hdfs","json"],
+		"operators": ["HDFS2FilesSink","JSONToTuple","TupleToJSON"]
+}
+
+,{	"name": "C++ Native functions example",
+	"description": "This example shows how to add functionality to Streams using native functions.  This example creates functions for AES encryption and decryption",
+	"language": ["SPL", "C++"],
+	"category": ["10"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/NativeFunctions",
+	"tags": []
+}
+
+,{	"name": "Java operator with a tumbling window",
+	"description": "This is a very simple example of how to create a Java operator that has a tumbling window.",
+	"language": ["SPL","Java"],
+	"category": ["10","1","7","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/WindowTest",
+	"tags": []
+}
+
+,{
 	"name": "Use the Geofence operator in a smart marketing campaign",
 	"description": "This application shows how the Geofence operator can be used to determine when users enter a shopping center and offer them promotions when that happens",
 	"language": ["SPL"],
@@ -279,46 +319,6 @@
 		"url": "https://github.com/IBMStreams/samples/tree/master/ODM/HealthDemo",
 	"tags": [],
 		"toolkits": ["rules"]
-}
-
-,{
-	"name": "C++ operator with sliding window",
-	"description": "This is an example of a C++ primitive operator which uses a sliding window to filter data received on its input port.",
-	"language": ["SPL","C++"],
-	"category": ["10","7","1"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/CppWindowSamples/SGFilter",
-	"tags": []
-}
-
-,{
-	"name": "How to use an operator as a parameter in a composite",
-	"description": "Specifying an operator as a parameter allows you to divide your application into reusable components and prevent code duplication.  This example demonstrates how to do so by creating a set of formatters for the HDFS2FilesSink operator.",
-	"language": ["SPL"],
-	"category": ["2","10","3"],
-	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/HDFSFormatter/",
-	"tags": [],
-	"toolkits": ["hdfs","json"],
-		"operators": ["HDFS2FilesSink","JSONToTuple","TupleToJSON"]
-}
-
-,{	"name": "C++ Native functions example",
-	"description": "This example shows how to add functionality to Streams using native functions.  This example creates functions for AES encryption and decryption",
-	"language": ["SPL", "C++"],
-	"category": ["10"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/extending-streams-functionality-with-native-functions/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/NativeFunctions",
-	"tags": []
-}
-
-,{	"name": "Java operator with a tumbling window",
-	"description": "This is a very simple example of how to create a Java operator that has a tumbling window.",
-	"language": ["SPL","Java"],
-	"category": ["10","1","7","3"],
-	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/OperatorsAndFunctions/WindowTest",
-	"tags": []
 }
 
 ,{
