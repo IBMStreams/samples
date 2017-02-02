@@ -16,3 +16,6 @@ function handler2() {
 }
 
 $("#filterButton").one("click", handler1);
+$("#backtotop").click(function(){
+  $("#searchTextF").focus();
+});

@@ -20,9 +20,14 @@ body {
   padding: 0 2rem;
 }
 
+
+
+#bottomrow{
+  margin-top: 50px;
+}
 .header-panel.shadow-z-2 {
   background-color: #152934;
-  padding: 15px 0;
+  padding: 2px;
   width: 100%;
 }
 
@@ -55,29 +60,6 @@ body {
   background-image: url("./static/img/bluemix-logo-2016-feb.svg");
 }
 
-.logo-turner {
-  font-size: 18px;
-  vertical-align: middle;
-  text-align: center;
-  margin-top: 10px;
-  letter-spacing: 2px;
-}
-
-.row-content{
-  vertical-align: top;
-}
-
-.row-picture {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px;
-}
-
-.row-details {
-  display: inline-block;
-  vertical-align: middle;
-  color: #fff;
-}
 
 p.info {
   color: #fff;
@@ -159,25 +141,6 @@ li.current-menu-item:before {
   color: #7cc7ff;
 }
 
-.home-subtitle {
-  font-size: 26px;
-  margin-bottom: 32px;
-  margin-top: 5px;
-  color: #01c87b;
-  font-weight: 300;
-}
-
-h2.blog-title-pro{color: #fff;}
-
-h2.blog-title-pro:after {
-  content: "";
-  display: block;
-  width: 104px;
-  height: 4px;
-  margin-top: 16px;
-  margin-left: 1px;
-  background: rgb(90, 170, 250);
-}
 
 .project-link {
   background-color: transparent;
@@ -263,7 +226,7 @@ footer {
   margin-bottom: 3em;
   padding-top: 10px;
   color: black;
-  font-size: 13px;
+  font-size: 14px;
   bottom: 0;
   padding-bottom: 10px;
   text-align: center;
@@ -796,22 +759,6 @@ a#fliterButtonID:hover{
   margin-bottom: 1rem;
 }
 
-ul.triggers {
-  color: #00a6bc;
-  list-style: none;
-  font-size: 18px;
-  width: 7em;
-  margin-left: 7em;
-}
-ul.triggers li {
-  cursor: pointer;
-  background: url(//d12zt1n3pd4xhr.cloudfront.net/fp/img/fp5arrow.png) 0 2px no-repeat;
-  padding-left: 24px;
-  margin: 0.5ex 0;
-}
-ul.triggers li:hover {
-  color: #111;
-}
 
 @media (max-width: 768px) {
   .col-md-12.col-xs-12.footer {

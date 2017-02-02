@@ -17,7 +17,7 @@
 
 </head>
 
-<body class="home overflow-hidden" ng-controller="MainController" ng-cloak>
+<body  id="top" class="home overflow-hidden" ng-controller="MainController" ng-cloak>
 
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDPHZL"
@@ -25,12 +25,14 @@
     <!-- End Google Tag Manager (noscript) -->
 
 
-    <div class="header-panel shadow-z-2"><h1>IBM Streams Samples Catalog</h1>
+    <div class="header-panel shadow-z-2">
       <div class="social-icons">
-  <a class="icon" href="https://developer.ibm.com/streamsdev/"><img id="about" src="./static/img/Streams-32x.png" /></a>
+        <a class="icon" title="Visit Streamsdev" href="https://developer.ibm.com/streamsdev/"><img id="about" src="./static/img/Streams-32x.png" /></a>
+        <a class="icon" title="View samples on GitHub" data-track-action="Icon" data-track-label="github" target="_blank" href="https://github.com/IBMStreams/samples"><i class="fa fa-github"></i></a>
+        <a class= "icon" href="#bottomrow"><img  class="logo-icon" title="Useful links" src="./static/img/arrow.svg" ></a>
 
-<a class="icon" data-track-action="Icon" data-track-label="github" target="_blank" href="https://github.com/IBMStreams/samples"><i class="fa fa-github"></i></a>
-      </div></div>
+</div><h1>IBM Streams Samples Catalog</h1>
+      </div>
 
 
 
@@ -212,16 +214,35 @@
 
 
 
-  <div class="row">
+
+  <div id="bottomrow" >
     <div class="col-md-12 col-xs-12 footer">
-      <footer>
-        Forked from the <a href="https://ibm-bluemix.github.io/">IBM Bluemix Featured samples page </a><br/><br/>
-        Copyright © IBM 2017
-      </footer>
+
+        <table style="width: 100%; text-align: left; "><tr>
+
+        <td style="width: 50%; vertical-align: top">
+        <h3>Learn more</h3>
+            <a  href="https://www.ibm.com/analytics/us/en/technology/stream-computing/">IBM Streams website</a><br/>
+            <a  href="https://developer.ibm.com/streamsdev/"> StreamsDev blog</a><br/>
+              <a  href="http://ibmstreams.github.io/tutorials/">IBM Streams Tutorials Hub</a><br/>
+              <a  href="https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.welcome.doc/doc/kc-homepage.html">IBM Streams Documentation</a>
+        </td>  <td style="width: 50%; vertical-align: top"><h3>Contribute</h3>
+                <a href="https://github.com/IBMStreams/samples/wiki/How-to-add-a-sample-to-the-catalog"> Add a sample</a><br/>
+                <a href="https://developer.ibm.com/streamsdev/docs/contribute-github-project/">Contribute to a Streams Github project</a>
+            </td>
+
+    </tr>
+      </table><br/>  <footer >
+        <a href="" id="backtotop">Back to Top</a>
+          <br/>
+          Copyright © IBM 2017
+
+</footer>
+      </div>
     </div>
   </div>
 
-  <br>
+
 </div> <!-- end /.container -->
 
 <!-- Bootstrap core JavaScript
