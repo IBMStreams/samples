@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how one can send email alerts from within an SPL application.
 It uses the Java APIs to send email alerts via the Streams Java native function feature.

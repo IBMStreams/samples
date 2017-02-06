@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how Java native functions can be used very easily within
 the SPL code. It also shows how one can maintain state within a Java function.

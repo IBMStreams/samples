@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates an important standard toolkit operator named
 ThreadedSplit. It is a multi-threaded split that is differnt from the other

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This is example 10 in the series of 12 User Defined Parallelism (UDP) scenarios.
 UDP is a great feature to parallelize an entire composite or a particular operator.

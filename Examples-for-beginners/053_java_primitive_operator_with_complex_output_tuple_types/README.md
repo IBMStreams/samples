@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a Java primitive operator is created from scratch.
 In addition, this example shows how we can create a complex output tuple

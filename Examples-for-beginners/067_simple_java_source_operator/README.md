@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a very simple Java source operator.
 */

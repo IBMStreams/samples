@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example introduces one of the must-learn features of the SPL language.
 SPL language offers an extensive list of options to do configuration at the

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates how two different SPL applications can
 share streams between them. This is an important feature that is 
@@ -112,7 +112,7 @@ composite Main {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates how two different SPL applications can
 share streams between them. This is an important feature that is 

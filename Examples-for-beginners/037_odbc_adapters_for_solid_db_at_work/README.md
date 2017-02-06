@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows the use of the three Streams ODBC adapters for connecting to 
 a SolidDB in-memory database. Those operators are ODBCSource, ODBCAppend, and 

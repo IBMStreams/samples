@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a way to create a C++ primitive source operator and then provide a control
 input port for it. Certain classes of applications can make use of this facility to control

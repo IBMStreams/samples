@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how Streams can be used to write to the Apache ActiveMQ queues and
 then read from those queues.  It employs two operators (JMSSource and JMSSink) from the

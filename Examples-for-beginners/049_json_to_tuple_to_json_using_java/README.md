@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 =====================================================================
 This example shows how an SPL application can consume JSON formatted

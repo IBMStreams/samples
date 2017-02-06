@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates two important techniques that will be commonly
 used in real-world usecases.

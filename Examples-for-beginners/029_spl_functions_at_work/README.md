@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 // This file includes the SPL functions used in this application.
 namespace my.sample;
 
@@ -23,7 +23,7 @@ public uint32 division(uint32 operand1, uint32 operand2) {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how helper and utility functions can be written using the
 SPL language. It also shows how those SPL functions can be put to use inside

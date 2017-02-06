@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates one of the important features desired in the
 real-world (mostly in the retail banking and in the telco industries).

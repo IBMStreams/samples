@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how arguments supplied during the 
 application compile time can be accessed inside of the SPL applications.

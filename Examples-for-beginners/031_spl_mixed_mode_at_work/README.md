@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a cool SPL feature called mixed-mode support. In this,
 developers can mix PERL code islands inside of an SPL application.

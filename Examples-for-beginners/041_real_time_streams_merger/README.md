@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how two or more incoming streams with a common schema can be merged to 
 flow in a sequence one after the other.

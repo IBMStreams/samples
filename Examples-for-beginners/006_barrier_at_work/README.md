@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to synchronize the incoming tuples using a 
 Barrier operator. It uses a bank deposit/debit scenario to 

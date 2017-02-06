@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows an important operator that brings Java into the C++ dominated
 world of Streams!!! That operator is called JavaOp, which is used to call out to

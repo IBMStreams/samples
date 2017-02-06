@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 ==================================================================
 This application shows how native functions written in C++ can be

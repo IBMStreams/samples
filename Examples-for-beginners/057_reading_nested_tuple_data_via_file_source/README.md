@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how one can ingest nested tuple data from an input data file using the
 SPL FileSource operator. As it can be seen below, our main tuple type PreposData contains

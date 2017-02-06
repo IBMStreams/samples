@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a block of data can be ingested and then individual tuples
 can be parsed out of that data block. It is a very tiny example. But, it demonstrates

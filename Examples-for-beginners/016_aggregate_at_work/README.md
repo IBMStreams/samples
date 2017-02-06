@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows off yet another powerful standard toolkit operator named
 the Aggregate. It is very good in computing on the fly aggregate values by

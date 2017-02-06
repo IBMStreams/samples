@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example deals with an intersting standard toolkit operator called
 DynamicFilter. This operator is a special version of the Filter operator

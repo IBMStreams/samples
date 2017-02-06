@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows the mechanism used to create a C++ primitive operator 
 from scratch. In this application, a C++ primitive operator model XML file

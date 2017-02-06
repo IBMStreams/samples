@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 =====================================================
 This SPL composite includes a simple example to show

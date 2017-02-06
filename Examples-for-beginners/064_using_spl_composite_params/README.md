@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates how one can use different parameter mode
 options available in a composite operator. More specifically,

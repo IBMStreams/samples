@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows the use of the three Streams ODBC adapters. Those operators
 are ODBCSource, ODBCAppend, and ODBCEnrich. The code in this example is written

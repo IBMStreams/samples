@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a Punctor operator could be used in an application.
 Punctor operator allows the transformation of the input tuples and then

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows one of the power-packed standard toolkit operators;
 i.e. Join. This operator is so versatile that it is hard to do justice in 

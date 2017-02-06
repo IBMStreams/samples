@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This simple example shows two Java operators working fine after being fused together.
 The first Java operator is a sink operator and it runs for a long time with a time

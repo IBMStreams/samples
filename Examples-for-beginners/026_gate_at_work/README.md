@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This is an example that uses the Gate operator from the standard toolkit.
 This operator delays the incoming tuples until a downstream operator 

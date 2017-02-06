@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 ================================================================================
 This example shows an important feature of Streams that is made possible by one of 

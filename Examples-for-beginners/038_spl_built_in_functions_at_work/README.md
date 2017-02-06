@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This is a very simple example that showcases a random collection of
 powerful built-in SPL functions that are availble out of the box.

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows the use of the Sort operator in the context of an application.
 Sort operator is highly configurable with all kinds of windowing support.

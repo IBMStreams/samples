@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates an utility operator called Union. This operator
 combines all the tuples from several input ports as they arrive and emits a

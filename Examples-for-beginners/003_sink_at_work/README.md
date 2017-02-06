@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how FileSinks and Custom sinks can be employed
 in applications. It also shows how a Beacon operator can be used

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /* 
 ==========================================================================
 Copyright (C) 2014-2015, International Business Machines Corporation
@@ -113,7 +113,7 @@ composite ConsistentRegion6 {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 ============================================================================
 This is an utility application that is used to pump test data for testing

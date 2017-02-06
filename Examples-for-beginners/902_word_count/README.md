@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 namespace word.count;
 
 type LineStat = tuple<int32 lines, int32 words>;
@@ -16,7 +16,7 @@ void addStat(mutable LineStat x, LineStat y) {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 This example is the same code that can be found in the SPL introductory tutorial PDF file.
 Please see that PDF file for a description about what this application does.

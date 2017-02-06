@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example is the same code that can be found in the SPL Standard Toolkit PDF file.
 Please see that PDF file for a description about what this application does.

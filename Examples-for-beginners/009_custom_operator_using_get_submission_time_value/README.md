@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates how to assign tuple attributes at the 
 time of job submission inside a custom operator. When the

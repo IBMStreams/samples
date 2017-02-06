@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows the use of multiple composites in a single application. 
 There is a main composite that in turn uses two other composites. This application
@@ -55,7 +55,7 @@ composite Main {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 namespace my.sample2;
 
 public composite StockMatch(output Output; input Input) {		
@@ -90,7 +90,7 @@ public composite StockMatch(output Output; input Input) {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 namespace my.sample3;
 
 public composite StockOrderCommission (output Output; input Input) {

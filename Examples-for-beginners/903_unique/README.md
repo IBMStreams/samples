@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example is the same code that can be found in the SPL introductory tutorial PDF file.
 Please see that PDF file for a description about what this application does.
@@ -62,7 +62,7 @@ composite Main {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 namespace my.util;
 
 public composite Uniq (output Out; input In) {

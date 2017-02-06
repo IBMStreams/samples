@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how the Streams REST APIs can be used within the context of an SPL application.
 For illustrative purposes, we are showing a few basic REST API calls.

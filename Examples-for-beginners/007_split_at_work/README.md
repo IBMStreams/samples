@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a Split operator can be used to split the
 incoming tuples based on a key. In this example, the split

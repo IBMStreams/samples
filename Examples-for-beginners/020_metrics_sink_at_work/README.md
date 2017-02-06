@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how one can use the MetricsSink standard toolkit
 operator to create application-specific custom metrics that can be

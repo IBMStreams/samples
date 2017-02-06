@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example is the simplest possible SPL application.
 It uses a Beacon operator to generate tuples that carry

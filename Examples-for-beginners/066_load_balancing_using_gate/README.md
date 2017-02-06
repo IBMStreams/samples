@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This application demonstrates how we can combine the ThreadedSplit and Gate operators to
 achieve load balancing of tuples. This idea appears in the Streams InfoCenter documentation for

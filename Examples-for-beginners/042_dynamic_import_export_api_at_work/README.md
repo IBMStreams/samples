@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to use the SPL APIs for dynamically importing and exporting streams.
 This is achieved by changing the import and export properties on the fly. This powerful
@@ -77,7 +77,7 @@ composite dynamic_export {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to use the SPL APIs for dynamically importing and exporting streams.
 This is achieved by changing the import and export properties on the fly. This powerful

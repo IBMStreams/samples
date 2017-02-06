@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how SPL provides rich support to generate synthetic data required for
 large scale testing. Many real-life applications in the Telco and the Retail Banking

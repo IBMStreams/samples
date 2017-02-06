@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a simple method for converting "tuple data to JSON" and 
 "JSON data to tuple". In this example, this conversion is done using C++ code.

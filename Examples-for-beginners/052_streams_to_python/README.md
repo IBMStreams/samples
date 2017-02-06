@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 ===========================================================================
 This SPL file includes a very simple application flow graph that

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a simple mechanism to serialize and deserialize SPL tuples.
 When large tuples need to be cached inside an operator's state variable, it will

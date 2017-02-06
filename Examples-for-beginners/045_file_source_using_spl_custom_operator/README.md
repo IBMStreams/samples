@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to create source operators using the Custom operator available in
 the SPL standard toolkit. Starting in Streams 3.x, it is possible to create source operators

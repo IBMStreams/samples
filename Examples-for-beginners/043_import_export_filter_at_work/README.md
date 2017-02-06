@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to use the SPL feature to apply a filter for what gets
 exported and what gets imported. This powerful feature lets the downstream
@@ -50,7 +50,7 @@ composite export_with_filter {
 ~~~~~~
 
 ---
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to use the SPL feature to apply a filter for what gets
 exported and what gets imported. This powerful feature lets the downstream

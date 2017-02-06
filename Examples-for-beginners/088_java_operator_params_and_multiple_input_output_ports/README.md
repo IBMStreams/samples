@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates the following three features of the Streams Java primitive operator framework.
 

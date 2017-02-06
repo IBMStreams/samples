@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to create host tags for a given Streams instance and then use those
 host tags inside an SPL application. By using host tags, it is possible to avoid hard-coding

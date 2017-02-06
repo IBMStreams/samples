@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to use the Streams C++ native function facility to recursively scan
 a given directory and obtain the names of the files present. The logic for the recursive

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how to launch/execute an external application within the Streams SPL code.
 In this case, we defined a simple C++ native function in which we have the required C++ code to

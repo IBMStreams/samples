@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example puts the two commonly used standard toolkit operators to work.
 They are Filter and Functor. Filter allows you to route tuples based on 

@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows off the Pair operator that is used for pairing
 tuples arriving on different input ports. Only when all the tuples

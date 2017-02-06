@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows a key feature of Streams by which an operator's
 state variables can be preserved when a PE fails and gets restarted.

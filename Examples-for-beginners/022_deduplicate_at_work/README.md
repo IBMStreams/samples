@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example describes the use of an important operator that is highly applicable
 in many telco scenarios. That operator is called DeDuplicate, which eliminates

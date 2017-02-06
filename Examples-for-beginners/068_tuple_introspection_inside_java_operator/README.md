@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example demonstrates how one can introspect tuples inside a 
 Java operator and determine the type and name of the attributes

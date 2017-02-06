@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a map value can be changed
 while iterating over that collection. This is a new feature available

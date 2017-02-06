@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 This example shows how a Java primitive operator can receive an incoming tuple and
 process it in multiple threads inside of that Java operator. While processing an

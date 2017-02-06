@@ -1,4 +1,4 @@
-~~~~~~
+~~~~~~ Scala 
 /*
 ==================================================================================
 This is a simple application that explains the steps required to use the
