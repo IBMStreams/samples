@@ -16,11 +16,12 @@ If you want to read more on Jekyll, [click here](https://jekyllrb.com/)
 
 Step 2) git clone
     ```
-    git clone https://github.com/IBM-Bluemix/IBM-Bluemix.github.io
+    git clone git clone https://github.com/IBMStreams/samples -b gh-pages
     ```
 
 Step 3) run the application
     ```
+    cd samples
     bundle exec jekyll serve
     ```
 
