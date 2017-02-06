@@ -1,4 +1,4 @@
-~~~~~~ Scala 
+~~~~~~ Scala
 /* 
 ==========================================================================
 Copyright (C) 2014-2015, International Business Machines Corporation
@@ -12,10 +12,10 @@ This particular example shows how a C++ primitive operator can play a role insid
 consistent region. Please look at the CPP interface (.h) and the implementation (.cpp) files
 inside the SimpleSourceOp sub-directory in this SPL project. There are certain callback
 functions that the C++ operator developer needs to implement the checkpoint and restore
-state events. This example simulates the operator failure by 
-aborting one of the operators in the flow graph automatically when the application is 
+state events. This example simulates the operator failure by
+aborting one of the operators in the flow graph automatically when the application is
 in the middle of executing the logic. By doing that, the core fault tolerance feature of
-the consistent region will get triggered to recover from a failure that occurred in an 
+the consistent region will get triggered to recover from a failure that occurred in an
 application graph. It will prove that the tuples will not be missed during the course of the
 unexpected operator failure and the subsequent recovery/restoration.
 
@@ -35,7 +35,7 @@ Compile and Run
 ---------------
 1) You can either compile this application inside the Streams Studio or from a Linux
    terminal window via the sc (Streams compiler) command.
- 
+
 2) You can launch from Streams Studio or submit via the streamtool command.
    In the resulting output file in the data directory (results.txt) will show you
    that there is no gap in the results. If that is the case , then the
@@ -50,13 +50,13 @@ composite ConsistentRegion7 {
 		// JobControlPlane operator is mandatory in applications with consistent regions.
 		// Simply include it anywhere in your application graph.
 		() as JCP = JobControlPlane() {}
-		
+
 		// We are going to declare a consistent region for our user created
 		// C++ primitive source operator.
 		@consistent(trigger=periodic, period=0.500)
 		stream<int32 serialNumber, int32 productId, rstring productName, int32 quantity> ProductData = SimpleSourceOp() {
 		}
-		
+
 		// We will forcefully fail this pass through operator exactly at tuple number 51
 		stream<ProductData> SameProductData as SPD = Custom(ProductData as PD) {
 			logic
@@ -68,7 +68,7 @@ composite ConsistentRegion7 {
 					}
 				}
 		}
-		
+
 		() as MySink1 = FileSink(SameProductData) {
 			param
 				file: "results.txt";
