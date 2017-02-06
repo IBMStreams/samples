@@ -2,7 +2,9 @@
 
 This respository contains open-source sample applications for IBM Streams.
 
-*_NEW_* [Search the samples using the samples catalog](http://ibmstreams.github.io/samples)
+###NEW: [Search the samples using the samples catalog](http://ibmstreams.github.io/samples)
+
+You can also [Contribute a sample](https://github.com/IBMStreams/samples/wiki/Adding-a-sample-to-the-catalog-and-repo)
 
 
 To learn more about Streams:
