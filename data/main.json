@@ -55,7 +55,7 @@
 	"language": ["SPL"],
 	"category": ["2"], "featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Databases/JDBCForBluemix/WeatherAnalysis",
+		"url": "https://github.com/IBMStreams/samples/tree/master/Databases/JDBCForBluemix",
 	"tags": [],
 		"services":   ["Bluemix", "dashDB"],
 		"toolkits": ["JDBC", "inet"],
@@ -207,7 +207,7 @@
 	"language": ["SPL","C++"],
 	"category": ["10","7","1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/CppWindowSamples/SGFilter",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/CppWindowSamples",
 	"tags": []
 }
 
