@@ -179,6 +179,9 @@ $scope.tagFilter = function (tag) {
       var idx = link.url.indexOf("tree/master/");
       if (idx != -1){
         link.base= link.url.substring(idx+12); //used to get download link
+        if (link.name=="Use JDBC operator in Bluemix"){
+          link.base="Databases/JDBCForBluemix"
+        }
       }
     })
 
