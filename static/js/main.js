@@ -175,6 +175,11 @@ $scope.tagFilter = function (tag) {
       if (link.operators) {
         link.tags = link.tags.concat(link.operators);
       }
+      //get the base of the full http://github/tree/master/path/to/sample
+      var idx = link.url.indexOf("tree/master/");
+      if (idx != -1){
+        link.base= link.url.substring(idx+12); //used to get download link
+      }
     })
 
 
