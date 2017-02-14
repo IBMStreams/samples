@@ -1,0 +1,68 @@
+namespace application ;
+
+use com.ibm.streams.timeseries.analysis::STD2 ;
+
+/*
+ * This sample demonstrates how to configure a tumbling window 
+ * with the STD2 operator in order to to analyze finite-length
+ * signals (signal segments).
+ */
+composite STD2FiniteLength
+{
+	graph
+		(stream<float64 data> DataStream) as DataSource = Custom()
+		{
+			logic
+				state :
+				{
+					float64 duration = 10.0f ; // 1 second
+					float64 sample_rate = 1000 ; // 1000 samples / sec
+					float64 num_seasons = 20 ;
+					float64 amplitude = 100 ;
+					float64 delta = 1.0 / sample_rate ;
+				}
+
+				onProcess :
+				{
+					mutable float64 t = 0.0 ;
+					mutable float64 trend = 1f ;
+					while(t < duration)
+					{
+						mutable float64 y = 0.0;
+						y += amplitude * sin(num_seasons * 2f * PI() * t) ; // seasonal component
+						y += trend; // trend component
+						y += 200f * random(); // residual component
+
+						// update trend and time
+						trend += 1f ;
+						t += delta ;
+
+						submit({ data = y }, DataStream) ;
+					}
+				}
+		}
+
+		(stream<float64 data, float64 season, float64 trend, float64 residual>
+			STDStream) as STD2Op = STD2(DataStream)
+		{
+			window
+				DataStream : tumbling, count(1000);
+			param
+				inputTimeSeries : data ;
+				seasonLength : 50u ;
+				algorithm : Additive ;
+				
+			output
+				STDStream : season = season(), trend = trend(), residual = residuals() ;
+		}
+
+		() as STD2ResultSink = FileSink(STDStream)
+		{
+			param
+				file : "finitesignal_results.csv" ;
+				format : csv ;
+		}
+
+}
+
+

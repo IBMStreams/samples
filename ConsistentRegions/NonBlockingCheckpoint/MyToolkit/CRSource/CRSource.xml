@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<!-- (C) Copyright IBM Corp.  2016    All Rights Reserved.      -->
+<operatorModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context> 
+      <customOutputFunctions>
+        <customOutputFunction>
+          <name>Functions</name>
+          <function>
+             <description>Passthrough function</description>
+             <prototype><![CDATA[<any T> T AsIs(T)]]></prototype>
+          </function>
+          <function>
+            <prototype><![CDATA[public uint64 IterationCount()]]></prototype>
+          </function>
+        </customOutputFunction>
+      </customOutputFunctions>
+      <providesSingleThreadedContext>Always</providesSingleThreadedContext>
+    </context>  
+    <parameters>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>period</name>
+        <description>
+Specifies the time interval between successive tuple submissions, in seconds. 
+When the parameter is not specified, the default value is `0.0`.
+        </description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>float64</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>iterations</name>
+        <description>
+Specifies the number of tuples to be produced by the `CRSource` operator. 
+It takes a single expression of type uint32 or int32 as its value, which is evaluated as uint32. 
+When the parameter is not specified, the operator produces tuples until the application is shut down.
+        </description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>initDelay</name>
+        <description>
+Specifies the number of seconds that the operator delays before starting to produce tuples.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>float64</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>triggerCount</name>
+        <description>
+Specifies how many tuples are submitted before the operator starts to drain the pipeline and establishes a consistent state. 
+If the `CRSource` operator is the trigger operator of a consistent region, this parameter must be set and must be greater than zero.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>uint32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>fileName</name>
+        <description>Input file name.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>delayFileName</name>
+        <description>Input delay file name.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>coreID</name>
+        <description>
+        CPU core ID to pin on.
+        </description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>int32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <!--<parameter>
+        <name>permitBatchSize</name>
+        <description>This optional parameter is used to specify how many tuples are submitted before the Beacon operator starts to drain the pipeline and establish a consistent state. This parameter must be greater than zero and must be set if the Beacon operator is the trigger operator of a consistent region.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>AttributeFree</expressionMode>
+        <type>uint32</type>
+        <cardinality>1</cardinality>
+      </parameter> -->
+    </parameters>
+    <inputPorts>
+    </inputPorts>
+    <outputPorts>
+      <outputPortSet>
+        <expressionMode>Expression</expressionMode> 
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <outputFunctions>
+          <default>AsIs</default>
+          <type>Functions</type>
+        </outputFunctions>
+        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <allowNestedCustomOutputFunctions>true</allowNestedCustomOutputFunctions>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>    
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

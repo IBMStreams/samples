@@ -1,0 +1,9 @@
+{"name": "Simple beginner application for Quick Start Guide",
+	"description": "This is the sample application from the Streams Quick Start Guide on StreamsDev.  It reads stock trade data from a CSV file and demonstrates how to use the Aggregate operator to compute max, min, and averages for each company.",
+	"language": ["SPL"],
+	"category": ["1"],"featured": true,
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/TradesApp",
+	"tags": [],
+		"operators": ["Filter", "Custom","Aggregate"]
+}

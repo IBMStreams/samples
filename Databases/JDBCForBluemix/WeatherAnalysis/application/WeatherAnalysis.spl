@@ -1,0 +1,122 @@
+
+/* Copyright (C) 2016, International Business Machines Corporation  */
+namespace application ;
+
+use com.ibm.streamsx.inet::InetSource ;
+use com.ibm.streamsx.inet.http::HTTPGetStream ;
+use com.ibm.streamsx.jdbc::JDBCRun ;
+/*
+ * You need to create the following table from the DashDB service dashboard in bluemix before running the sample
+ * create table weather(maxtemp int, mintemp int, maxtempfeelslike int, mintempfeelslike int, avgvisibility int, avgwindspeed int, decision char(150))
+ */
+composite WeatherAnalysis
+{
+	type
+		weather = rstring fcst_valid_local, int32 icon_code, rstring phrase_12char,
+			int32 tmp, int32 uv_warning, float64 vis, rstring wdir_cardinal, int32 wspd,
+			int32 feels_like ;
+		CalculatedAvg = int32 MaxTemp, int32 MinTemp, int32 MaxTempFeelsLike,
+			int32 MinTempFeelsLike, float64 AvgVisibility, int32 AvgWindSpeed ;
+	graph
+		stream<rstring data> HTTPGetStreamed = HTTPGetStream()
+		{
+			param
+				url : "http://weatherappkandu.mybluemix.net/rest/weather/48hours_xml" ; //return hourly weather report for Markham area
+				retryDelay : 60.0 ; //make request every 60 seconds 
+				retryOnClose : true ; //Retry connecting if the connection has been closed. Default is false
+
+		}
+
+		stream<weather> XMLParsed = XMLParse(HTTPGetStreamed)
+		{
+			param
+				trigger : "/hourlyWeathers/hourlyWeather" ;
+				parsing : permissive ;
+			output
+				XMLParsed : fcst_valid_local = XPath("fcst_valid_local/text()"),
+					icon_code =(int32) XPath("icon_code/text()"), phrase_12char =
+					XPath("phrase_12char/text()"), tmp =(int32) XPath("tmp/text()"),
+					uv_warning =(int32) XPath("uv_warning/text()"), vis =(float64)
+					XPath("vis/text()"), wdir_cardinal = XPath("wdir_cardinal/text()"),
+					wspd =(int32) XPath("wspd/text()"), feels_like =(int32)
+					XPath("feels_like/text()") ;
+		}
+
+		stream<CalculatedAvg> Average = Aggregate(XMLParsed)
+		{
+			window
+				XMLParsed : tumbling, count(48) ; //obtain a window of 48 tuples. Each tuple represents a day's weather info 
+
+			output
+				Average : MaxTemp = Max(tmp), MinTemp = Min(tmp), MaxTempFeelsLike =
+					Max(feels_like), MinTempFeelsLike = Min(feels_like), AvgVisibility =
+					Average(vis), AvgWindSpeed = Average(wspd) ;
+		}
+
+		stream<CalculatedAvg, tuple<rstring notice>> DecisionMaking = Custom(Average)
+		{
+			logic
+				state :
+				{
+					mutable DecisionMaking outTuple = { } ; //make output streams mutable 
+
+				}
+
+				onTuple Average :
+				{
+					if(MinTempFeelsLike < - 20) //if min temp with wind chill falls bellow 20 we issue a warning 
+
+					{
+						assignFrom(outTuple, Average) ;
+						outTuple.notice =
+							"OMG! with wind chill the temp is below -20 C !! Is this north pole or what ?" ;
+					}
+
+					else if(MinTempFeelsLike < - 10) //if min temp with wind chill falls bellow 10 we issue a warning 
+
+					{
+						assignFrom(outTuple, Average) ;
+						outTuple.notice =
+							"OMG! with wind chill the temp is below -10 C !! This is madness !!" ;
+							
+
+					}
+
+					else if(MinTempFeelsLike < 0) //if min temp with wind chill falls bellow 0 we issue a warning 
+
+					{
+						assignFrom(outTuple, Average) ;
+						outTuple.notice =
+							"OMG! with wind chill the temp is below 0 C !! This is still bad !!" ;
+					}
+
+					else
+					{
+						assignFrom(outTuple, Average) ;
+						outTuple.notice = "Above 0 C. OMg It feels so warm!!" ;
+					}
+
+					submit(outTuple, DecisionMaking) ;
+				}
+
+			}
+
+		stream<CalculatedAvg, tuple<rstring notice>> JDBCRunInsert =
+				JDBCRun(DecisionMaking)
+			{
+				param
+					jdbcClassName : "com.ibm.db2.jcc.DB2Driver" ;
+					jdbcDriverLib : "opt/db2jcc4.jar" ;
+					jdbcUrl : "your jdbc url goes here" ;
+					jdbcUser : "username" ;
+					jdbcPassword : "password" ;
+					statement :
+						"insert into weather(maxtemp,mintemp,maxtempfeelslike,mintempfeelslike,avgvisibility,avgwindspeed,decision) values (?,?,?,?,?,?,?)" ;
+					statementParamAttrs :
+						"MaxTemp,MinTemp,MaxTempFeelsLike,MinTempFeelsLike,AvgVisibility,AvgWindSpeed,notice" ;
+			}
+
+	}
+
+
+

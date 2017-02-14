@@ -1,0 +1,76 @@
+namespace application ;
+
+use com.ibm.streams.text.analytics::TextExtract ;
+
+type InputData = rstring inputLine, rstring source ;
+		/**
+		 * The span type is another way to represent the output of a given column.
+		 * Instead of viewing the data as a string,
+		 * We use a tuple that represents the start and end index of the extracted data.
+		 */
+type Span = tuple<int32 begin, int32 end> ;
+		/**
+		 * The output schema for the Mentions extractor that was created in the web tool. 
+		 */
+type MentionsExtractorOutput = Span Snippet, rstring Organizations,
+			rstring Offerings ;
+/**
+ * This application demonstrates using the TextExtract operator
+ * to load and run an extractor created in the BigInsights web tool.
+ * This is the application that goes along with the article "Real Time Text Analysis with Streams and BigInsights" published on StreamsDev
+ * After launching the application, the results of running the application are updated dynamically in a web app accessible at : http://<pe_host>:9899/textAnalytics to view the app
+ */
+public composite ProductSearch
+{
+	
+	graph
+		stream<rstring file> FileNameStream = DirectoryScan()
+		{
+			param
+				directory : "input" ;
+				initDelay : 8.0 ;
+			config
+				placement : partitionColocation("dataSource") ;
+		}
+
+		stream<rstring inputLine, rstring source> Input = FileSource(FileNameStream)
+		{
+			param
+				format : line ;
+			output
+				Input : source = FileName() ;
+			config
+				placement : partitionColocation("dataSource") ;
+		}
+		/** Invocation of the TextExtract operator that loads the extractor created in the web tool		
+		*/
+		stream<MentionsExtractorOutput, InputData> TextExtractOutputStream =
+			TextExtract(Throttle_6_out0 as inPort0Alias)
+		{
+			param
+				moduleSearchPath : "etc/mentions_extractor" ;
+				inputDoc : "inputLine" ;
+				outputViews : "Mentions" ;
+				outputMode : "multiPort" ;
+		}
+
+		//send data to web page, see WebOutput.spl for example.
+		() as WebOut = WebOutput(TextExtractOutputStream)
+		{
+		}
+
+		() as FileSink_4 = FileSink(TextExtractOutputStream)
+		{
+			param
+				file : "/tmp/productSearchExtractorResults.txt" ;
+				format : txt ;
+		}
+
+		(stream<rstring inputLine, rstring source> Throttle_6_out0) as Throttle_6 =
+			Throttle(Input as inputStream)
+		{
+			param
+				rate : 0.7 ;
+		}
+
+}

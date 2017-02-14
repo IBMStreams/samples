@@ -1,0 +1,67 @@
+// (C) Copyright IBM Corp.  2016    All Rights Reserved.      
+<%
+# whether to use consistent region
+my $consistent        = $ARGV[0];
+# consistent region period
+my $period            = $ARGV[1];
+# total number of tuples to expect before terminating test
+my $tupExpected       = $ARGV[2];
+%>
+
+// Configuration:
+// consistentRegion = <%=$consistent%>
+// period = <%=$period%>
+// tupExpected = <%=$tupExpected%>
+
+namespace test;
+
+use MyToolkit::*;
+
+composite Main 
+{
+graph
+
+<%if ($consistent eq "yes") {%>
+  // JCP operator is required to use consistent region.
+  // It hosts the controller of consistent region.
+  () as JCP = JobControlPlane() { }
+<%}%>
+
+<%if ($consistent eq "yes") {%>
+  // annote the start operator of a consistent region with
+  // @consistent. Within the annotation, one can specify
+  // the trigger policy and other paramters of the region.
+  @consistent(trigger=periodic, period=(float64)<%=$period%>)
+<%}%>
+  // The 'Source' operator is a tuple generator.
+  // The tuple format is borrowed from the trade/quote message
+  // format in the sample VWAP application.
+  stream<rstring ric, rstring ttype, float32 price,
+      float32 volume, float32 askprice, float32 asksize>
+  Source = CRSource() {
+      param 
+            // 'fileName' parameter specifies the file containing input data
+            fileName : "input.50K";
+            // 'delayFileName' parameter specifies the file which sets the 
+            // inter-tuple delay in micro-seconds. This can be used to control
+            // generated data rate.
+            delayFileName : "delay.50K";
+            // 'iterations' parameter specifies total number of tuples to generate;
+            // it repetitively sends tuples contained in the input file 'fileName'.
+            iterations : <%=$tupExpected%>u; // total number of tuples to generate
+            // pin the operator thread to CPU core 0
+            coreID : 0; 
+      config placement : partitionIsolation;
+  }
+
+  // The 'MyOp' operator is a C++ primitive operator which
+  // can be configured to do blocking or non-blocking checkpoint.
+  stream<Source> MyOp = NBOp(Source as I) {
+      param useNonBlockingCheckpoint : true;
+            // the optional 'checkpintDelay' paramter can set checkpoint() to
+            // sleep for a given number of seconds
+            checkpointDelay : 10;
+  }
+
+  config tracing : info;
+}

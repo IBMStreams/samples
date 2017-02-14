@@ -1,0 +1,4 @@
+{"contacts" : {"contact" : {"name" : "Barry Sonoma", "phone" : "123-456-7890", "address" : {"street" : "123 JFK Street", "city" : "Chicago", "state" : "Illinoise", "zipCode" : "60601"}}}}
+{"contacts" : {"contact" : {"name" : "George Hush", "phone" : "123-678-4321", "address" : {"street" : "123 FDR Street", "city" : "Dallas", "state" : "Texas", "zipCode" : "75201"}}}}
+{"contacts" : {"contact" : {"name" : "Bill Flinton", "phone" : "289-123-8765", "address" : {"street" : "123 Hill Street", "city" : "Chappaqua", "state" : "New York", "zipCode" : "10514"}}}}
+{"contacts" : {"contact" : {"name" : "Jimmy Sorter", "phone" : "426-321-7896", "address" : {"street" : "123 Nixon Street", "city" : "Atlanta", "state" : "Georgia", "zipCode" : "30301"}}}}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- begin_generated_IBM_copyright_prolog                             -->
+<!--                                                                  -->
+<!-- This is an automatically generated copyright prolog.             -->
+<!-- After initializing,  DO NOT MODIFY OR MOVE                       -->
+<!-- **************************************************************** -->
+<!-- THIS SAMPLE CODE IS PROVIDED ON AN "AS IS" BASIS. IBM MAKES NO   -->
+<!-- REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, CONCERNING    -->
+<!-- USE OF THE SAMPLE CODE, OR THE COMPLETENESS OR ACCURACY OF THE   -->
+<!-- SAMPLE CODE. IBM DOES NOT WARRANT UNINTERRUPTED OR ERROR-FREE    -->
+<!-- OPERATION OF THIS SAMPLE CODE. IBM IS NOT RESPONSIBLE FOR THE    -->
+<!-- RESULTS OBTAINED FROM THE USE OF THE SAMPLE CODE OR ANY PORTION  -->
+<!-- OF THIS SAMPLE CODE.                                             -->
+<!--                                                                  -->
+<!-- LIMITATION OF LIABILITY. IN NO EVENT WILL IBM BE LIABLE TO ANY   -->
+<!-- PARTY FOR ANY DIRECT, INDIRECT, SPECIAL OR OTHER CONSEQUENTIAL   -->
+<!-- DAMAGES FOR ANY USE OF THIS SAMPLE CODE, THE USE OF CODE FROM    -->
+<!-- THIS [ SAMPLE PACKAGE,] INCLUDING, WITHOUT LIMITATION, ANY LOST  -->
+<!-- PROFITS, BUSINESS INTERRUPTION, LOSS OF PROGRAMS OR OTHER DATA   -->
+<!-- ON YOUR INFORMATION HANDLING SYSTEM OR OTHERWISE.                -->
+<!--                                                                  -->
+<!-- (C) Copyright IBM Corp. 2011, 2011  All Rights reserved.         -->
+<!--                                                                  -->
+<!-- end_generated_IBM_copyright_prolog                               -->
+
+<st:connections xmlns:st="http://www.ibm.com/xmlns/prod/streams/adapters"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<connection_specifications>
+		<connection_specification name="flightConnection1">
+			<JMS initial_context="org.apache.activemq.jndi.ActiveMQInitialContextFactory" provider_url = "tcp://localhost:61616" connection_factory="ConnectionFactory"/>
+		</connection_specification>	     
+	</connection_specifications>
+
+
+	<access_specifications>
+		<access_specification name="flightAccess1">
+			<destination identifier="dynamicQueues/MapQueue" delivery_mode="persistent" message_class="map" />
+			<uses_connection connection="flightConnection1"/>
+			<native_schema>
+				<attribute name="carrier" type="String" length="18" />
+			    <attribute name="model" type="String" length="18" />
+				<attribute name="tarmacId" type="Int" />
+				<attribute name="arrivingFrom" type="String" length="6" />
+				<attribute name="gateNumber" type="Int" />
+				<attribute name="passengerCnt" type="Int" />
+			</native_schema>
+		</access_specification>		
+	</access_specifications>  
+</st:connections>

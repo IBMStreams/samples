@@ -1,0 +1,9 @@
+{
+	"name": "Learn how to use the application dashboard with this sample",
+	"description": "Use this sample to follow along with the application dashboard tutorial on Streamsdev. It demonstrates a few features of the Streams Console.",
+	"language": ["SPL"],
+	"category": ["1","4"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/getting-started-with-application-dashboards/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ConsoleAndMonitoring/IndexAnalyzer",
+	"tags": ["console","IndexAnalyzer"]
+}

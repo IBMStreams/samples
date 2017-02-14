@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- begin_generated_IBM_copyright_prolog                             -->
+<!--                                                                  -->
+<!-- This is an automatically generated copyright prolog.             -->
+<!-- After initializing,  DO NOT MODIFY OR MOVE                       -->
+<!-- **************************************************************** -->
+<!-- Licensed Materials - Property of IBM                             -->
+<!-- 5799-HPH                                                         -->
+<!-- (C) Copyright IBM Corp.  2009, 2009    All Rights Reserved.      -->
+<!-- US Government Users Restricted Rights - Use, duplication or      -->
+<!-- disclosure restricted by GSA ADP Schedule Contract with          -->
+<!-- IBM Corp.                                                        -->
+<!--                                                                  -->
+<!-- end_generated_IBM_copyright_prolog                               -->
+
+
+<st:connections xmlns:st="http://www.ibm.com/xmlns/prod/streams/adapters"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connection_specifications>
+    <!-- Here, you must substitute the DB name, DB user id, and DB password that are meaningful to your needs. -->
+    <connection_specification name="SenTestConnection">
+      <ODBC database="MYDB" user="USERID" password="PASSWD"/>
+    </connection_specification>
+  </connection_specifications>
+
+  <access_specifications>
+    <!-- This access specification is used by the ODBCSource operator in the application -->
+    <access_specification name="readFromOrderTableForSource">
+      <query query="select OrderId, CustomerName, CustomerId, ProductName, ProductId, Price from Order" />
+      <uses_connection connection="SenTestConnection" />
+      <native_schema>
+        <column name="OrderId" type="INTEGER"/>
+        <column name="CustomerName" type="VARCHAR" length="50"/>
+        <column name="CustomerId" type="INTEGER"/>
+        <column name="ProductName" type="VARCHAR" length="50"/>
+        <column name="ProductId" type="INTEGER"/>
+        <column name="Price" type="VARCHAR" length="10"/>
+      </native_schema> 
+    </access_specification>
+
+
+    <!-- This access specification is used by the ODBCAppend operator in the application. -->
+    <access_specification name="writeToOrderResultsTable">
+      <table tablename="OrderResults" transaction_batchsize="1" rowset_size="1"/>
+      <uses_connection connection="SenTestConnection"/>
+      <native_schema>
+        <column name="OrderId" type="INTEGER"/>
+        <column name="CustomerName" type="VARCHAR" length="50"/>
+        <column name="CustomerId" type="INTEGER"/>
+        <column name="ProductName" type="VARCHAR" length="50"/>
+        <column name="ProductId" type="INTEGER"/>
+        <column name="Price" type="VARCHAR" length="10"/>
+        <column name="ShipmentStatus" type="INTEGER"/>
+        <column name="ShippingDate" type="VARCHAR" length="50"/>
+      </native_schema>
+    </access_specification>
+
+    <!-- This access specification is used by the ODBCEnrich operator in the application -->
+    <access_specification name="readFromOrderTableForEnrich" >
+      <query query="select CustomerName, CustomerId, ProductName, ProductId, Price from Order where OrderId = ?" />
+      <parameters>
+         <parameter name="orderId" type="int32" />
+      </parameters>
+      <uses_connection connection="SenTestConnection" />
+      <native_schema>
+        <column name="CustomerName" type="VARCHAR" length="50"/>
+        <column name="CustomerId" type="INTEGER"/>
+        <column name="ProductName" type="VARCHAR" length="50"/>
+        <column name="ProductId" type="INTEGER"/>
+        <column name="Price" type="VARCHAR" length="10"/>
+      </native_schema> 
+    </access_specification>
+
+  </access_specifications>
+</st:connections>

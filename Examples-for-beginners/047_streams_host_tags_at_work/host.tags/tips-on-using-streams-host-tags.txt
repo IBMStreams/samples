@@ -1,0 +1,97 @@
+This file shows how to create a Streams instance with machines carrying special host tags configured with the Streams domain.
+Information below is meant to be used in conjunction with the SPL code in the streams_host_tags_at_work.spl file.
+
+[Following commands were tested in a real Streams cluster at the IBM facility.]
+
+1) Create an instance with six machines (3 for data ingestion via TCP sources and 3 for data sinks via TCP sinks)
+   You have to provide your own streams instance name and your own machine names below.
+
+streamtool mkinstance -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME> --hosts myHost1,myHost2,myHost3,myHost4,myHost5,myHost6
+
+2) List the hosts in our Streams instance  (There are no special tags attached to those hosts at this time)
+
+streamtool lshost -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME> -l
+Instance: <YOUR_STREAMS_INSTANCE_NAME>
+Resource               Tags                        ResourceSpec
+myHost1               application,view
+myHost1               application,view  
+myHost2               application,view                          
+myHost3               application,view                          
+myHost4               application,view                          
+myHost5               application,view                          
+myHost6               application,view  
+
+3) Create host tags that we will add to our Streams domain so that we can use them later.
+
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Source1" tcpsource1
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Source2" tcpsource2
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Source3" tcpsource3
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Sink1" tcpsink1
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Sink2" tcpsink2
+streamtool mkhosttag -d <YOUR_STREAMS_DOMAIN_NAME> --description "TCP Sink3" tcpsink3
+
+4) List all the host tags available in our Streams domain.
+
+streamtool lshosttag -d <YOUR_STREAMS_DOMAIN_NAME>
+Domain: <YOUR_STREAMS_DOMAIN_NAME>
+Tag            ResourceType Description
+application    streams      An application resource is one that can be used to run streams processing applications.
+tcpsink1       streams      TCP Sink1
+tcpsink2       streams      TCP Sink2
+tcpsink3       streams      TCP Sink3
+tcpsource1     streams      TCP Source1
+tcpsource2     streams      TCP Source2
+tcpsource3     streams      TCP Source3
+view           streams      A view resource is one that can be used to run the view service.
+
+5) Add one or more host tags to all the machines that are part of our Streams domain.
+
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsource1 myHost1
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsource2 myHost2
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsource3 myHost3
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsink1 myHost4
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsink2 myHost5
+streamtool chhost -d <YOUR_STREAMS_DOMAIN_NAME> --add --tags tcpsink3 myHost6
+
+6) List the hosts in our Streams domain  (You can see that there are tags attached to those hosts now.)
+streamtool lshost -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME> -l
+Instance: <YOUR_STREAMS_INSTANCE_NAME>
+Resource               Tags                        ResourceSpec
+myHost1              application,tcpsource1
+myHost2              application,tcpsource2
+myHost3              application,tcpsource3
+myHost4              application,tcpsink1
+myHost5              application,tcpsink2
+myHost6              application,tcpsink3
+
+7) Please read the streams_host_tags_at_work.spl file to get an idea about how to place the TCP source and sink
+   operators without hard-coding the machine name to individual operators.
+
+8) Once you get an idea about how the operator placement is done to specific hosts by using the host tags,
+   you can try to compile that SPL file now (in your Streams Studio or inside an xterm window)
+   
+   sc -M host.tags::streams_host_tags_at_work  --output-directory=output/host.tags.streams_host_tags_at_work/Distributed --data-directory=data
+
+9) After compiling it, you can run this example as shown below.
+
+streamtool submitjob -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME> ./output/host.tags.streams_host_tags_at_work/Distributed/host.tags.streams_host_tags_at_work.sab 
+CDISC0079I The system is submitting 1 applications to the <YOUR_STREAMS_INSTANCE_NAME>@<YOUR_USER_ID> instance.
+CDISC0080I Job ID 2 was submitted for the application that is stored at the following path: ./output/host.tags.streams_host_tags_at_work/Distributed/host.tags.streams_host_tags_at_work.adl.
+CDISC0020I Submitted job IDs: 2
+
+
+10) When the example application is running, you can see the TCP source and sink operators getting deployed on specific machines as shown below.
+
+streamtool lspes -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME>
+Instance: <YOUR_STREAMS_INSTANCE_NAME>
+  Id State      RC Healthy Host         PID   JobId    JobName                                Operators
+  12 Running     - yes     myHost1     22805     2    host.tags::streams_host_tags_at_work    Employee2
+  13 Running     - yes     myHost2     7621      2    host.tags::streams_host_tags_at_work    Employee1
+  14 Running     - yes     myHost3     18911     2    host.tags::streams_host_tags_at_work    DataSink3
+  15 Running     - yes     myHost4     31862     2    host.tags::streams_host_tags_at_work    Employee3
+  16 Running     - yes     myHost5     31937     2    host.tags::streams_host_tags_at_work    DataSink1
+  17 Running     - yes     myHost6     25876     2    host.tags::streams_host_tags_at_work    DataSink2
+
+11) Once you are done with this, you can stop this example by using this command
+
+streamtool canceljob -d <YOUR_STREAMS_DOMAIN_NAME> -i <YOUR_STREAMS_INSTANCE_NAME> <JOB_ID>

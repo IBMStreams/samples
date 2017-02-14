@@ -1,0 +1,10 @@
+{	"name": "Sentiment analysis in BigInsights",
+	"description": "Use the TextExtract operator to run the BigInsights starter kit application that analyzes the sentiment of tweets.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/BigInsightsStarterKitApp",
+	"tags": [],
+		"toolkits": ["text"],
+		"operators": ["TextExtract"]
+}

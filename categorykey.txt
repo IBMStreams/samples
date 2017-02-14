@@ -1,0 +1,12 @@
+Key
+1,Beginner/General
+2,Ingest and Store Data
+3,Tips
+4,Monitoring
+6,Correlate and Merge Streams
+5,Performance
+7,Analyze and Classify Data
+8,Best Practices
+9,Collections and Data Types
+10,Operators and Functions
+11,Consistent Regions

@@ -1,0 +1,13 @@
+module tauser_streams_1473700723840;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Offerings_External'
+import view Offerings_External from module tauser_streams_1473700723840__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Offerings_External'
+output view tauser_streams_1473700723840__Export.Offerings_External as 'Offerings_External';

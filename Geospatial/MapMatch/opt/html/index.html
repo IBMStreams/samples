@@ -1,0 +1,24 @@
+<!--
+/* Copyright (C) 2016, International Business Machines Corporation */
+/* All Rights Reserved */
+-->
+<!DOCTYPE html>
+<html>
+<body>
+Sample form that can be used to test the service and check if it is up and running. The below form will
+inject tuples to the Streaming service.
+<FORM METHOD="GET" ACTION="/WebRequest/ports/output/0/inject">
+objectId: <input type=text size=30 value="" name=objectId><br/>
+latitude: <input type=text size=30 value="" name=latitude><br/>
+longitude: <input type=text size=30 value="" name=longitude><br/>
+timeStamp: <input type=text size=30 value="" name=timeStamp><br/>
+<input type=submit value="Inject Tuple">
+</form>
+<br/>
+<br/>
+Results from the output can be viewed at the <a href="/streamsx.inet.resources/dojo/viewall.html">following link</a>.
+<br/>
+<br/>
+<a href="/streamsx.inet.resources">All the contexts provided by toolkit</a>
+</body>
+</html>

@@ -1,0 +1,159 @@
+/* Additional includes go here */
+
+/*
+This C++ primitive operator code is an example to explain the following.
+
+1) Create a source operator with a control input port.
+
+2) Receive the control stream in a control input port and use the value
+   sent via the control stream in the output tuples emitted by the source thread.
+   (Please refer to the operator model XML file to see how simple it is to define a 
+    control port. All you have to do is to have this XML element for the control input port:
+    <controlPort>true</controlPort>
+
+3) Process the operator parameter values (list of strings, integers, or floats).
+   In this example, we will receive one or more string literals as an operator parameter and
+   store them inside a list<rstring> member variable. Then, we will send that list<rstring>
+   values as one of the attributes in the output tuples emitted by the source thread.
+*/
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{
+<%
+    # Initialization code goes here    
+    # Let us parse the operator parameter passed by the developer.
+	# Read the favoriteMovies parameter which will have one or more string literals.
+	# We will read them here and create a list<rstring>
+	# (You could pass integer or float values in a similar way.)
+	my $listFavoriteMoviesParam = $model->getParameterByName("favoriteMovies");
+	
+	if ($listFavoriteMoviesParam) {
+	    # Get the number of string literals passed via the operator parameter.
+		my $numberOfParamValues = $listFavoriteMoviesParam->getNumberOfValues();
+		print ("rstring tempStr = \"\";\n");
+		
+		# Iterate through the available number of string literals and add them to 
+		# our list<rstring> C++ member variable.
+		for (my $cnt = 0; $cnt < $numberOfParamValues; $cnt++) {
+			print ("tempStr = " . $listFavoriteMoviesParam->getValueAt($cnt)->getSPLExpression() . ";\n");
+			print ("SPL::Functions::Collections::appendM(myMovies, tempStr);\n");
+		}
+	}
+%>
+    
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+    // Finalization code goes here
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+
+      createThreads(1); // Create source thread
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+	myName = "Jane Doe";
+    myAge = 18;
+
+    // A typical implementation will loop until shutdown
+      while(!getPE().getShutdownRequested()) {
+          sleep(2);
+          OPort0Type oTuple;
+          ValueHandle handle0 = oTuple.getAttributeValue(0);
+          rstring & name = handle0;
+          // We will assign this attribute to a value stored in 
+          // this operator's member variable.
+          name = myName;
+          
+          ValueHandle handle1 = oTuple.getAttributeValue(1);
+          int32 & age = handle1;
+          // We will assign this attribute to a value stored in 
+          // this operator's member variable.
+          age = myAge;
+          // Increment the myAge member variable by 1.
+          myAge += 1;
+          
+          ValueHandle handle2 = oTuple.getAttributeValue(2);
+          List & tempList = handle2;
+          SPL::list<rstring> & rstringList = static_cast<SPL::list<rstring> &> (tempList);
+          // We will assign this attribute to a value stored in
+          // this operator's member variable. (This variable was
+          // initialized in the operator constructor via the
+          // operator params passed from the SPL operator invocation code.
+          rstringList = myMovies;
+          submit(oTuple, 0);
+      }
+}
+
+// Tuple processing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+ 	// Since this input port is a control port, we should not submit anything on its
+ 	// output stream while receiving the control information.
+    switch(port) {
+       case 0: { 
+          IPort0Type & iTuple = static_cast<IPort0Type&>(tuple);
+          ValueHandle handle0 = iTuple.getAttributeValue(0);
+          rstring & newName = handle0;
+          myName = newName;
+          break;
+       } 
+    }
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+    // Sample submit code
+    /* 
+      OPort0Type otuple;
+      submit(otuple, 0); // submit to output port 0
+    */
+    // Sample cast code
+    /*
+    switch(port) {
+    case 0: { 
+      IPort0Type const & ituple = static_cast<IPort0Type const&>(tuple);
+      ...
+    } break;
+    case 1: { 
+      IPort1Type const & ituple = static_cast<IPort1Type const&>(tuple);
+      ...
+    } break;
+    default: ...
+    }
+    */
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+    /*
+      if(punct==Punctuation::WindowMarker) {
+        // ...;
+      } else if(punct==Punctuation::FinalMarker) {
+        // ...;
+      }
+    */
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

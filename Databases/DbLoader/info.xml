@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
+  <info:identity>
+    <info:name>com.ibm.streams.telco.framework.dbloader</info:name>
+    <info:description>
+The DBLoader is an SPL application for InfoSphere Streams to load files into a database.
+
+It improves the insert-performance for DB2, Informix, Netezaa and Oracle databases. 
+
+It is not needed to change the SPL code in case of new tables.
+
+The DBLoader scans the input directory and loads the files parallel into the database.  
+
+The DB2 load utility is capable of efficiently moving large quantities of data into newly created tables, or into tables that already contain data.
+
+
+Prerequisite:
+
+All input files must have a correctly formatted Comma Separated Value (csv) format. 
+
+The input file names must include the database schema and the table name. 
+
+The database schema begins after the path and end with a dot &quot;.&quot; The table name begins after &quot;.&quot; 
+and ends with a dash &quot;-&quot;.
+
+For example: /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv.
+
+In this case DB2INST1 is the database user name (or schema) And MY_TABLE_123 is the table name.
+
+DBLoader uses the LinuxSource operator to execute a command. 
+LinuxSource operator is a part of com.ibm.streamsx.linuxshell toolkit.
+
+It is available in: [https://www.ibm.com/developerworks/community/files/app#/file/633b140b-73ce-48dc-806e-a8a1e835aa0a]
+
+</info:description>
+    <info:version>1.1.0</info:version>
+    <info:requiredProductVersion>3.0.0</info:requiredProductVersion>
+  </info:identity>
+  <info:dependencies/>
+</info:toolkitInfoModel>

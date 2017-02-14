@@ -1,0 +1,9 @@
+# tuple<rstring nodeName>
+0.0, d0701b01
+0.0, d0701b02
+0.0, d0701b03
+0.0, d0701b04
+0.0, d0701b05
+0.0, d0701b06
+0.0, d0701b07
+0.0, localhost

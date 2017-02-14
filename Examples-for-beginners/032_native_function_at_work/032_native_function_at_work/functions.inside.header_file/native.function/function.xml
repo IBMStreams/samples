@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/function" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/function functionModel.xsd">
+  <functionSet>
+    <headerFileName>Functions.h</headerFileName>
+    <cppNamespaceName>test1</cppNamespaceName>
+    <functions>
+      <function>
+        <description docHref="" sampleUri="">Function to calculate tax</description>
+        <prototype cppName="calculateTax">public float32 taxCalculation1(float32, rstring)</prototype>
+      </function>
+    </functions>
+    <dependencies>
+      <library>
+        <cmn:description docHref=""></cmn:description>
+        <cmn:managedLibrary>
+          <cmn:includePath>../../impl/include</cmn:includePath>
+        </cmn:managedLibrary>
+      </library>
+    </dependencies>
+  </functionSet>
+</functionModel>

@@ -1,0 +1,13 @@
+module tauser_streams;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Mentions'
+import view Mentions from module tauser_streams__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Mentions'
+output view tauser_streams__Export.Mentions as 'Mentions';

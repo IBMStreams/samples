@@ -1,0 +1,172 @@
+/* Additional includes go here */
+#include <iostream>
+#include "NameServerLookup.h"
+
+using namespace primitive_operator_lib;
+using namespace std::tr1;
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+// Constructor
+MY_OPERATOR::MY_OPERATOR()
+{
+	// Initialize all the operator params to be true.
+	// In this application, let us assume that we will return all the
+	// four fields from the NS Lookup back to the caller.
+	nameServerNameNeeded = true;
+	nameServerAddessNeeded = true;
+	clientMachineNameNeeded = true;
+	clientMachineAddressNeeded = true;
+	
+	// Now, let us read the user preference that is passed via the operator parameters.
+	<%
+		my $nameServerNameNeededParam = $model->getParameterByName("nameServerNameNeeded");
+		my $nameServerAddressNeededParam = $model->getParameterByName("nameServerAddressNeeded");
+		my $clientMachineNameNeededParam = $model->getParameterByName("clientMachineNameNeeded");
+		my $clientMachineAddressNeededParam = $model->getParameterByName("clientMachineAddressNeeded");
+		 
+		if ($nameServerNameNeededParam) {
+			print ("nameServerNameNeeded = " . $nameServerNameNeededParam->getValueAt(0)->getCppExpression() . ";\n");
+		} # End of if ($nameServerNameNeededParam)
+		
+		if ($nameServerAddressNeededParam) {
+			print ("nameServerAddessNeeded = " . $nameServerAddressNeededParam->getValueAt(0)->getCppExpression() . ";\n");
+		} # End of if ($nameServerAddressNeededParam)
+		
+		if ($clientMachineNameNeededParam) {
+			print ("clientMachineNameNeeded = " . $clientMachineNameNeededParam->getValueAt(0)->getCppExpression() . ";\n");
+		} # End of if ($clientMachineNameNeededParam)		
+
+		if ($clientMachineAddressNeededParam) {
+			print ("clientMachineAddressNeeded = " . $clientMachineAddressNeededParam->getValueAt(0)->getCppExpression() . ";\n");
+		} # End of if ($clientMachineAddressNeededParam)				
+	%>
+}
+
+// Destructor
+MY_OPERATOR::~MY_OPERATOR() 
+{
+    // Finalization code goes here
+}
+
+// Notify port readiness
+void MY_OPERATOR::allPortsReady() 
+{
+    // Notifies that all ports are ready. No tuples should be submitted before
+    // this. Source operators can use this method to spawn threads.
+
+    /*
+      createThreads(1); // Create source thread
+    */
+}
+ 
+// Notify pending shutdown
+void MY_OPERATOR::prepareToShutdown() 
+{
+    // This is an asynchronous call
+}
+
+// Processing for source and threaded operators   
+void MY_OPERATOR::process(uint32_t idx)
+{
+    // A typical implementation will loop until shutdown
+    /*
+      while(!getPE().getShutdownRequested()) {
+          // do work ...
+      }
+    */
+}
+
+// Tuple processing for mutating ports 
+void MY_OPERATOR::process(Tuple & tuple, uint32_t port)
+{
+	// Define a output tuple variable.
+	OPort0Type otuple;
+	// Assign the values from the input tuple to the output tuple for all
+	// the attributes that have the same name in both of those tuples.
+	// Second parameter false in assignFrom method allows us to copy the 
+	// attribute values between two tuples that are of different types (i.e. differ in their schema).
+	otuple.assignFrom(tuple, false);   
+    
+	// Get the value of the first attribute in the output tuple which is called "nodeName".
+	// In this case, the "nodeName" attribute carries the name of the node for which
+	// we want to do the NSLookup.
+	// We can also get the tuple attribute values using the attribute position rather than the attribute names.
+	ValueHandle handle0 = otuple.getAttributeValue(0);
+	rstring const & nodeName_rstring = handle0;
+	std::string const & nodeName = nodeName_rstring.string();
+	
+	// We can now invoke the NSLookup method from the class located inside the shared library.
+	NameServerLookup nsl;
+	
+	/*
+	// We could do the following to get the result from unordered_map to an SPL::map.
+	// But, it requires some extra work.
+	std::tr1::unordered_map<std::string,std::string> const & result = nsl.getNSLookupResults(nodeName);
+	SPL::map<rstring, rstring> resultMap;
+	resultMap.insert(result.begin(), result.end());
+	*/
+	
+	unordered_map<std::string, std::string> resultMap = nsl.getNSLookupResults(nodeName);
+	int32 resultMapSize = resultMap.size();
+	
+	// If we have 4 elements returned in the resultMap, then we can assign 
+	// the values to the output tuple attributes.
+	if (resultMapSize == 4) {	 	
+		// If we need to assign this attribute, let us do that now.
+		if (nameServerNameNeeded == true) {
+			ValueHandle handle1 = otuple.getAttributeValue(1);
+			rstring & nameServerName = handle1;
+			nameServerName = resultMap["Name Server Name"];
+		} // End of if (nameServerNameNeeded == true)
+				
+		// If we need to assign this attribute, let us do that now.
+		if (nameServerAddessNeeded == true) {
+			ValueHandle handle2 = otuple.getAttributeValue(2);
+			rstring & nameServerAddess = handle2;
+			nameServerAddess = resultMap["Name Server Address"];
+		} // End of if (nameServerAddessNeeded == true)		
+
+		// If we need to assign this attribute, let us do that now.
+		if (clientMachineNameNeeded == true) {
+			ValueHandle handle3 = otuple.getAttributeValue(3);
+			rstring & clientMachineName = handle3;
+			clientMachineName = resultMap["Client Machine Name"];
+		} // End of if (clientMachineNameNeeded == true)	
+
+		// If we need to assign this attribute, let us do that now.
+		if (clientMachineAddressNeeded == true) {
+			ValueHandle handle4 = otuple.getAttributeValue(4);
+			rstring & clientMachineAddress = handle4;
+			clientMachineAddress = resultMap["Client Machine Address"];
+		} // End of if (clientMachineAddressNeeded == true)		
+	} // End of if (resultMapSize == 4)
+	
+	// Send this tuple away now.
+	submit(otuple, 0);
+}
+
+// Tuple processing for non-mutating ports
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port)
+{
+    // Sample submit code
+    /* 
+      OPort0Type otuple;
+      submit(otuple, 0); // submit to output port 0
+    */
+}
+
+// Punctuation processing
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port)
+{
+    /*
+      if(punct==Punctuation::WindowMarker) {
+        // ...;
+      } else if(punct==Punctuation::FinalMarker) {
+        // ...;
+      }
+    */
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+

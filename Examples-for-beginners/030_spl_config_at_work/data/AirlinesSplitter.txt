@@ -1,0 +1,13 @@
+# mapping.txt
+default, -1 # drop non-matching items
+# when the default index line is absent,
+# non-matching items will result in runtime error
+# format: column 1 is the split key. The remaining columns
+# represent the output port indices to be used for forwarding
+"Iran Air", 0
+"American Airlines", 1
+"Continental", 2
+"Delta", 3
+"SouthWest", 4
+"United Airlines", 5
+"Jet Blue", 6

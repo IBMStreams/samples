@@ -1,0 +1,4 @@
+{uuid="uuid1",trackingId="trackingId1"},{ric="ric1",field="field1",interval="interval1",intervalMultiplier=1},{formula="formula1",formulaId=1},{result=[1,2,3,4]}
+{uuid="uuid2",trackingId="trackingId2"},{ric="ric2",field="field2",interval="interval2",intervalMultiplier=2},{formula="formula2",formulaId=2},{result=[5,6,7,8]}
+{uuid="uuid3",trackingId="trackingId3"},{ric="ric3",field="field3",interval="interval3",intervalMultiplier=3},{formula="formula3",formulaId=2},{result=[9,10,11,12]}
+

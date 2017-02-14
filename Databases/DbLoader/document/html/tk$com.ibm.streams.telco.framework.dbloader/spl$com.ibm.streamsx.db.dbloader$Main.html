@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File Main.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File Main.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">Main.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streams.telco.framework.dbloader.html">com.ibm.streams.telco.framework.dbloader 1.1.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.db.dbloader.html">com.ibm.streamsx.db.dbloader</a> &gt; Main.spl</p>
+
+</div>
+
+<div class="section">
+
+<p class="p">The <strong class="ph b">DBLoader</strong> is an SPL application for InfoSphere Streams  It uses the DB2 load command tool or the Oracle SQL Loader to load files directly into a database. 
+</p>
+
+<p class="p"><strong class="ph b">DBLoader</strong> scans the input directory and loads the files parallel into the database.  
+</p>
+
+<p class="p">It improves the insert-performance of DB2, Informix, Netezza and Oracle databases actions.
+</p>
+
+<p class="p">It is not needed to change the SPL code in case of new tables.
+</p>
+
+<p class="p">Prerequisite:
+</p>
+
+<p class="p">All input files must have a correctly formated Comma Separated Value (csv) format. The input file names must include the database schema and the table name.   The database schema begins after the path and end with a dot ".". The table name begins after "." and end with a dash "-".             
+</p>
+
+<p class="p">for example:  /data/in/DB2INST1.MY_TABLE_123-2014.03.31.csv 
+</p>
+
+<p class="p">In this case <strong class="ph b">DB2INST1</strong> is the database user name (or schema)  and <strong class="ph b">MY_TABLE_123</strong> is the table name. 
+</p>
+
+<p class="p">DBLoader uses the LinuxSource operator to execute a command. The LinuxSource operator is a part of <strong class="ph b">com.ibm.streamsx.linuxshell</strong> toolkit.
+</p>
+
+<p class="p">linuxshell toolkit is available in GitHub: <a class="xref" href="https://www.ibm.com/developerworks/community/files/app#/file/633b140b-73ce-48dc-806e-a8a1e835aa0a">https://www.ibm.com/developerworks/community/files/app#/file/633b140b-73ce-48dc-806e-a8a1e835aa0a</a>
+</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.db.dbloader$Main.html#spldoc_compilationunit__composite_operator__Main">Main</a></strong>: The composite <strong class="ph b">Main</strong> reads configuration parameters from the config.cfg file.
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__Main"><h2 class="title sectiontitle splpart">public composite Main</h2>
+  
+</div>
+
+<div class="section">
+
+<p class="p">The composite <strong class="ph b">Main</strong> reads configuration parameters from the config.cfg file.
+</p>
+
+<p class="p">Depending on the value of the database type in the configuration file config.cfg,  it starts the DB2FileLoder, the OrcaleFileLoader or the NetezzaLoader 
+</p>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">Composite Operator Graph</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streams.telco.framework.dbloader/op$com.ibm.streamsx.db.dbloader$Main.svg" width="452" height="154"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite Main
+ {	
+ 	graph
+  
+ 	/** 
+ 	 * ReadConfig
+ 	 * Opens config.cfg file and delivers the lines of configuration parameters.
+ 	 */	 
+ 	stream &lt;rstring configLine&gt; ReadConfig = FileSource()
+ 	{
+ 		param
+ 			file  		: "../config/config.cfg" ;
+ 			initDelay 	: 3.0 ;
+ 			
+ 		/**  
+ 		 * All operators with the same partitionColocation value "MainPE" 
+ 		 * will be run in the same partition.
+ 		*/  
+ 		config
+ 			placement : partitionColocation("MainPE") ; 
+ 	}	
+ 		   
+ 	/** 
+ 	 * ConfigParamaters
+ 	 * Checks the configuration parameters via getSubmissionTimeValue.
+ 	 * If no parameter was given it reads the value of configuration 
+ 	 * parameters from configuration file 
+ 	 */	 
+ 	stream &lt;ConfigData configData&gt; ConfigParameters = Custom(ReadConfig)
+ 	{
+ 		logic
+ 		state :
+ 		{
+ 			mutable ConfigData cfgData = {
+ 					dbName			= getSubmissionTimeValue("dbName", " ") ,
+ 					dbUser			= getSubmissionTimeValue("dbUser", " ") ,
+ 					dbPass			= getSubmissionTimeValue("dbPass", " ") , 
+ 					dbHost			= getSubmissionTimeValue("dbHost", " ") , 
+ 					inputDir		= "/home/spreeadmin/workspace/DbLoader/data/in",	
+ 					logDir			= "/home/spreeadmin/workspace/DbLoader/data/log",
+ 				 	archiveDir 		= getSubmissionTimeValue("archiveDir", " ") , 
+ 				 	errorDir 		= getSubmissionTimeValue("errorDir", " ") , 
+ 				 	controlDir 	= getSubmissionTimeValue("controlDir", " "), 
+ 				 	databaseType 	= "" ,
+ 				 	fileName 		= "",
+ 				 	counter 		= 0l };
+ 
+ 
+ 			mutable rstring configParam = "";
+ 			mutable rstring configValue = "";
+ 			mutable rstring value;
+ 			mutable int32 foundPosition = 0;
+ 		}
+ 		onTuple ReadConfig:
+ 		{
+ 			/**
+ 			 * If no parameter was given via submit job
+ 			 */
+ 			if(length(cfgData.dbName) &lt; 2)
+ 			{
+ 				cfgData.dbName = getConfigValue(configLine, "DBNAME");
+ 			}
+ 
+ 			if(length(cfgData.dbUser) &lt; 2)
+ 			{
+ 				cfgData.dbUser = getConfigValue(configLine, "DBUSER");
+ 			}
+ 
+ 			if(length(cfgData.dbPass) &lt; 2)
+ 			{
+ 				cfgData.dbPass = getConfigValue(configLine, "DBPWD");
+ 			}
+ 
+ 			if(length(cfgData.dbHost) &lt; 2)
+ 			{
+ 				cfgData.dbHost = getConfigValue(configLine, "DBHOST");
+ 			}
+ 
+ 
+ 			if(length(cfgData.archiveDir) &lt; 2)
+ 			{
+ 				cfgData.archiveDir = getConfigValue(configLine, "ARCHIVE_DIR");
+ 			}
+ 
+ 			if(length(cfgData.errorDir) &lt; 2)
+ 			{
+ 				cfgData.errorDir = getConfigValue(configLine, "ERROR_DIR");
+ 			}
+ 
+ 			if(length(cfgData.controlDir) &lt; 2)
+ 			{
+ 				cfgData.controlDir = getConfigValue(configLine, "CONTROLFILES_DIR");
+ 			}
+ 									 				
+ 		}
+ 		 
+ 		onPunct ReadConfig:
+ 		{
+ 
+ 			if (currentPunct() == Sys.FinalMarker)
+ 			{
+ 				submit({ configData = cfgData }, ConfigParameters) ;
+ 			}
+ 		}
+ 		
+ 		/**  
+ 	 	* All operators with the same partitionColocation value "MainPE" 
+ 	 	* will be run in the same partition.
+ 		*/  
+ 		config
+ 			placement : partitionColocation("MainPE") ; 
+ 		
+ 	} 
+ 	    
+ 	/**
+ 	 * CreateStartLog
+ 	 * Create start log information
+ 	*/
+ 	stream &lt;rstring result&gt; CreateStartLog = Custom(ConfigParameters)
+ 	{	 
+ 		logic 
+ 		state :
+ 		{
+ 			mutable rstring result = "";
+ 			mutable rstring databaseType = "INFORMIX";
+ 		}
+ 		onTuple ConfigParameters :
+ 		{
+ 			// println(ConfigParameters);	
+ 			result ="Configuration parameters: \n" 
+ 			+ "                    dbName       = " + configData.dbName + "\n"	
+ 			+ "                    dbUser       = " + configData.dbUser + "\n"	
+ 			+ "                    databaseType = INFORMIX\n"	
+ 			+ "                    logDir       = /home/spreeadmin/workspace/DbLoader/data/log\n"	
+ 			+ "                    inputDir     = /home/spreeadmin/workspace/DbLoader/data/in\n"	
+ 			+ "                    archiveDir   = " + configData.archiveDir + "\n"
+ 			+ "                    errorDir     = " + configData.errorDir + "\n"	
+ 			+ "                    controlDir = " + configData.controlDir + "\n\n";	
+ 			// check $databaseType
+ 			if ((findFirst(databaseType, "DB2", 0) == - 1) 
+ 				&amp;&amp; (findFirst(databaseType, "ORACLE", 0) == - 1)
+ 				&amp;&amp; (findFirst(databaseType, "NETEZZA", 0) == - 1)
+ 				&amp;&amp; (findFirst(databaseType, "INFORMIX", 0) == - 1))
+ 			{				
+ 				result = result + getCurrentTime() + " The value of DATABASETYPE in config.cfg file is " +  "INFORMIX.\n"
+ 				+ "                    Change the value of DATABASETYPE to DB2 or Oracle or NETEZZA or Informix.\n"
+ 				+ "                    Rebuild DBLoader project and try it again.\n";
+ 			}
+ 			// printStringLn(result);
+ 			submit({ result =  result}, CreateStartLog) ;
+ 	
+ 		} 
+ 
+ 		/**  
+ 	 	* All operators with the same partitionColocation value "MainPE" 
+ 	 	* will be run in the same partition.
+ 		*/  
+ 		config
+ 			placement : partitionColocation("MainPE") ; 
+ 		
+ 	} 
+ 
+ 
+ 	/** 
+ 	 * Loader
+ 	 * Starts parallel loaders to load files into database.
+ 	 */ 
+     (stream &lt;rstring result&gt; Loader; stream&lt;rstring result&gt; Log) = DBLoader(ConfigParameters)
+ 	{
+ 	} 
+ 
+ 
+ 
+ 	/**
+ 	 * LogResult
+ 	 * Writes the result in log file. 
+ 	*/
+ 	() as LogResult = Logger(CreateStartLog, Log)
+ 	{
+ 		config
+        		placement : partitionColocation("DbLogger") ;
+ 		
+ 	}
+ 					
+ } /** End of Main composite*/ 
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

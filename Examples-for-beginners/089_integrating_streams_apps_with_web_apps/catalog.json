@@ -1,0 +1,8 @@
+{"category": ["2", 11],
+   "description": "This example demonstrates how to use the inet toolkit to integrate Streams applications with web applications", "language": ["SPL"],
+"tags": ["post to streams app", "streams web app", "rest", "send tuples to browser"],
+ "url": "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/089_integrating_streams_apps_with_web_apps",
+ "name": "Integrating Streams Apps With Web Apps",
+ "toolkits": ["inet"],
+ "operators": ["HTTPTupleView", "HTTPTupleInjection"]
+}

@@ -1,0 +1,38 @@
+module tauser_streams__Export;
+
+/** 
+* @author tauser (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view Organizations from module tauser_streams_1473700723840__Export;
+import view Offerings_External from module tauser_streams_1473700723840__Export;
+
+---------------------------------------------
+-- Rules for the extractor 'Mentions' --
+---------------------------------------------
+
+-- Extract the text from the document that conforms
+-- to the following sequence pattern
+create view _Mentions_1 as
+  extract pattern (<O.Organizations>) <Token>{0,5} (<O1.Offerings>)
+  return group 0 as Snippet
+     and group 1 as Organizations
+     and group 2 as Offerings
+  from  tauser_streams_1473700723840__Export.Organizations O,
+        tauser_streams_1473700723840__Export.Offerings_External O1;
+
+-- Final view representing the extractor 'Mentions' as per the
+-- output specifications
+create view Mentions as
+  select  M.Snippet,
+          M.Organizations,
+          M.Offerings
+  from  _Mentions_1 M
+  consolidate on M.Snippet using 'NotContainedWithin';
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Mentions;
+

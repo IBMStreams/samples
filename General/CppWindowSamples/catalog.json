@@ -1,0 +1,9 @@
+{
+	"name": "C++ operator with sliding window",
+	"description": "This is an example of a C++ primitive operator which uses a sliding window to filter data received on its input port.",
+	"language": ["SPL","C++"],
+	"category": ["10","7","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/CppWindowSamples",
+	"tags": []
+}

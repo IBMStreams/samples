@@ -1,0 +1,47 @@
+module biadmin_biadmin__Export;
+
+/** 
+* @author biadmin (via Text Analytics Web Tooling)
+*/
+
+-- Import all the required views and dictionaries that need
+-- to be referenced from other modules
+import view Sentiment from module SentimentDeploymentGeneric;
+
+---------------------------------------------
+-- Rules for the extractor 'Product Sentiment' --
+---------------------------------------------
+
+-- Select the columns from the corresponding input
+-- extractor or prebuilt extractor
+create view _Product_Sentiment_1 as
+  select  S.text,
+          S.patternName,
+          S.clue,
+          S.target,
+          S.polarity
+  from  SentimentDeploymentGeneric.Sentiment S,
+        Brand_plus_product B
+  where Contains(S.text, B.Brand_plus_product);
+
+create view _Product_Sentiment_2 as
+  select  P.text,
+          P.patternName,
+          P.clue,
+          P.target,
+          P.polarity
+  from  _Product_Sentiment_1 P
+  consolidate on P.text using 'ContainedWithin';
+
+-- Final view representing the extractor 'Product Sentiment' as per the
+-- output specifications
+create view Product_Sentiment as
+  select  P1.text as text,
+          P1.target as target,
+          P1.polarity as polarity
+  from  _Product_Sentiment_2 P1;
+
+-- Export the final view and dictionaries so that they can
+-- be referenced in other modules
+export view Product_Sentiment;
+

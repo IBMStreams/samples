@@ -1,0 +1,28 @@
+namespace sample ;
+
+composite TradeSource
+{
+	graph
+		(stream<rstring filename> MockMarketTradeSignal) as MockMarketTradeBeacon = Beacon()
+		{
+			param
+				period : 1.0 ;
+			output
+				MockMarketTradeSignal : filename = "TradesAndQuotes.csv.gz" ;
+		}
+
+		stream<TQRecT> TradeQuote = FileSource(MockMarketTradeSignal)
+		{
+			param
+				format : csv ;
+				compression : gzip ;
+		}
+
+		() as TradeExporter = Export(TradeQuote as inputStream)
+		{
+			param
+				streamId : "tradeQuotes";
+		}
+
+}
+

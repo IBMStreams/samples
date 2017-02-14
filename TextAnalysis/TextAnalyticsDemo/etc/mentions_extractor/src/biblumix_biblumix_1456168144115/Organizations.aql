@@ -1,0 +1,13 @@
+module biblumix_biblumix_1456168144115;
+
+/** 
+* @author biblumix (via Text Analytics Web Tooling)
+*/
+
+-- Import the final output view from the export module
+-- for the extractor 'Organizations'
+import view Organizations from module biblumix_biblumix_1456168144115__Export;
+
+-- Output the imported final view representing
+-- the extractor 'Organizations'
+output view biblumix_biblumix_1456168144115__Export.Organizations as 'Organizations';

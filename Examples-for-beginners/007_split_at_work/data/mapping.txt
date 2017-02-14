@@ -1,0 +1,19 @@
+# mapping.txt
+default, -1 # drop non-matching items
+# when the default index line is absent,
+# non-matching items will result in runtime error
+# format: column 1 is the split key. The remaining columns
+# represent the output port indices to be used for forwarding
+"IBM", 0
+"GOOG", 1
+"HPQ", 2
+"AAPL", 3
+"EMC", 4
+"MSFT", 5
+"TXN", 6
+"GAP", 7
+"GBTS", 8
+"GE", 9
+"GORX", 10
+"GPS", 11
+"GS", 12

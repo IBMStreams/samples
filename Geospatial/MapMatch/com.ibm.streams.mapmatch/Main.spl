@@ -1,0 +1,58 @@
+
+/* Copyright (C) 2016, International Business Machines Corporation */
+/* All Rights Reserved */
+
+/**
+ * The below provides a wrapper to the map matching operator, the operator function is explained in the
+ * geospatial toolkit v3.x and higher in IBM Streams 4.x and higher. This allows for the deployment of
+ * this functionality in the Cloud -- specifically BlueMix.
+ **/
+namespace com.ibm.streams.mapmatch ;
+
+use com.ibm.streams.geospatial::OSMPointMatcher ;
+use com.ibm.streams.geospatial.ext::* ;
+use com.ibm.streams.geospatial::UpdateType ;
+use com.ibm.streams.geospatial::UpdateFlags ;
+use com.ibm.streamsx.inet.rest::* ;
+
+composite Main
+{
+	graph
+		stream<int64 objectId, float64 latitude, float64 longitude, int64 timeStamp>
+			WebRequest = HTTPTupleInjection()
+		{
+			param
+				port : 8082 ;
+			config
+				placement : partitionColocation("WebPartition") ;
+		}
+
+		(stream<int64 matchedEdgeId, float64 latitude, float64 longitude,
+			float64 distanceOnTrack, boolean directionOfTravel, int64 objectId,
+			float64 origLatitude, float64 origLongitude> OSMPointMatcher_18_out0) as
+			OSMPointMatcher_18 = OSMPointMatcher(WebRequest)
+		{
+			param
+				mapfile : getThisToolkitDir() + "/etc/Seattle.osm" ;
+				distanceThreshold : 50.0 ;
+				matchingTimeCutoff : 120000.0 ;
+				historySize : 5u ;
+				velocityThreshold : 100.0 ;
+		}
+
+		() as WebSink = HTTPTupleView(OSMPointMatcher_18_out0)
+		{
+			window
+				OSMPointMatcher_18_out0 : tumbling, count(1), partitioned ;
+			param
+				port : 8082 ;
+				context : "html" ;
+				contextResourceBase : "../opt/html" ;
+				// We will use the operation attribute in the incoming stream as a partitionkey.
+				partitionKey : "objectId" ;
+			config
+			// Ensure that the HTTP operators are in a single PE to have a single web-server
+				placement : partitionColocation("WebPartition") ;
+		}
+
+}
