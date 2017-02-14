@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Copyright (C) 2015, International Business Machines Corporation       
+# All Rights Reserved
+
+
 echo "Running normalize for Messi"
 output/normalize.example/bin/standalone aliastable=etc/aliases.csv inputFile=soccer_in.txt
 echo "Normalize results for soccer"

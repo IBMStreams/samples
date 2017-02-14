@@ -1,3 +1,6 @@
+-- Copyright (C) 2015, International Business Machines Corporation       
+-- All Rights Reserved
+
 module usetokenizer;
 
 -- Let's remove any stop words. 

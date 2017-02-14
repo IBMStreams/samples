@@ -1,3 +1,6 @@
+-- Copyright (C) 2015, International Business Machines Corporation       
+-- All Rights Reserved
+
 module findnormalize;
 
 create external table AliasTable (alias Text, normalizedName Text) allow_empty false;

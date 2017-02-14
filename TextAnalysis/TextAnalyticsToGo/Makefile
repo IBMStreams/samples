@@ -1,3 +1,6 @@
+# Copyright (C) 2015, International Business Machines Corporation  
+# All Rights Reserved 
+
 .PHONY: all clean 
 
 SPLC_FLAGS = -a -t $(STREAMS_INSTALL)/toolkits/com.ibm.streams.text --data-directory=data

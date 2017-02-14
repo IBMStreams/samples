@@ -1,0 +1,30 @@
+
+composite FilterTokenizeExport(input Tweets,Trending) {
+    param
+        // let's make topic a parameter, but default it to "#iphone", since they are always popular.
+        expression<rstring> $topic: "#iphone";
+
+    graph
+        stream<list<rstring> tokens> Tokenized = Custom(Tweets;Trending) {
+            logic state: {
+                mutable rstring current_pattern = $topic;
+            }
+            onTuple Trending: {
+               current_pattern = pattern;
+                setOutputPortExportProperties({topic=pattern,source="twitter"},0u);
+            }
+            onTuple Tweets: {
+                if (size(regexMatch(tweet,current_pattern)) > 0) {
+                    submit({tokens=tokenize(tweet," \r\n;,",false)},Tokenized);
+                    }
+                }
+            }
+
+            // now, export
+            () as exporter = Export(Tokenized) {
+                param properties: {
+                    topic = $topic,
+                    source = "twitter"
+                };
+            }
+        }
