@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2015, International Business Machines Corporation  
-	 All Rights Reserved                                	                 
--->
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>RuntimeConnectionChange</info:name>
@@ -10,4 +7,7 @@
     <info:requiredProductVersion>3.2</info:requiredProductVersion>
   </info:identity>
   <info:dependencies/>
+  <info:sabFiles>
+    <info:include path="data/**"/>
+  </info:sabFiles>
 </info:toolkitInfoModel>

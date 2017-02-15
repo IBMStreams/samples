@@ -1,0 +1,11 @@
+{"name": "Change connections between Import and Export at runtime",
+	"description": "If you have a job that exports or imports data, you might want to change the export properties or import subscription.  See how to do so without having to recompile the application using functions in the SPL API",
+	"language": ["SPL"],
+	"category": ["1","2","3"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/changing-connections-runtime-export-import",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/RuntimeConnectionChange",
+	"tags": [],
+	"featured": true,
+		"operators": ["Import", "Export", "setInputPortImportSubscription", "setOutputPortExportProperties"]
+		
+}

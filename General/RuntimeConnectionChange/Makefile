@@ -4,7 +4,7 @@ SPLC_FLAGS = -a
 SPLC = $(STREAMS_INSTALL)/bin/sc
 
 SPL_CMD_ARGS ?= 
-SPL_MAIN_COMPOSITE = Main
+SPL_MAIN_COMPOSITE = application::Main
 
 all: distributed
 

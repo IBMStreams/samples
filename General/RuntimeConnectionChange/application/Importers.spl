@@ -1,0 +1,83 @@
+namespace application ;
+/**
+ * This composite contains 3 importers,
+ * one for each of #android and #iphone, and another, iPhoneAndRelated, that subscribes to iPhone but also 
+ * changes the  subscription to include other tags at runtime. 
+ * Each importer write output to a file.
+ */
+composite Importers
+{
+	graph
+		stream<Mentions> iPhone = Import()
+		{
+			param
+				subscription : topic == "#iPhone" ;
+		}
+
+		() as sink = Custom(iPhone)
+		{
+			logic
+				onTuple iPhone :
+				{
+					printStringLn("New iPhone related tweet: " + tweet) ;
+				}
+		}
+
+		stream<Mentions> Android = Import()
+		{
+			param
+				subscription : topic == "#android" ;
+		}
+
+		() as sinkAndroid = Custom(Android)
+		{
+			logic
+				onTuple Android :
+				{
+					printStringLn("New Android related tweet: " + tweet) ;
+				}
+
+		}
+
+		// Runtime subscription adjustment
+		stream<Mentions> iPhoneAndRelated = Import()
+		{
+			param
+				subscription : topic == "#iPhone" ;
+		}
+
+		() as iPhoneAndRelatedSink = Custom(iPhoneAndRelated)
+		{
+
+		//This logic is added to determine when to change the subscription   
+		//build a list of additional tags that occur alongside iPhone and subscribe to those topics too
+
+			logic
+				state :
+				{
+					mutable set<rstring> additionalTags = { } ;
+					mutable rstring subscriptionString = "topic==\"#iPhone\"" ;
+				}
+
+				onTuple iPhoneAndRelated :
+				{
+					printStringLn("New iPhone related tweet: " + tweet) ;
+					// we only update the subscription if it contains #iPhone. 
+					for(rstring tok in tokens)
+					{
+					//look for additional tags mentioned with #iPhone
+						if(! has(additionalTags, tok) && size(regexMatch(tok, "^#")) > 0)
+						{
+						//if this is a tag, and it's not already in additional tags then we update the subscription
+							insertM(additionalTags, tok) ;
+							subscriptionString += " || topic==\"" + tok + "\"" ;
+							printStringLn("Changing subscription to  " + subscriptionString) ;
+							setInputPortImportSubscription(subscriptionString, 0u) ;
+						}
+
+					}
+
+				}
+		}
+
+}
