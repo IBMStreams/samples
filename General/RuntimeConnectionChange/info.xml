@@ -7,7 +7,4 @@
     <info:requiredProductVersion>3.2</info:requiredProductVersion>
   </info:identity>
   <info:dependencies/>
-  <info:sabFiles>
-    <info:include path="data/**"/>
-  </info:sabFiles>
 </info:toolkitInfoModel>
