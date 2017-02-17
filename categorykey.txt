@@ -1,4 +1,4 @@
-Key
+Key for the categories in the catalog
 1,Beginner/General
 2,Ingest and Store Data
 3,Tips
