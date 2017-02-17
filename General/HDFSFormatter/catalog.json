@@ -4,7 +4,7 @@
 	"language": ["SPL"], "featured": true,
 	"category": ["2","10","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/05/20/using-operator-parameters-composites-extend-capabilities-bigdata-toolkit/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/HDFSFormatter/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/HDFSFormatter",
 	"tags": ["parameter composite","operator parameter"],
 	"toolkits": ["hdfs","json"],
 		"operators": ["HDFS2FilesSink","JSONToTuple","TupleToJSON"]
