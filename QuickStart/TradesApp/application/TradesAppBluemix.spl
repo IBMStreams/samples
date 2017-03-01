@@ -1,0 +1,76 @@
+
+/* Copyright (C) 2017, International Business Machines Corporation */
+/* All Rights Reserved */
+namespace application ;
+
+/**
+ * Main composite for stock processing application that runs on Bluemix.
+ * It ingests a stream of data representing stock prices over time and computes
+ * the average price for all each stock ticker, based on the last 5 quotes.
+ * This is essentially the same application as TradesAppMain.spl but has been changed for the cloud.
+ * It uses a Circular File source so that data is perpetually generated. 
+ * Writes to Console instead of to a file.
+ * See the Quick Start Guide for step by step explanation of this application:
+ * https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/#simple_streams_application
+ */
+type Quote = rstring ticker, rstring date, rstring time, float64 askprice ;
+
+composite TradesAppCloud
+{
+	graph
+	
+		stream<rstring filename> Signal = Beacon()
+		{
+			param
+				period : 2.0 ;  //Send a signal every 2 seconds 
+			output
+				Signal : filename = getApplicationDir() + "/data/trades.csv" ;
+			config
+				placement :  partitionExlocation("input") ;
+		}
+
+		//Every time a tuple is received from the Signal beacon, the file will be re-read
+		stream<Quote>  Quotes  = FileSource(Signal)
+		{
+			param
+				format : csv ;
+				hasHeaderLine : true ;
+		
+		}
+		
+		stream<Quotes> FilteredQuotes = Filter(Quotes)
+		{
+			param
+				filter : ticker != "GLD" ; //filter out this symbol (just a demonstration of the Filter operator)
+		}
+
+		stream<rstring ticker, float64 min, float64 max, float64 average> AverageAskingPrice = Aggregate(FilteredQuotes as inPort0Alias)
+		{
+			window
+				inPort0Alias : tumbling, count(5), partitioned ;
+			param
+				partitionBy : ticker ;
+			output
+				AverageAskingPrice : average = Average(askprice), min = Min(askprice),
+					max = Max(askprice) ;
+			config
+				placement :  partitionExlocation("input") ;
+		}
+
+		() as PrintAveragePrice = Custom(AverageAskingPrice)
+		{
+			logic
+				onTuple AverageAskingPrice :
+				{
+					if(average != 0.0l)
+					{
+						printStringLn("Average asking price for " + ticker + "  is " +(rstring)
+							average) ;
+					}
+
+				}
+
+		}
+
+}
+

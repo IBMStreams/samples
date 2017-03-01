@@ -8,5 +8,4 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="impl/java/bin"/>
 </classpath>
