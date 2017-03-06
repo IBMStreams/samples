@@ -241,7 +241,7 @@
 	"tags": [],
 	"featured": true,
 		"operators": ["Import", "Export", "setInputPortImportSubscription", "setOutputPortExportProperties"]
-
+		
 }
 ,{	"name": "Java operator with a tumbling window",
 	"description": "This is a very simple example of how to create a Java operator that has a tumbling window.",
@@ -406,6 +406,16 @@
 	"tags": [],
 		"toolkits": ["text"],
 		"operators": ["TextExtract"]
+}
+
+,
+{"category": ["2"],
+	 "zip": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit/archive/master.zip",
+	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
+		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
+		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
+		 "featured": true, "external": true, "services": ["Bluemix", "Edgent"],
+	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
 }
 
 ]
