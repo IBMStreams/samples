@@ -23,13 +23,6 @@ def  add_catalog_entry(pth, target): #check to see if this directory contains a 
         for dir in (glob(pth+'*/')): #if it doesn't, check its sub directories
            add_catalog_entry(dir,target)
 
-#add the json for the samples that are not hosted in this repository to the full catalog
-def add_external_samples(target):
-    ext_samples = open("additionalSamples.json","r")
-
-    for line in ext_samples:
-        target.write(line)
-
 if __name__ == '__main__':
     home = os.getcwd()
     with open(home+"/full-catalog.json", "w") as target:
@@ -37,5 +30,5 @@ if __name__ == '__main__':
         paths = glob(home +"/*/") #for each directory in this folder
         for p in paths:
             add_catalog_entry(p, target) #check for a catalog.json descriptor file
-        add_external_samples(target)
+        copy_to_main_catalog("additionalSamples.json", target)
         target.write("]")
