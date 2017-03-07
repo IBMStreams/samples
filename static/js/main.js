@@ -200,8 +200,14 @@ $scope.tagFilter = function (tag) {
     }
 
 
+    var qs_name= "Quick start application for Streaming analytics service";
 
     $scope.links.sort( function(link1, link2){
+      if (qs_name == link2.name){
+        return 1;
+      } else if (qs_name == link1.name){
+        return -1;
+      }
       if (link1.featured && link2.featured){
         return 0;
       } else if (link1.featured && !link2.featured){
