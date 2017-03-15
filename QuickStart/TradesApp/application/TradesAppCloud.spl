@@ -23,6 +23,7 @@ composite TradesAppCloud
 		{
 			param
 				period : 2.0 ;  //Send a signal every 2 seconds 
+				iterations: 900u; //900 iterations * 2seconds each means this app will generate data for 30 minutes
 			output
 				Signal : filename = getApplicationDir() + "/data/trades.csv" ;
 			config
@@ -41,7 +42,7 @@ composite TradesAppCloud
 		stream<Quotes> FilteredQuotes = Filter(Quotes)
 		{
 			param
-				filter : ticker != "GLD" ; //filter out this symbol (just a demonstration of the Filter operator)
+				filter : askprice > 0.0 ; 
 		}
 
 		stream<rstring ticker, float64 min, float64 max, float64 average> AverageAskingPrice = Aggregate(FilteredQuotes as inPort0Alias)
