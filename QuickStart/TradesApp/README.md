@@ -10,7 +10,7 @@ It processes stock trades from a CSV file.  The application will filter out some
 This is a starter application that is ready to be deployed to the Streaming Analytics service on Bluemix.  It is the same as the TradesApp sample discussed in the Quick Start guide, but it has been adapted for the cloud.  The results are not written to a file but to a console.  
 
 #### Run the TradesAppCloud on the Streaming Analytics service in Bluemix
-You can download the sab file from the `bluemix` folder and upload it to your instance of the service.
+You can download the sab file from the `starterApp` folder and upload it to your instance of the service.
 Once the job is running, you can look at the console to see the output, or create a view to see the data as it is processed by the application.
 
 
