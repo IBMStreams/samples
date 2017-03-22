@@ -39,29 +39,29 @@ composite TradesAppCloud
 		
 		}
 		
-		stream<Quotes> FilteredQuotes = Filter(Quotes)
+		stream<Quote> FilteredQuotes = Filter(Quotes)
 		{
 			param
 				filter : askprice > 0.0 ; 
 		}
 
-		stream<rstring ticker, float64 min, float64 max, float64 average> AverageAskingPrice = Aggregate(FilteredQuotes as inPort0Alias)
+		stream<rstring ticker, float64 min, float64 max, float64 average> AvgPrice = Aggregate(FilteredQuotes as inPort0Alias)
 		{
 			window
 				inPort0Alias : tumbling, count(5), partitioned ;
 			param
 				partitionBy : ticker ;
 			output
-				AverageAskingPrice : average = Average(askprice), min = Min(askprice),
+				AvgPrice : average = Average(askprice), min = Min(askprice),
 					max = Max(askprice) ;
 			config
 				placement :  partitionExlocation("input") ;
 		}
 
-		() as PrintAveragePrice = Custom(AverageAskingPrice)
+		() as PrintAvPrice = Custom(AvgPrice)
 		{
 			logic
-				onTuple AverageAskingPrice :
+				onTuple AvgPrice :
 				{
 					if(average != 0.0l)
 					{
