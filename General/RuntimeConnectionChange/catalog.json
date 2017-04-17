@@ -5,7 +5,6 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/changing-connections-runtime-export-import",
 		"url": "https://github.com/IBMStreams/samples/tree/master/General/RuntimeConnectionChange",
 	"tags": [],
-	"featured": true,
 		"operators": ["Import", "Export", "setInputPortImportSubscription", "setOutputPortExportProperties"]
-		
+
 }

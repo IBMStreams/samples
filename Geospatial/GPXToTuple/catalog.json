@@ -2,7 +2,7 @@
 	"name": "Parse GPX data in Streams",
 	"description": "Demonstrate how to parse GPX data for use in geospatial applications",
 	"language": ["SPL"],
-	"category": ["1","3"], "featured": true,
+	"category": ["1","3"], 
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/tip-consuming-gpx-data-in-your-streams-application",
 	"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GPXToTuple",
 	"tags": ["parse xml"],
