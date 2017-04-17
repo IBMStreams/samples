@@ -1,9 +1,34 @@
-
-{"category": ["2"],
+{"category": ["1","2"],
 	 "zip": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit/archive/master.zip",
 	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
 		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
 		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
 		 "featured": true, "external": true, "services": ["Bluemix", "Edgent"],
 	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
+},
+{"category": ["1"],
+	  "name": "Hello World Python notebook for IBM Data Science Experience (DSX)",
+		"language": ["Python"], "tags": ["topology","data science "],
+		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
+		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
+		 "featured": true, "external": true, "services": ["Bluemix","DSX"],
+	"description": "This simple notebook for IBM Data Science Experience (DSX) shows you how to connect to the Streaming Analytics service from DSX.  It creates a Python streaming application that displays 'Hello World' to the console."
+},
+
+
+{"category": ["1","2"],
+	  "name": "Ingest and analyze patient data in a Data Science Experience (DSX) notebook", "language": ["Python"], "tags": ["streaming analytics","visualize","graph","chart","patient","health","ecg"],
+		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039cad29a6",
+		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
+		 "featured": true, "external": true, "services": ["Bluemix", "DSX"], "toolkits": ["Healthcare"],
+	"description": "This Python notebook for DSX shows how to create an Bluemix application that analyzes patient data. It also demonstrates how to visualize data in a view using Bokeh."
+},
+
+
+{"category": ["1","2"],
+	  "name": "Compute probability of engine failure in real time", "language": ["Python"], "tags": ["visualize", "view","graph","chart","plot"],
+		"blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
+		 "url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca60bb7",
+		 "featured": true, "external": true, "services": ["Bluemix", "DSX"],
+	"description": "This Python notebook for DSX (Data Science Experience) creates a neural network model to determine probability that an engine will fail based on its temperature.  It also demonstrates how to visualize data in a view. It uses PyBrain, NumPy and Matplot."
 }
