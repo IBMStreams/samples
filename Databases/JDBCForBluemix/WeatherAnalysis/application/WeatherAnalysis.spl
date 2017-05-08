@@ -21,7 +21,7 @@ composite WeatherAnalysis
 		stream<rstring data> HTTPGetStreamed = HTTPGetStream()
 		{
 			param
-				url : "http://weatherappkandu.mybluemix.net/rest/weather/48hours_xml" ; //return hourly weather report for Markham area
+				url : "https://streamsapp-kandu-admin.mybluemix.net/rest/hello/48hours_xml_demo" ; //return hourly weather report for Markham area
 				retryDelay : 60.0 ; //make request every 60 seconds 
 				retryOnClose : true ; //Retry connecting if the connection has been closed. Default is false
 
