@@ -1,4 +1,4 @@
-This sample SPL application is discussed in [this article on StreamsDev](https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/).  It demonstrates how to store analyzed data into a database using the JDBCRun operator.  The application first uses a HTTPGetStream operator from the inet source toolkit to retrieve 48 hours weather information in Markham by using the REST end point http://weatherappkandu.mybluemix.net/rest/weather/48hours_xml.    After analyzing the weather data , the JDBCRun operator is used to insert the data in to the target database. 
+This sample SPL application is discussed in [this article on StreamsDev](https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/).  It demonstrates how to store analyzed data into a database using the JDBCRun operator.  The application first uses a HTTPGetStream operator from the inet source toolkit to retrieve 48 hours weather information in Markham by using the REST end point: https://streamsapp-kandu-admin.mybluemix.net/rest/hello/48hours_xml_demo.    After analyzing the weather data , the JDBCRun operator is used to insert the data in to the target database. 
 
 Steps to deploy the sample application on Bluemix 
 
@@ -12,8 +12,10 @@ Steps to deploy the sample application on Bluemix
 
 6. Update the JDBC connection URL, user and password information from the SPL source code and compile it.
 
-6. Create the following table from the dashDB dashboard ddl interface.
-create table weather(maxtemp int, mintemp int, maxtempfeelslike int, mintempfeelslike int, avgvisibility int, avgwindspeed int, decision char(150))
+6. Create the following table from the dashDB dashboard:
+      1.  In the dashDB console, click "Tables", then click "Add Table"
+      2.  Paste the following SQL statement: `create table weather(maxtemp int, mintemp int, maxtempfeelslike int, mintempfeelslike int, avgvisibility int, avgwindspeed int, decision char(150))`
+      3.  Click "Run DDL".
 
 7. Compile the SPL application. 
 
