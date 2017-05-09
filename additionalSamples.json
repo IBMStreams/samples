@@ -31,4 +31,5 @@
 		 "url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca60bb7",
 		 "featured": true, "external": true, "services": ["Bluemix", "DSX"],
 	"description": "This Python notebook for DSX (Data Science Experience) creates a neural network model to determine probability that an engine will fail based on its temperature.  It also demonstrates how to visualize data in a view. It uses PyBrain, NumPy and Matplot."
+
 }
