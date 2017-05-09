@@ -1,0 +1,9 @@
+{
+	"name": "STD2 operator samples",
+	"description": "Various applications showing how the STD2 operator can be used to decompose continuous and finite-length time series, and with the AnomalyDetector operator to perform anomaly detection. ",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/05/03/detecting-anomalies-in-seasonal-data/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/STD2Samples",
+	"toolkits":["timeseries"]
+}

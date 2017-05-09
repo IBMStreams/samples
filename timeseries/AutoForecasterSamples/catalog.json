@@ -1,0 +1,9 @@
+{
+	"name": "Predict network load with the AutoForecaster operator",
+	"description": "See how to easily add forecasting to your applications with the AutoForecaster operator. The operator determines future network load based on historic data.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/predicting-the-future-in-a-streams-application/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/AutoForecasterSamples",
+	"tags": ["forecast","predictive analytics","time series"],"toolkits":["timeseries"]
+}

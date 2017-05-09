@@ -1,0 +1,9 @@
+{
+	"name": "DSPFilterFinite operator example",
+	"description": "Use the DSPFilterFinite operator to filter finite timeseries segments.  This is useful where only segments of a time series need to be filtered or whether each incoming tuple contains a list of a complete time series",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "",
+		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/DSPFilterFiniteSample",
+	"toolkits":["timeseries"]
+}

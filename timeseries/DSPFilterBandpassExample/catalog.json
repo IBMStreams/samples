@@ -1,0 +1,9 @@
+{
+	"name": "Isolate frequencies in a time series using the DSPFilter operator",
+	"description": "This sample shows how to create a bandpass and bandstop filter using the DSPFilter operator to isolate or eliminate specific frequencies.",
+	"language": ["SPL"],
+	"category": ["7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/bandpass-bandstop-filters-using-dspfilter-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/DSPFilterBandpassExample",
+	"tags": ["sampling rate","frequency"],"toolkits":["timeseries"]
+}

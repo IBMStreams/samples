@@ -5,5 +5,5 @@
 	"category": ["2","10"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/source-operator-read-hdfs-files-java-application-api/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/JavaTopology/ReadFromHdfs",
-	"tags": []
+	"tags": ["java topology"]
 }
