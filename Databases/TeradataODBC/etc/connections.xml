@@ -1,0 +1,20 @@
+<st:connections xmlns:st="http://www.ibm.com/xmlns/prod/streams/adapters"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<connection_specifications>
+		<connection_specification name="dbConnection">
+			<ODBC database="TeraDsn" user="your-db-name" password="db-password" />
+		</connection_specification>
+	</connection_specifications>
+
+	<access_specifications>
+		<!-- This access specification is used by the ODBCSource operator in the application. -->
+		<access_specification name="SelectAll">
+			<query query="SELECT TableName FROM dbc.tables" />
+			<parameters></parameters>
+			<uses_connection connection="dbConnection" />
+			<native_schema>
+				<column name="TableName" type="CHAR" length="20"/>
+			</native_schema>
+		</access_specification>
+	</access_specifications>
+</st:connections>
