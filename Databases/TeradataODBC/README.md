@@ -1,4 +1,5 @@
-The following document describes how to connect to a Teradata database via com.ibm.streams.dbtoolkit.db  
+The following document describes how to connect to a Teradata database via Streams toolkit 
+com.ibm.streams.dbtoolkit.db  
 
 
 These software needs to be installed to run this demo application:
@@ -41,7 +42,7 @@ odbcinst.ini
 	SQLLevel=1
 -------------------------------------------------------------------------------------------------------------
 
-Odbc.ini
+odbc.ini
 -------------------------------------------------------------------------------------------------------------
 
 	[ODBC]
@@ -85,6 +86,7 @@ If you get Connected your configuration is correct.
 
 The connections.xml contains database configuration information that is required to access the external data source.
 More details in:
+
 https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.toolkits.doc/spldoc/dita/tk$com.ibm.streams.db/op$com.ibm.streams.db$ODBCSource.html#spldoc_operator__parameter__connectionDocument
 
 **etc/connections.xml**
@@ -124,14 +126,19 @@ The following environment variables have to be set correctly in .bashrc file.
 
 **6- Make main.spl and start the SPL application**
 
-The following SPL application (Main.spl) use the database credentials in etc/connections.xml and in odbc.ini and connect via ODBCSource to a Teradata database and list all the table name of all available tables in database.  (SELECT TableName FROM dbc.tables)
+The following SPL application (Main.spl) use the database credentials in etc/connections.xml and in odbc.ini  
+connect via ODBCSource to a Teradata database and list all the table name of all available tables in database.  
+(SELECT TableName FROM dbc.tables)
 
+To create the application you can use the make or you can import this spl project in your Streams Studio.
+
+Main.spl
 -------------------------------------------------------------------------------------------------------------
     namespace application;
     use com.ibm.streams.db::ODBCSource ;
  
     /** 
-    * The Main composite is a sample application to read all table names from a Teradada databse.
+    * The Main composite is a sample application to read all table names from a Teradada database.
     *  
     */
     composite Main
