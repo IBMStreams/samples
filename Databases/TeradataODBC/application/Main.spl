@@ -1,0 +1,57 @@
+//////////////////////////////////////////////////////////////////////////
+// Copyright (C)2014, 2017 International Business Machines Corporation and
+// others. All Rights Reserved.
+//////////////////////////////////////////////////////////////////////////
+
+namespace application;
+use com.ibm.streams.db::ODBCSource ;
+
+composite Main {
+
+/** 
+ * The Main composite is a sample application to read all table names from a Teradada database.
+ *  
+ */
+
+graph
+
+    ////////////////////////////////////////////////                    
+    // Read all TableNames from DB
+    ////////////////////////////////////////////////                    
+    stream<rstring TableName> myODBCstream = ODBCSource() {
+      param
+        connectionDocument : "./etc/connections.xml" ;
+        connection : "dbConnection";
+        access     : "SelectAll";
+        initDelay  : 3.0;
+    }
+
+
+    ////////////////////////////////////////////////                    
+    // Write to a file
+    ////////////////////////////////////////////////                    
+    () as mySink = FileSink(myODBCstream) {
+ 
+	logic
+	state :
+	{
+		mutable int64 counter = 0;
+	}
+
+	onTuple myODBCstream :
+	{
+		printStringLn((rstring)counter++ + " TableName = " +(rstring) TableName) ;
+	}
+
+
+	param
+		file         : "output.dat";
+		format       :  csv;
+		quoteStrings : false;
+	}
+
+}
+
+
+
+
