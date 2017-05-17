@@ -3,7 +3,7 @@ com.ibm.streams.dbtoolkit.db
 
 
 These software needs to be installed to run this demo application:
-- IBM InfoSohere Streams 4.1.x.x
+- IBM Streams 4.1.x.x
 - unixODBC 2.3.1
 - Teradata client 16.00
 
