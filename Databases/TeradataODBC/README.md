@@ -130,7 +130,7 @@ The following SPL application (Main.spl) use the database credentials in etc/con
 connect via ODBCSource to a Teradata database and list table names of all available tables in database.  
 (SELECT TableName FROM dbc.tables)
 
-To create the application you can use the make or you can import this spl project in your Streams Studio.
+To create the application you can use the make or you can import this SPL project in your Streams Studio.
 
 Main.spl
 -------------------------------------------------------------------------------------------------------------
