@@ -6,11 +6,13 @@ These software needs to be installed to run this demo application:
 - unixODBC 2.3.1
 - Teradata client 16.00
 
-1- Installation of Teradata Client
+**1- Installation of Teradata Client**
 
    Download the latest Teradata ODBC Driver for Linux from:
+   
     http://downloads.teradata.com/download/connectivity/odbc-driver/linux
-Login as root
+
+Login as root and perform the following commands to install the Teradata client.
 
 	tar –xzvf tdodbc1600__linux_indep.16.00.00.03-1.tar.gz 
 	cd tdicu1600
@@ -22,7 +24,7 @@ It installs all Teradata client packages in /opt/teradata/client/16.00
 
 
 
-2- ODBC configuration
+**2- ODBC configuration**
 
 Adapt the odbcinst.ini and odbc.ini files in /opt/teradata/client/16.00/odbc_64/
 
@@ -63,27 +65,29 @@ Odbc.ini
 	DefaultDatabase=
 -------------------------------------------------------------------------------------------------------------
 
-3- Check the odbc configuration
-isql -v TeraDsn your-db-user your-db-password
+**3- Check the odbc configuration**
 
-+---------------------------------------+
-| Connected!                            |
-|                                       |
-| sql-statement                         |
-| help [tablename]                      |
-| quit                                  |
-|                                       |
-+---------------------------------------+
-SQL> 
+	isql -v TeraDsn your-db-user your-db-password
+
+	+---------------------------------------+
+	| Connected!                            |
+	|                                       |
+	| sql-statement                         |
+	| help [tablename]                      |
+	| quit                                  |
+	|                                       |
+	+---------------------------------------+
+	SQL> 
 
 If you get Connected your configuration is correct. 
 
-4- Configuration of connection document etc/connections.xml
+**4- Configuration of connection document etc/connections.xml**
+
 The connections.xml contains database configuration information that is required to access the external data source.
 More details in:
 https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.toolkits.doc/spldoc/dita/tk$com.ibm.streams.db/op$com.ibm.streams.db$ODBCSource.html#spldoc_operator__parameter__connectionDocument
 
-etc/connections.xml
+**etc/connections.xml**
 -------------------------------------------------------------------------------------------------------------
 	<st:connections xmlns:st="http://www.ibm.com/xmlns/prod/streams/adapters"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -106,7 +110,8 @@ etc/connections.xml
 		</access_specifications>
 	</st:connections>
 -------------------------------------------------------------------------------------------------------------
-5- Configuration of environment variables
+
+**5- Configuration of environment variables**
 
 The following environment variables have to be set correctly in .bashrc file.
 
@@ -116,6 +121,8 @@ The following environment variables have to be set correctly in .bashrc file.
 	export STREAMS_ADAPTERS_ODBC_INCPATH=$TERA_HOME/include
 	export ODBCINI==$TERA_HOME/odbc_64/odbc.ini
 
+
+**6- Make main.spl and start the SPL application**
 
 The following SPL application (Main.spl) use the database credentials in etc/connections.xml and in odbc.ini and connect via ODBCSource to a Teradata database and list all the table name of all available tables in database.  (SELECT TableName FROM dbc.tables)
 
