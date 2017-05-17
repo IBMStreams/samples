@@ -117,17 +117,17 @@ https://www.ibm.com/support/knowledgecenter/SSCRJU_4.2.0/com.ibm.streams.toolkit
 
 The following environment variables have to be set correctly in .bashrc file.
 
-	export TERA_HOME==/opt/teradata/client/16.00 
+	export TERA_HOME=/opt/teradata/client/16.00 
 	export STREAMS_ADAPTERS_ODBC_UNIX_OTHER=true
 	export STREAMS_ADAPTERS_ODBC_LIBPATH=$TERA_HOME/lib
 	export STREAMS_ADAPTERS_ODBC_INCPATH=$TERA_HOME/include
-	export ODBCINI==$TERA_HOME/odbc_64/odbc.ini
+	export ODBCINI=$TERA_HOME/odbc_64/odbc.ini
 
 
 **6- Make main.spl and start the SPL application**
 
 The following SPL application (Main.spl) use the database credentials in etc/connections.xml and in odbc.ini  
-connect via ODBCSource to a Teradata database and list all the table name of all available tables in database.  
+connect via ODBCSource to a Teradata database and list table names of all available tables in database.  
 (SELECT TableName FROM dbc.tables)
 
 To create the application you can use the make or you can import this spl project in your Streams Studio.
