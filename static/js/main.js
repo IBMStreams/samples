@@ -214,7 +214,9 @@ $scope.tagFilter = function (tag) {
         return -1;
       } else if (link2.featured &&  !link1.featured){
         return 1;
-      } //link1.name.localeCompare(link2.name);
+      } else {
+        return Math.round(Math.random());
+      }//link1.name.localeCompare(link2.name);
 });
   });
 });
