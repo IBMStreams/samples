@@ -30,5 +30,5 @@ if __name__ == '__main__':
         paths = glob(home +"/*/") #for each directory in this folder
         for p in paths:
             add_catalog_entry(p, target) #check for a catalog.json descriptor file
-        copy_to_main_catalog("additionalSamples.json", target)
+        copy_to_main_catalog("extSamples.json", target)
         target.write("]")
