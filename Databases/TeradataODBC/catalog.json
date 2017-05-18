@@ -1,0 +1,10 @@
+{
+  "name": "Connect to Teradata from Streams",
+  "language": ["SPL"],
+  "category": ["2"],
+  "toolkits": ["db","database"],
+  "operators": ["ODBCSource"],
+  "featured": true, "tags": ["unixODBC"],
+  "description": "This sample shows how to connect to a Teradata database from Streams using the ODBCSource operator.  The application connects to a Teradata database and then reads the names of all tables in the database. ",
+  "url": "https://github.com/IBMStreams/samples/tree/master/Databases/TeradataODBC"
+}
