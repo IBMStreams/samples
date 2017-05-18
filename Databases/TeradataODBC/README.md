@@ -1,5 +1,4 @@
-The following document describes how to connect to a Teradata database via Streams toolkit 
-com.ibm.streams.dbtoolkit.db  
+The following document describes how to connect to a Teradata database via Streams database toolkit (com.ibm.streams.db) 
 
 
 These software needs to be installed to run this demo application:
