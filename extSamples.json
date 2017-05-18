@@ -3,7 +3,7 @@
 	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
 		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
 		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
-		 "featured": true, "external": true, "services": ["Bluemix", "Edgent"],
+		"external": true, "services": ["Bluemix", "Edgent"],
 	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
 },
 {"category": ["1"],
