@@ -2,7 +2,7 @@
 	"name": "Anomaly Detection in Streams",
 	"description": "This sample demonstrates how to use the AnomalyDetector operator by detecting anomalies in the number of packets received by a NIC. ",
 	"language": ["SPL"],
-	"category": ["7"],"featured":true,
+	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/anomaly-detection-in-streams/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/AnomalyDetectorSample",
 	"tags": [],"toolkits":["timeseries"]

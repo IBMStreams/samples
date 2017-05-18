@@ -39,6 +39,6 @@
   "language": ["Java"], "tags": ["edge analytics","image processing","video analytics"],
 "featured": true, "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
 "category": ["1","7"],
-"url":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/master.zip",
-
+"zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/master.zip",
+"url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"
 }
