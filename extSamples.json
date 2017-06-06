@@ -35,7 +35,7 @@
 },
 {
 	"name": "Detect at-risk patients using the Healthcare Analytics platform",
-"description": "This sample demonstrates the Streams Healthcare Anallytics Platform to monitor patient status in real-time. The sample generates vitals and ECG data for 100 patient and generates an alert on the dashboard if a patient's vitals are not in the normal range. It also uses the Java Application API and the ODM rules compiler.",
+	"description": "This simulation monitors the vital signs of 100 patients and generates an alert on the dashboard if a patient's vitals are not in the normal range. It also uses the Java Application API and the ODM rules compiler.",
 "language": ["Java"],
 "featured": true,
 "category": ["2","7"],
@@ -46,7 +46,7 @@
 },
 {
   "name": "Face detection and recognition using Edgent and Streams",
-  "description": "This starter kit demonstrates using Edgent and OpenCV on a  Raspberry Pi with a camera to perform face detection.  Detected faces are published from the 'Smart Camera' to the Watson IoT platform and a Streams application to perform Face Recognition on the detected faces.",
+  "description": "This starter kit uses Edgent and OpenCV on a Raspberry Pi with a camera to perform face detection. Detected faces are published from the 'Smart Camera' to a Streams application to perform Face Recognition.",
   "language": ["Java"], "tags": ["edge analytics","image processing","video analytics"],
 "featured": true, "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
 "category": ["1","7"],
