@@ -1,9 +1,14 @@
 The following document describes how to use the ODBCRun operator from Streams toolkit.db to:
-Connect to a database
-Create a table
-Insert some data into table
-Update the data in a table
-Select records from the table.
+
+- Connect to a database
+
+- Create a table
+
+- Insert some data into table
+
+- Update the data in a table
+
+- Select records from the table.
 
 
 These software needs to be installed to run this demo application:
@@ -39,6 +44,7 @@ Login as root and perform the following commands to install the unixODBC.
 **3- ODBC configuration for Teradata**
 
 Adapt the odbcinst.ini and odbc.ini files in $UNIXODBC_HOME/etc/
+
 The following sample is a configuration for DB2. 
 
 odbcinst.ini
@@ -140,7 +146,6 @@ The following environment variables have to be set correctly in .bashrc file.
 **7- Make Main.spl and start the SPL application**
 
 This SPL application (Main.spl) use the database credentials in etc/connections.xml and in odbc.ini  
-connect via ODBCRun to a database and list table names of all available tables in database.  
-(SELECT TableName FROM dbc.tables)
+connect via ODBCRun to a database and create a table, insert some records into table and update these records.
 
-To create the application you can use the make or you can import this SPL project in your Streams Studio.
+To create the application you can use the **make** or you can import this SPL project in your **Streams Studio**.
