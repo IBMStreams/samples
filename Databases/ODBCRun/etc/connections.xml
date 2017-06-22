@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- begin_generated_IBM_copyright_prolog                             -->
+<!--                                                                  -->
+<!-- This is an automatically generated copyright prolog.             -->
+<!-- After initializing,  DO NOT MODIFY OR MOVE                       -->
+<!-- **************************************************************** -->
+<!-- THIS SAMPLE CODE IS PROVIDED ON AN "AS IS" BASIS. IBM MAKES NO   -->
+<!-- REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, CONCERNING    -->
+<!-- USE OF THE SAMPLE CODE, OR THE COMPLETENESS OR ACCURACY OF THE   -->
+<!-- SAMPLE CODE. IBM DOES NOT WARRANT UNINTERRUPTED OR ERROR-FREE    -->
+<!-- OPERATION OF THIS SAMPLE CODE. IBM IS NOT RESPONSIBLE FOR THE    -->
+<!-- RESULTS OBTAINED FROM THE USE OF THE SAMPLE CODE OR ANY PORTION  -->
+<!-- OF THIS SAMPLE CODE.                                             -->
+<!--                                                                  -->
+<!-- LIMITATION OF LIABILITY. IN NO EVENT WILL IBM BE LIABLE TO ANY   -->
+<!-- PARTY FOR ANY DIRECT, INDIRECT, SPECIAL OR OTHER CONSEQUENTIAL   -->
+<!-- DAMAGES FOR ANY USE OF THIS SAMPLE CODE, THE USE OF CODE FROM    -->
+<!-- THIS [ SAMPLE PACKAGE,] INCLUDING, WITHOUT LIMITATION, ANY LOST  -->
+<!-- PROFITS, BUSINESS INTERRUPTION, LOSS OF PROGRAMS OR OTHER DATA   -->
+<!-- ON YOUR INFORMATION HANDLING SYSTEM OR OTHERWISE.                -->
+<!--                                                                  -->
+<!-- (C) Copyright IBM Corp. 2012, 2017  All Rights reserved.         -->
+<!--                                                                  -->
+<!-- end_generated_IBM_copyright_prolog                               -->
+<st:connections xmlns:st="http://www.ibm.com/xmlns/prod/streams/adapters"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <connection_specifications>
+
+    <connection_specification name="DBConnection" >
+    <!-- change the database name, database user and password with your database credentials -->
+      <ODBC database="TESTDB2" user="db2inst1" password="your-db-password" />
+    </connection_specification>
+    
+  </connection_specifications>
+  
+  <access_specifications>
+
+    <access_specification name="PersonCreate">
+      <statement statement="CREATE TABLE ODBCRUNSAMPLE (id INTEGER , fname VARCHAR(15), lname VARCHAR(20), age INTEGER, gender CHAR(1), salary FLOAT)" transaction_batchsize="1" />
+      <uses_connection connection="DBConnection" />
+      <native_schema>
+        <column name="result" type="VARCHAR" length="200" />
+      </native_schema>
+    </access_specification>
+
+    <access_specification name="PersonInsert">
+      <statement statement="INSERT INTO ODBCRUNSAMPLE (id, fname, lname, age, gender, salary) VALUES (?, ?, ?, ?, ?, ?)"/>
+      <parameters>
+        <parameter name="id" type="int32" />
+        <parameter name="fname" type="rstring" length="15" />
+        <parameter name="lname" type="rstring" length="20" />
+        <parameter name="age" type="int32" />
+        <parameter name="gender" type="rstring"  length="1" />
+        <parameter name="salary" type="float32" />
+      </parameters>
+      <uses_connection connection="DBConnection" /> 
+      <native_schema>
+        <column name="result" type="VARCHAR" length="200" />
+      </native_schema>
+    </access_specification>
+
+
+    
+    <access_specification name="PersonUpdate">
+      <statement statement="UPDATE ODBCRUNSAMPLE SET salary = ? WHERE id = ?" rowset_size="1" transaction_batchsize="1"/>
+      <parameters>
+        <parameter name="salary" type="float32" />
+        <parameter name="id" type="int32" />
+      </parameters>
+      <uses_connection connection="DBConnection" /> 
+      <native_schema>
+        <column name="result" type="VARCHAR" length="200" />
+      </native_schema>
+    </access_specification>
+
+    <access_specification name="PersonSelect">
+      <statement statement="SELECT * FROM ODBCRUNSAMPLE WHERE lname = ?" isolation_level="READ_COMMITTED" />
+      <parameters>
+        <parameter name="lname" type="rstring" length="20"/>       
+      </parameters>
+      <uses_connection connection="DBConnection" />
+      <native_schema>
+        <column name="id" type="INTEGER" />
+        <column name="fname" type="VARCHAR" length="15" />
+        <column name="lname" type="VARCHAR" length="20" />
+        <column name="age" type="INTEGER" />
+        <column name="gender" type="CHAR" length="1" />
+        <column name="salary" type="REAL"/>
+      </native_schema>
+    </access_specification>
+
+    <access_specification name="DropTable">
+      <statement statement="DROP TABLE ODBCRUNSAMPLE" />
+      <uses_connection connection="DBConnection" />
+      <native_schema>
+        <column name="result" type="VARCHAR" length="200" />
+      </native_schema>
+    </access_specification>
+
+   </access_specifications>
+   
+</st:connections>

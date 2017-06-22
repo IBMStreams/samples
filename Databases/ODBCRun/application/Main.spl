@@ -1,0 +1,351 @@
+// begin_generated_IBM_copyright_prolog                             
+//                                                                  
+// This is an automatically generated copyright prolog.             
+// After initializing,  DO NOT MODIFY OR MOVE                       
+// **************************************************************** 
+// THIS SAMPLE CODE IS PROVIDED ON AN "AS IS" BASIS. IBM MAKES NO   
+// REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, CONCERNING    
+// USE OF THE SAMPLE CODE, OR THE COMPLETENESS OR ACCURACY OF THE   
+// SAMPLE CODE. IBM DOES NOT WARRANT UNINTERRUPTED OR ERROR-FREE    
+// OPERATION OF THIS SAMPLE CODE. IBM IS NOT RESPONSIBLE FOR THE    
+// RESULTS OBTAINED FROM THE USE OF THE SAMPLE CODE OR ANY PORTION  
+// OF THIS SAMPLE CODE.                                             
+//                                                                  
+// LIMITATION OF LIABILITY. IN NO EVENT WILL IBM BE LIABLE TO ANY   
+// PARTY FOR ANY DIRECT, INDIRECT, SPECIAL OR OTHER CONSEQUENTIAL   
+// DAMAGES FOR ANY USE OF THIS SAMPLE CODE, THE USE OF CODE FROM    
+// THIS [ SAMPLE PACKAGE,] INCLUDING, WITHOUT LIMITATION, ANY LOST  
+// PROFITS, BUSINESS INTERRUPTION, LOSS OF PROGRAMS OR OTHER DATA   
+// ON YOUR INFORMATION HANDLING SYSTEM OR OTHERWISE.                
+//                                                                  
+// (C) Copyright IBM Corp. 2012, 2017  All Rights reserved.         
+//                                                                  
+// end_generated_IBM_copyright_prolog
+
+
+
+/**
+This sample demonstrates the functionality of **ODBCRun** operator from 
+Streams toolkit com.ibm.streams.db
+
+It uses the ODBC Interface and creates a table in a database and insert data into table. 
+The database credentials has to be defined in ./etc/connections.xml file . 
+ 
+
+Before you start, change the database credentials in ./etc/connections.xml file . 
+
+The **ReadInsertFile** reads records from a file and the **InsertDataToTable** inserts data into the table.
+
+The **ReadUpdateFile** reads update records from a file and the **UpdateDataInTable**  
+updates records in database.
+
+The **ReadSelectFile** reads select records from a file and the **SelectFromTable** selects 
+records from a table with last names from select file.
+
+The Custom operators are used as junction operators .
+They waiting for the punctuation of previous operator and after the last punctuation,
+they indicate the end of a stream and forward the stream to the next one . 
+ 
+The **DropTable** remove the table from database . 
+  
+The **ODBCRun** operator has 2 output port. The second output port is optional . 
+This port is used to return The SQL messages  in case of any error . 
+
+The **WriteSqlLog** writes the SQL error information in a file . 
+In case of any SQL error check the the logs in data/sql-errors.log
+
+If everything goes well you can find the selected records from table in file data/testdata_selected.csv  
+
+For more logs, uncomment the last line in Main.spl
+config tracing : debug;   
+
+*/  
+
+namespace application ;
+
+use com.ibm.streams.db::* ;
+
+
+/**
+* The composite **Main** create a table and insert data into table
+* it updates the data in table . 
+*/
+composite Main()
+{
+    type
+        SqlError     = int32 sqlcode, rstring sqlmessage, rstring sqlstate ;
+        PersonSchema = int32 id, rstring fname, rstring lname, int32 age, rstring gender, float32 salary ;
+        UpdateSchema = int32 id, float32 salary ;
+        
+    graph
+
+        /**
+        * The Beacon operator starts the streams
+        */
+        stream<rstring tableName> TableBeacon = Beacon()
+        {
+            param
+                iterations          : 1u ;
+            output
+                TableBeacon : tableName = "odbcrunsample1" ;
+        }
+        
+        /** 
+         * Create a new table        
+         * The table specification is defined in ./etc/connections.xml file        
+         * in section access_specification name="PersonCreate"        
+         */
+        (stream<rstring result> CreateTable ; stream<SqlError> CreateTableSqlLog) =
+            ODBCRun(TableBeacon)
+        {
+            param
+                connection          : "DBConnection" ;
+                access              : "PersonCreate" ;
+                connectionDocument  : "./etc/connections.xml" ;
+                reconnectionPolicy  : NoRetry ;
+        }
+
+       /** Return the insert file name after the final punctuation of CreateTable
+         * Final punctuation is a special marker that indicates the end of a stream.    
+       */
+        stream<rstring insertFileName> GetInsertFileName = Custom(CreateTable)
+        {
+            logic
+                onPunct CreateTable :
+                {
+                    if(currentPunct() == Sys.FinalMarker)
+                    {
+                        printStringLn("onPunct  Forward the stream to the ReadInsertFile after the final punctuation of CreateTable") ;
+                        submit({ insertFileName = "testdata_insert.csv" }, GetInsertFileName) ;
+                    }
+
+                }
+        }
+
+        /** 
+         * Read records from an test file
+         */
+        stream<PersonSchema> ReadInsertFile = FileSource(GetInsertFileName)
+        {
+            logic
+                onTuple GetInsertFileName :
+                {
+                         printStringLn("ReadInsertFile  insert file name = " + insertFileName) ;
+                }
+            param
+                format              : csv ;
+                initDelay           : 1.0 ;
+        }
+
+        /**
+         * Insert test data from file into table
+         * The Insert specification is defined in ./etc/connections.xml file
+         * in section access_specification name="PersonInsert"
+         * 
+         * reconnectionBound default is 5u
+         * reconnectionInterval default is 10.0
+         */
+        (stream<rstring result> InsertDataToTable ; stream<SqlError> InsertSqlLog) = ODBCRun(ReadInsertFile)
+        {
+            param
+                connection          : "DBConnection" ;
+                access              : "PersonInsert" ;
+                connectionDocument  : "./etc/connections.xml" ;
+                reconnectionPolicy  : BoundedRetry ;
+                commitOnPunctuation : true ;
+                id                  : id ;
+                fname               : fname ;
+                lname               : lname ;
+                age                 : age ;
+                gender              : gender ;
+                salary              : salary ;
+        }
+
+
+       /** 
+        * Return the update file name after the final punctuation of InsertDataToTable
+        * Final punctuation is a special marker that indicates the end of a stream.    
+        */
+        stream<rstring updateFileName> GetUpdateFileName = Custom(InsertDataToTable)
+        {
+            logic
+                onPunct InsertDataToTable :
+                {
+                    if(currentPunct() == Sys.FinalMarker)
+                    {
+                        printStringLn("onPunct  Forward the stream to the ReadUpdateFile after the final punctuation of InsertDataToTable") ;
+                        submit({ updateFileName = "testdata_update.csv" }, GetUpdateFileName) ;
+                    }
+
+                }
+        }
+
+
+        /**
+         * Read update records from an input file
+         */
+        stream<UpdateSchema> ReadUpdateFile = FileSource(GetUpdateFileName)
+        {
+            logic
+                onTuple GetUpdateFileName :
+                {
+                    printStringLn("ReadUpdateFile  update file name = " + updateFileName) ;
+                }
+            param
+                format              : csv ;
+                initDelay           : 1.0 ;
+        }
+
+
+        /**
+        * Update table with new values of id and salary
+        * The Update specification is defined in ./etc/connections.xml file
+        * in section access_specification name="PersonUpdate"
+        * 
+        * reconnectionBound default is 5u
+        * reconnectionInterval default is 10.0
+        */
+        (stream<rstring result> UpdateDataInTable ; stream<SqlError> UpdateSqlLog) = ODBCRun(ReadUpdateFile)
+        {
+            param
+                connection          : "DBConnection" ;
+                access              : "PersonUpdate" ;
+                connectionDocument  : "./etc/connections.xml" ;
+                reconnectionPolicy  : BoundedRetry ;
+                commitOnPunctuation : true ;
+                salary              : salary ;
+                id                  : id ;
+        }
+
+
+       /** 
+        * Return the select file name after the final punctuation of UpdateDataInTable
+        * Final punctuation is a special marker that indicates the end of a stream.    
+       */
+        stream<rstring selectFileName> GetSelectFileName = Custom(UpdateDataInTable)
+        {
+            logic
+                onPunct UpdateDataInTable :
+                {
+                    if(currentPunct() == Sys.FinalMarker)
+                    {
+                        printStringLn("onPunct  Forward the stream to the ReadSelectFile after the final punctuation of UpdateDataInTable") ;
+                        submit({ selectFileName = "testdata_select.csv" }, GetSelectFileName) ;
+                    }
+
+                }
+        }
+        
+        /**
+         * Read the last names records from input file
+         */
+        stream<rstring lastName> ReadSelectFile = FileSource(GetSelectFileName)
+        {
+             logic
+                onTuple GetSelectFileName :
+                {
+                     printStringLn("ReadSelectFile  select file name = " + selectFileName) ;
+                }
+            param
+                format              : csv ;
+                initDelay           : 1.0 ;
+        }
+        
+         /**
+         * Select records from table where lastName = 
+         * The Select specification is defined in ./etc/connections.xml file
+         * in section access_specification name="PersonSelect"
+         */
+        (stream<PersonSchema> SelectFromTable ; stream<SqlError> SelectSqlLog) = ODBCRun(ReadSelectFile)
+        {
+            param
+                connection          : "DBConnection" ;
+                access              : "PersonSelect" ;
+                connectionDocument  : "./etc/connections.xml" ;
+                connectionPolicy	: Deferred;
+                commitOnPunctuation : true ;
+ //               reconnectionPolicy  : InfiniteRetry ;
+ //               reconnectionPolicy  : BoundedRetry ;
+ 
+                lname               : lastName ;
+        }
+
+        /**
+         * Write selected records from the table in a file 
+         */
+        () as WriteSelected = FileSink(SelectFromTable)
+        {
+            logic
+                onTuple SelectFromTable :
+                {
+                    printStringLn("id: " + (rstring) id + "   fname: " + fname + "   lname: " + lname +
+                        "   salary: " +(rstring) salary + "   age: " +(rstring) age) ;
+                }
+
+            param
+                file                : "testdata_selected.csv" ;
+                format              : csv ;
+                flush               : 1u ;
+                quoteStrings        : false ;
+        }
+        
+
+       /** 
+        * Forward the stream to the DropTable after the final punctuation of SelectFromTable
+        * Final punctuation is a special marker that indicates the end of a stream.    
+        */
+        stream<rstring dropTable> ForwardToDropTable = Custom(SelectFromTable)
+        {
+            logic
+                onPunct SelectFromTable :
+                {
+                    if(currentPunct() == Sys.FinalMarker)
+                    {
+                        printStringLn("onPunct  Forward the stream to the DropTable after the final punctuation of SelectFromTable") ;
+                        submit({ dropTable = "DROP TABLE" }, ForwardToDropTable) ;
+                    }
+
+                }
+        }
+
+
+        /**
+        * Update table with new values of id and salary
+        * The Update specification is defined in ./etc/connections.xml file
+        * in section access_specification name="PersonUpdate"
+        * 
+        * reconnectionBound default is 5u
+        * reconnectionInterval default is 10.0
+        */
+        (stream<rstring result> DropTable ; stream<SqlError> DropTableSqlLog) = ODBCRun(ForwardToDropTable)
+        {
+            param
+                connection          : "DBConnection" ;
+                access              : "DropTable" ;
+                connectionDocument  : "./etc/connections.xml" ;
+                connectionPolicy	: Deferred;
+                commitOnPunctuation : true ;
+        }
+
+
+        /**
+         * Write SQL logs in a file 
+         */
+        () as WriteSqlLog = FileSink(CreateTableSqlLog, InsertSqlLog, UpdateSqlLog, SelectSqlLog, DropTableSqlLog)
+        {
+            logic
+                onTuple CreateTableSqlLog :
+                {
+                    printStringLn("CreateTableSqlLog sqlcode : " +(rstring) sqlcode + " sqlmessage : " +
+                        sqlmessage + " sqlstate : " + sqlstate) ;
+                }
+
+            param
+                file                : "sql-errors.log" ;
+                format              : csv ;
+                flush               : 1u ;
+                quoteStrings        : false ;
+        }
+        
+     // config tracing : debug;  
+}
