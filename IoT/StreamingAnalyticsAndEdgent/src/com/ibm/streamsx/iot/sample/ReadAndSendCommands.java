@@ -15,7 +15,6 @@ import com.ibm.streamsx.topology.Topology;
  * before running this application.
  * */
 public class ReadAndSendCommands {
-	@SuppressWarnings("serial")
 	public static void main(String[] args) throws Exception {
 		// create a Streams Topology
 		Topology topology = new Topology("ReadAndSendCommands");

@@ -17,7 +17,6 @@ import com.ibm.streamsx.topology.context.StreamsContextFactory;
  * before running this application.
  * */
 public class ReadFromWatsonIoT {
-	@SuppressWarnings("serial")
 	public static void main(String[] args) throws Exception {
 		// create a Streams Topology
 		Topology topology = new Topology("ReadFromIoT");
