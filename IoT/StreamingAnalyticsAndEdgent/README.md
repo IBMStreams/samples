@@ -20,6 +20,7 @@ There are 3 applications in this project:
    - STREAMS_INSTALL/toolkits/com.ibm.streamsx.topology/lib/com.ibm.streamsx.topology.jar
    - STREAMS_INSTALL/toolkits/com.ibm.streamsx.iot/lib/com.ibm.streamsx.iot.jar
    - STREAMS_INSTALL/lib/com.ibm.streams.operator.samples.jar
+   - STREAMS_INSTALL/toolkits/com.ibm.streamsx.datetime/lib/com.ibm.streamsx.datetime.jar
 - Get the credentials for your Streaming Analytics service. Save them in a file on your local machine. See the section under ["Getting your Streaming Analytics Service Credentials"](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step3) for steps.
 - Edit lines 18 and 19 of `SubmitToService.java` with the path to the credentials file you just created.
 - Pick one of the applications mentioned above and select "Run as" > "Java Application"
