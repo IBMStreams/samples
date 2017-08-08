@@ -10,7 +10,7 @@ import com.ibm.streamsx.topology.TStream;
 import com.ibm.streamsx.topology.Topology;
 
 /**
- * This class demonstrates reading events from the Watson IoT platform.
+ * This class demonstrates reading events from the Watson IoT platform and sending commands in response.
  * You must first submit the IotPlatformBluemix application to your Streams or Streaming Analytics instance 
  * before running this application.
  * */
