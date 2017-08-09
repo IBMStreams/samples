@@ -52,3 +52,7 @@ There are a number of samples in `STD2Samples` folder that demonstrate how the *
   * **STD2Random.spl** - This samples demonstrates how to generate random time series data and analyze it using the STD2 operator. The generated time series data contain _seasonal_, _trend_ and _residual_ components. 
   * **STD2Anomaly.spl** - This samples demonstrates how to use the STD2 operator in conjunction with the **AnomalyDetector** operator in order to perform anomaly detection on seasonal data. More information about how this is done can be found here: [Detecting Anomalies in Seasonal Data](https://developer.ibm.com/streamsdev/2016/05/03/detecting-anomalies-in-seasonal-data/)
 
+
+## KMeansClustering Control Signal Sample
+
+This samples demonstrates how to send a control signal to the **KMeansClustering** operator. 

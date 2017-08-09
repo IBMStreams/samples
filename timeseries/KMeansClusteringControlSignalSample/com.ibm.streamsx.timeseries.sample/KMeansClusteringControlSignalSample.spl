@@ -1,0 +1,76 @@
+namespace com.ibm.streamsx.timeseries.sample ;
+
+use com.ibm.streams.timeseries.modeling::KMeansClustering ;
+use com.ibm.streams.timeseries::TSTypes ;
+
+composite KMeansClusteringControlSignalSample
+{
+	graph
+		(stream<list<float64> dataPoint, uint32 clusterIndex, rstring clusterLabel>
+			DataStream ; stream<list<list<float64>> allClusterMeans,
+			list<list<float64>> allClusterVariances> MonitorStream) as
+			KMeansOp = KMeansClustering(ThrottledDataStream ;
+			ControlSignalStream)
+		{
+			param
+				initSamples : 5u ;
+				clusters : 3u ;
+				inputData : data ;
+				controlSignal : ctrlSig ;
+			output
+				DataStream : dataPoint = getDataPoint(), clusterIndex =
+					getClusterIndex(), clusterLabel = getClusterLabel() ;
+				MonitorStream : allClusterMeans = getAllClusterMeans(),
+					allClusterVariances = getAllClusterVariances() ;
+		}
+
+		() as KMeansResultPrinter = Custom(DataStream)
+		{
+			logic
+				onTuple DataStream :
+				{
+					println(DataStream) ;
+				}
+
+		}
+
+		(stream<TSTypes.TSSignal ctrlSig> ControlSignalStream) as MonitorSignalGenerator = Custom()
+		{
+			logic
+				onProcess :
+				{
+					while(! isShutdown())
+					{
+						block(5f) ; // output monitor data every 5 seconds
+						submit({ ctrlSig = TSTypes.Monitor }, ControlSignalStream) ;
+					}
+
+				}
+
+		}
+
+		(stream<list<float64> data> DataSourceStream) as FileSrc = FileSource()
+		{
+			param
+				file : getThisToolkitDir() + "/etc/data_points.txt" ;
+		}
+
+		() as MonitorPrinter = Custom(MonitorStream)
+		{
+			logic
+				onTuple MonitorStream :
+				{
+					println("MONITOR: " +(rstring) MonitorStream) ;
+				}
+
+		}
+
+		(stream<list<float64> data> ThrottledDataStream) as Throttler =
+			Throttle(DataSourceStream)
+		{
+			param
+				rate : 10f ;
+		}
+
+}
+
