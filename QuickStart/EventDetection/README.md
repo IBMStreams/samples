@@ -13,13 +13,13 @@ The Streams application performs event detection against a feed of weather data 
 To run the EventDetection, you will need to perform the following actions if you have not already done so:
 1. Sign up for [Bluemix](https://ace.ng.bluemix.net/) and log in.
 
-- [Install the Bluemix command-line tool](https://console.bluemix.net/docs/cli/index.html#cli).
+2. [Install the Bluemix command-line tool](https://console.bluemix.net/docs/cli/index.html#cli).
 
-- Create an application in the Bluemix web portal using the **SDK for Node.js** runtime. Remember the name you give your application, you will need it later on. 
+3. Create an application in the Bluemix web portal using the **SDK for Node.js** runtime. Remember the name you give your application, you will need it later on. 
 
-- Create a Streaming Analytics service in the Bluemix web portal
+4. Create a Streaming Analytics service in the Bluemix web portal
 
-- Connect your application to your Streaming Analytics instance using the "Connect existing" button on your application's Overview page.
+5. Connect your application to your Streaming Analytics instance using the "Connect existing" button on your application's Overview page.
 
 
 
