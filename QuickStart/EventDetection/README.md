@@ -1,4 +1,4 @@
-##EventDetection Starter Application for Bluemix Streaming Analytics
+## EventDetection Starter Application for Bluemix Streaming Analytics
 This sample demonstrates how to use the Streaming Analytics service in conjunction with a Bluemix application.
 The project contains both a Bluemix application and a Streams application.
 
