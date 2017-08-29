@@ -3,7 +3,7 @@
 	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
 		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
 		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
-		"external": true, "services": ["Bluemix", "Edgent"],
+		"external": true, "featured": true, "services": ["Bluemix", "Edgent"],
 	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
 },
 {"category": ["1"],
@@ -11,7 +11,7 @@
 		"language": ["Python"], "tags": ["topology","data science "],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		 "featured": true, "external": true, "services": ["Bluemix","DSX"],
+		"external": true, "services": ["Bluemix","DSX"],
 	"description": "This simple notebook for IBM Data Science Experience (DSX) shows you how to connect to the Streaming Analytics service from DSX.  It creates a Python streaming application that displays 'Hello World' to the console."
 },
 
