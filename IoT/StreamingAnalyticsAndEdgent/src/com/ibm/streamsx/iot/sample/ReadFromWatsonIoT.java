@@ -15,7 +15,11 @@ public class ReadFromWatsonIoT {
 		Topology topology = new Topology("ReadFromIoT");
 		//subscribe to the "sensors" events stream
 		TStream<DeviceEvent> events = IotStreams.eventsSubscribe(topology, "sensors");
-		events.print();
+		//The events stream contains metadata about the event, including device type and id
+		//use event.getData() to extract the payload which contains the data we are interested in
+
+		TStream <JSONObject>reading = events.transform(event -> ((JSONObject)(event.getData()))); 
+		reading.print();
 		SubmitToService.submitTopologyToService(topology);
 	}
 }
