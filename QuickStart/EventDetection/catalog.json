@@ -5,6 +5,5 @@
 	"blogPost": "https://www.ibm.com/developerworks/library/ba-bluemix-detect-complex-events-from-data-stream-trs/index.html/",
 	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/EventDetection",
 	"tags": ["complex event processing","cep","rest","noaa","submit job","streams rest api","Rest api"],"services": ["Bluemix"],
-	"sabFile": "https://github.com/IBMStreams/samples/raw/master/QuickStart/EventDetection/EventDetection.sab",
  	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
 }
