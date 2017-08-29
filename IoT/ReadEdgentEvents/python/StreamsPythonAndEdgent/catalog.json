@@ -1,0 +1,11 @@
+{	"name": "Process events from Edgent in Python",
+	"description":"This is a Python Streaming Analytics application that connects to the Watson IoT platform to process events sent by an Edgent application. It also demonstrates how to send commands to the Edgent application.",
+ 	"language": ["Python"],
+	"category": ["2","1"],
+	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents/python/StreamsPythonAndEdgent/",
+	"tags": ["send commands", "topology","read event","raspberry pi", "iot","edge device","send data", "streaming analytics"], 
+	"services": ["Bluemix","Edgent"],
+	"featured": true
+	
+}

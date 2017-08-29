@@ -1,9 +1,9 @@
-{	"name": "Process events from Edgent in the cloud",
+{	"name": "Process events from Edgent in a Java topology",
 	"description":"This Streams application is written entirely in Java. It shows how to connect to the Watson IoT platform to process events sent by an Edgent application. It also demonstrates how to send commands to the Edgent application.",
  	"language": ["Java"],
 	"category": ["2","1"],
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/IoT/StreamingAnalyticsAndEdgent",
+		"url": "https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents/java/StreamingAnalyticsAndEdgent",
 	"tags": ["send commands", "topology","read event","raspberry pi", "iot","edge device","send data", "streaming analytics"], 
 	"services": ["Bluemix","Edgent"],
 	"featured": true

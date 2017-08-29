@@ -29,7 +29,7 @@ public class ReadAndSendCommands {
 			String deviceId = event.getDevice().getId();
 			Device device = new Device(typeId, deviceId);
 			JSONObject data = new JSONObject();
-			data.put("msg",   "Show LED @ " + new Date().toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			data.put("msg",   "Alert! Show LED @ " + new Date().toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			return new DeviceCmd(device, "display", null, data); //$NON-NLS-1$
 		});
 

@@ -1,4 +1,5 @@
 package com.ibm.streamsx.iot.sample;
+import com.ibm.json.java.JSONObject;
 import com.ibm.streamsx.iot.DeviceEvent;
 import com.ibm.streamsx.iot.IotStreams;
 import com.ibm.streamsx.topology.TStream;

@@ -15,8 +15,8 @@ public class SubmitToService {
 
 		// Add credential file and Streaming Analytics service name to config 
 		Map<String, Object> config = new HashMap<>();
-		String credentialFile = "/path/to/vcap/file/vcap.json"; //Change this to the credentials file
-		String serviceName = "service_name"; //Insert your service name here
+		String credentialFile = "/home/streamsadmin/Downloads/vcap.json"; //Change this to the credentials file
+		String serviceName = "sa_nd"; //Insert your service name here
 		config.put(AnalyticsServiceProperties.VCAP_SERVICES, new File(credentialFile));
 		config.put(AnalyticsServiceProperties.SERVICE_NAME, serviceName);
 		// Submit application bundle to Bluemix
