@@ -377,6 +377,17 @@
 		"operators": ["FileSource","Parse"]
 }
 
+,{"name": "Detect weather events in realtime using Streams and Node.js",
+	"description":" “This sample demonstrates how a Node.js app on Bluemix can retrieve data from a running Streams application. The Streams application uses the MatchRegex operator to process weather events from an external source.",
+		"language": ["SPL"],
+	"category": ["1","2"],"featured": true,
+	"blogPost": "https://www.ibm.com/developerworks/library/ba-bluemix-detect-complex-events-from-data-stream-trs/index.html/",
+	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/EventDetection",
+	"tags": ["complex event processing","cep","rest","noaa","submit job","streams rest api","Rest api"],"services": ["Bluemix"],
+	"sabFile": "https://github.com/IBMStreams/samples/raw/master/QuickStart/EventDetection/EventDetection.sab",
+ 	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
+}
+
 ,{"name": "Simple beginner application for Quick Start Guide",
 	"description": "This is the sample application from the Streams Quick Start Guide on StreamsDev.  It reads stock trade data from a CSV file and demonstrates how to use the Aggregate operator to compute max, min, and averages for each company.",
 	"language": ["SPL"],
@@ -486,7 +497,7 @@
 	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
 		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
 		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
-		"external": true, "services": ["Bluemix", "Edgent"],
+		 "services": ["Bluemix", "Edgent"],
 	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
 },
 {"category": ["1"],
@@ -494,7 +505,7 @@
 		"language": ["Python"], "tags": ["topology","data science "],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		 "featured": true, "external": true, "services": ["Bluemix","DSX"],
+		"external": true, "services": ["Bluemix","DSX"],
 	"description": "This simple notebook for IBM Data Science Experience (DSX) shows you how to connect to the Streaming Analytics service from DSX.  It creates a Python streaming application that displays 'Hello World' to the console."
 },
 
