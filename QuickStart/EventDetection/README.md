@@ -27,7 +27,7 @@ To run the EventDetection, you will need to perform the following actions if you
 
 After you perform the steps above, you are ready to download and push the starter application to Bluemix:
 
-1. Download the zip from this project.
+1. Download the [EventDetection.zip](https://streams-github-samples.mybluemix.net/?get=QuickStart/EventDetection) file.
 
 2. After the download completes, extract the .zip file.
 

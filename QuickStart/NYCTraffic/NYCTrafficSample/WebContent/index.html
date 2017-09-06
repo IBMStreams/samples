@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Streaming Analytics Traffic Sample</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" href="style.css" />	
+</head>
+<body>
+	<table>
+		<tr>
+			<td style='width: 30%;'><img src='images/streams_BM_Image.bmp'>
+			</td>
+			<td>
+				<p class='description'></p> Thanks for using the Streaming Analytics starter application. This application retrieves public data from New York City traffic sensors, calculates aggregate statistics, and displays some summary lists.  For more information about the Streaming Analytics service visit <a target="_blank"
+				href="" ID="docLink" >Streaming Analytics documentation</a>.  For information about the sample data used in this starter application see <a href="demodata.html" target="_blank">Starter Application Data</a>. For information about this starter application see <a href="https://developer.ibm.com/streamsdev/docs/bluemix-streaming-analytics-starter-application" target="_blank">Starter Application</a>.
+			</td>
+		</tr>
+	</table>
+	<div id="AppStat"></div>
+	<div id="lastStatusLine"></div>
+	<div id="NTCTables"></div>
+	<div id="InitMessage"></div>
+	<div id="currentSpeed"></div>
+	<div id="maxSpeed"></div>
+	<div id="minSpeed"></div>
+	<br style="clear:both;"/>
+	<hr>
+	<div id="FullAppStat"></div>
+	<div id="id00"></div>
+	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript">
+var myUrl = window.location.host;
+var newUrl = "";
+if (myUrl.indexOf("stage1") == -1) {
+  newUrl = "https://www.ng.bluemix.net/docs/services/StreamingAnalytics/index.html";
+} else { 
+  newUrl = "https://www.stage1.ng.bluemix.net/docs/services/StreamingAnalytics/index.html";
+}
+var a = document.getElementById('docLink'); 
+a.href = newUrl;
+</script>
+</body>
+</html>
