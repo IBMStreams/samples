@@ -1,7 +1,7 @@
 This project contains a Streams application written in Java. It shows how to connect to the Watson IoT platform to process events sent from an [Edgent](https://edgent.apache.org) application, and how to send commands to the Edgent application.
 Detailed instructions on how to run this application are discussed in this recipe on developerWorks: [Connect Apache Edgent running on Raspberry Pi to the Streaming Analytics service](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/)
 
-
+Required Streams version: 4.1+
 To run this application, you need:
  1. Credentials for the Watson IoT Platform and an instance of the Streaming Analytics service on Bluemix. [See step 3 of the recipe](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step3)
  2. An Edgent application generating data.  Learn how to [create an Edgent application that generates events](https://developer.ibm.com/recipes/tutorials/send-events-to-the-watson-iot-platform-from-a-raspberry-pi-running-apache-edgent/).
