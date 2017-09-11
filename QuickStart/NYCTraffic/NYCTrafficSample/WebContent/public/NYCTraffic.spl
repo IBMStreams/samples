@@ -1,0 +1,202 @@
+
+use com.ibm.streamsx.inet::InetSource; // dependency is part of streams product 
+use com.ibm.streamsx.inet.http::HTTPPost; // dependency is part of streams product 
+use spl.utility::*;
+
+type	sortOrder = enum {ascending,descending};
+type	OutputSchema = 
+			rstring Id, rstring linkName, rstring time, 
+			float64 currentSpeed, float64 maxSpeed, float64 minSpeed, 
+			float64 avgSpeed;	
+type 	OutputList = 
+			rstring attributeName,
+			list<OutputSchema>[10] data;			
+composite NYCTraffic {
+type
+		NYCTrafficSchema = 
+			rstring Id, float64 Speed, rstring DataAsOf, 
+			rstring Owner, rstring Transcom_id, rstring Borough, rstring  LinkName;
+		
+
+graph 
+stream <rstring rawObservation> inputStream = InetSource() {
+    param URIList : ["http://207.251.86.229/nyc-links-cams/LinkSpeedQuery.txt"]; 
+           
+          incrementalFetch : false; // always retrieve the whole document 
+	       	
+          // The fetchIntervalSeconds parameter controls the amount of time between fetch cycles. 
+          fetchInterval : 60.0l;  // The file appears to be updated roughly every minute so we'll fetch each minute
+          punctPerFetch : true; // produce a window punctuation after every fetch
+          unconditionalFetch : true; // always return the file even if it wasn't updated.   
+  }
+  
+  /**
+   * This operator will read the text fiel data returned from teh http call a line at a time and build an output tuple that contains
+   * the interesting fields. 
+   * Note the incoming data contains a header line, a trailing empty line and some lines are "malformed" in that they seem to have line return character in 
+   * the middle of a single link's data.  We do some simple cleanup by throwing away anything that doesn't have the right number of fields after tokenizing.     
+   */
+  stream<NYCTrafficSchema> Tokenized = Custom(inputStream)  {
+            logic
+                onTuple inputStream: {
+                	mutable	int32 count = 0;
+            		mutable list<rstring> tokens = [];
+                	mutable rstring replaced = regexReplace(inputStream.rawObservation,"\"", "",true); // strip off the quotes in the values
+                	tokens =  tokenize(replaced, "\t\r", true); // tokenize based on tab or line return
+                    count = size(tokens); // there should be 14 tokens (one empty one at end because we said keep empty tokens) 
+                    // println("Count = " + (rstring) count + " tokens = " + (rstring) tokens );
+                    mutable Tokenized outTuple = {};
+                    /* here's the order 
+                     * {Id Speed TravelTime Status DataAsOf linkId linkPoints EncodedPolyLine EncodedPolyLineLvls Owner Transcom_id Borough linkName}
+                     */
+                    if (count==14) { //right number of values
+                    	if (tokens[0] != "Id") { // not the header line
+                    	  outTuple.Id = tokens[0];
+                    	  outTuple.Speed = (float64) tokens[1];
+                    	  outTuple.DataAsOf = tokens[4];
+                    	  outTuple.Owner = tokens[9];
+                    	  outTuple.Transcom_id = tokens[10];
+                    	  outTuple.Borough = tokens[11];
+                    	  outTuple.LinkName = tokens[12];
+                    	 // println("Tokenize Submitting:" + (rstring) outTuple);                    	 
+                    	  submit(outTuple, Tokenized);
+                    	}  
+                    }
+                }
+                onPunct inputStream: {
+                	println(currentPunct());
+                	submit(currentPunct(),Tokenized);
+                }
+        }
+ 
+                 
+    /**
+     * We will add a deduplicate to catch situations where the same reading (same link id and timestamp) are returned in subsequent fetches 
+     * from the url.  This is because while the file is updated each minute not every sensor reading in the returned data is... in fact there's  
+     * some very old ones from over a year ago that just keep being returned each fetch.  
+     */
+    stream<NYCTrafficSchema> deduped = DeDuplicate(Tokenized)  {                                                                                            
+      param                                                                                      
+        timeOut : 180.0;  // only remember for 3 minutes                                         
+        key : Id, DataAsOf;  // if same ID and time then a duplicate      
+        resetOnDuplicate : true; // reset the timeout on a duplicate tuple that is suppressed so it isn't flushed from history.                    
+    }
+    
+         
+  /**
+   * Configure an Aggregate operator to produce statistics every minute over the rolling last 5 minutes of data 
+   */       
+   @view(name = "5MinuteAggregatedViewAll", port = Agg1, sampleSize = 200, bufferSize = 200, activateOption = automatic )
+   stream<OutputSchema>                            
+        Agg1 = Aggregate(deduped)                                                        
+    {                                                                                 
+      window                                                                          
+        deduped : sliding, time(300), time(60);  // 5 minute window with a new tuple output every 60 seconds                                                     
+      param                                                                           
+        groupBy : Id;  // produce one tupel for each Id       
+        aggregateIncompleteWindows : true;                                              
+      output                                                                          
+        Agg1 : 	
+				currentSpeed = Last(Speed),
+				time = Last(DataAsOf),
+        		maxSpeed = Max(Speed),
+        		minSpeed = Min(Speed),
+        		avgSpeed = Average(Speed),
+        		linkName=Last(LinkName);                        
+    }  
+    
+    
+   stream<OutputList> minSpeed = Top10(Agg1){
+     	param	
+     		order : ascending ;
+     		attr : minSpeed;
+     		attributeName : "minSpeed";
+     } 
+     stream<OutputList> maxSpeed = Top10(Agg1){
+     	param	
+     		order : descending ;
+     		attr : maxSpeed;
+     		attributeName : "maxSpeed";
+     } 
+     stream<OutputList> currentSpeed = Top10(Agg1){
+     	param	
+     		order : descending ;
+     		attr : currentSpeed;
+     		attributeName : "currentSpeed";
+     }        
+
+}
+
+ /*			
+   * Composite to sort and return top 10 for given category 
+   * It takes a parameter that specifies the attribute name in the input tuple that is used to sort on, 
+   * A string that represents that collection of data's name (typically the same as the attribute name
+   * and whether the sort is ascending or descending (ie max speed is descending , min speed is descending 
+   */
+public composite Top10(output top10; input Agg1 ) {
+  	param
+  		attribute $attr;
+  		expression<rstring>  $attributeName;
+  	    expression<enum {ascending,descending}> $order : descending ;
+  	graph
+    stream<OutputSchema> sortedagg1 = Sort(Agg1) {
+                window
+                    Agg1: tumbling, punct();  
+                param
+                    sortBy : $attr;
+                    order : $order; 
+            }
+    
+    //build an array of the top 10  
+    // add the attribute name to each tuple
+    // output the top 10 when the window punct arrives 
+    stream<OutputList> top10 = Custom(sortedagg1)
+				{
+					logic
+						state :{
+							mutable int32 count=0;
+							mutable list<OutputSchema>[10] myList;  
+						}
+
+						onTuple sortedagg1 :	{
+						    if (count++ < 10) {
+						      appendM(myList,sortedagg1);	      
+						    }
+						 }
+						onPunct sortedagg1 : {
+						   count = 0; //reset count to start over
+						   submit({attributeName=$attributeName, data=myList}, top10) ;
+						   clearM(myList);
+						  }
+				}      
+    
+    /**
+     * convert the tuple to json format 
+     * com.ibm.streamsx.json::TupleToJSON dependency is available from github at https://github.com/IBMStreams/streamsx.json
+     */
+    stream<rstring jsonString> jsonOutput = com.ibm.streamsx.json::TupleToJSON(top10){ }
+    
+    
+    /**
+     * Post the JSON tuple output to a REST service that is listening for it. 
+     * the url to post to must be provided as a submission time parameter
+     * it should look something like "http://nyctrafficsample.stage1.mybluemix.net/api/jax-rs/addLine"
+     */
+    () as HttpOutput = HTTPPost (jsonOutput) {
+	  param headerContentType : "application/json";
+	      url : ((rstring) getSubmissionTimeValue("host")); 
+	}
+    
+    /**
+     * left in for debug... you could download and inspect the job logs to see the data produced by the application.  
+     */
+     () as Prt10Sink = Custom(jsonOutput)  {
+            logic
+                onTuple jsonOutput: {
+                    println(jsonOutput.jsonString);
+                }
+                onPunct jsonOutput: {
+                	println(currentPunct());
+                }
+        }  
+}

@@ -1,0 +1,5 @@
+applications:
+- disk_quota: 1024M
+  path: webStarterApp.war
+  instances: 1
+  memory: 512M
