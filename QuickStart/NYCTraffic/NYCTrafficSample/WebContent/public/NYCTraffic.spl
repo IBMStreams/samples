@@ -50,7 +50,7 @@ stream <rstring rawObservation> inputStream = InetSource() {
                      * {Id Speed TravelTime Status DataAsOf linkId linkPoints EncodedPolyLine EncodedPolyLineLvls Owner Transcom_id Borough linkName}
                      */
                     if (count==14) { //right number of values
-                    	if (tokens[0] != "Id") { // not the header line
+                    	if (upper(tokens[0]) != "ID") { // not the header line
                     	  outTuple.Id = tokens[0];
                     	  outTuple.Speed = (float64) tokens[1];
                     	  outTuple.DataAsOf = tokens[4];
