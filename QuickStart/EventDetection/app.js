@@ -132,7 +132,6 @@ var authbuf = 'Basic ' + new Buffer(sa_props.userid + ':' + sa_props.password).t
 var events = [];
 var eventCount = 0;
 var eventTarget = 3000;
-eventTarget = eventTarget.MAX_VALUE;
 var cancelling = false;
 var Event = function(number, evt) {  
     this.Number = number;  

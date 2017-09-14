@@ -49,6 +49,6 @@ After you perform the steps above, you are ready to download and push the starte
 
 		cf push myapp
 
-8. Access your Node.js application by clicking on the route displayed near the top of your application's Overview page in Bluemix.
+8. Access your Node.js application by clicking on `Visit App URL` near the top of your application's detail page in Bluemix.
 
 
