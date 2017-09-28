@@ -20,7 +20,7 @@ Once the OSM file is saved in the `etc` folder,
 - Compile and launch the OSMPointMapMatchingSample application and launch it in Distributed mode.
 
 ### View the map matching results
-Once the application is running, go to http://<PE HOST>:8080/map/map.html, where `PE HOST` is the host where the Map Viewer operator in the application is running.
+Once the application is running, go to http://PE HOST:8080/map/map.html, where `PE HOST` is the host where the Map Viewer operator in the application is running.
 
 See the image below for how to find out the PE host.
 ![](images/pe-host.png)
