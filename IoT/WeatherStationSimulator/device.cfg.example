@@ -1,0 +1,5 @@
+org = my_org
+type = my_iot_device
+id = my_iot_device_1
+auth-method = token
+auth-token = my_token
