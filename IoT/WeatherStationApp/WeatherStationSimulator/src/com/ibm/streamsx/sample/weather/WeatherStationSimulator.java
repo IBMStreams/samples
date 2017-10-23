@@ -33,8 +33,8 @@ public class WeatherStationSimulator {
 		//Start the shutdown timer. The IoT platform on Bluemix has a limit on the amount of data that can be sent
 		//if this application is left running indefinitely that could be used up quickly.
 		//The optional timeout parameter is used to determine how long to run the application.
-		//Default is 10 minutes
-		int timeout_in_minutes = 10;
+		//Default is 20 minutes
+		int timeout_in_minutes = 20;
 		if (args.length == 2) {
 			timeout_in_minutes = Integer.parseInt(args[1]);
 		}
@@ -135,7 +135,7 @@ public class WeatherStationSimulator {
 
 	private static void printUsage() {
 		System.err.println("Proper Usage is:\njava com.ibm.streamsx.sample.weather.WeatherStationSimulator /path/to/device.cfg [run-time-in-minutes].\nSpecify the path to the device.cfg file to use to connect to the Watson IoT platform. \n"+ 
-				"\nThis app is designed to run for a fixed time in order not to use up your quota on the Watson IoT platform." +"\nUse the optional run-time parameter to specify how long the application should submit data, in minutes. A value of 0 means this application will run indefinitely, the default is 10.");
+				"\nThis app is designed to run for a fixed time in order not to use up your quota on the Watson IoT platform." +"\nUse the optional run-time parameter to specify how long the application should submit data, in minutes. A value of 0 means this application will run indefinitely, the default is 20.");
 		System.exit(1);
 	}
 

@@ -24,7 +24,7 @@ To run this application, you need to register a device with the IoT platform. Th
 `./start-weather-simulations.sh path-to-your-device-cfg-file [run_time_in_minutes]`
 
 Use `run_time_in_minutes` to run the application for a specified time. This is because the Watson IoT Platform places a limit on the amount of data that can be transferred for free plans.
-If ommitted, the application will run for 10 minutes. You can re-run the application and configure it to run until manually terminated by specifying `0` as the timeout:
+If ommitted, the application will run for 20 minutes. You can re-run the application and configure it to run until manually terminated by specifying `0` as the timeout:
 ` ./start-weather-simulations.sh device.cfg 0`
 
 ### Extend the sample
