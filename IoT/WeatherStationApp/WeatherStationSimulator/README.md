@@ -1,10 +1,10 @@
 ## Weather Station Simulator
 
-This is an [Apache Edgent](https://edgent.apache.org) application that sends simuated weather data to the Watson IoT platform for analysis by Streams.  The application simulates 20 weather stations in the cities of Toronto and Markham.  Every 0.5 seconds a reading is sent to the platform for a station, in a round robin sequence. Readings are in JSON and have the following format:
+This is an [Apache Edgent](https://edgent.apache.org) application that sends simulated weather data to the Watson IoT platform for analysis by Streams.  The application simulates 20 weather stations in the cities of Toronto and Markham.  Every 0.5 seconds a reading is sent to the platform for a station, in a round robin sequence. Readings are in JSON and have the following format:
 
 ``` java
 {"id":"tor_3", //station id 
- "temp":75.65775475394342, //temperature in Farenheit
+ "temp":75.65775475394342, //temperature in Fahrenheit
 "location":"tor", //location id
 "lat":43.685, //station latitude and longitude
 "lon":-79.347
@@ -24,7 +24,7 @@ To run this application, you need to register a device with the IoT platform. Th
 `./start-weather-simulations.sh path-to-your-device-cfg-file [run_time_in_minutes]`
 
 Use `run_time_in_minutes` to run the application for a specified time. This is because the Watson IoT Platform places a limit on the amount of data that can be transferred for free plans.
-If ommitted, the application will run for 20 minutes. You can re-run the application and configure it to run until manually terminated by specifying `0` as the timeout:
+If omitted, the application will run for 20 minutes. You can re-run the application and configure it to run until manually terminated by specifying `0` as the timeout:
 ` ./start-weather-simulations.sh device.cfg 0`
 
 ### Extend the sample
