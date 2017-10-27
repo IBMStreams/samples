@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="package" name="WeatherStationSimulator">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+	
+	<property name="EDGENT_HOME" value="/home/streamsadmin/Downloads/edgent-1.1.0/java8"/>
+	
+	<property name="jar.file" value="weather-station-simulator.jar"/>
+	
+    <path id="WeatherStationSimulator.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="${EDGENT_HOME}/lib/edgent.providers.iot.jar"/>
+        <pathelement location="${EDGENT_HOME}/connectors/iotp/lib/edgent.connectors.iotp.jar"/>
+        <pathelement location="${EDGENT_HOME}/connectors/iot/lib/edgent.connectors.iot.jar"/>
+        <pathelement location="${EDGENT_HOME}/ext/slf4j-jdk14-1.7.12.jar"/>
+    </path>
+	
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+		<delete file="${jar.file}"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+	
+    <target depends="init" name="compile">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="WeatherStationSimulator.classpath"/>
+        </javac>
+    </target>
+	<target name="package" depends="compile"
+		                description="package, output to JAR">
+
+			<jar destfile="${jar.file}" >
+				<manifest>
+	            <attribute name="Main-Class" value="com.ibm.streamsx.sample.weather.WeatherStationSimulator"/>
+	            <attribute name="Class-Path"  value="${EDGENT_HOME}/lib/edgent.api.function.jar
+		           ${EDGENT_HOME}/ext/gson-2.2.4.jar 		           ${EDGENT_HOME}/ext/slf4j-api-1.7.12.jar 
+		           ${EDGENT_HOME}/ext/metrics-core-3.1.2.jar 		           ${EDGENT_HOME}/lib/edgent.api.execution.jar 
+		           ${EDGENT_HOME}/lib/edgent.api.window.jar 		           ${EDGENT_HOME}/lib/edgent.api.oplet.jar 
+		           ${EDGENT_HOME}/lib/edgent.api.graph.jar 		           ${EDGENT_HOME}/lib/edgent.api.topology.jar 
+		           ${EDGENT_HOME}/lib/edgent.spi.topology.jar		           ${EDGENT_HOME}/lib/edgent.spi.graph.jar 
+		           ${EDGENT_HOME}/lib/edgent.runtime.appservice.jar		           ${EDGENT_HOME}/lib/edgent.runtime.etiao.jar 
+		           ${EDGENT_HOME}/lib/edgent.runtime.jsoncontrol.jar 		           ${EDGENT_HOME}/lib/edgent.providers.direct.jar 
+		           ${EDGENT_HOME}/connectors/iot/lib/edgent.connectors.iot.jar 
+		           ${EDGENT_HOME}/connectors/pubsub/lib/edgent.connectors.pubsub.jar 
+		           ${EDGENT_HOME}/apps/iot/lib/edgent.apps.iot.jar 
+		           ${EDGENT_HOME}/lib/edgent.runtime.jobregistry.jar 
+		           ${EDGENT_HOME}/apps/runtime/lib/edgent.apps.runtime.jar 
+		           ${EDGENT_HOME}/lib/edgent.providers.iot.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/watson-iot-0.2.2.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/gson-2.6.1.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/log4j-1.2.17.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/org.eclipse.paho.client.mqttv3-1.1.0.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/commons-net-3.3.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/commons-logging-1.2.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/commons-lang3-3.4.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/commons-codec-1.10.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/httpclient-4.5.1.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/joda-time-2.9.2.jar 
+		           ${EDGENT_HOME}/connectors/iotp/ext/httpcore-4.4.3.jar 
+		           ${EDGENT_HOME}/connectors/iotp/lib/edgent.connectors.iotp.jar 
+		           ${EDGENT_HOME}/ext/slf4j-jdk14-1.7.12.jar "/>
+					</manifest>
+	            <fileset dir="bin"/>
+		        </jar>
+		    </target>
+	
+	
+</project>
