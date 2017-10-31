@@ -1,19 +1,26 @@
 This project contains a Streams application written in Python that processes events sent from an [Edgent](https://edgent.apache.org) application. It shows how to send commands to the Edgent application.
 
-Follow the [instructions in this recipe](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/)
-to generate events from Edgent.
-To  instructions on how to run this application are discussed in this recipe on developerWorks: 
+First, you need an Edgent application sending data to the Watson IoT platform.
+The easiest way to get started is to [deploy the Streams IoT starter kit](https://github.com/IBMStreams/streamsx.iot.starterkit). Click the **Deploy to Bluemix** button to set up all the needed services.
 
-To run this application, you need:
- 1. Credentials for the Watson IoT Platform and an instance of the Streaming Analytics service on Bluemix. [See step 3 of the recipe](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step3)
- 2. An Edgent application generating data.  Learn how to [create an Edgent application that generates events](https://developer.ibm.com/recipes/tutorials/send-events-to-the-watson-iot-platform-from-a-raspberry-pi-running-apache-edgent/).
- 3. Submit the `IotPlatformBluemix` application to your Streams instance.  Step 4 of the recipe discusses [how to submit the `IotPlatformBluemix` application](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step4).
+Once that is done, you are ready to run the applications.
+
+1. Run the IoT sensors sample from Edgent:
+  - Download your `device.cfg` file from the "View all Credentials" page of the starter kit.
+  - Download Edgent, choose a binary release
+  - Unpack Edgent, run the IoT sensors application:
+    ```
+    cd <edgent>/java8/scripts/connectors/iotp
+     ./runiotpsensors.sh device.cfg
+     ```
+
+2. Submit the `IotPlatformBluemix` application to your Streams instance. Click "Tools" on the starter kit home page and click *Submit IoTPlatform Job* if it is not running.
+
  
-## Instructions
+3. Run the Streams application 
 You need version 1.7 or greater of the streamsx package:
-`pip install streamsx==1.7b1`
+`pip install streamsx`
 
-Update your PYTHONPATH to include the new 
 
 ### Submit to a local instance of Streams: 
 - [Follow these steps](http://ibmstreams.github.io/streamsx.documentation/docs/python/1.6/python-appapi-devguide-3/#31-setting-up-your-environment)  under "Setting up your environment"
