@@ -36,8 +36,8 @@ There are 3 applications in this project:
 
 1. Import the project into Streams Studio
 2. Follow the instructions in this recipe to [add needed jars to your classpath](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step5).  See the section "Set up your Streams development environment".
-3. (Optional) If you are running this application in the IBM Cloud, get the credentials for your Streaming Analytics service:
+3. If you are running this application in the IBM Cloud, get the credentials for your Streaming Analytics service:
   - If you used the Streams IoT starter kit, the credentials are available by clicking **View All Credentials** > **Streams Credentials** >> **Streaming Analytics Service credentials**.  Copy the file contents and save them in a file on your local machine. 
   - If you did not set up the starter kit, See the section under ["Getting your Streaming Analytics Service Credentials"](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/#r_step3) for steps.
- - Edit lines 18 and 19 of `SubmitToService.java` with the path to the credentials file you just created.
-4. Pick one of the applications mentioned above and select "Run as" > "Java Application"
+4. Edit lines 18 and 19 of `SubmitToService.java` with the path to the credentials file you just created.
+5. Pick one of the applications mentioned above and select "Run as" > "Java Application"
