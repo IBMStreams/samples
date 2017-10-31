@@ -7,7 +7,23 @@ from streamsx.topology.topology import Topology
 from streamsx.rest import StreamsConnection
 from streamsx.topology import schema
 import json
-from mysa_creds import *
+from streamsx.topology.context import *
+
+
+# Licensed Materials - Property of IBM
+# Copyright IBM Corp. 2017
+
+def get_config_object():
+
+     config = {
+         ConfigParams.VCAP_SERVICES: "credentials.cfg",
+         #vcap_conf,
+         ConfigParams.SERVICE_NAME: "Streaming-Analytics",
+         ConfigParams.FORCE_REMOTE_BUILD: True
+     }
+     return config
+
+
 
 def submit_to_service(topo, local, username="streamsadmin",pwd="passw0rd"):
     """
@@ -30,7 +46,7 @@ def get_cmd(tuple):
     payload = {}
 
     payload["action"] = "Reboot"
-    payload["msg"] = "Alert code: 249"
+    payload["msg"] = "Message to Edgent from Streams:\n Alert code: 249"
 
     command_data =  {}
     command_data ["d"] = payload
@@ -54,8 +70,8 @@ def get_event_data(tuple):
 
 def main():
    local = sys.argv[1] == "local"
-   
-   	
+
+
    #define needed variables
    COMMANDS_TOPIC = "streamsx/iot/device/commands/send" #topic to publish commands to
    EVENTS_TOPIC = "streamsx/iot/device/events" #topic to subscribe to for events
@@ -84,7 +100,7 @@ def main():
       result = submit_to_service(topo, local, username, password)
    else:
    	  result = submit_to_service(topo, local)
-      
+
    print("Submitted job to the service, job id = " + str(result.job.id))
 
 
