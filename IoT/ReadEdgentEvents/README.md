@@ -1,5 +1,10 @@
 This project contains Streams applications written in Java, SPL and Python. It shows how to connect to the Watson IoT platform to process events sent from an [Edgent](https://edgent.apache.org) application, and how to send commands to the Edgent application.
 
+**If you have already deployed the Streams IoT Starter Kit and completed the setup steps to run a sample, you can skip the prerequisites section below**. Your next step is to run a sample in the language of your choice.
+
+- [Run the SPL sample](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents/spl)
+- [Download the Java](https://streams-github-samples.mybluemix.net/?get=IoT%2FReadEdgentEvents%2Fjava%2FStreamingAnalyticsAndEdgent) or [Python sample](https://streams-github-samples.mybluemix.net/?get=IoT%2FReadEdgentEvents%2Fpython%2FStreamsPythonAndEdgent%2F)
+
 ## Prerequisites
 
 - An instance of the Watson IoT platform and the Streaming Analytics service

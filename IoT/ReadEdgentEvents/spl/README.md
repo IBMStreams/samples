@@ -3,7 +3,7 @@ This project shows a Streams application written in SPL that processes events se
 The source for this application is in the IoT toolkit.
 
 ## Prerequisites
-See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents)
+See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents).
 
 Once you have all the prerequisites, you are ready to run the Streams application.
 
