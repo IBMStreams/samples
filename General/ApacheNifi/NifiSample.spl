@@ -1,0 +1,19 @@
+use com.ibm.streamsx.inet.rest::*;
+
+composite NiFiTest {
+
+graph
+  stream<blob data, map<rstring, rstring> attributes> flowFiles = HTTPBLOBInjection() {
+    param
+      port: 9083;
+  }
+
+  () as sink = Custom(flowFiles) {
+    logic
+       onTuple flowFiles: {
+           println(flowFiles);
+           println("Content is " + convertFromBlob(flowFiles.data));
+           println("");
+    }
+   }
+}
