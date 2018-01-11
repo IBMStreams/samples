@@ -5,7 +5,7 @@
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/integrating-ibm-streams-with-apache-nifi/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/General/ApacheNifi",
-	"tags": [],
+	"tags": [], "featured": true,
 		"toolkits": ["inet"],
 		"operators": ["HTTPBLOBInjection"]
 }

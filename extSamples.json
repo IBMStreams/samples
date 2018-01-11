@@ -1,35 +1,56 @@
+{	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
+	"description":"Streams Python notebook demonstrating how to ingest data from IoT devices and analyze it to detect anomalies. The Streams application runs in the IBM Cloud and connects to an Edgent application through the Watson IoT platform.",
+ 	"language": ["Python"],
+	"category": ["2","1","7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
+		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d4395f1",
+	"tags": ["data science", "iot", "watson iot","edgent","cloud","send commands", "topology","read event","raspberry pi","edge device","send data"],
+	"services": ["Bluemix","Edgent"],
+	"featured": true
+},
+{	"name": "Process IoT data from Edgent in a DSX Python notebook",
+	"description":"Python notebook that creates a Streams application in the IBM Cloud to process data from an Edgent application. It also demonstrates how to send commands to the Edgent application.",
+ 	"language": ["Python"],
+	"category": ["2","1"],
+	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
+		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d9b6a73",
+	"tags": ["data science", "iot", "watson iot","ibm cloud","cloud","send commands", "topology","read event","raspberry pi","edge device","send data", "streaming analytics"],
+	"services": ["Bluemix","Edgent"],
+	"featured": true
+},
+
 {"category": ["1","2"],
 	 "zip": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit/archive/master.zip",
-	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": [],
+	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": ["iot","weather", "iot", "ibm cloud","cloud"],
 		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
 		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
-		"external": true, "featured": true, "services": ["Bluemix", "Edgent"],
-	"description": "This starter kit demonstrates the implementation of a smarter and connected water irrigation system. It is a great example of integrating Apache Edgent and the Streaming Analytics Service on Bluemix."
+		"external": true,  "services": ["Bluemix", "Edgent"],
+	"description": "This starter kit demonstrates the implementation of a smart and connected water irrigation system. It integrates data from the Weather Company, Apache Edgent and the Streaming Analytics Service on IBM Cloud."
 },
 {"category": ["1"],
 	  "name": "Hello World Python notebook for IBM Data Science Experience (DSX)",
-		"language": ["Python"], "tags": ["topology","data science "],
+		"language": ["Python"], "tags": ["topology", "ibm cloud","cloud"],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		"external": true, "services": ["Bluemix","DSX"],
+		"external": true, "services": ["Bluemix","DSX"],"featured":true,
 	"description": "This simple notebook for IBM Data Science Experience (DSX) shows you how to connect to the Streaming Analytics service from DSX.  It creates a Python streaming application that displays 'Hello World' to the console."
 },
 
 
 {"category": ["1","2"],
-	  "name": "Ingest and analyze patient data in a Data Science Experience (DSX) notebook", "language": ["Python"], "tags": ["streaming analytics","visualize","graph","chart","patient","health","ecg"],
+	  "name": "Ingest and analyze patient data in a Data Science Experience (DSX) notebook", "language": ["Python"], "tags": ["iot", "watson iot", "ibm cloud","cloud","streaming analytics","visualize","graph","chart","patient","health","ecg"],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039cad29a6",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		 "featured": true, "external": true, "services": ["Bluemix", "DSX"], "toolkits": ["Healthcare"],
+		"external": true, "services": ["Bluemix", "DSX"], "toolkits": ["Healthcare"],
 	"description": "This Python notebook for DSX shows how to create an Bluemix application that analyzes patient data. It also demonstrates how to visualize data in a view using Bokeh."
 },
 
 
 {"category": ["1","2"],
-	  "name": "Compute probability of engine failure in real time", "language": ["Python"], "tags": ["visualize", "view","graph","chart","plot"],
+	  "name": "Compute probability of engine failure in real time", "language": ["Python"], "tags": [ "iot", "watson iot","ibm cloud","cloud","visualize", "view","graph","chart","plot"],
 		"blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
 		 "url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca60bb7",
-		 "featured": true, "external": true, "services": ["Bluemix", "DSX"],
+		  "external": true, "services": ["Bluemix", "DSX"],
 	"description": "This Python notebook for DSX (Data Science Experience) creates a neural network model to determine probability that an engine will fail based on its temperature.  It also demonstrates how to visualize data in a view. It uses PyBrain, NumPy and Matplot."
 
 },
@@ -37,7 +58,6 @@
 	"name": "Detect at-risk patients using the Healthcare Analytics platform",
 	"description": "This simulation monitors the vital signs of 100 patients and generates an alert on the dashboard if a patient's vitals are not in the normal range. It also uses the Java Application API and the ODM rules compiler.",
 "language": ["Java"],
-"featured": true,
 "category": ["2","7"],
 "external" : true,
 "url":"https://github.com/IBMStreams/streamsx.health/tree/develop/samples/PatientsMonitoringDemo",
@@ -47,8 +67,8 @@
 {
   "name": "Face detection and recognition using Edgent and Streams",
   "description": "This starter kit uses Edgent and OpenCV on a Raspberry Pi with a camera to perform face detection. Detected faces are published from the 'Smart Camera' to a Streams application to perform Face Recognition.",
-  "language": ["Java"], "tags": ["edge analytics","image processing","video analytics"],
-"featured": true, "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
+  "language": ["Java"], "tags": ["iot","edge analytics","image processing","video analytics", "ibm cloud","cloud"],
+ "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
 "category": ["1","7"],
 "zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/master.zip",
 "url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"
