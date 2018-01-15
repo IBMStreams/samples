@@ -1,6 +1,6 @@
 ## Streams Designer Aggregation Examples
 
-This application is discussed in [this article on StreamsDev](https://developer.ibm.com/streamsdev/2018/01/12/calculate-moving-averages-real-time-data-streams-designer/).  It demonstrates how you can use the Aggregation operator in Streams Designer. Output of the aggregation is sent to Cloud object storage, and sample result files are in the `output` folder in this project.
+This application is discussed in [this article on Streamsdev](https://developer.ibm.com/streamsdev/2018/01/12/calculate-moving-averages-real-time-data-streams-designer/).  It demonstrates how you can use the Aggregation operator in Streams Designer. Output of the aggregation is sent to Cloud object storage, and sample result files are in the `output` folder in this project.
 
 To get started, first download `Aggregation_examples.stp`, then import it into Streams Designer.
 
