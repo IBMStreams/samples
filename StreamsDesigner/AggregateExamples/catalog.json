@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2018/01/12/calculate-moving-averages-real-time-data-streams-designer/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/StreamsDesigner/AggregateExamples/Aggregation_examples.stp",
+		"url": "https://github.com/IBMStreams/samples/tree/master/StreamsDesigner/AggregateExamples",
 	"tags": ["window","partition","tumbling","sliding"], "featured": true,
 
 		"operators": ["Aggregate"]
