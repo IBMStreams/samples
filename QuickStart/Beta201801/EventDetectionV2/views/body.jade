@@ -1,0 +1,108 @@
+//- body.jade
+//- This file provides the HTML body part.
+body
+  h1 Welcome to the Event Detection Sample Application!
+  p= 'This sample application is a NodeJS (version ' + process.version + ') application bound to the Streaming Analytics service.'
+  h2 Overview 
+  p The purpose of this sample application is to show how a NodeJS application can utilize the Streaming Analytics service via its REST API.  See the NodeJS application code that you downloaded for examples of REST API calls.
+  p The Event Detection sample application uses the Streaming Analytics service to a analyze a stream of weather information from NOAA weather stations around the world.  A variety of simple and complex event detection techniques are used to identify events as they occur.
+      
+  // TASK TABLE
+  h2 Application Flow
+  p The Event Detection sample application performs a series of steps using the Streaming Analytics service.  The table below lists the tasks the application is performing and the status of each step.
+    table(align="left", border="0", cellspacing="0", cellpadding="0")
+      thead
+        tr
+          th(width=40) Step
+          th(width=400) Task
+          th(width=200) Status
+      tbody
+        tr
+          td 1
+          td Extract the environment information required to use the Streaming Analytics REST API. 
+          td <strong>#{status[0]}</strong>
+        tr
+          td 2
+          td Check if the Streams instance is running and start the instance if necessary using the Streaming Analytics REST API.
+          td <strong>#{status[1]}</strong>
+        tr
+          td 3
+          td If the instance was already running, check if there is a Streams event detection job already running.  If a job is running, cancel it.
+          td <strong>#{status[2]}</strong>
+        tr
+          td 4
+          td Deploy a Streams Application Bundle to the Streaming Analytics service using the Streaming Analytics REST API.  The bundle contains a Streams application the analyzes weather data and performs event detection. 
+          td <strong>#{status[3]}</strong>
+        tr
+          td 5
+          td Process events detected by the Streams application, and display them on this web page. 
+          td <strong>#{status[4]}</strong>
+        tr
+          td 6
+          td Cancel the job corresponding to the Streams application that was submitted in step 4 after #{eventTarget} events are processed. 
+          td <strong>#{status[5]}</strong>
+
+  // /TASK TABLE
+
+  hr
+  
+  h2 Event Types
+  p There are four types of events that the Streams application is monitoring for in the weather stream.  Two of them are complex events, where patterns are recognized involving both the current data values for a weather station and previously analyzed values.  The other two are simple events, which only require analyis of a weather station's current values.
+
+    table(align="left", border="0", cellspacing="0", cellpadding="0")
+      tbody
+        tr
+          th(width=10)
+          th(width=90)
+        tr
+          td(valign="top") <strong>M-Shape Temp</strong>
+          td This event occurs when the graph of the temperature readings from a weather station form an "M" shape.  Detecting M-shapes in graphs illustrates the power of the Complex Event Processing toolkit in Streams, but it really has no use in a weather application.  However, recognizing M-shape patterns in securities trading applications is very useful.  An M-shape is called a double-top stock pattern in the trading world.  See #[a(href="http://hirzels.com/martin/papers/debs12-cep.pdf") Partition and Compose: Parallel Complex Event Processing] for more information on this complex event detection method, the double-top pattern and other patterns.
+        tr
+          td(valign="top") <strong>Steady Temp</strong>
+          td This event occurs when the temperature reported by a weather station changes by 1 degree or less per hour for eleven consecutive hours.  In addition, the net change during the 11 hours cannot exceed 3 degress.
+        tr
+          td(valign="top") <strong>Dry Heat</strong>
+          td This event occurs when a weather station reports a temperature greater than 105 degrees (F) and a relative humidity of less than 10%.
+        tr
+          td(valign="top") <strong>Sauna</strong>
+          td This event occurs when a weather station reports a temperature greater than 90 degrees (F) and a relative humidity greater than 75%.
+  hr
+         
+  h2 Application Results
+  p Results from the Streams application are listed below.  Weather data from the prior 24 hours is available when the Streams application is started.  The application analyzes this data so event patterns that occur over multiple hours can be recognized.  After this initial set of existing data is analyzed by the application, new data is processed in real-time as it is published by NOAA.  Most weather stations update their readings only once per hour, so after the initial burst of events, new events will be detected less frequently.
+
+p In addition to detecting events, the Streams application also determines the highest and lowest current temperature reading from any weather station.
+    // TEMP TABLE
+    table(style="width: 35%", align="right", border="1", cellspacing="0", cellpadding="0")
+      thead
+        tr
+          th Max Temp (F)
+          th Weather Station
+          th Min Temp (F)
+          th Weather Station 
+      tbody
+        - var maxStation = 'http://tgftp.nws.noaa.gov/weather/current/' + maxmin.maxTempStation + '.html'
+        - var minStation = 'http://tgftp.nws.noaa.gov/weather/current/' + maxmin.minTempStation + '.html'
+        tr
+          td #{maxmin.maxTemp}
+          td #[a(href=maxStation) #{maxmin.maxTempStation}] 
+          td #{maxmin.minTemp}
+          td #[a(href=minStation) #{maxmin.minTempStation}] 
+    // /TEMP TABLE
+    // EVENT TABLE 
+    table(style="width: 60%", align="left", border="1", cellspacing="0.1", cellpadding="0")
+      thead
+        tr
+          th Event Number
+          th Event Time
+          th Event Type
+          th Weather Station 
+      tbody
+        - for (var i=events.length-1; i>=0; i--)
+            tr
+            - var station = 'http://tgftp.nws.noaa.gov/weather/current/' + events[i].EventString.eventStation + '.html'
+              td #{events[i].Number}
+              td #{events[i].EventString.eventTime}
+              td #{events[i].EventString.eventType}
+              td #[a(href=station) #{events[i].EventString.eventStation}] 
+    // /EVENT TABLE
