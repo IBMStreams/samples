@@ -1,4 +1,4 @@
-##Streaming Analytics Event Detection Starter Application - For use with Beta plans only
+## Streaming Analytics Event Detection Starter Application - For use with Beta plans only
 Welcome to the Streaming Analytics service powered by IBM Streams! This starter application demonstrates how to configure and control the Streaming Analytics service through its V2 REST API. The application is written in Node.js using the SDK for Node.js runtime in Bluemix.
 
 #### Preparing to run the starter application
@@ -45,18 +45,4 @@ After you meet these prerequisites, you are ready to download and push the start
 
 - Access your Node.js application by clicking on the route displayed near the top of your application's overview page in IBM Cloud.
 
-
-####Required components
-
-The following components are required by the EventDetection starter application.  These components are documented in the package.json file.
-- https
-- express
-- jade
-- async
-- fs
-- form-data
-- errorhandler
-- body-parser
-- querystring
-- Node.js
 
