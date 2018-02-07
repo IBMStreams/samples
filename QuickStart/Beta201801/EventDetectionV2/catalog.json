@@ -1,0 +1,9 @@
+{"name": "Detect weather events with Node.js - Streaming Analytics Beta only",
+	"description":"This is the same as the EventDetection sample, but uses the V2 REST API of the Streaming Analytics service to retrieve data from the Streams application.",
+		"language": ["SPL"],
+	"category": ["1","2"],
+	"blogPost": "https://developer.ibm.com/streamsdev/?post_type=doc&p=16246&preview=true/",
+	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/Beta201801/EventDetectionV2",
+	"tags": ["complex event processing","cep","noaa","submit job","streams rest api"],"services": ["Bluemix"],
+ 	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
+}

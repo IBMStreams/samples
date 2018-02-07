@@ -1,9 +1,9 @@
 {"name": "Detect weather events in realtime using Streams and Node.js",
-	"description":"This sample demonstrates how a Node.js app on Bluemix can retrieve data from a running Streams application. The Streams application uses the MatchRegex operator to process weather events from an external source.",
+	"description":"This sample demonstrates how a Node.js app on IBM Cloud can retrieve data from a running Streams application. Uses the MatchRegex operator to process weather events from an external source.",
 		"language": ["SPL"],
 	"category": ["1","2"],
 	"blogPost": "https://www.ibm.com/developerworks/library/ba-bluemix-detect-complex-events-from-data-stream-trs/index.html/",
 	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/EventDetection",
-	"tags": ["complex event processing","cep","rest","noaa","submit job","streams rest api","Rest api"],"services": ["Bluemix"],
+	"tags": ["complex event processing","cep","noaa","submit job","streams rest api"],"services": ["Bluemix"],
  	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
 }
