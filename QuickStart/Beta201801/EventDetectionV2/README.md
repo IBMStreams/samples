@@ -17,7 +17,7 @@ To get ready to run the Event Detection V2 starter application, you need to:
 
 After you meet these prerequisites, you are ready to download and push the starter application to IBM Cloud:
 
-1. Download the [EventDetectionV2.zip](https://streams-github-samples.mybluemix.net/?get=QuickStart/Beta201801/EventDetectionV2) file.
+1. Download the [EventDetectionV2.zip](https://streams-github-samples.mybluemix.net/?get=QuickStart%2FBeta201801%2FEventDetectionV2) file.
 
 - After the download completes, extract the .zip file.
 
