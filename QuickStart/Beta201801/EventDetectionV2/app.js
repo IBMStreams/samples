@@ -105,11 +105,11 @@ if (process.env.VCAP_SERVICES) {
     console.info(env);
 
     // Find the Streaming Analytics service
-    if (env['streaming-analytics-dev']) {
-        sa_props = env['streaming-analytics-dev'][0]['credentials'];
+    if (env['streaming-analytics']) {
+        sa_props = env['streaming-analytics'][0]['credentials'];
         console.info('streaming-analytics credentials: ');
         console.info(sa_props);
-        service_name = env['streaming-analytics-dev'][0]['name'];
+        service_name = env['streaming-analytics'][0]['name'];
         status_step[0] = "Completed";
     }
     else {
