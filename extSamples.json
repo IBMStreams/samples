@@ -1,3 +1,25 @@
+
+
+{	"name": "Get started with JMS operators",
+	"description":"Learn how to configure the operators for use with Apache activeMQ and Websphere MQ. Includes sample connection documents.",
+ 	"language": ["SPL"],
+	"category": ["2","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/04/18/getting-started-with-jms-operators/",
+		"url": "http://ibmstreams.github.io/streamsx.documentation/docs/4.2/messaging/jms-operators-getting-started/",
+	"tags": ["messaging","mq","jmssource","jmssink"],
+	"featured": true
+},
+{	"name": "Create Websphere MQ binding file and queue",
+	"description":"This article has sample steps to create the Websphere MQ binding file to use with the JMS operators.",
+ 	"language": ["SPL"],
+	"category": ["2","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/2016/04/18/getting-started-with-jms-operators/",
+		"url": "http://ibmstreams.github.io/streamsx.documentation/docs/4.2/messaging/mq-create-objects-bindings-sample/",
+	"tags": ["messaging","mq object","jmssource","jmssink"],
+	"featured": true
+},
+
+
 {	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
 	"description":"Streams Python notebook demonstrating how to ingest data from IoT devices and analyze it to detect anomalies. The Streams application runs in the IBM Cloud and connects to an Edgent application through the Watson IoT platform.",
  	"language": ["Python"],
