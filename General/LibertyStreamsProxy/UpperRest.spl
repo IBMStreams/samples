@@ -1,0 +1,23 @@
+namespace application ;
+
+use com.ibm.streamsx.inet.rest::HTTPRequestProcess ;
+use com.ibm.streamsx.inet.http::HTTPRequest ;
+
+composite UpperRest
+{
+	graph
+		(stream<HTTPRequest> httpRequest) as rest =
+			HTTPRequestProcess(httpResponse)
+		{
+			param
+				context : "myStreams" ;
+				contextResourceBase : "/dev/null" ;
+				port : 8080 ;
+		}
+
+		(stream<HTTPRequest> httpResponse as O) as doWork = Functor(httpRequest as I)
+		{
+			output
+				O : response = upper(I.request) ;
+		}
+}
