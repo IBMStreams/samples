@@ -167,4 +167,7 @@ Rederive and fetch the log (good for debugging)...
 http://libertyriver.mybluemix.net/TopoDisplay
 ```
 
+### Resources
+
+[UpperRest.sab](https://ibm.box.com/s/120kol5vbhl1w2euyfftr1t7v0s8kk7i) built version of example Streams application.
 
