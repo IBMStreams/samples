@@ -104,17 +104,19 @@ we need to build an install the proxy server on Liberty.
 
 ### Build and upload the LibertyStreamsProxy server. 
 
-From a terminal, login to your bluemix account. My logging in looks like...
+From a terminal, login to your bluemix account and set your target. Using my account, it looks like...
 
 ```
-$ bluemix login  -o siegenth@us.ibm.com -s dev -sso
+$ bluemix login  -o siegenth@us.ibm.com -sso
+$ bluemix target -o siegenth@us.ibm.com -s dev
 ````
 When prompted, follow directions for password. 
 
-Change to the LibertyStreamsProxy directory and use invoke maven to build the proxy server, output will be in 'target' directory. 
+Change to the LibertyStreamsProxy directory and invoke maven to install componets and build the proxy server, output will be in 'target' directory. 
 
 ```
 cd ../LibertyProxyServer
+mvn -U initialize
 mvn clean install
 ```
 
