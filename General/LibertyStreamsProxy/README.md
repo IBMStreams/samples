@@ -18,7 +18,7 @@ Assumed:
  * You have downloaded and installed [cf](https://github.com/cloudfoundry/cli#downloads) and [Bluemix](https://console.bluemix.net/docs/starters/install_cli.html) command-line tools. 
  
 Provided:
- * UpperRest.sab : The Streams application bundle file, with the demonstration Streams application, source below. 
+ * UpperRestRH6.sab : The Streams application bundle file, with the demonstration Streams application, source below. 
  * A video walking through the process outlined here.
 
 
@@ -69,7 +69,7 @@ TO_UPPER_CASE
 The application uses the **HTTPRequestProcess()** operator of the [INET](http://ibmstreams.github.io/streamsx.inet/) toolkit.
 
 
-A built version of the program, UpperRest.sab, can be found in BOX. 
+A built version of the program, UpperRestRH6.sab, can be found in BOX. 
 
 Login into your IBM Cloud account (https://console.bluemix.net/catalog)
 
@@ -96,7 +96,7 @@ Login into your IBM Cloud account (https://console.bluemix.net/catalog)
 3. Select the 'Alias of' link, it will be the name of the service (LibertyRiverAnalytics). 
 4. Select 'LAUNCH'.
 5. Select the "Play" button to the right of 'Jobs'.
-6. Browse to the location of of the Streams application bundle file (UpperRest.sab)
+6. Browse to the location of of the Streams application bundle file (UpperRestRH6.sab)
 7. Select 'Submit'.
 
 Liberty is connected to a 'Streams Analytics' service which is running UpperRest application. Now
