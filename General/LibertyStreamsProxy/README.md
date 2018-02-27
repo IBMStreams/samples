@@ -59,7 +59,7 @@ composite UpperRest
 		}
 }
 ```
-Invoking the URL, "http://localhost:8080/myStreams/rest/ports/analyze/0?to_upper_case" in your Streams development environment look like...
+Invoking the URL, "http://localhost:8080/myStreams/rest/ports/analyze/0?to_upper_case" in your Streams development environment looks like...
 
 ```
 $ curl http://localhost:8080/myStreams/rest/ports/analyze/0?to_upper_case
@@ -80,9 +80,9 @@ Login into your IBM Cloud account (https://console.bluemix.net/catalog)
 4. The service will start.
 
 ### Create a Liberty for Java Cloud Foundry App on IBM Cloud.
-1. Enter the 'Cloud Foundry Apps' category section (https://console.bluemix.net/catalog/?taxonomyNavigation=app-services&category=cf-apps)
-1. Select 'Liberty for Java' and create. 
-2. Provide a 'App name:', for this walkthorough I'll use 'LibertyRiver' and create. 
+1. Enter the 'Cloud Foundry Apps' category section (https://console.bluemix.net/catalog/?category=cf-apps)
+2. Select 'Liberty for Java' and create. 
+3. Provide a 'App name:', for this walkthorough I'll use 'LibertyRiver' and create. 
 
 ### Connect Liberty App to Streams service. 
 1. Select 'Connections' in the left panel.
@@ -106,23 +106,23 @@ we need to build an install the proxy server on Liberty.
 
 From a terminal, login to your bluemix account and set your target. Using my account, it looks like...
 
-```
-$ bluemix login  -o siegenth@us.ibm.com -sso
-$ bluemix target -o siegenth@us.ibm.com -s dev
+```bash
+bluemix login  -o siegenth@us.ibm.com -sso
+bluemix target -o siegenth@us.ibm.com -s dev
 ````
 When prompted, follow directions for password. 
 
-Change to the LibertyStreamsProxy directory and invoke maven to install componets and build the proxy server, output will be in 'target' directory. 
+Change to the General/LibertyStreamsProxy directory of the downloaded git repostitory and invoke maven to install componets and build the proxy server, output will be in 'target' directory. 
 
-```
-cd ../LibertyProxyServer
+```bash
+cd General/LibertyStreamsProxy
 mvn -U initialize
 mvn clean install
 ```
 
 Upload the war file to IBM Cloud, using *Liberty App* name (LibertyRiver) and the war file (LibertyStreamsProxy-v1.0.war).
 ```bash
-$ bluemix cf push LibertyRiver -p target/LibertyStreamsProxy-v1.0.war
+bluemix cf push LibertyRiver -p target/LibertyStreamsProxy-v1.0.war
 ```
 On completion the application is ready to be accessed. 
 
@@ -134,12 +134,12 @@ Build build and invoke the tests.
 ```
 Execute the application using curl, swap in your *Liberty App* name before executing 
 ```bash
-$ curl http://libertyriver.mybluemix.net/myStreams/rest/ports/analyze/0?upper_case
+curl http://libertyriver.mybluemix.net/myStreams/rest/ports/analyze/0?upper_case
 ```
 The execution looks like...
 
 ```bash
-$ curl http://libertyriver.mybluemix.net/myStreams/rest/ports/analyze/0?upper_case
+curl http://libertyriver.mybluemix.net/myStreams/rest/ports/analyze/0?upper_case
 UPPER_CASE
 ```
 
@@ -169,5 +169,7 @@ http://libertyriver.mybluemix.net/TopoDisplay
 
 ### Resources
 
-[UpperRest.sab](https://ibm.box.com/s/120kol5vbhl1w2euyfftr1t7v0s8kk7i) built version of example Streams application.
+[Box](https://ibm.ent.box.com/folder/34290070650) Box folder with .sab file.
+
+[Video](https://www.youtube.com/watch?v=t97LudCNYy4&feature=youtu.be) walkthrough. 
 
