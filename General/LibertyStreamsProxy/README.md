@@ -171,5 +171,5 @@ http://libertyriver.mybluemix.net/TopoDisplay
 
 [Box](https://ibm.ent.box.com/folder/34290070650) Box folder with .sab file.
 
-[Video](https://www.youtube.com/watch?v=t97LudCNYy4&feature=youtu.be) walkthrough. 
+[Video](https://youtu.be/v0upqnUWz74) walkthrough. 
 
