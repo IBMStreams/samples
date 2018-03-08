@@ -108,10 +108,10 @@ Run the statement:
 ```    ibm_db.execute(stmt)
 ```
 
-Iterate over the result set:
+Access the results in the result set:
 ```   
     result = ibm_db.fetch_assoc(stmt)
-    if (result):
+    if (result): # or while (result) to iterate
         event["postalcode"] = result["POSTALCODE"]
         event["name"] =  result["NAME"]
         event["customer_id"]  = result["ID"]
