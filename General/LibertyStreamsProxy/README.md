@@ -169,7 +169,5 @@ http://libertyriver.mybluemix.net/TopoDisplay
 
 ### Resources
 
-[Box](https://ibm.ent.box.com/folder/34290070650) Box folder with .sab file.
-
 [Video](https://youtu.be/v0upqnUWz74) walkthrough. 
 
