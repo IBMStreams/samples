@@ -1,11 +1,11 @@
-# Time based billing application.
+# Time based billing application
 
 Some utility companies offer smart meters that send usage readings from homes and businesses, improving accuracy and enabling remote reporting. Since the smart meters have more fine grained usage data, some companies are offering discounts to customers if their consumption is during off peak periods. 
 This sample demostrates such an application in Streams Designer, and the videos  "Use IoT data in Streams Designer" and  "Use Python Code in a Streams Designer Flow" show how it was done.
 
 These applications demonstrate how to do the following in Streams Designer:
 - Connect to the Watson IoT platform
-- [Use the Code operator to retrieve data from DB2](#appendix)
+- [Use the Code operator to retrieve data from DB2](#appendix-using-the-code-operator-to-retrieve-data-from-db2)
 - Use the Email operator to send an alert
 - Use the DB2 Warehouse operator to save data to DB2
 
