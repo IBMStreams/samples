@@ -16,7 +16,7 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/04/18/getting-started-with-jms-operators/",
 		"url": "http://ibmstreams.github.io/streamsx.documentation/docs/4.2/messaging/mq-create-objects-bindings-sample/",
 	"tags": ["messaging","mq object","jmssource","jmssink"],
-	"featured": true
+
 },
 
 {	"name": "Use Message Hub operator with Streams Designer",
@@ -37,7 +37,7 @@
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d4395f1",
 	"tags": ["data science", "iot", "watson iot","edgent","cloud","send commands", "topology","read event","raspberry pi","edge device","send data"],
 	"services": ["Bluemix","Edgent"],
-	"featured": true
+
 },
 {	"name": "Process IoT data from Edgent in a DSX Python notebook",
 	"description":"Python notebook that creates a Streams application in the IBM Cloud to process data from an Edgent application. It also demonstrates how to send commands to the Edgent application.",
@@ -47,7 +47,7 @@
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d9b6a73",
 	"tags": ["data science", "iot", "watson iot","ibm cloud","cloud","send commands", "topology","read event","raspberry pi","edge device","send data", "streaming analytics"],
 	"services": ["Bluemix","Edgent"],
-	"featured": true
+
 },
 
 {"category": ["1","2"],
@@ -63,7 +63,7 @@
 		"language": ["Python"], "tags": ["topology", "ibm cloud","cloud"],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		"external": true, "services": ["Bluemix","DSX"],"featured":true,
+		"external": true, "services": ["Bluemix","DSX"],
 	"description": "This simple notebook for IBM Data Science Experience (DSX) shows you how to connect to the Streaming Analytics service from DSX.  It creates a Python streaming application that displays 'Hello World' to the console."
 },
 
@@ -81,7 +81,7 @@
 	  "name": "Compute probability of engine failure in real time", "language": ["Python"], "tags": [ "iot", "watson iot","ibm cloud","cloud","visualize", "view","graph","chart","plot"],
 		"blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
 		 "url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca60bb7",
-		  "external": true, "services": ["Bluemix", "DSX"],
+		  "external": true, "services": ["Bluemix", "DSX"],"featured":true,
 	"description": "This Python notebook for DSX (Data Science Experience) creates a neural network model to determine probability that an engine will fail based on its temperature.  It also demonstrates how to visualize data in a view. It uses PyBrain, NumPy and Matplot."
 
 },
@@ -90,7 +90,7 @@
 	"description": "This simulation monitors the vital signs of 100 patients and generates an alert on the dashboard if a patient's vitals are not in the normal range. It also uses the Java Application API and the ODM rules compiler.",
 "language": ["Java"],
 "category": ["2","7"],
-"external" : true,
+"external" : true,"featured":true,
 "url":"https://github.com/IBMStreams/streamsx.health/tree/develop/samples/PatientsMonitoringDemo",
 "zip": "https://github.com/IBMStreams/streamsx.health/archive/develop.zip",
 "tags": ["java topology","topology","odm","rules","microservices","health"]
