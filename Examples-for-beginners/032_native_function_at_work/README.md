@@ -26,9 +26,7 @@ in a C++ header (Functions.h) file that is present in the impl/include directory
  
 In the case of function model (b), the native function is provided through a
 .so shared library that is built in a separate C++ project [NativeFunctionLib].
-You can find that CDT project in the same Eclipse workspace as this SPL project.
-After building the shared library using CDT, it is advisable to copy 
-the C++ interface file and the .so file to the SPL project's impl/include and 
+You can build that project by running the mk script. Make sure it is executable first. The script copies the C++ interface file and the .so file to the SPL project's impl/include and 
 impl/lib directories respectively. That way, this SPL project will be
 self-contained with the C++ interface file and the .so file inside of it.
 ================================================================== 
