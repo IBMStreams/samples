@@ -15,7 +15,7 @@
 	"category": ["2","1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/04/18/getting-started-with-jms-operators/",
 		"url": "http://ibmstreams.github.io/streamsx.documentation/docs/4.2/messaging/mq-create-objects-bindings-sample/",
-	"tags": ["messaging","mq object","jmssource","jmssink"],
+	"tags": ["messaging","mq object","jmssource","jmssink"]
 
 },
 
@@ -36,7 +36,7 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d4395f1",
 	"tags": ["data science", "iot", "watson iot","edgent","cloud","send commands", "topology","read event","raspberry pi","edge device","send data"],
-	"services": ["Bluemix","Edgent"],
+	"services": ["Bluemix","Edgent"]
 
 },
 {	"name": "Process IoT data from Edgent in a DSX Python notebook",
@@ -46,7 +46,7 @@
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d9b6a73",
 	"tags": ["data science", "iot", "watson iot","ibm cloud","cloud","send commands", "topology","read event","raspberry pi","edge device","send data", "streaming analytics"],
-	"services": ["Bluemix","Edgent"],
+	"services": ["Bluemix","Edgent"]
 
 },
 
