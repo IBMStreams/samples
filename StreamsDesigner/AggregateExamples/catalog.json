@@ -2,7 +2,7 @@
 	"name": "Using the Aggregation operator in Streams Designer",
 	"description": "Using clickstream data from an online store, this sample Streams flow demonstrates different ways to use the Aggregation operator.",
 	"language": ["SPL"],
-	"category": ["2"],
+	"category": ["1","7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2018/01/12/calculate-moving-averages-real-time-data-streams-designer/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/StreamsDesigner/AggregateExamples",
 	"tags": ["window","partition","tumbling","sliding"], "featured": true,

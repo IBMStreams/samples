@@ -19,7 +19,16 @@
 	"featured": true
 },
 
-
+{	"name": "Use Message Hub operator with Streams Designer",
+	"description":"Notebook demonstrating how to configure the Message Hub operator in Streams Designer. Builds on the Data Historian example and sends sample data to Message Hub.",
+ 	"language": ["Python"],
+	"category": ["2","1"],
+	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
+		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a",
+	"tags": ["messagehub"],
+	"services": ["Message hub"],
+	"featured": true
+},
 {	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
 	"description":"Streams Python notebook demonstrating how to ingest data from IoT devices and analyze it to detect anomalies. The Streams application runs in the IBM Cloud and connects to an Edgent application through the Watson IoT platform.",
  	"language": ["Python"],
