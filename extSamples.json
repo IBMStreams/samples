@@ -26,7 +26,7 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a",
 	"tags": ["messagehub"],
-	"services": ["Message hub"],
+	"services": ["Message hub"]
 
 },
 {	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
