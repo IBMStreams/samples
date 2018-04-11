@@ -1,0 +1,21 @@
+{
+	"name": "EventDetection",
+	"version": "0.0.1",
+	"description": "A sample app for BlueMix that uses the Streaming Analytics service, written in nodejs.",
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"express": "4.12.x",
+		"body-parser": "1.13.x",
+		"errorhandler": "1.4.x",
+		"jade": "1.1.x",
+           "async": "0.9.x",
+		"form-data": "^0.2.x"
+	},
+	"repository": {},
+	"engines": {
+		"node": "0.12.x"
+	} 
+
+}
