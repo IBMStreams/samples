@@ -354,7 +354,7 @@
 }
 
 ,{"name": "New York City traffic speed statistics in real time",
-	"description":"This is a compelte web application that runs on Bluemix. It uses Streams to retrieve data from New York City traffic sensors and compute speed statistics. It also demonstrates using the Aggregate, DeDuplicate, InetSource and HTTPPost operators. The web application is written in Liberty for Java.",
+	"description":"This is a complete web application that runs on Bluemix. It uses Streams to retrieve data from New York City traffic sensors and compute speed statistics. It also demonstrates using the Aggregate, DeDuplicate, InetSource and HTTPPost operators. The web application is written in Liberty for Java.",
 		"language": ["SPL"],
 	"category": ["1","2","7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/bluemix-streaming-analytics-starter-application",
