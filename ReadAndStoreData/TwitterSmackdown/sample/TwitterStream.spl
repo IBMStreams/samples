@@ -1,0 +1,72 @@
+namespace sample ;
+
+use com.ibm.streamsx.inet.http::* ;
+
+/*
+ * Access Twitter's sample tweet stream using the HTTPGetStream operator.
+ * 
+ * Add a count of the total number of tweets received and export
+ * the stream for use by other jobs.
+ *
+ */
+composite TwitterStream
+{
+	param
+		expression<rstring> $consumerKey : getSubmissionTimeValue("consumerKey") ;
+		expression<rstring> $consumerSecret :getSubmissionTimeValue("consumerSecret") ;
+		expression<rstring> $accessToken : getSubmissionTimeValue("accessToken") ;
+		expression<rstring> $accessTokenSecret : getSubmissionTimeValue("accessTokenSecret") ;
+	graph
+
+		// Read live feed from Twitter
+		stream<rstring data> TwitterSource = HTTPGetStream()
+		{
+			param
+				url : "https://stream.twitter.com/1.1/statuses/sample.json" ;
+				authenticationType : "oauth" ;
+				authenticationProperty : 
+					"consumerKey=" + $consumerKey, 
+					"consumerSecret=" + $consumerSecret, 
+					"accessToken=" + $accessToken, 
+					"accessTokenSecret=" + $accessTokenSecret ;
+				retryOnClose : true;
+				retryDelay : 60.0;
+				maxRetries : 3600;
+		}
+		
+		// Filter to only include statuses (excluding for example, status deletes, etc.)
+		stream<TwitterSource> TwitterStatuses = Filter(TwitterSource){
+			param 
+				filter: findFirst(data, '"created_at":') > -1;
+		}
+
+		// Add total number of tweets read so far
+		stream<rstring data, uint64 totalTweets> Tweets = Functor(TwitterStatuses)
+		{
+			logic
+				state :
+				{
+					mutable uint64 counter = 0 ;
+				}
+
+				onTuple TwitterStatuses :
+				{
+					counter ++ ;
+				}
+
+			output
+				Tweets : totalTweets = counter ;
+		}
+
+		// Export for use by Smackdown or other analytics
+		() as TweetsExport = Export(Tweets)
+		{
+			param
+				streamId : "TweetsExport" ;
+		}
+
+	config
+		logLevel : error ;
+		restartable : true ;
+		relocatable : true ;
+}

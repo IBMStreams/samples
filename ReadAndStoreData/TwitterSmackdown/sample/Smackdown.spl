@@ -1,0 +1,104 @@
+namespace sample ;
+
+/**
+ * Count number of tweets matching any of the words in each of the opponent word lists.
+ * Every minute produce a result showing the count of matching tweets for each word list
+ * over the last five minutes.
+ * 
+ * The opponent word lists are specified as a submission time value. 
+ * The word lists are separated with a comma and the words in each list are separated by a vertical bar, "|".
+ * 
+ * For example:
+ *     apple|orange,potato|carrot
+ * represents a smackdown between the word list: "apple" and "orange" and the word list: "potato" and "carrot".
+ * 
+ * Matches are made regardless of case.
+ *
+ */
+composite Smackdown
+{
+	param
+		expression<list<rstring>> $opponents :(list<rstring>)
+			tokenize(getSubmissionTimeValue("opponents"), ",", false) ;
+	graph
+
+		/** Import the feed from TwitterStream application */
+		stream<rstring data, uint64 totalTweets> TweetsImport = Import()
+		{
+			param
+				applicationName : "sample::TwitterStream" ;
+				streamId : "TweetsExport" ;
+		}
+
+		/**  Scan tweet data for each of the smackdown words */
+		stream<rstring smackdownWords, int32 match> Matches = Custom(TweetsImport)
+		{
+			logic
+				state :
+				{
+					mutable boolean initialized = false ;
+					mutable list<list<rstring>> smackdown ;
+				}
+
+				onTuple TweetsImport :
+				{
+					if(! initialized)
+					{
+						for(rstring opponent in $opponents)
+						{
+							list<rstring> words = tokenize(opponent, "|", false) ;
+							appendM(smackdown, words) ;
+							// Force each group in the aggregate to have immediate results even if no matches come from Twitter
+							submit({ smackdownWords =(rstring) words, match = 0 }, Matches) ;
+							printStringLn("Smackdown opponent: " +(rstring) words) ;
+						}
+
+						initialized = true ;
+					}
+
+					mutable int32 match = 0 ;
+					for(list<rstring> words in smackdown)
+					{
+						for(rstring word in words)
+						{
+							list<rstring> tokens = regexMatchPerl(data, "(?i)(" + word + ")") ;
+							match += size(tokens) > 0 ? 1 : 0 ;
+						}
+
+						submit({ smackdownWords =(rstring) words, match = match }, Matches) ;
+					}
+
+				}
+
+		}
+
+		/**  Aggregate counts for each word over five minutes */
+		stream<rstring smackdownWords, int32 matches> MatchAggregate = Aggregate(Matches)
+		{
+			window
+				Matches : sliding, time(300), time(60), partitioned ;
+			param
+				aggregateIncompleteWindows : true ;
+				groupBy : smackdownWords ;
+				partitionBy : smackdownWords ;
+			output
+				MatchAggregate : smackdownWords = Any(smackdownWords), matches = Sum(match);
+		}
+
+		/**  Print results for viewing in console log */
+		() as AggConsole = Custom(MatchAggregate)
+		{
+			logic
+				onTuple MatchAggregate :
+				{
+					printStringLn((rstring) MatchAggregate) ;
+				}
+
+		}
+
+	config
+		logLevel : error ;
+		restartable : true ;
+		relocatable : true ;
+}
+	
