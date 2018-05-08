@@ -3,8 +3,8 @@
 	"description": "Use the HTTPBLOBInjection operator to receive files and their metadata from Apache Nifi. The files are sent using HTTP POST requests.",
 	"language": ["SPL"],
 	"category": ["2"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/integrating-ibm-streams-with-apache-nifi/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/ApacheNifi",
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/integrating-ibm-streams-apache-nifi/"
+		"url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/ApacheNifi",
 	"tags": [],
 		"toolkits": ["inet"],
 		"operators": ["HTTPBLOBInjection"]

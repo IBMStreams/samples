@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["2"],
 	"toolkits": ["shell"],
-		"url": "https://github.com/IBMStreams/samples/tree/master/Databases/DbLoader",
+		"url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/Databases/DbLoader",
 	"tags": ["db2","oracle","netezza"]
 }

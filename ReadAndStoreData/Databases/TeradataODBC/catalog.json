@@ -6,5 +6,5 @@
   "operators": ["ODBCSource"],
   "tags": ["unixODBC"],
   "description": "This sample shows how to connect to a Teradata database from Streams using the ODBCSource operator.  The application connects to a Teradata database and then reads the names of all tables in the database. ",
-  "url": "https://github.com/IBMStreams/samples/tree/master/Databases/TeradataODBC"
+  "url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/Databases/TeradataODBC"
 }
