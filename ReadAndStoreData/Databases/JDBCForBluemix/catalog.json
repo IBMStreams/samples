@@ -1,6 +1,6 @@
 {
-	"name": "Use JDBC operator in Bluemix",
-	"description": "See how to connect to dashDB on Bluemix using the JDBCRun operator",
+	"name": "Use JDBC operator in IBM Cloud",
+	"description": "See how to connect to dashDB on IBM Cloud using the JDBCRun operator",
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",

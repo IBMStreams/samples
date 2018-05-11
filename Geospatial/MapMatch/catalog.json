@@ -1,5 +1,5 @@
-{	"name": "Map matching in Bluemix",
-	"description": "This application provides a wrapper to the map matching operator, and allows foor the deployment of this functionality in the Cloud -- specifically BlueMix.",
+{	"name": "Map matching in IBM Cloud",
+	"description": "This application provides a wrapper to the map matching operator, and allows for the deployment of this functionality in the IBM Cloud.",
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/",

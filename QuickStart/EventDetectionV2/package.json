@@ -1,7 +1,7 @@
 {
 	"name": "EventDetection",
 	"version": "0.0.1",
-	"description": "A sample app for BlueMix that uses the Streaming Analytics service, written in nodejs.",
+	"description": "A sample app for IBM Cloud that uses the Streaming Analytics service, written in nodejs.",
 	"scripts": {
 		"start": "node app.js"
 	},

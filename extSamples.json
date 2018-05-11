@@ -73,7 +73,7 @@
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039cad29a6",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
 		"external": true, "services": ["Bluemix", "DSX"], "toolkits": ["Healthcare"],
-	"description": "This Python notebook for DSX shows how to create an Bluemix application that analyzes patient data. It also demonstrates how to visualize data in a view using Bokeh."
+	"description": "This Python notebook for DSX shows how to create an IBM Cloud application that analyzes patient data. It also demonstrates how to visualize data in a view using Bokeh."
 },
 
 
