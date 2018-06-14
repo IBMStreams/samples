@@ -1,7 +1,7 @@
 # LibertyStreamsProxy Servlet - readme
 
 Dynamically build a bridge between the open Web and a Streams application running in IBM Cloud.
-
+[This article provides more background information](https://developer.ibm.com/streamsdev/2018/04/01/connecting-internet-streams-ibm-cloud/).
 The servlet, running on the IBM Cloud *Liberty for Java Foundry App*, locates the connected Streams *Streaming Analytics* server and
 binds it Liberty's web address via an embedded proxy. The proxy configuration occurs on the first access from the web.
 
@@ -19,7 +19,7 @@ Assumed:
 
 Provided:
  * UpperRestRH6.sab : The Streams application bundle file, with the demonstration Streams application, source below.
- * A video walking through the process outlined here.
+ * A [video](https://youtu.be/v0upqnUWz74) walking through the process outlined here.
 
 
 Overview of Steps.
