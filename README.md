@@ -10,5 +10,5 @@ You can also [Contribute a sample](https://github.com/IBMStreams/samples/wiki/Ad
 To learn more about Streams:
 * [IBM Streams on Github](http://ibmstreams.github.io)
 * [Streams Quick Start Guide](https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/)
-* [StreamsDev](https://developer.ibm.com/streamsdev/)
+* [Streamsdev](https://developer.ibm.com/streamsdev/)
 
