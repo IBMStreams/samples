@@ -9,7 +9,6 @@ You can also [Contribute a sample](https://github.com/IBMStreams/samples/wiki/Ad
 
 To learn more about Streams:
 * [IBM Streams on Github](http://ibmstreams.github.io)
-* [Introduction to Streams Quick Start Edition](http://ibmstreams.github.io/streamsx.documentation/docs/4.1/qse-intro/)
-* [Streams Getting Started Guide](http://ibmstreams.github.io/streamsx.documentation/docs/4.1/qse-getting-started/)
+* [Streams Quick Start Guide]https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/)
 * [StreamsDev](https://developer.ibm.com/streamsdev/)
 
