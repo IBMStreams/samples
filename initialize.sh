@@ -1,11 +1,10 @@
 #!/bin/bash
 # This script is part of a toolchain on IBM Cloud
 echo "Current working directory is " `pwd`
-#this assumes the master branch was checked out, so swithch to fileserver
+#this assumes the master branch was checked out, so switch to fileserver
 git checkout fileserver
 cd static
 
-echo "Current working directory is " `pwd`
 #Clone the samples repository
 #This way, we can generate the latest zips on deployment.
 
@@ -24,4 +23,3 @@ fi
 
 echo "Creating zips.."
 python ../../genZips.py `pwd`
-
