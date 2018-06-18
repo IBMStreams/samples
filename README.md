@@ -2,7 +2,7 @@
 Since it is not currently possible to download individual folders from Github, this small app, hosted on the IBM Cloud,
 hosts and serves the zip files for the samples in the [Streams samples catalog](https://ibmstreams.github.io/samples).
 
-The `initialize.sh` script is run automatically from IBM Cloud whenever a change is made to this repository.
+The code in  `initialize.sh` script is run automatically from IBM Cloud whenever a change is made to this repository. 
 
 
 Server written for Python 2
