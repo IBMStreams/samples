@@ -1,28 +1,23 @@
-# IBM Streams Sample Catalog
+# File server for Streams samples
+Since it is not currently possible to download individual folders from Github, this small app, hosted on the IBM Cloud,
+hosts and serves the zip files for the samples in the [Streams samples catalog](https://ibmstreams.github.io/samples).
 
-The [catalog](http://ibmstreams.github.io/samples/) is the main page for links to samples hosted in this repository.
+The `initialize.sh` script is run automatically from IBM Cloud whenever a change is made to this repository.
 
 
-### How to add new links to the catalog
-See [instructions here](https://github.com/IBMStreams/samples/wiki/Adding-a-sample-to-the-catalog-and-repo).
-### If you wish to clone the repo and run the app locally then follow the commands below:
-For any reason if you wish to run this code locally, you can follow the steps:
+Server written for Python 2
 
- Step 1) Install Jekyll
-    ```
-    sudo gem install jekyll bundler
-    ```
-If you want to read more on Jekyll, [click here](https://jekyllrb.com/)
+# Run the server locally,
+Run `initialize.sh` then run `python server.py`
+This will start a local server
 
-Step 2) git clone
-    ```
-    git clone git clone https://github.com/IBMStreams/samples -b gh-pages
-    ```
+# Tests
+The `test`  folder has tests that use `curl` to verify the that the generated zips are the same as what is served by the fileserver.
+Run tests:
+- Make sure server is running (using instructions above)
+```
+cd test
+./run_test.sh
+```
 
-Step 3) run the application
-    ```
-    cd samples
-    bundle exec jekyll serve
-    ```
-
-Website will be running locally on: http://127.0.0.1:4000/
+Check the latest `failure_20xx` file for results.
