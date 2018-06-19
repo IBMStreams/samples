@@ -99,6 +99,7 @@ def download_and_verify_zips(server):
     json_file.close()
     error_file.write("Finished running tests. If there are no messages in this file, all tests pass. TradesApp might incorrectly report an error, this can be safely ignored.")
     error_file.close()
+    print "Finished running tests, total failed " + str(failed_count)
     return failed_count
 
 
