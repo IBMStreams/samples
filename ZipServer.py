@@ -54,7 +54,7 @@ class DownloadZipHandler(Handler):
         #   http://example.com?arg1=val1
         print "1. got request " + self.path
         return_value = self.is_valid_path()
-        print "5. is_valid_path return value: " + return_value
+        print "5. is_valid_path return value: " + str(return_value)
         if return_value is False:
             self.redirect("6. Path does not exist.")
         else:
@@ -73,7 +73,7 @@ class DownloadZipHandler(Handler):
                 self.end_headers()
                 self.wfile.write(f.read())
                 f.close()
-                print "8. Handled request"
+                print "8. Handled request for " + self.path
             else:
                 print "6. Ignoring request for " + zipName + " because exists : " + str(os.path.exists(zipName))
                 self.redirect("No zip file with name " + zipName+ " within folder")
