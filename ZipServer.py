@@ -15,7 +15,7 @@ class DownloadZipHandler(Handler):
 
     def redirect(self, reason):
         #redirect this request to the main samples page.
-        print "Ignoring request %s, reason: " % self.path, reason
+        print "Ignoring request %s, reason: %s " % (self.path, reason)
         self.send_response(301)
         self.send_header("Location", "https://ibmstreams.github.io/samples")
         self.end_headers()
@@ -69,5 +69,5 @@ class DownloadZipHandler(Handler):
                 self.wfile.write(f.read())
                 f.close()
             else:
-                print ("Ignoring request for " + path)
+                print "Ignoring request for " + zipName + " because exists : " + str(os.path.exists(zipName))
                 self.redirect("No zip file with name " + zipName+ " within folder")
