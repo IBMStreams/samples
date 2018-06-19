@@ -26,14 +26,16 @@ class DownloadZipHandler(Handler):
     def is_valid_path(self):
         valid = False
         arg_index = self.path.find('?')
+        print "2. Checking arguments "
         if arg_index >= 0:
             args = cgi.parse_qs(self.path[arg_index+1:])
+
             if ("get" in args):
-                path = args["get"][0]
-                print path
-                path=urllib.unquote(path)
+                raw_path = args["get"][0]
+                print "3. requested path: " + raw_path
+                path=urllib.unquote(raw_path)
                 directory = os.getcwd() + "/samples/" + path+"/"
-                print "Checking for " + directory
+                print "4. Checking for " + directory
                 if os.path.exists(directory):#"samples/" + path):
                     if "." in path or ".." in path or "~" in path or "*" in path:
                         print "invalid characters in path"
@@ -50,10 +52,11 @@ class DownloadZipHandler(Handler):
         # Parse out the arguments.
         # The arguments follow a '?' in the URL. Here is an example:
         #   http://example.com?arg1=val1
-        print "got request " + self.path
+        print "1. got request " + self.path
         return_value = self.is_valid_path()
+        print "5. is_valid_path return value: " + return_value
         if return_value is False:
-            self.redirect("Path does not exist.")
+            self.redirect("6. Path does not exist.")
         else:
             path = return_value
             path = path.strip('/')
@@ -61,16 +64,16 @@ class DownloadZipHandler(Handler):
             zipName = "samples/" + path + "/" + folders[-1] +".zip"
             baseName=folders[-1]+".zip"
             if os.path.exists(zipName):
-                print "File exists, opening"
+                print "6. File exists, opening"
                 f = open(zipName,"rb")
                 self.send_response(200)
-                print "Sending header"
+                print "7. Sending header"
                 self.send_header('Content-type',    'application/zip')
                 self.send_header('Content-Disposition','attachment; filename="'+baseName+'"')
                 self.end_headers()
                 self.wfile.write(f.read())
                 f.close()
-                print "Handled request"
+                print "8. Handled request"
             else:
-                print "Ignoring request for " + zipName + " because exists : " + str(os.path.exists(zipName))
+                print "6. Ignoring request for " + zipName + " because exists : " + str(os.path.exists(zipName))
                 self.redirect("No zip file with name " + zipName+ " within folder")
