@@ -33,7 +33,7 @@ class DownloadZipHandler(Handler):
                 print path
                 path=urllib.unquote(path)
                 directory = os.getcwd() + "/samples/" + path+"/"
-                print("Checking for " + directory)
+                print "Checking for " + directory
                 if os.path.exists(directory):#"samples/" + path):
                     if "." in path or ".." in path or "~" in path or "*" in path:
                         print "invalid characters in path"
@@ -61,13 +61,16 @@ class DownloadZipHandler(Handler):
             zipName = "samples/" + path + "/" + folders[-1] +".zip"
             baseName=folders[-1]+".zip"
             if os.path.exists(zipName):
+                print "File exists, opening"
                 f = open(zipName,"rb")
                 self.send_response(200)
+                print "Sending header"
                 self.send_header('Content-type',    'application/zip')
                 self.send_header('Content-Disposition','attachment; filename="'+baseName+'"')
                 self.end_headers()
                 self.wfile.write(f.read())
                 f.close()
+                print "Handled request"
             else:
                 print "Ignoring request for " + zipName + " because exists : " + str(os.path.exists(zipName))
                 self.redirect("No zip file with name " + zipName+ " within folder")
