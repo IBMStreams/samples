@@ -13,9 +13,9 @@ import os
 class DownloadZipHandler(Handler):
 
 
-    def redirect(self):
+    def redirect(self, reason):
         #redirect this request to the main samples page.
-        print "Ignoring request %s" % self.path
+        print "Ignoring request %s, reason: " % self.path, reason
         self.send_response(301)
         self.send_header("Location", "https://ibmstreams.github.io/samples")
         self.end_headers()
@@ -32,15 +32,16 @@ class DownloadZipHandler(Handler):
                 path = args["get"][0]
                 print path
                 path=urllib.unquote(path)
-                print path
-                if os.path.exists("samples/" + path):
+                directory = os.getcwd() + "/samples/" + path+"/"
+                print("Checking for " + directory)
+                if os.path.exists(directory):#"samples/" + path):
                     if "." in path or ".." in path or "~" in path or "*" in path:
                         print "invalid characters in path"
                         return False
                     else:
                         return path
                 else:
-                    print path + "is not in samples dir.  Current dir: " + os.getcwd()
+                    print path + " is not in samples dir. "
         return valid
     def do_GET(self):
         '''
@@ -52,7 +53,7 @@ class DownloadZipHandler(Handler):
         print "got request " + self.path
         return_value = self.is_valid_path()
         if return_value is False:
-            self.redirect()
+            self.redirect("Path does not exist.")
         else:
             path = return_value
             path = path.strip('/')
@@ -69,4 +70,4 @@ class DownloadZipHandler(Handler):
                 f.close()
             else:
                 print ("Ignoring request for " + path)
-                self.redirect()
+                self.redirect("No zip file with name " + zipName+ " within folder")
