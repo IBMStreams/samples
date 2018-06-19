@@ -1,6 +1,6 @@
 applications:
 - path: .
-  memory: 128M
+  memory: 512M
   instances: 1
   domain: mybluemix.net
   name: streams-github-samples
