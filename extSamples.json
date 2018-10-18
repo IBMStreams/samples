@@ -8,7 +8,7 @@
 "tags": ["event streams","message hub","json","messagehub","cos"],
 "toolkits": ["objectstorage","json","messagehub"],
 "featured": true
-}
+},
 
 
 {	"name": "Get started with JMS operators",
