@@ -1,4 +1,15 @@
 
+{
+"name": "Store high volumes of streaming data from IBM Event Streams in Cloud Object Storage",
+"description": "Read incoming JSON data from IBM Event Streams and write it to the IBM Cloud Object Storage (COS). Also demonstrates exactly-once processing and Kafka consumer groups.",
+"language": ["SPL"],
+"category": ["2"],
+"url": "https://github.com/IBMStreams/streamsx.objectstorage/tree/master/demo/data.historian.event.streams.cos.exactly.once.semantics.demo",
+"tags": ["event streams","message hub","json","messagehub","cos"],
+"toolkits": ["objectstorage","json","messagehub"],
+"featured": true
+}
+
 
 {	"name": "Get started with JMS operators",
 	"description":"Learn how to configure the operators for use with Apache activeMQ and Websphere MQ. Includes sample connection documents.",
@@ -19,14 +30,14 @@
 
 },
 
-{	"name": "Use Message Hub operator with Streams Designer",
-	"description":"Notebook demonstrating how to configure the Message Hub operator in Streams Designer. Builds on the Data Historian example and sends sample data to Message Hub.",
+{	"name": "Use Event Streams (formerly Message Hub) operator with Streams Designer",
+	"description":"Notebook demonstrating how to configure the Event Streams operator in Streams Designer. Builds on the Data Historian example and sends sample data to IBM Event Streams.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a",
-	"tags": ["messagehub"],
-	"services": ["Message hub"]
+	"tags": ["messagehub","event streams"],
+	"services": ["Message hub","event streams"]
 
 },
 {	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
