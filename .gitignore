@@ -3,3 +3,4 @@ output
 *.pyc
 doc
 full-catalog.json
+_site
