@@ -176,7 +176,7 @@ $scope.tagFilter = function (tag) {
         link.tags = link.tags.concat(link.operators);
       }
       //get the base of the full http://github/tree/master/path/to/sample
-     if (!link.zip){ //external samples already have a zip file.
+     if (!link.zip && !link.external){ //external samples already have a zip file.
 
         var idx = link.url.indexOf("tree/master/");
         if (idx != -1){
