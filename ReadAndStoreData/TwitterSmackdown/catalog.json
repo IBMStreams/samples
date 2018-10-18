@@ -2,7 +2,7 @@
 	"name": "Connect to Twitter from Streams",
 	"description": "Use the HTTPGetStream operator to read tweets from Twitter, and then rank 3 keywords of your choice by popularity.",
 	"language": ["SPL"],
-	"category": ["2"],
+	"category": ["2"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/streaming-analytics-dev-guide/",
 		"url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/TwitterSmackdown",
 	"tags": [],

@@ -3,6 +3,6 @@
 "tags": ["post", "get", "rest", "browser","inet","bluemix"],
  "url": "https://github.com/IBMStreams/samples/tree/master/General/LibertyStreamsProxy",
  "name": "Enable a Streams app running in the Cloud to receive HTTP requests",
- "toolkits": ["inet"],"featured":true,
+ "toolkits": ["inet"],
  "operators": ["HTTPRequestProcess"]
 }
