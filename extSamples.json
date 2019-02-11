@@ -50,8 +50,8 @@
 	"services": ["Bluemix","Edgent"]
 
 },
-{	"name": "Retrieve data from IoT devices from Python",
-	"description":"Simple Streams/Python notebook that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
+{	"name": "Retrieve data from IoT devices from Python Notebook",
+	"description":"Python notebook that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",

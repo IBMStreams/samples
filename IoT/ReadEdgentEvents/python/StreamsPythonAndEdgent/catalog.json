@@ -1,5 +1,5 @@
-{	"name": "Process events from Edgent in Python",
-	"description":"This is a Python Streaming Analytics application that connects to the Watson IoT platform to process events sent by an Edgent application. It also demonstrates how to send commands to the Edgent application.",
+{	"name": "Retrieve data from IoT devices from Python app",
+	"description":"Python sample that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1"],
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
