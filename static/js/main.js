@@ -29,7 +29,6 @@ var catalogApp = angular.module('catalogApp', ['ngLoadingSpinner', 'ngSanitize']
 
 
 
-
 catalogApp.filter("filterPanel", function () {
   return function (links, filterConfiguration) {
     if (filterConfiguration.enabled) {
@@ -87,11 +86,16 @@ catalogApp.filter("emoji", function () {
     return input ? emojione.toImage(input) : input;
   }
 });
-
-catalogApp.controller('MainController', function ($scope, $http) {
+catalogApp.config(['$locationProvider', function($locationProvider) {
+        $locationProvider.html5Mode({enabled: true, requireBase: false, rewriteLinks: false});
+}]);
+catalogApp.controller('MainController', function ($scope, $http, $location) {
   console.info("Initializing MainController");
+  params = $location.search();
+  if ("filter" in params){
+    $scope.searchText = params.filter;
+  }
   $scope.links = [];
-
   $scope.categoryMap = ["Beginner/General","Ingest and Store Data",
 "Tips","Monitoring","Performance and Consistent Regions","Correlate and Merge Streams",
 "Analyze and Classify Data","Best Practices",
