@@ -16,7 +16,7 @@ You need version 1.7 or greater of the streamsx package:
 - Run the application:
 `python3 edgentiot.py local [username] [password]`
 
-### Submit to the Streaming Analytics service on Bluemix
+### Submit to the Streaming Analytics service on IBM Cloud
 - [Follow these steps](http://ibmstreams.github.io/streamsx.documentation/docs/python/1.6/python-appapi-devguide-2a/#21-setting-up-your-python-environment) under "Setting up your environment"
 - Edit line 21 of  `read_from_edgent.py` with the name of your service. Check the `name`  attribute in your `credentials.cfg` file for this value.
 - Edit line 19 with the path of the Streaming Analytics credentials file you downloaded earlier.  The path is relative to the current working directory.
