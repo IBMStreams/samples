@@ -2,6 +2,8 @@ This project contains a Streams application written in Python that processes eve
 ## Prerequisites
 See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents).
 
+A notebook version of this sample [also exists](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents/python/notebook).
+
 Once you have all the prerequisites, you are ready to run the Streams application.
 
 
