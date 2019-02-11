@@ -1,5 +1,5 @@
 {
-	"name": "Using the Aggregation operator in Streams Designer",
+	"name": "Using the Aggregation operator in Streams flows",
 	"description": "Using clickstream data from an online store, this sample Streams flow demonstrates different ways to use the Aggregation operator.",
 	"language": ["SPL"],
 	"category": ["1","7"],

@@ -1,9 +1,9 @@
 # Time based billing application
 
 Some utility companies offer smart meters that send usage readings from homes and businesses, improving accuracy and enabling remote reporting. Since the smart meters have more fine grained usage data, some companies are offering discounts to customers if their consumption is during off peak periods. 
-This sample demonstrates such an application in Streams Designer, and the videos  ["Use IoT data in Streams Designer"](https://www.youtube.com/watch?v=gdLGMZUX-B4) and  ["Use Python Code in a Streams Designer Flow"](https://www.youtube.com/watch?v=zc9fNIBTonU) show how it was done.
+This sample demonstrates such an application in Streams flows, and the videos  ["Use IoT data in Streams flows"](https://www.youtube.com/watch?v=gdLGMZUX-B4) and  ["Use Python Code in a Streams flow"](https://www.youtube.com/watch?v=zc9fNIBTonU) show how it was done.
 
-These applications demonstrate how to do the following in Streams Designer:
+These applications demonstrate how to do the following in Streams flows:
 - Connect to the Watson IoT platform with the `WatsonIoT` operator
 - [Use the `Code` operator to retrieve data from DB2](#appendix-using-the-code-operator-to-retrieve-data-from-db2)
 - Use the `Email` operator to send an alert
@@ -19,13 +19,13 @@ These applications demonstrate how to do the following in Streams Designer:
 - Python notebook to simulate data from utility meters
 - `db2/utiliy.ddl` file to create the tables in the DB2 Warehouse, as well as sample data in `.csv` files to populate the database.
 - 2 versions of the Streams flow:
-  - Time_based_billing_no_DB2_connection.stp: Import this flow into Streams Designer if you do not wish to set up a DB2 connection.  This version of the application does not save any data to DB2.
+  - Time_based_billing_no_DB2_connection.stp: Import this flow into Streams flows if you do not wish to set up a DB2 connection.  This version of the application does not save any data to DB2.
   - Time_based_billing_app.stp: Full application. Retrieves customer email address from DB2 and also saves the hourly usage costs to a DB2 Table called `DEVICE_USAGE`.
 
 
 ## Get started
-1. Import either the `Time_based_billing_no_DB2_connection.stp` flow or `Time_based_billing_app.stp` into Streams Designer. If using the DB2 enabled flow, see the `DB2 Setup` section below.
-2. Follow the instructions in the video "Use Iot Data in Streams Designer" to:
+1. Import either the `Time_based_billing_no_DB2_connection.stp` flow or `Time_based_billing_app.stp` into Streams flows. If using the DB2 enabled flow, see the `DB2 Setup` section below.
+2. Follow the instructions in the video "Use Iot Data in Streams flows" to:
     - Set up the Watson IoT operator
     - Register a device
 

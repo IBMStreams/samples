@@ -1,5 +1,5 @@
 {
-	"name": "Using the WatsonIoT and Code operators in Streams Designer",
+	"name": "Using the WatsonIoT and Code operators in Streams flows",
 	"description": "These example Streams flows show how to ingest data from Watson IoT Platform. Also shows the Python Code operator retrieving data from DB2 and the email operator in use. This is the smart billing application.",
 	"language": ["Python"],
 	"category": ["1","2"],

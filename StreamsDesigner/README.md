@@ -1,7 +1,7 @@
-## Streams Designer Examples
+## Streams flows Examples
 
 
-Each sub folder contains examples for Streams Designer.
+Each sub folder contains examples for Streams flows.
 
 - `AggregationExamples`: How to use the `Aggregation` operator
 
@@ -10,4 +10,4 @@ Each sub folder contains examples for Streams Designer.
 
 Sample notebook hosted on Watson Data Platform:
 
-- [Ingest data from Message Hub in Streams Designer](https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a)
+- [Ingest data from Message Hub in Streams flows](https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a)
