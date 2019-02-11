@@ -1,4 +1,4 @@
-{	"name": "Retrieve data from IoT devices from Python app",
+{	"name": "Retrieve data from IoT devices from a Python app",
 	"description":"Python sample that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1"],
