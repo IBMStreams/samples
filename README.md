@@ -3,6 +3,12 @@
 The [catalog](http://ibmstreams.github.io/samples/) is the main page for links to samples hosted in this repository.
 
 
+**Changelog:**
+
+* Feb 2019: Added search by URL with the `filter` query parameter, e.g. `http://127.0.0.1:4000/?filter=python` will only show samples with the `python` keyword.
+* March 2017: Added support to display samples not hosted in this repository. (Add an entry to `extSamples.json`).
+
+
 ### How to add new links to the catalog
 See [instructions here](https://github.com/IBMStreams/samples/wiki/Adding-a-sample-to-the-catalog-and-repo).
 ### If you wish to clone the repo and run the app locally then follow the commands below:
