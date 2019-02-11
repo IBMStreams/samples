@@ -41,7 +41,7 @@
 
 },
 {	"name": "Monitoring IoT devices in real time using Streams and Python",
-	"description":"Ingest data from IoT devices and analyze it to detect potential failures. The Streams application connects to the IoT devices through the Watson IoT platform.",
+	"description":"Ingest data from IoT devices and analyze it to detect potential failures. The Streams application connects to the IoT devices through the Watson IoT platform.  Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1","7"],	"external": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
@@ -50,8 +50,8 @@
 	"services": ["Bluemix","Edgent"]
 
 },
-{	"name": "Communicate with IoT devices in real time from Python",
-	"description":"Streams/Python notebook that processes data from and sends commands to IoT devices. The IoT devices are using Edgent.",
+{	"name": "Retrieve data from IoT devices from Python",
+	"description":"Simple Streams/Python notebook that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
