@@ -40,8 +40,8 @@
 	"services": ["Message hub","event streams"]
 
 },
-{	"name": "Use Streaming Analytics to detect malfunctioning weather stations",
-	"description":"Python notebook demonstrating how to ingest data from IoT devices and analyze it to detect anomalies. The Streams application connects to the IoT devices through the Watson IoT platform.",
+{	"name": "Monitoring IoT devices in real time using Streams and Python",
+	"description":"Ingest data from IoT devices and analyze it to detect potential failures. The Streams application connects to the IoT devices through the Watson IoT platform.",
  	"language": ["Python"],
 	"category": ["2","1","7"],	"external": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
@@ -50,8 +50,8 @@
 	"services": ["Bluemix","Edgent"]
 
 },
-{	"name": "Process IoT data from Edgent in a Python notebook",
-	"description":"Python notebook that creates a Streams application in the IBM Cloud to process data from an Edgent application. It also demonstrates how to send commands to the Edgent application.",
+{	"name": "Communicate with IoT devices in real time from Python",
+	"description":"Streams/Python notebook that processes data from and sends commands to IoT devices. The IoT devices are using Edgent.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
