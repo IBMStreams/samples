@@ -30,7 +30,7 @@
 
 },
 
-{	"name": "Use Event Streams (formerly Message Hub) operator with Streams flows",
+{	"name": "Use Event Streams operator with Streams flows",
 	"description":"Notebook demonstrating how to configure the Event Streams operator in Watson Studio Streams flows. Builds on the Data Historian example and sends sample data to IBM Event Streams.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
@@ -40,7 +40,7 @@
 	"services": ["Message hub","event streams"]
 
 },
-{	"name": "Monitoring IoT devices in real time using Streams and Python",
+{	"name": "Detect invalid data in IoT devices in real time using Streams and Python",
 	"description":"Ingest data from IoT devices and analyze it to detect potential failures. The Streams application connects to the IoT devices through the Watson IoT platform.  Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1","7"],	"external": true,
@@ -50,7 +50,7 @@
 	"services": ["Bluemix","Edgent"]
 
 },
-{	"name": "Retrieve data from IoT devices from a Python Notebook",
+{	"name": "How to retrieve data from IoT devices from a Python Notebook",
 	"description":"Python notebook that shows how to process data from/send commands to IoT devices. Includes instructions to simulate IoT device data.",
  	"language": ["Python"],
 	"category": ["2","1"],	"external": true,
