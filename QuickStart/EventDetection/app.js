@@ -37,12 +37,9 @@ app.post('/', function(req, res){
 
     if (!cancelling) {
       console.info("In POST function");
-      var ss = req.body.toString();
-      console.info("POST object is: " + ss);
-      var jsonString = req.body.jsonString;
-      console.info("POST message is: " + jsonString);
-      var payload = JSON.parse(jsonString);
-    
+      console.log(req.body);
+      var payload = req.body;    
+
       if (payload.eventType == 'MaxMin Temp') {
         // Max or min temperature change
         maxmin = payload;

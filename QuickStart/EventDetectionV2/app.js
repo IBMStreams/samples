@@ -39,10 +39,9 @@ app.post('/', function(req, res){
 
     if (!cancelling) {
       console.info("In POST function");
-      var jsonString = req.body.jsonString;
-      console.info("POST message is: " + jsonString);
-      var payload = JSON.parse(jsonString);
-    
+      console.log(req.body);
+      var payload = req.body;
+ 
       if (payload.eventType == 'MaxMin Temp') {
         // Max or min temperature change
         maxmin = payload;
@@ -135,6 +134,8 @@ var mykey = sa_props.apikey;
 var events = [];
 var eventCount = 0;
 var eventTarget = 1500;
+eventTarget = eventTarget.MAX_VALUE;
+
 var cancelling = false;
 var Event = function(number, evt) {  
     this.Number = number;  
