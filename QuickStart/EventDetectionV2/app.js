@@ -134,7 +134,6 @@ var mykey = sa_props.apikey;
 var events = [];
 var eventCount = 0;
 var eventTarget = 1500;
-eventTarget = eventTarget.MAX_VALUE;
 
 var cancelling = false;
 var Event = function(number, evt) {  
