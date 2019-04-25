@@ -9,7 +9,16 @@
 "toolkits": ["objectstorage","json","messagehub"],
 "featured": true,"external":true
 },
-
+{"name": "Use server-sent events (SSE) in a Python",
+"description": "Sample of using the SSEClient to read Server-sent events into IBM Streams with a Python topology.",
+"language": ["Python"],
+"category": ["2"],
+"url": "https://gist.github.com/ddebrunner/21db521909accd2ec364861964e18ae3",
+"tags": ["beginner", "sse", "python"],
+"toolkits": ["topology"],
+"featured": true,
+"external": true
+},
 
 {	"name": "Get started with JMS operators",
 	"description":"Learn how to configure the operators for use with Apache activeMQ and Websphere MQ. Includes sample connection documents.",

@@ -1,6 +1,6 @@
 ## README --  IBMStreams samples
 
-This repository contains open-source sample applications for IBM Streams.
+This repository contains sample applications for IBM Streams.
 
 ### NEW: [Search the samples using the samples catalog](http://ibmstreams.github.io/samples)
 
