@@ -7,7 +7,7 @@
 "url": "https://github.com/IBMStreams/streamsx.objectstorage/tree/master/demo/data.historian.event.streams.cos.exactly.once.semantics.demo",
 "tags": ["event streams","message hub","json","messagehub","cos"],
 "toolkits": ["objectstorage","json","messagehub"],
-"featured": true,"external":true
+"external":true
 },
 {"name": "Use Server-Sent events (SSE) in a Python application",
 "description": "Read Server-Sent events into IBM Streams with a Python topology. Uses the SSEClient to ingest data from the Wikipedia recent changes stream.",
