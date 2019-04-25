@@ -9,8 +9,8 @@
 "toolkits": ["objectstorage","json","messagehub"],
 "featured": true,"external":true
 },
-{"name": "Use server-sent events (SSE) in a Python",
-"description": "Sample of using the SSEClient to read Server-sent events into IBM Streams with a Python topology.",
+{"name": "Use Server-Sent events (SSE) in a Python application",
+"description": "Read Server-Sent events into IBM Streams with a Python topology. Uses the SSEClient to ingest data from the Wikipedia recent changes stream.",
 "language": ["Python"],
 "category": ["2"],
 "url": "https://gist.github.com/ddebrunner/21db521909accd2ec364861964e18ae3",
