@@ -17,7 +17,8 @@
 "tags": ["beginner", "sse", "python"],
 "toolkits": ["topology"],
 "featured": true,
-"external": true
+"external": true,
+"zip": "https://gist.github.com/ddebrunner/21db521909accd2ec364861964e18ae3/archive/3b0dfda3b9d42533f16801aa0d7e269250eef440.zip"
 },
 
 {	"name": "Get started with JMS operators",
