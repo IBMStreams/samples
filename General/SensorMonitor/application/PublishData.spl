@@ -1,0 +1,140 @@
+namespace application;
+
+
+use com.ibm.streamsx.messagehub::* ;
+//1. Generate simulated sensor data
+//2. Publish to Event Streams
+
+type GroupAvgWithLateData = float64 avgTemp, int32 numSensors, timestamp end,
+	timestamp start, Sys.PaneTiming paneTiming ;
+type GroupAvg = float64 avgTemp, int32 numSensors, timestamp end,
+	timestamp start ;
+type Reading = int32 id, float64 temp, float64 humidity, float64 pressure,
+	int64 readingTimeStamp ;
+/**
+* @param numSensors how many sensors to simulate
+**/
+	composite PublishData {
+
+		param
+					expression<int32> $numSensors : (int32) getSubmissionTimeValue("numSensors",	"100");
+
+		graph
+				stream<Reading> Data = GenerateData (){
+					param
+					numSensors: $numSensors;
+					pressureDropRate: 0.69;
+				}
+				stream<int32 id, rstring message, int32 partition> Message =
+					com.ibm.streamsx.json::TupleToJSON(Data)
+				{
+					param
+						jsonStringAttribute : "message" ;
+				}
+
+				@parallel(width =2)
+			() as SendToMessageHub = MessageHubProducer(Message)
+			{
+				param
+					topic : "sensorData" ;
+					keyAttribute : id ;
+			}
+
+		}
+
+/**
+This composite generates temperature, humidity and pressure readings
+for sensors. It also simulates dropping pressure for certain sensors, used by the main application to detect a pressure drop.
+@param numSensors the number of sensors to simulate
+@param pressureDropRate how quickly the reported pressure will drop for certain sensors.*/
+composite GenerateData(output ReadKafka)
+	{
+		param
+			expression<int32> $numSensors :100 ;
+			expression<float64> $pressureDropRate:0.61; //Valid values 0-1.
+		graph
+			stream<Reading> ReadKafka = Custom()
+
+				{
+				logic
+					state :
+					{
+						mutable map<int32, float64> temps = { } ;
+						mutable map<int32, float64> humidity = { } ;
+
+						mutable map<int32, float64> pressure = { } ;
+						float64 maxTemp = 85.0 ;
+						float64 minTemp = 75.0 ;
+						float64 minH = 40.0 ;
+						float64 maxH = 100.0 ;
+						float64 minP = 30;
+						float64 maxP = 72;
+					}
+
+					onProcess :
+					{
+						mutable int32 counter = 0 ;
+						while(counter <= $numSensors)
+						{
+							int32 id = randomId(1, $numSensors) ;
+							float64 t0 = randomValue(0.0, minTemp, maxTemp) ;
+							float64 h0 = randomValue(0.0, minH, maxH) ;
+							float64 p0 = randomValue(30.0, minP, maxP) ;
+
+							submit({ id = id, temp = t0, humidity = h0, pressure=p0, readingTimeStamp
+								=(int64)(getTimestampInSecs() * 1000.0) }, ReadKafka) ;
+							insertM(temps, id, t0) ;
+							insertM(humidity, id, h0) ;
+							insertM(pressure, id, p0) ;
+							counter = counter + 1 ;
+						}
+						counter = 0;
+						while(!isShutdown())
+						{
+
+							counter++;
+							//block(random());
+							for(int32 id in keys(temps))
+							{
+
+								float64 t1 = randomValue(temps [ id ], minTemp, maxTemp) ;
+								float64 h1 = randomValue(humidity [ id ], minH, maxH) ;
+
+								mutable float64 p1 = randomValue(pressure [ id ], minP, maxP) ;
+								mutable Reading r = { } ;
+								r.id = id ;
+								r.temp = t1 ;
+								r.humidity = h1 ;
+								if (id % 11 == 0){
+									p1 = p1*$pressureDropRate;
+								}
+								r.pressure = p1;
+								r.readingTimeStamp =(int64)(getTimestampInSecs() * 1000.0) ;
+								submit(r, ReadKafka) ;
+								if (counter % 100 == 0){
+									mutable int32 ct = 0;
+									while(ct < 10){
+										//block(0.01);
+										r.id = id + ct;
+										r.temp = t1 *0.7;
+										r.readingTimeStamp =(int64)(getTimestampInSecs() * 1000.0) - 930050l ;
+										submit(r, ReadKafka);
+
+										ct++;
+
+									}
+									counter++;
+								}
+								insertM(temps, id, t1) ;
+								insertM(humidity, id, h1) ;
+								insertM(pressure, id, p1) ;
+
+							}
+
+						}
+						submit(Sys.FinalMarker, ReadKafka);
+
+					}
+			}
+
+}

@@ -1,0 +1,102 @@
+namespace application;
+//Same as the first sensor monitor application but does not connect to Event Streams.
+//Uses the same data generator.
+composite SensorMonitorMain_NoMHub
+{
+		graph
+		stream<Reading> ReadKafka = GenerateData()
+		{
+				param
+				numSensors : (int32) getSubmissionTimeValue("numSensors",	"100");
+
+			config
+				placement : partitionColocation("eventstreams") ;
+		}
+
+
+		(stream<GroupAvg> GroupAverage ; stream<SensorAvg> IndividualAverage) as
+			avg = Averages(ReadKafka)
+
+		{
+
+		}
+		//Report the metrics for all the sensors
+		() as GroupMetrics = MetricsSink(GroupAverage)
+		{
+			param
+
+				metrics :(int64) avgTemp,(int64) numSensors ;
+				names : "averageTemperature", "numReporting" ;
+				descriptions : "Average temp of all sensors per minute",
+					"Number of sensors currently reporting" ;
+				initialValues : 0l, 1330l ; // -900l, 5l;
+
+			config
+				placement : partitionExlocation("eventstreams") ;
+		}
+
+		//Detect a sudden or steady drop in pressure
+		stream<int32 id, float64 pressure, rstring endTime> DetectPressureDrop =
+			MonitorPressure(IndividualAverage)
+		{
+		}
+
+
+		() as SaveAlertsToFile = FileSink(DetectPressureDrop)
+		{
+			logic
+				state :
+				{
+					mutable set<int32> ids = { } ;
+				}
+
+				onTuple DetectPressureDrop :
+				{
+					insertM(ids, id) ;
+					if(! hasCustomMetric("numPredictedSensorFailures"))
+					{
+						createCustomMetric("numPredictedSensorFailures",
+							"Number of sensors with dropping pressure", Sys.Gauge, 0l) ;
+					}
+
+					setCustomMetricValue("numPredictedSensorFailures",(int64) size(ids)) ;
+					// setCustomMetricValue("lastUpdateTime",end);
+					block(0.3) ;
+				}
+
+			param
+				file : "/tmp/pressureDropSuspects.txt" ;
+			config
+				placement : partitionColocation("Avg") ;
+		}
+		 () as  DropSink  = Custom (DetectPressureDrop as in0){
+			 			logic
+			 				 		onTuple in0: {
+										printStringLn (" Pressure drop detected at  " + endTime + " for sensor "
+										 + ((rstring)id) + ", pressure: " + ((rstring)pressure));
+
+									}
+
+											config
+											placement : partitionExlocation("Avg") ;
+		 }
+
+		/*
+		Uncomment to send messages to Slack
+		stream<rstring text> GenerateMessage  = Custom(DetectPressureDrop as in0){
+			logic
+				onTuple in0: {
+					 submit({text = " Pressure drop detected at  " + endTime + " for sensor "
+									 + ((rstring)id) + ", pressure: " + ((rstring)pressure)},
+									GenerateMessage);
+				}
+		}
+
+		 () as SendMessage = com.ibm.streamsx.slack::SendSlackMessage(GenerateMessage) {
+			 param
+				 slackUrl:"https://hooks.slack.com/...";
+		 }*/
+
+
+
+}

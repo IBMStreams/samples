@@ -1,0 +1,9 @@
+{"name": "Compute a rolling average with event-time windows",
+	"description": "This sample shows the Aggregate operator using event time windows, i.e. using the timestamp in the data and not system time. Also demonstrates using the CEP toolkit.",
+	"language": ["SPL"],
+	"category": ["1","7"],
+	"blogPost": "https://developer.ibm.com/streamsdev/videos/compute-time-based-averages-using-the-aggregate-operator/",
+		"url": "https://github.com/IBMStreams/samples/tree/master/General/SensorMonitor",
+	"tags": [],
+		"operators": ["Aggregate","MetricsSink","MatchRegex","cep","complex event"]
+},

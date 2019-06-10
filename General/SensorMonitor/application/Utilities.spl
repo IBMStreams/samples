@@ -1,0 +1,137 @@
+namespace application;
+use com.ibm.streamsx.messagehub::* ;
+
+
+
+type SensorAvg = float64 avgTemp, float64 avgPressure, int32 id, timestamp end,
+			timestamp start;
+composite FromKafka (output ParseReadings) {
+	graph
+
+
+		stream<rstring key, rstring message, int32 partition> ReadKafka =
+			MessageHubConsumer()
+		{
+			param
+				topic : "sensorData" ;
+
+				config
+					placement: partitionColocation("eventstreams");
+		}
+
+
+
+		stream<Reading> ParseReadings = com.ibm.streamsx.json::JSONToTuple(ReadKafka)
+			{
+				param
+					inputAttribute : message ;
+				config
+					placement: partitionColocation("eventstreams");
+			}
+}
+
+
+//This helper composite recevies a stream of sensor data and then computes
+//individual 10 minute averages for each sensor, and the rolling 1 minute average for all the sensors
+
+composite Averages (input ParsedJson; output GroupAverage, IndividualAverage){
+
+param
+ 		expression<float64> $timeInterval : (float64) getSubmissionTimeValue("window_size_in_seconds", "15");
+
+graph
+		@eventTime(eventTimeAttribute = readingTimeStamp, minimumGap = 1.0, resolution =	Milliseconds)
+		(stream<Reading> Functor_13_out0) as Functor_13 = Functor(ParsedJson as
+				inputStream)
+			{
+
+				config
+					placement: partitionExlocation("eventstreams");
+			}
+
+		stream<SensorAvg> IndividualAverage = Aggregate(Functor_13_out0 as
+				inPort0Alias)
+			{
+
+				window
+					inPort0Alias : timeInterval, intervalDuration($timeInterval) , creationPeriod($timeInterval/2.0),	partitioned ;
+				param
+					partitionBy : id ;
+				output
+					IndividualAverage : avgTemp = Average(temp), avgPressure = Average(pressure),
+						id = Any(id), start = intervalStart(), end = intervalEnd() ;
+				config
+				placement: partitionExlocation("eventstreams");
+
+			}
+
+		stream<GroupAvg>
+			GroupAverage = Aggregate(Functor_13_out0)
+			{
+				window
+					Functor_13_out0 : timeInterval, intervalDuration($timeInterval);
+					//, creationPeriod(30.0) ; //, partitioned;
+
+				output
+					GroupAverage : avgTemp = Average(temp), numSensors =CountDistinct(id),
+						start = intervalStart(), end = intervalEnd() ;
+					config
+				placement: partitionExlocation("eventstreams"),  partitionColocation("Avg") ;
+
+			}
+		() as AverageSink = Custom(GroupAverage) {
+
+			logic
+				onTuple GroupAverage:{
+					mutable rstring endTime = ((rstring)hour(end)) + ":" + ((rstring)minute(end)) + ":" + ((rstring)second(end));
+					if(second(end) == 0u){
+						endTime = endTime + "0";
+					}
+					printStringLn("Average for " +(rstring)$timeInterval + " second period ending " + ctime(end) + " is "+ (rstring)avgTemp);
+
+				}
+				config
+				placement : partitionColocation("Avg") ;
+
+		}
+
+
+
+	}
+
+
+/** Generate a random entity id
+ * @param minId minimum value of the id to generatel
+ * @param numEntities possible number of entities
+ */
+public stateful int32 randomId(int32 minId, int32 numEntities)
+{
+	float64 randomNum = random() ;
+	int32 range = numEntities ;
+
+	return ((int32)((float64)minId + (randomNum * (float64)range))) ;
+}
+
+
+public stateful float64 randomValue( float64 last, float64 min,  float64 max)
+{
+	mutable float64 val =last;
+	if (last == 0.0){
+		val = min + (random() * (max-min)) ;
+
+	}
+
+	float64 randomNum = atan( random()) ;
+
+
+	mutable float64 delta = (0.8 - randomNum) ;
+	val += delta;
+	if (val < min){
+			val = min + (20.0*random());
+	}
+	if (val > max){
+			val = last - (20.0*random());
+	}
+
+	return val;
+}

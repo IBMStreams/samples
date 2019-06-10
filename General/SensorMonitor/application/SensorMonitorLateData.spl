@@ -1,0 +1,84 @@
+namespace application ;
+
+use com.ibm.streamsx.json::* ;
+use com.ibm.streamsx.messagehub::* ;
+
+composite SensorMonitorHandleLate
+{
+	graph
+
+	//The MessageHub consumer receives the data from our sensors
+		stream<rstring key, rstring message> ReadKafka = MessageHubConsumer()
+		{
+			param
+				topic : "sensorData" ;
+		}
+
+		stream<Reading> ParseReadings = JSONToTuple(ReadKafka)
+		{
+			param
+				inputAttribute : message ;
+		}
+
+		@eventTime(eventTimeAttribute = readingTimeStamp, resolution = Milliseconds)
+		stream<Reading> FilteredReadings = Filter(ParseReadings)
+		{
+			param
+				filter : temp > 0.0 ;
+		}
+
+		stream<GroupAvgWithLateData> RollingAvgTmp = Aggregate(FilteredReadings)
+		{
+			window //Window with 30 second interval, discarding any tuples arriving later than 1 hr (3600 s)
+				FilteredReadings : timeInterval, intervalDuration(30.0),
+					discardAge(3600.0) ;
+			output
+				RollingAvgTmp : avgTemp = Average(temp),
+				numSensors = CountDistinct(id),
+					end = intervalEnd(),
+					start = intervalStart(),
+					 paneTiming = paneTiming() ; //whether the avg is being updated or completed (no new values will be reported)
+		}
+
+		stream<rstring startTime, rstring endTime, float64 avgTemp, int32 numSensors,
+			Sys.PaneTiming paneTiming> Formatter = Functor(RollingAvgTmp)
+		{
+			output
+				Formatter : startTime = ctime(start), endTime = ctime(end) ;
+		}
+
+		() as AverageSink = Custom(Formatter as GroupAverage)
+		{
+			logic
+				onTuple GroupAverage :
+				{
+					if(paneTiming == Sys.paneOnComplete)
+					{
+						printStringLn("Current Average for 30 second interval ending " + endTime
+							+ " is " +(rstring) avgTemp) ;
+					}
+
+					else if(paneTiming == Sys.paneLate)
+					{
+						printStringLn("Updated average for 30 second interval ending " + endTime
+							+ " is " +(rstring) avgTemp) ;
+					}
+
+					if(! hasCustomMetric("averageTemperature"))
+					{
+						createCustomMetric("averageTemperature", "Last reported average",
+							Sys.Gauge, 0l) ;
+					}
+
+					if(! hasCustomMetric("numReporting"))
+					{
+						createCustomMetric("numReporting", "Number of Sensors Reporting",
+							Sys.Gauge, 0l) ;
+					}
+
+					setCustomMetricValue("averageTemperature",(int64) avgTemp) ;
+					setCustomMetricValue("numReporting",(int64) numSensors) ;
+				}
+
+			}
+	}

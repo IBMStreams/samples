@@ -1,0 +1,101 @@
+//Main application
+//eventstreams - 2 averages, detect pressure drop, custom metric
+namespace application;
+composite SensorMonitorMain {
+	graph
+	@parallel(width =1)
+	//The Event Streams consumer has the highest relative operator cost so making it parallel here is a good idea to improve performance
+	//also a good bit to demo.
+	stream<Reading> ParseReadings = FromKafka(){
+
+	}
+
+
+	//Also parallelize the averages operators,
+	//partitioning by id ensures that data for each sensor is sent to a unique aggregate operator
+	@parallel(width =1, partitionBy=[{ port=ParseReadings, attributes=[id]}])
+	(stream<GroupAvg> GroupAverage; stream <SensorAvg> IndividualAverage) as avg = Averages(ParseReadings){
+		config
+		placement : partitionColocation("Avg") ;
+	}
+
+
+	//Report the metrics for all the sensors
+		() as GroupMetrics = MetricsSink(GroupAverage)
+			{
+				param
+					metrics :(int64) avgTemp,(int64) numSensors ;
+					names : "averageTemperature", "numReporting" ;
+					descriptions : "Average temp of all sensors per minute",
+						"Number of sensors currently reporting" ;
+					initialValues : 0l, 1330l ; // -900l, 5l;
+				config
+					placement: partitionExlocation("eventstreams");
+
+
+			}
+
+			//Detect a sudden or steady drop in pressure
+		stream<int32 id,  float64 pressure, rstring endTime> DetectPressureDrop
+				 = MonitorPressure (IndividualAverage){
+
+ 			config placement : partitionExlocation ("Avg") ;
+
+		}
+
+
+		() as  DropSink  = Custom (DetectPressureDrop as in0){
+	 				logic
+	 							onTuple in0: {
+	 								printStringLn (" Pressure drop detected at  " + endTime + " for sensor "
+	 								 + ((rstring)id) + ", pressure: " + ((rstring)pressure));
+
+	 							}
+
+	 									config
+	 									placement : partitionExlocation("Avg") ;
+	  }
+		 ( ) as SendAlert = FileSink(DetectPressureDrop ) {
+				logic
+					state :{
+						mutable set<int32> ids = { } ;
+					}
+				onTuple DetectPressureDrop :{
+						insertM(ids , id ) ;
+						if ( ! hasCustomMetric ( "numPredictedSensorFailures") ){
+							createCustomMetric("numPredictedSensorFailures",
+									"Number of sensors with dropping pressure", Sys.Gauge, 0l) ;
+						}
+						setCustomMetricValue ( "numPredictedSensorFailures" , (int64 ) size(ids ) ) ;
+				}
+			param
+					file : "/tmp/pressureDropSuspects";
+					flush : 1u ;
+			config placement : partitionColocation ("alert") ;
+	}
+}
+
+boolean steepDrop(float64 current, float64 last){
+	return ((current - last)/last) <= -0.3;
+
+}
+
+
+composite MonitorPressure(input IndividualAverage; output DetectPressureDrop) {
+
+
+graph
+	stream<int32 id,  float64 pressure, rstring endTime> DetectPressureDrop
+			 = com.ibm.streams.cep::MatchRegex(IndividualAverage){
+		param
+			pattern : ".(drop drop drop drop drop)| . deep+";
+			partitionBy: id;
+			predicates : {drop= avgPressure < 70.0 && avgPressure < Last(avgPressure), deep=   steepDrop(avgPressure, Last(avgPressure))} ;
+		output
+			DetectPressureDrop: id = Any(id),
+								pressure=avgPressure,
+							endTime =ctime(end);
+	}
+
+
+}
