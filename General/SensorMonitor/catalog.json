@@ -6,4 +6,4 @@
 		"url": "https://github.com/IBMStreams/samples/tree/master/General/SensorMonitor",
 	"tags": [],
 		"operators": ["Aggregate","MetricsSink","MatchRegex","cep","complex event"]
-},
+}
