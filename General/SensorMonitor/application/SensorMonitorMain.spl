@@ -44,23 +44,23 @@ composite SensorMonitorMain {
 		}
 
 
-		() as  DropSink  = Custom (DetectPressureDrop as in0){
+		stream<rstring message, int32 id> GenerateMessage = Custom (DetectPressureDrop as in0){
 	 				logic
 	 							onTuple in0: {
-	 								printStringLn (" Pressure drop detected at  " + endTime + " for sensor "
-	 								 + ((rstring)id) + ", pressure: " + ((rstring)pressure));
-
+	 								rstring msg = " Pressure drop detected at  " + endTime + " for sensor "
+	 								 + ((rstring)id) + ", pressure: " + ((rstring)pressure);
+									submit({message=  msg, id = id}, GenerateMessage);
 	 							}
 
 	 									config
 	 									placement : partitionExlocation("Avg") ;
 	  }
-		 ( ) as SendAlert = FileSink(DetectPressureDrop ) {
+		 ( ) as SendAlert = FileSink(GenerateMessage ) {
 				logic
 					state :{
 						mutable set<int32> ids = { } ;
 					}
-				onTuple DetectPressureDrop :{
+				onTuple GenerateMessage :{
 						insertM(ids , id ) ;
 						if ( ! hasCustomMetric ( "numPredictedSensorFailures") ){
 							createCustomMetric("numPredictedSensorFailures",

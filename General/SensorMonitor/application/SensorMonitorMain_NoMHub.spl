@@ -42,44 +42,38 @@ composite SensorMonitorMain_NoMHub
 		}
 
 
-		() as SaveAlertsToFile = FileSink(DetectPressureDrop)
-		{
-			logic
-				state :
-				{
-					mutable set<int32> ids = { } ;
-				}
 
-				onTuple DetectPressureDrop :
-				{
-					insertM(ids, id) ;
-					if(! hasCustomMetric("numPredictedSensorFailures"))
-					{
-						createCustomMetric("numPredictedSensorFailures",
-							"Number of sensors with dropping pressure", Sys.Gauge, 0l) ;
+stream<rstring message, int32 id> GenerateMessage = Custom (DetectPressureDrop as in0){
+	 				logic
+	 							onTuple in0: {
+	 								rstring msg = " Pressure drop detected at  " + endTime + " for sensor "
+	 								 + ((rstring)id) + ", pressure: " + ((rstring)pressure);
+									printStringLn(msg);
+									submit({message=  msg, id = id}, GenerateMessage);
+	 							}
+
+	 									config
+	 									placement : partitionExlocation("Avg") ;
+	  }
+		 ( ) as SendAlert = FileSink(GenerateMessage ) {
+				logic
+					state :{
+						mutable set<int32> ids = { } ;
 					}
-
-					setCustomMetricValue("numPredictedSensorFailures",(int64) size(ids)) ;
-					// setCustomMetricValue("lastUpdateTime",end);
-					block(0.3) ;
+				onTuple GenerateMessage :{
+						insertM(ids , id ) ;
+						if ( ! hasCustomMetric ( "numPredictedSensorFailures") ){
+							createCustomMetric("numPredictedSensorFailures",
+									"Number of sensors with dropping pressure", Sys.Gauge, 0l) ;
+						}
+						setCustomMetricValue ( "numPredictedSensorFailures" , (int64 ) size(ids ) ) ;
 				}
-
 			param
-				file : "/tmp/pressureDropSuspects.txt" ;
-			config
-				placement : partitionColocation("Avg") ;
-		}
-		 () as  DropSink  = Custom (DetectPressureDrop as in0){
-			 			logic
-			 				 		onTuple in0: {
-										printStringLn (" Pressure drop detected at  " + endTime + " for sensor "
-										 + ((rstring)id) + ", pressure: " + ((rstring)pressure));
+					file : "/tmp/pressureDropSuspects";
+					flush : 1u ;
+			config placement : partitionColocation ("alert") ;
+	}
 
-									}
-
-											config
-											placement : partitionExlocation("Avg") ;
-		 }
 
 		/*
 		Uncomment to send messages to Slack
