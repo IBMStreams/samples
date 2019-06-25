@@ -7,13 +7,14 @@ use com.ibm.streamsx.messagehub::* ;
 
 type GroupAvgWithLateData = float64 avgTemp, int32 numSensors, timestamp end,
 	timestamp start, Sys.PaneTiming paneTiming ;
-type GroupAvg = float64 avgTemp, int32 numSensors, timestamp end,
-	timestamp start ;
+type GroupAvg = float64 avgTemp, int32 numSensors, rstring end,
+	rstring start ;
 type Reading = int32 id, float64 temp, float64 humidity, float64 pressure,
 	int64 readingTimeStamp ;
 /**
 * @param numSensors how many sensors to simulate
 **/
+
 	composite PublishData {
 
 		param

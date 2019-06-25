@@ -74,7 +74,7 @@ graph
 
 				output
 					GroupAverage : avgTemp = Average(temp), numSensors =CountDistinct(id),
-						start = intervalStart(), end = intervalEnd() ;
+						start = ctime(intervalStart()), end = ctime(intervalEnd());
 					config
 				placement: partitionExlocation("eventstreams"),  partitionColocation("Avg") ;
 
@@ -83,11 +83,11 @@ graph
 
 			logic
 				onTuple GroupAverage:{
-					mutable rstring endTime = ((rstring)hour(end)) + ":" + ((rstring)minute(end)) + ":" + ((rstring)second(end));
-					if(second(end) == 0u){
-						endTime = endTime + "0";
-					}
-					printStringLn("Average for " +(rstring)$timeInterval + " second period ending " + ctime(end) + " is "+ (rstring)avgTemp);
+				//	mutable rstring endTime = ((rstring)hour(end)) + ":" + ((rstring)minute(end)) + ":" + ((rstring)second(end));
+					//if(second(end) == 0u){
+					//	endTime = endTime + "0";
+					//}
+					printStringLn("Average for " +(rstring)$timeInterval + " second period ending " + end + " is "+ (rstring)avgTemp);
 
 				}
 				config
