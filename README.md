@@ -20,15 +20,17 @@ For any reason if you wish to run this code locally, you can follow the steps:
     ```
 If you want to read more on Jekyll, [click here](https://jekyllrb.com/)
 
-Step 2) git clone
+Step 2) Clone repo
     ```
-    git clone git clone https://github.com/IBMStreams/samples -b gh-pages
+     git clone https://github.com/IBMStreams/samples -b gh-pages
     ```
 
 Step 3) run the application
-    ```
+    
+   
     cd samples
+    
     bundle exec jekyll serve
-    ```
+    
 
 Website will be running locally on: http://127.0.0.1:4000/
