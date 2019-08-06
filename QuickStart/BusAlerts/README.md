@@ -18,9 +18,11 @@ These applications are in `my.name.space/BusAlerts_CachedData.spl` and `my.name.
 
 
 If you submit the live application it will connect to NextBus. If you use the cached data it will use cached location data in `data/saved_BusLocations.txt`.
+
+
 ## Launching the sample
 
-Import the sample into Atom or VS Code, select the file you wish to run, and  select **Build and submit job**.
+Import the sample into Atom or VS Code, right click the file you wish to run, and  select **IBM Streams > Build and submit job**.
 
 When submitting the application you can set the `bus-agency` parameter to one of the municipalities that uses NextBus data. The default is `sf-muni`for San Francisco, and the points of interest in `data/poi.csv` are all in San Francisco.
 
@@ -42,3 +44,10 @@ This description applies to the `BusAlerts_LiveData` application. The `BusAlerts
 3. The `ParseNextBusData` composite uses the `XMLParse` operator to parse the data and creates a stream of tuples, one for each bus. Each tuple has the following attributes: `rstring id,TimeMillis reportTime, float64 latitude, float64 longitude`.
 4. The points of interest from step 1 and the stream of bus locations from step 3 are used in `Custom` operator. The operator uses the [`distance`](https://www.ibm.com/support/knowledgecenter/SSCRJU_4.3.0/com.ibm.streams.toolkits.doc/spldoc/dita/tk$com.ibm.streams.geospatial/fj$com.ibm.streams.geospatial.st.html) function from the geospatial toolkit to determine if the bus is near the point of interest.  If a bus is near a POI it submits a tuple containing the message that should be sent to the bus. This message is sent on the `BusesToAlert` stream.
 5. The `AlertPrinter` operator receives the message and prints the message to the console.
+
+
+
+## Learn more
+
+- [Geofencing in streams](https://developer.ibm.com/streamsdev/docs/common-patterns-tracking-moving-objects-streams-part-2-geofencing/)
+- The location of the points of interest is specified using [Well-Known Text](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry). You can use [Wicket](http://arthur-e.github.io/Wicket/sandbox-gmaps3.html) to generate WKT.
