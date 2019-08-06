@@ -1,0 +1,19 @@
+<toolkitInfoModel
+  xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema−instance"
+  xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common"
+  xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo toolkitInfoModel.xsd">
+ <identity>
+   <name>MyStreamsProject</name>
+   <description>My first toolkit</description>
+   <version>1.0.0</version>
+   <requiredProductVersion>4.0.0</requiredProductVersion>
+ </identity>
+
+ <dependencies/>
+
+   <sabFiles>
+     <include path="data/**"/>
+      <include path="etc/**"/>
+   </sabFiles>
+</toolkitInfoModel>

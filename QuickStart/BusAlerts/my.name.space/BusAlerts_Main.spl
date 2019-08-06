@@ -1,0 +1,114 @@
+namespace my.name.space ;
+
+use com.ibm.streams.geospatial.st::* ;
+use com.ibm.streams.geospatial.ext::* ;
+use com.ibm.streamsx.datetime::* ;
+use com.ibm.streamsx.inet.http::HTTPGetXMLContent;
+type POI_Type = rstring POI_ID, rstring message, rstring locationWKT ;
+type Alert = rstring id, rstring poi, rstring message, float64 distance;
+/**
+ * Generic type to represent the position of a vehicle
+ * using an rstring id and float64 latitude and longitude.
+ */
+type VehicleLocationType = tuple<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude>;
+
+composite BusAlerts_Main
+{
+	param
+		expression<rstring> $agency : getSubmissionTimeValue("bus-agency","sf-muni") ;
+	graph
+		stream<xml locationXMLDoc> NextBusData_FromFile = FileSource()
+		{
+			param
+				file : getApplicationDir() + "/data/saved_BusLocations.txt" ;
+		}
+
+
+		stream<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude> ParsedDataStream = ParseNextBusData(NextBusData_FromFile )
+		{
+			param
+				agency : $agency ; //agency parameter specifies which bus system to monitor
+
+		}
+
+		stream<POI_Type> POI_FromFile = FileSource()
+		{
+			param
+				file : getApplicationDir() + "/data/poi.csv" ;
+		}
+
+		stream<Alert> BusesToAlert  = Custom(ParsedDataStream; POI_FromFile)
+		{
+			logic
+				state :
+				{
+					mutable list<POI_Type> POIList = [ ];
+					float64 radius = 1500.0;
+				}
+
+				onTuple POI_FromFile:
+				{
+				//add the POIs to a list
+					appendM(POIList, POI_FromFile) ;
+				}
+
+				onTuple ParsedDataStream :
+				{
+					rstring busWKT = point(longitude, latitude) ;
+						//for each POI
+					for(POI_Type poi in POIList)
+					{
+					//check the distance from the bus' current location to the point
+						float64 distanceFromPOI = distance(busWKT, poi.locationWKT) ;
+						if(distanceFromPOI <= radius)
+						{
+						//bus is near POI.
+						//Submit an alert tuple
+							mutable Alert out = { } ;
+							out.distance = distanceFromPOI ;
+							out.poi = poi.POI_ID ;
+							out.message = poi.message ;
+							//copy input data to output
+							assignFrom(out, ParsedDataStream) ;
+							submit(out, BusesToAlert) ;
+						}
+
+					}
+
+				}
+
+		}
+
+		() as AlertPrinter = Custom(BusesToAlert as In)
+		{
+			logic
+				onTuple In :
+				{
+					printStringLn("Bus " + id + "  is near " + poi +
+						", message = " + message  );//"  time " + com.ibm.streamsx.datetime.convert::toIso8601(reportTime)) ;
+				}
+
+		}
+
+}
+
+/**
+ * Returns the base URL for the NextBus public XML feed.
+ * @return http://webservices.nextbus.com/service/publicXMLFeed
+ */
+public rstring baseUrl()
+{
+	return "http://webservices.nextbus.com/service/publicXMLFeed" ;
+}
+
+/**
+ * Create a command URL for NextBus with a set pof
+ */
+public stateful rstring getUrl(rstring command, rstring agency)
+{
+	mutable rstring url = baseUrl() + "?command=" + command ;
+	rstring timeStamp =(rstring) currentTimeMillis() ;
+	url = url + "&a=" + agency + "&t=" + timeStamp ;
+
+	return url ;
+}
