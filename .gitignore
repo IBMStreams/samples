@@ -1,5 +1,5 @@
 toolkit.xml
-output
+
 *.pyc
 doc
 full-catalog.json
