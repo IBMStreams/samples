@@ -7,7 +7,6 @@ namespace my.name.space ;
 use com.ibm.streams.geospatial.st::* ;
 use com.ibm.streams.geospatial.ext::* ;
 use com.ibm.streamsx.datetime::* ;
-use com.ibm.streamsx.inet.http::HTTPGetXMLContent;
 type POI_Type = rstring POI_ID, rstring message, rstring locationWKT ;
 type Alert = rstring id, rstring poi, rstring message, float64 distance;
 /**
@@ -16,7 +15,7 @@ type Alert = rstring id, rstring poi, rstring message, float64 distance;
  */
 type VehicleLocationType = tuple<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude>;
 
-composite BusAlerts_Main
+composite BusAlertsCachedData
 {
 	param
 		expression<rstring> $agency : getSubmissionTimeValue("bus-agency","sf-muni") ;
@@ -27,18 +26,20 @@ composite BusAlerts_Main
 				file : getApplicationDir() + "/data/saved_BusLocations.txt" ;
 		}
 
-
-		stream<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude> ParsedDataStream = ParseNextBusData(NextBusData_FromFile )
+		stream<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude> ParsedDataStream =
+		ParseNextBusData(NextBusData_FromFile )
 		{
 			param
 				agency : $agency ; //agency parameter specifies which bus system to monitor
 
 		}
 
+
 		stream<POI_Type> POI_FromFile = FileSource()
 		{
 			param
 				file : getApplicationDir() + "/data/poi.csv" ;
+				hasHeaderLine: true;
 		}
 
 		stream<Alert> BusesToAlert  = Custom(ParsedDataStream; POI_FromFile)

@@ -1,0 +1,103 @@
+// ************************************************************************
+// * Copyright (C)2019, International Business Machines Corporation and
+// * others. All Rights Reserved.
+// ************************************************************************
+namespace my.name.space ;
+
+use com.ibm.streams.geospatial.st::* ;
+use com.ibm.streams.geospatial.ext::* ;
+use com.ibm.streamsx.datetime::* ;
+use com.ibm.streamsx.inet.http::HTTPGetXMLContent;
+
+composite BusAlertsLiveData
+{
+	param
+		expression<rstring> $agency : getSubmissionTimeValue("bus-agency","sf-muni") ;
+	graph
+
+		stream<xml locationXMLDoc> RawData_Live = HTTPGetXMLContent()
+
+	     {
+
+	     param
+
+	     url : getUrl("vehicleLocations", $agency);
+
+	     period : 30.0; //poll every 30 seconds
+
+	     updateParameter: "t";
+
+	     updateParameterFromContent: "/body/lastTime/@time";
+
+	     }
+
+		stream<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude> ParsedDataStream
+		= ParseNextBusData(RawData_Live )
+		{
+			param
+				agency : $agency ; //agency parameter specifies which bus system to monitor
+
+		}
+
+		stream<POI_Type> POI_FromFile = FileSource()
+		{
+			param
+				file : getApplicationDir() + "/data/poi.csv" ;
+				hasHeaderLine: true;
+
+		}
+
+		stream<Alert> BusesToAlert  = Custom(ParsedDataStream; POI_FromFile)
+		{
+			logic
+				state :
+				{
+					mutable list<POI_Type> POIList = [ ];
+					float64 radius = 1500.0;
+				}
+
+				onTuple POI_FromFile:
+				{
+				//add the POIs to a list
+					appendM(POIList, POI_FromFile) ;
+				}
+
+				onTuple ParsedDataStream :
+				{
+					rstring busWKT = point(longitude, latitude) ;
+						//for each POI
+					for(POI_Type poi in POIList)
+					{
+					//check the distance from the bus' current location to the point
+						float64 distanceFromPOI = distance(busWKT, poi.locationWKT) ;
+						if(distanceFromPOI <= radius)
+						{
+						//bus is near POI.
+						//Submit an alert tuple
+							mutable Alert out = { } ;
+							out.distance = distanceFromPOI ;
+							out.poi = poi.POI_ID ;
+							out.message = poi.message ;
+							//copy input data to output
+							assignFrom(out, ParsedDataStream) ;
+							submit(out, BusesToAlert) ;
+						}
+
+					}
+
+				}
+
+		}
+
+		() as AlertPrinter = Custom(BusesToAlert as In)
+		{
+			logic
+				onTuple In :
+				{
+					printStringLn("Bus " + id + "  is near " + poi +
+						", this message will be displayed in the bus: " + message  );//"  time " + com.ibm.streamsx.datetime.convert::toIso8601(reportTime)) ;
+				}
+
+		}
+
+}
