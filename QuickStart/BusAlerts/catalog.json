@@ -1,9 +1,9 @@
 {"name": "Smart advertising using NextBus data and geofencing",
-	"description": "Using HTTPGetXMLContent and XMLParse operators to retrieve and parse real GPS data from buses in San Francisco. This application determines when a bus is near points of interest. ",
+	"description": "Uses the HTTPGetXMLContent and XMLParse operators to get and parse real GPS data from the NextBus service, and detect when a bus is near a POI. ",
 	"language": ["SPL"],
 	"category": ["1","2"],
 	"blogPost": "http://ibmstreams.github.io/streamsx.documentation/docs/spl/atom/atom-guide-5-build/#about-the-sample-application",
 		"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/BusAlerts",
-	"tags": [],
+	"tags": [], "featured": true,
 		"operators": ["Custom","HTTPGetXMLContent","XMLParse"]
 }
