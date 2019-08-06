@@ -31,12 +31,12 @@ When submitting the application you can set the `bus-agency` parameter to one of
 
 From the Streams Console, find the job you submitted, hover over the `AlertPrinter` operator and click **View Operator Log**:
 
-![Image showing how to view results of the app](/Users/natashad/Documents/dev/git/streamsx.documentation/images/viewresults.gif)
+![Image showing how to view results of the app](images/viewresults.gif)
 
 
 ## How it works
 
-![application graph](/Users/natashad/Documents/dev/git/streamsx.documentation/images/graph.png)
+![application graph](images/graph.png)
 
 This description applies to the `BusAlerts_LiveData` application. The `BusAlertsCachedData` application works the same way except it does not connect to NextBus.
 1. The `POI_FromFile` stream containing points of interest is created from the data/poi.csv file using a `FileSource`.
