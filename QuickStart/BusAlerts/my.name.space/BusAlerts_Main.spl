@@ -1,3 +1,7 @@
+// ************************************************************************
+// * Copyright (C)2019, International Business Machines Corporation and
+// * others. All Rights Reserved.
+// ************************************************************************
 namespace my.name.space ;
 
 use com.ibm.streams.geospatial.st::* ;
@@ -85,7 +89,7 @@ composite BusAlerts_Main
 				onTuple In :
 				{
 					printStringLn("Bus " + id + "  is near " + poi +
-						", message = " + message  );//"  time " + com.ibm.streamsx.datetime.convert::toIso8601(reportTime)) ;
+						", this message will be displayed in the bus: " + message  );//"  time " + com.ibm.streamsx.datetime.convert::toIso8601(reportTime)) ;
 				}
 
 		}
