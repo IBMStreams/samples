@@ -141,7 +141,7 @@
 },
 {
   "name": "Connect to IBM Event Streams with Python",
-  "description": "This Python notebook shows the required steps to connect to Event Streams to send and receive data using the Streams Python API.  ",
+  "description": "This Python notebook shows the required steps to connect to Event Streams to send and receive data using the Streams Python API.",
   "language": ["Python"],
 	"tags": ["ibm cloud","cloud pak for data","event streams","kafka"],
  "external": true,
@@ -160,7 +160,7 @@
 },
 {
   "name": "Connect to IBM Db2 Warehouse in a Python application",
-  "description": "This Python notebook shows how to connect to a DB2 Warehouse database via JDBC. Application includes table creation, SQL queries and inserts. Runs on IBM Cloud Pak for Data.
+  "description": "This Python notebook shows how to connect to a DB2 Warehouse database via JDBC. Application includes table creation, SQL queries and inserts. Runs on IBM Cloud Pak for Data.",
   "language": ["Python"],
 	"tags": ["ibm cloud","cloud pak for data","sql","jdbc"],
  "external": true,
@@ -168,7 +168,7 @@
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-DatabaseSample.ipynb"
 },{
   "name": "Python application template",
-  "description": "This simple notebook includes the basic cells you need to create a Python application using the Streams Python API. Runs on IBM Cloud Pak for Data.",
+  "description": "This notebook is a template that outlines the basic steps you need to create a Python application using the Streams Python API. Runs on IBM Cloud Pak for Data.",
   "language": ["Python"],
 	"tags": ["ibm cloud","cloud pak for data"],
  "external": true,
