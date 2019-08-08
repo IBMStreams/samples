@@ -127,6 +127,7 @@
  "external": true,
 "category": ["1","7"],
 "featured":true,
+"blogPost":"https://developer.ibm.com/streamsdev/videos/get-started-with-streaming-analytics-in-python-with-ibm-cloud-private-for-data/",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-RollingAverageSample.ipynb"
 },
 {
@@ -176,7 +177,7 @@
   "language": ["Python"],
 	"tags": ["ibm cloud","cloud pak for data"],
  "external": true,
- "category": ["2"],
+ "category": ["1"],
  "featured":true,
 "url": ""
 }
