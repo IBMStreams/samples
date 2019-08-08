@@ -71,14 +71,7 @@
 
 },
 
-{"category": ["1","2"],
-	 "zip": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit/archive/master.zip",
-	  "name": "Smart sprinklers water conservation starter kit", "language": ["Java"], "tags": ["iot","weather", "iot", "ibm cloud","cloud"],
-		"url": "https://github.com/IBMStreams/streamsx.waterConservation.starterKit",
-		 "blogPost": "https://developer.ibm.com/streamsdev/2016/06/22/introducing-water-conservation-starter-kit/",
-		"external": true,  "services": ["Bluemix", "Edgent"],
-	"description": "This starter kit demonstrates the implementation of a smart and connected water irrigation system. It integrates data from the Weather Company, Apache Edgent and the Streaming Analytics Service on IBM Cloud."
-},
+
 {"category": ["1"],
 	  "name": "Hello World Python notebook",
 		"language": ["Python"], "tags": ["icp4d","topology", "ibm cloud","cloud"],
@@ -124,4 +117,62 @@
 "category": ["1","7"],
 "zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/master.zip",
 "url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"
+},
+
+{
+  "name": "Simple rolling average in a Python notebook",
+  "description": "This notebook creates a rolling average using the Streams Python API and creates a view of the results.",
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data"],
+ "external": true,
+"category": ["1","7"],
+"featured":true,
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-RollingAverageSample.ipynb"
+},
+{
+  "name": "Score a PMML model on streaming data",
+  "description": "This Python notebook for IBM Cloud Pak for Data shows how to score a PMML model within a Streams Python application.",
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data"],
+ "external": true,
+ "category": ["1","7"],
+ "featured":true,
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-PMMLScoringSample.ipynb"
+},
+{
+  "name": "Connect to IBM Event Streams with Python",
+  "description": "This Python notebook shows the required steps to connect to Event Streams to send and receive data using the Streams Python API.  ",
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data","event streams","kafka"],
+ "external": true,
+ "category": ["2"],
+ "featured":true,
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStreamsSample.ipynb"
+},
+{
+  "name": "Send data to IBM Db2 Event Store",
+  "description": "Send streaming data to IBM Db2 Event Store from a Python notebook. The tuples are inserted as rows in a Db2 Event Store table.",
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data","eventstore"],
+ "external": true,
+ "category": ["2"],
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStoreSample.ipynb"
+},
+{
+  "name": "Connect to IBM Db2 Warehouse in a Python application",
+  "description": "This Python notebook shows how to connect to a DB2 Warehouse database via JDBC. Application includes table creation, SQL queries and inserts. Runs on IBM Cloud Pak for Data.
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data","sql","jdbc"],
+ "external": true,
+ "category": ["2"],
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-DatabaseSample.ipynb"
+},{
+  "name": "Python application template",
+  "description": "This simple notebook includes the basic cells you need to create a Python application using the Streams Python API. Runs on IBM Cloud Pak for Data.",
+  "language": ["Python"],
+	"tags": ["ibm cloud","cloud pak for data"],
+ "external": true,
+ "category": ["2"],
+ "featured":true,
+"url": ""
 }
