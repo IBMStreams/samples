@@ -137,6 +137,7 @@
  "external": true,
  "category": ["1","7"],
  "featured":true,
+ "blogPost": "https://developer.ibm.com/streamsdev/videos/video-score-pmml-models-in-real-time-using-ibm-streams/",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-PMMLScoringSample.ipynb"
 },
 {
@@ -146,6 +147,7 @@
 	"tags": ["ibm cloud","cloud pak for data","event streams","kafka"],
  "external": true,
  "category": ["2"],
+ "blogPost": "https://youtu.be/s30AtkGoIc8",
  "featured":true,
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStreamsSample.ipynb"
 },
@@ -156,6 +158,7 @@
 	"tags": ["ibm cloud","cloud pak for data","eventstore"],
  "external": true,
  "category": ["2"],
+ "blogPost": "https://developer.ibm.com/streamsdev/2019/07/10/connect-to-db2-event-store/",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStoreSample.ipynb"
 },
 {
@@ -165,6 +168,7 @@
 	"tags": ["ibm cloud","cloud pak for data","sql","jdbc"],
  "external": true,
  "category": ["2"],
+ "blogPost":"https://youtu.be/s30AtkGoIc8",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-DatabaseSample.ipynb"
 },{
   "name": "Python application template",
