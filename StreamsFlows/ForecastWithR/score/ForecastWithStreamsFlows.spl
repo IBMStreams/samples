@@ -1,0 +1,39 @@
+namespace score;
+
+use com.ibm.streamsx.topology.topic::* ;
+use com.ibm.streams.rproject::RScript ;
+
+type AggregatedInput =float64 id, float64 time, int32 unique_users, int32 total_users;
+type ForecastResult = float32 forecastedValue,float64 id, float64 time, int32 unique_users, int32 total_users;
+
+composite Forecast_With_R {
+    param
+        expression<rstring> $appDir : getApplicationDir();
+    graph
+
+      stream<AggregatedInput> DataToScore = Subscribe()
+      {
+          param
+              topic : "demo/aggregated-count" ;
+              streamType : AggregatedInput ;
+      }
+
+
+
+    stream<ForecastResult> RScriptResult =	RScript(DataToScore)
+    {
+      param
+        initializationScriptFileName :  $appDir + "/etc/R/initialize.r" ;
+        rScriptFileName :  $appDir + "/etc/R/predict.r" ;
+        streamAttributes : unique_users, total_users ;
+        rObjects : "num_unique_users", "total_users_counted" ; // these are the variable names the R script expects
+
+      output
+        RScriptResult : forecastedValue = fromR("predictedCount") ; // predictedCount is the result from the R script
+    }
+
+ () as Publish_Forecast = com.ibm.streamsx.topology.topic::Publish(RScriptResult) {
+			param
+				topic: "demo/forecast-results";
+		}
+}

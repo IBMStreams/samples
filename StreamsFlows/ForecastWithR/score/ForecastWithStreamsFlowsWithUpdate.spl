@@ -1,0 +1,45 @@
+namespace score;
+
+use com.ibm.streamsx.topology.topic::* ;
+use com.ibm.streams.rproject::RScript ;
+
+/***
+This composite does the same as the other, except it also has a connection to COS to download a new model */
+composite Forecast_With_ModelUpdates {
+    param
+        expression<rstring> $appDir : getApplicationDir();
+    graph
+
+      stream<AggregatedInput> DataToScore = Subscribe()
+      {
+          param
+              topic :  "demo/aggregated-count" ;
+              streamType : AggregatedInput ;
+      }
+    stream<ForecastResult> RScriptResult =	RScript(DataToScore; ModelUpdates)
+    {
+      param
+        initializationScriptFileName :  $appDir + "/etc/R/initialize.r" ;
+        rScriptFileName :  $appDir + "/etc/R/predict.r" ;
+        streamAttributes : unique_users, total_users ;
+        rObjects : "num_unique_users", "total_users_counted" ; // these are the variable names the R script expects
+
+      output
+        RScriptResult : forecastedValue = fromR("predictedCount") ; // predictedCount is the result from the R script
+      config
+  //Placing this operator  on the same PE as the FileSink operatoR ensures that RScript operator will always be on the same
+      //host as the FileSink, so that it can access the new model written by the filesink.
+        placement: hostColocation("SinkData");
+    }
+
+    stream <rstring updatedFile> ModelUpdates =  DownloadUpdatesFromCOS() {
+        param
+            objectStorageURI: "s3a://models-demo";
+    }
+
+ () as Publish_Forecast = com.ibm.streamsx.topology.topic::Publish(RScriptResult) {
+			param
+				topic:  "demo/forecast-results";
+		}
+
+}
