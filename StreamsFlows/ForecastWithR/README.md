@@ -7,7 +7,7 @@ Sample includes
 - [Sample flow](PredictHotspotUsage.stp) (uses generated data).
 
 * Running the sample
-  * Run the flow
+  * Import and run the sample flow
   * Launch the microservice
 * Modify the sample
   * Modify the microservice to ingest your own data
@@ -17,7 +17,7 @@ To run the sample, you need to
 - Run the forecasting microservice in the Streaming analytics service.
 
 
-### Import the sample flow
+### Import the sample flow into Watson Studio
 First, create an account in Watson Studio and an instance of the Streaming analytics service.
 
 - [Sign up for Watson Studio](https://dataplatform.cloud.ibm.com)  if you haven't already.
