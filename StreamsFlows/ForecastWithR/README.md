@@ -7,7 +7,7 @@ Sample includes
 - [Sample flow](PredictHotspotUsage.stp) (uses generated data).
 
 * Running the sample
-  * Import and run the sample flow
+  * [Import and run the sample flow](#import-the-sample-flow-into-watson-studio)
   * Launch the microservice
 * Modify the sample
   * Modify the microservice to ingest your own data
