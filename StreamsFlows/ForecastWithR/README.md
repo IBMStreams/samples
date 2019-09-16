@@ -1,16 +1,15 @@
 
 ## Score streaming data with R and Streams flows
 
-This is the sample code for the video [Score streaming data in R with Watson Studio Streams Flows](link).
+This is the sample code for the video [Score streaming data in R with Watson Studio Streams Flows](https://youtu.be/gZAoDOus0vc).
 Sample includes
 - Precompiled versions of the microservice are in the `bin` folder, so you can try the application without having to compile any code.
 - [Sample flow](PredictHotspotUsage.stp) (uses generated data).
 
 * Running the sample
   * [Import and run the sample flow](#import-the-sample-flow-into-watson-studio)
-  * Launch the microservice
-* Modify the sample
-  * Modify the microservice to ingest your own data
+  * [Launch the microservice](#launch-the-forecasting-microservice)
+* [Modify the sample](#launch-the-forecasting-microservice)
 
 To run the sample, you need to
 - Import and run the sample flow in Watson Studio Streams flows.
@@ -58,3 +57,4 @@ If you want to run the version of the application that has model updates, you mu
 
 ## Modifying the sample
 If you want to modify the microservice, you can [install the Streams plugins for VS Code or Atom](https://developer.ibm.com/streamsdev/docs/develop-run-streams-applications-using-atom-visual-studio-code/) and then import the source code into the editor.
+
