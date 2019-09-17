@@ -32,6 +32,7 @@ composite TwitterStream
 				retryOnClose : true;
 				retryDelay : 60.0;
 				maxRetries : 3600;
+				vmArg: "-Dcom.ibm.jsse2.overrideDefaultTLS=true";
 		}
 		
 		// Filter to only include statuses (excluding for example, status deletes, etc.)
