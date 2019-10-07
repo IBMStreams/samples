@@ -8,15 +8,17 @@ This repo includes the full application from the video and a modifiable template
 - Precompiled versions of the microservice are in the `bin` folder, so you can try the application without having to compile any code.
 - [Sample flow from the demo](PredictHotspotUsage.stp) (uses generated data).
 
-#### Example streams flow and SPL code.
-- A template flow and template SPL code so that you can run the sample with your own data.
-
 * Running the sample
   * [Import and run the sample flow](#import-the-sample-flow-into-watson-studio)
   * [Launch the microservice](#launch-the-forecasting-microservice)
 * [Modify the sample to use your own model](#modifying-the-sample)
 
-To run the sample, you need to
+
+#### Example streams flow and SPL code.
+- The `example` folder contains a template flow and template SPL code so that you can run the sample with your own data.
+
+## Running the sample
+To use the sample, you need to
 - Import and run the sample flow in Watson Studio Streams flows.
 - Run the forecasting microservice in the Streaming analytics service.
 
