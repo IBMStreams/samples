@@ -6,6 +6,7 @@ Each sub folder contains examples for Streams flows.
 - `AggregationExamples`: How to use the `Aggregation` operator
 
 - `IoT_TimeBasedBilling`: Time based billing application showing how to use the `WatsonIoT`, `Code` and `DB2 Warehouse` operators.
+- `ForecastWithR`: Score an R model with streaming data.
 
 
 Sample notebook hosted on Watson Data Platform:
