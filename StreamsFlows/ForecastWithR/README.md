@@ -14,7 +14,7 @@ This repo includes the full application from the video and a modifiable template
 * Running the sample
   * [Import and run the sample flow](#import-the-sample-flow-into-watson-studio)
   * [Launch the microservice](#launch-the-forecasting-microservice)
-* [Modify the sample to use your own model](#modifying-the-sample-to-use-your-own-model)
+* [Modify the sample to use your own model](#modifying-the-sample)
 
 To run the sample, you need to
 - Import and run the sample flow in Watson Studio Streams flows.
