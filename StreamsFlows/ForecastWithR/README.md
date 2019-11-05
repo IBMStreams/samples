@@ -2,6 +2,7 @@
 ## Score streaming data with R and Streams flows
 
 This is the sample code for the video [Score streaming data in R with Watson Studio Streams Flows](https://youtu.be/gZAoDOus0vc).
+The code in the video is discussed in [this blog post on Medium](https://medium.com/ibm-watson/real-time-forecasting-using-r-and-watson-studio-513c45abd1a9).
 This repo includes the full application from the video and a modifiable template so you can use it with your own data.
 
 #### Sample from the video
