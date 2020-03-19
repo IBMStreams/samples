@@ -8,7 +8,7 @@ composite AutoForecasterSamples
 		(stream<float64 inputData> NetloadData) as NetloadSource = FileSource()
 		{
 			param
-				file : "netload.out" ;
+				file : getApplicationDir() + "/data/netload.out" ;
 		}
 
 		(stream<uint64 t, float64 inputData, uint64 forecastedTimestamp, float64 forecastedResult>
@@ -32,6 +32,13 @@ composite AutoForecasterSamples
 				file : "result.txt" ;
 		}
 
+
+	() as Printer = Custom(ForecastedResults as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 		(stream<uint64 t, float64 inputData> NetloadTimeData) as AddTimeOp =
 			Custom(NetloadData)
 		{
