@@ -55,7 +55,7 @@ composite STD2Anomaly
 		() as SinkOp = FileSink(AnomalyStream as inPort0Alias)
 		{
 			param
-				file : getApplicationDir() + "/data/anomaly_result.csv" ;
+				file : "/tmp/anomaly_result.csv" ;
 				flush : 1u ;
 		}
 		

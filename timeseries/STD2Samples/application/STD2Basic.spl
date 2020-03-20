@@ -31,7 +31,7 @@ composite STD2Basic
 		() as SinkOp = FileSink(STDStream)
 		{
 			param
-				file : getApplicationDir() + "/data/simple_result.csv" ;
+				file :  "/tmp/simple_result.csv" ;
 				flush : 1u ;
 		}
 

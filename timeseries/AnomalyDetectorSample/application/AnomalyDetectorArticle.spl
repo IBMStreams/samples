@@ -29,7 +29,7 @@ composite AnomalyDetectorArticle
 		() as FileSink_3 = FileSink(AnomalyDetector_2_out0)
 		{
 			param
-				file : getApplicationDir() + "/data/detectedAnomalies.txt" ;
+				file : "/tmp/detectedAnomalies.txt" ;
 		}
 
 		() as Printer = Custom(AnomalyDetector_2_out0 as in0){

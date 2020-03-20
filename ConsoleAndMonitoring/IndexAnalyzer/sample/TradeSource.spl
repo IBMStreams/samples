@@ -8,7 +8,7 @@ composite TradeSource
 			param
 				period : 1.0 ;
 			output
-				MockMarketTradeSignal : filename = "TradesAndQuotes.csv.gz" ;
+				MockMarketTradeSignal : filename = getApplicationDir() + "/data/TradesAndQuotes.csv.gz" ;
 		}
 
 		stream<TQRecT> TradeQuote = FileSource(MockMarketTradeSignal)

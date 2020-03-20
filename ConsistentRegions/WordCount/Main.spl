@@ -28,7 +28,7 @@ composite Main {
     @consistent(trigger=periodic, period=1.0)
     stream<rstring line> Lines = FileSource() {
       param
-        file: "loremIpsum.txt";
+        file: getApplicationDir() + "/data/loremIpsum.txt";
         format: line;
       config
         placement: partitionColocation("PE1");
@@ -108,8 +108,18 @@ composite Main {
     // file has the same content as if the run had had no failures. 
     () as Nil = FileSink(WordCount) {
       param
-        file: "result.dat";
+      flush:1u;
+        file:  "/tmp/result.dat";
     }
+    
+    
+		() as Printer = Custom(WordCount as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
+    
 }
 
 // Forwards input stream to the output stream. The operator

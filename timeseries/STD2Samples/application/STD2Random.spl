@@ -57,7 +57,7 @@ composite STD2Random
 		() as STD2ResultSink = FileSink(STDStream)
 		{
 			param
-				file : getApplicationDir() + "/data/random_results.csv" ;
+				file :   "/tmp/random_results.csv" ;
 				format : csv ;
 		}
 

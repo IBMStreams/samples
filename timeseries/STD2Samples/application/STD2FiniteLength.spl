@@ -59,7 +59,7 @@ composite STD2FiniteLength
 		() as STD2ResultSink = FileSink(STDStream)
 		{
 			param
-				file : getApplicationDir() + "/data/finitesignal_results.csv" ;
+				file : "/tmp/finitesignal_results.csv" ;
 				format : csv ;
 		}
 
