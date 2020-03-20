@@ -60,7 +60,7 @@ composite STD2Anomaly
 		}
 		
 		
-		() as Printer = Custom(STDStream as in0){
+		() as Printer = Custom(AnomalyStream as in0){
 			logic
 			onTuple in0: {
 				println(in0);

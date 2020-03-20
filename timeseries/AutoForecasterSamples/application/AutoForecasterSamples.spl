@@ -29,7 +29,7 @@ composite AutoForecasterSamples
 		() as FileSinkOp = FileSink(ForecastedResults)
 		{
 			param
-				file : "result.txt" ;
+				file : "/tmp/result.txt" ;
 		}
 
 

@@ -2,13 +2,13 @@
 namespace FilterExample ;
 
 use com.ibm.streams.timeseries.generators::Generator ;
-use com.ibm.streams.timeseries.analysis::DSPFilter ;
+use com.ibm.streams.timeseries.analysis::DSPFilter2;
 
 composite FilterExampleMain
 {
 	graph
 		(stream<float64 origSignalValue, float64 filteredSignalValue>
-			DSPFilter_4_out0) as DSPFilter_4 = DSPFilter(Generator_3_out0 as
+			DSPFilter_4_out0) as DSPFilter_4 = DSPFilter2(Generator_3_out0 as
 			inputSignalAlias)
 		{
 			param
