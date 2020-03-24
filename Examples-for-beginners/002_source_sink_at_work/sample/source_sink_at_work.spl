@@ -13,7 +13,7 @@ composite source_sink_at_work {
 	graph
 		stream<EmployeeSchema> Employee = FileSource() {
 			param
-				file: "Employee.dat";
+				file: getApplicationDir() + "/data/Employee.dat";
 				format: csv;
 				initDelay: 4.0;
 	} // End of Employee = FileSource()
@@ -21,7 +21,14 @@ composite source_sink_at_work {
 	// Write the arriving tuples to a File sink.
 	() as FileWriter = FileSink(Employee) {
 		param
-			file: "MyResults.txt";
+			file: "/tmp/MyResults.txt";
 	} // End of FileSink.
 
+
+	() as Printer = Custom(Employee as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 } // End of Composite source_sink_at_work
