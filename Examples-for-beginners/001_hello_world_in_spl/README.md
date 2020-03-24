@@ -1,4 +1,5 @@
 ~~~~~~ Scala
+namespace demo;
 /*
 This example is the simplest possible SPL application.
 It uses a Beacon operator to generate tuples that carry
@@ -9,14 +10,13 @@ composite HelloWorld {
 	graph
 		stream <rstring message> Hi = Beacon() {
 			param
-				iterations: 5u;
-
+				iterations: 105u;
 			output
-				Hi: message = "Hello World!";
+				Hi: message = "Hello World, this is tuple number " + ((rstring)IterationCount());
 		} // End of Beacon.
-
+		
 		() as Sink = Custom(Hi) {
-			logic
+			logic	
 				onTuple	Hi:
 					// In the standalone build, you will see this message on your console.
 					// In the distributed build, you will see this message inside the
@@ -26,3 +26,15 @@ composite HelloWorld {
 		} // End of Custom.
 } // End of HelloWorld composite.
 ~~~~~~
+
+## Sample output
+
+Hello World, this is streaming tuple number 0
+Hello World, this is streaming tuple number 1
+Hello World, this is streaming tuple number 2
+Hello World, this is streaming tuple number 3
+Hello World, this is streaming tuple number 4
+Hello World, this is streaming tuple number 5
+Hello World, this is streaming tuple number 6
+Hello World, this is streaming tuple number 7
+Hello World, this is streaming tuple number 8
