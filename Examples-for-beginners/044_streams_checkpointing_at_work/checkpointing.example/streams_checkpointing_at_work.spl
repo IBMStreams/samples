@@ -67,10 +67,17 @@ composite streams_checkpointing_at_work {
 		
 		() as FileWriter = FileSink(AggregatedStream) {
 			param
-				file: "AggOutput.csv";
+				file: "/tmp/044_checkpoint_AggOutput.csv";
 				append: true;
 		
 		}
 		
+		
+		() as Printer = Custom(AggregatedStream as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 		
 }

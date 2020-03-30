@@ -68,12 +68,12 @@ composite barrier_at_work {
 		// Write the deposit results to a sink file.
 		() as FileWriter1 = FileSink(FinalDepositResult) {
 			param 
-				file: "bank_tasks_deposit.result";
+				file: "/tmp/006_barrier_bank_tasks_deposit.result";
 		} // End of FileSink(FinalDepositResult)
 
 		// Write the debit results to a sink file.
 		() as FileWriter2 = FileSink(FinalDebitResult) {
 			param 
-				file: "bank_tasks_debit.result";
+				file: "/tmp/006_barrier_bank_tasks_debit.result";
 		} // End of FileSink(FinalDebitResult)
 } // End of composite barrier_at_work.

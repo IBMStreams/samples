@@ -30,8 +30,15 @@ composite UDP11 {
 		
 		() as MySink = FileSink(TransformedData) {
 			param
-				file: "Test1.csv";
-		}					
+				file: "/tmp/084_udp_Test1.csv";
+				flush: 1u;
+		}
+		() as Printer = Custom(TransformedData as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  						
 }
 
 

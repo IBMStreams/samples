@@ -81,10 +81,10 @@ composite Main {
 		} // End of DirectoryListerTuple = DirectoryLister(SystemPropertyTuple)
 		
 		// Write the tuples coming out of the C++ primitive operators to 
-		// the file sink.
+		// stdout.
 		() as ResultsSink = FileSink(DirectoryListerTuple) {
 			param
-				file: "properties.txt";
+				file: "/dev/stdout";
 		} // End of ResultsSink = FileSink(DirectoryListerTuple)
 		
 } // End of composite Main

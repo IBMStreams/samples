@@ -159,8 +159,16 @@ composite ConsistentRegion1 {
     // file has the same content as if the run had had no failures. 
     () as MySink1 = FileSink(WordCount) {
       param
-        file: "result.txt";
-    }
+			file: "/tmp/090_consistent_region_joined.txt";
+				flush: 1u;
+		}
+		() as Printer = Custom(WordCount as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	   
+    
 }
 
 // Forwards input stream to the output stream. The operator

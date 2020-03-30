@@ -21,7 +21,7 @@ composite source_sink_at_work {
 	// Write the arriving tuples to a File sink.
 	() as FileWriter = FileSink(Employee) {
 		param
-			file: "/tmp/MyResults.txt";
+			file: "/tmp/source_sink_MyResults.txt";
 	} // End of FileSink.
 
 

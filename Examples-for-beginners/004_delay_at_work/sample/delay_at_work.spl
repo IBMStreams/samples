@@ -40,6 +40,6 @@ composite delay_at_work {
 
 		() as FileWriter = FileSink(CustomizedVoteCasted) {
 			param
-				file: "MyResults.txt";
+				file: "/tmp/004_delay_MyResults.txt";
 		} // End of FileWriter = FileSink(CustomizedVoteCasted)
 } // End of composite delay_at_work.

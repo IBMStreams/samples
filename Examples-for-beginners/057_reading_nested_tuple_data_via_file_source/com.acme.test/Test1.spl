@@ -83,6 +83,6 @@ composite Test1 {
 		// Display the complex tuple input data we ingested using the FileSource operator above.
 		() as MySink1 = FileSink(MyData1) {
 			param
-				file: "/dev/stderr";
+				file: "/dev/stdout";
 		}
 }

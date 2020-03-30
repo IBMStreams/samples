@@ -50,6 +50,13 @@ composite Comp9() {
 		
 		() as MySink = FileSink(A) {
 			param
-				file: "Test1.csv";
-		}			
+				file: "/tmp/082_udp_Test1.csv";
+				flush: 1u;
+		}
+		() as Printer = Custom(A as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	
 }

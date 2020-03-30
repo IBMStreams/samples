@@ -147,7 +147,7 @@ composite Main {
 	// Let us now write the enriched order records coming out of the ODBCEnrich into a result file.
 	()as SinkOp2 = FileSink(EnrichedOrderRecord) {
 		param
-			file : "odbc_enrich.result" ;
+			file : "/tmp/034_odbc_enrich.result" ;
 			format : csv ;
 			flush : 1u ;
 			writePunctuations : true ;

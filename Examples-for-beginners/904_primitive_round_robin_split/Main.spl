@@ -37,6 +37,6 @@ composite Main {
 		
 		() as Sink = FileSink(Output) {
 			param
-				file: "round_robin_split.txt";
+				file: "/tmp/round_robin_split.txt";
 		} // End of FileSink.
 } // End of composite Main.

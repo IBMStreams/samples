@@ -127,6 +127,13 @@ composite ConsistentRegion3 {
 		
 		() as MySink1 = FileSink(AggregatedTestData) {
 			param
-				file: "result.txt";
+				file: "/tmp/092_consistent_region_result1.txt";
+				flush: 1u;
+		}
+		() as Printer = Custom(AggregatedTestData as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 }

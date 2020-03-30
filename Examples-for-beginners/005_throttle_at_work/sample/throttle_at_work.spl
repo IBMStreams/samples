@@ -36,6 +36,6 @@ composite throttle_at_work {
 
 		// Write the arriving tuples to a File sink.
 		() as FileWriter = FileSink(CustomizedProduct) {
-			param file: "MyResults.txt";
+			param file: "/tmp/005_throttle_Results.txt";
 		} // End of FileSink.      
 } // End of composite throttle_at_work.

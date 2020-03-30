@@ -99,8 +99,14 @@ composite ConsistentRegion4 {
 		
 		() as MySink1 = FileSink(JoinedStream) {
 			param
-				file: "result.txt";
+				file: "/tmp/093_consistent_region_result1.txt";
 				flush: 1u;
+		}
+		() as Printer = Custom(JoinedStream as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 }
 

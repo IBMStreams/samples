@@ -88,8 +88,15 @@ composite ConsistentRegion10 {
 		
 		() as MySink1 = FileSink(CalcResponse) {
 			param
-				file: "results.txt";
+				file: "/tmp/099_consistent_region_results.txt";
 				flush: 1u;
+		}
+		
+		() as Printer = Custom(CalcResponse as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 		
 		/*
