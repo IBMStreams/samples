@@ -55,4 +55,28 @@ composite split_at_work {
 			param 
 				file: "/tmp/007_splitsplit_ticker_output_stream_9.result";
 		} // End of FileSink(StockReportOutput9)
+		() as TXNPrinter = Custom(StockReportOutput7 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("output");
+		}
+			() as IBMPrinter = Custom(StockReportOutput1 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config //isolate the console output so you can see output
+			placement: partitionExlocation("output");
+		}
+		() as GBTSPrinter = Custom(StockReportOutput9 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("output");
+		}
 } // End of composite split_at_work
