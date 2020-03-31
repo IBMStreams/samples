@@ -13,7 +13,7 @@ composite Main {
 	graph
 		stream <arithmeticOperation> ArithmeticOperation = FileSource() {
 			param
-				file: "Calculator_Input.txt";
+				file: getApplicationDir() +"/data/Calculator_Input.txt";
 				format: csv;
 				hasDelayField: true;
 		} // End of ArithmeticOperation = FileSource()

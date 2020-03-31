@@ -76,7 +76,7 @@ composite Test1 {
 		// complex tuple definition made of nested SPL types.
 		stream<PreposData> MyData1 = FileSource() {
 			param
-				file: "prepos_rps_in.csv";
+				file: getApplicationDir() +"/data/prepos_rps_in.csv";
 				format: csv;
 		}
 		

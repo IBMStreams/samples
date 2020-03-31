@@ -32,21 +32,21 @@ composite real_time_streams_merger {
 	    {
 	      param
 	      	format: csv;
-	        file: "source1.txt";
+	        file: getApplicationDir() +"/data/source1.txt";
 	    }
 	    
 		// Read the second stream from the file.
 	    stream<SrcT> Src2 = FileSource() 
 	    {
 	      param
-	        file: "source2.txt";
+	        file: getApplicationDir() +"/data/source2.txt";
 	    }
 
 		// Read the third stream from the file.
 	    stream<SrcT> Src3 = FileSource() 
 	    {
 	      param
-	        file: "source3.txt";
+	        file: getApplicationDir() +"/data/source3.txt";
 	    }
     
 		// Send the three streams to this primitive operator as input.

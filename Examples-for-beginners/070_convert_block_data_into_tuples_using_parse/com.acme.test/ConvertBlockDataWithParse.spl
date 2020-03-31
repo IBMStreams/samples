@@ -13,7 +13,7 @@ composite ConvertBlockDataWithParse {
 		// Read a block of data from a file.
 		stream<blob b> TestData1 = FileSource() {
 			param
-				file: "test1.txt";
+				file: getApplicationDir() +"/data/test1.txt";
 				format: block;
 				blockSize: 1u;
 		}

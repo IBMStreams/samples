@@ -27,6 +27,6 @@ composite NumberedCat {
 		
 		() as Sink = FileSink(Numbered) {
 			param
-				file: "result.txt";
+				file: "/tmp/result.txt";
 		} // End of Sink.
 } // End of NumberedCat.

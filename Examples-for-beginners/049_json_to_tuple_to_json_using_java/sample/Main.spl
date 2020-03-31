@@ -102,7 +102,7 @@ composite Main {
      // Read the json formatted strings from a text file.
      stream<MyJsonType> ProfileInput = FileSource() {
         param
-           file: "json_input1.dat";
+           file: getApplicationDir() +"/data/json_input1.dat";
            format: line;
      } // End of FileSource()
 
@@ -112,7 +112,7 @@ composite Main {
      // Save the "JSON to Tuple" result into a file.
      () as Sink1a = FileSink(ProfileTuple) {
         param
-           file: "tuple_output1.dat";
+           file: "/tmp/tuple_output1.dat";
      } // End of FileSink(ProfileTuple)
 
      // Convert the SPL tuple into a JSON formatted string.
@@ -121,7 +121,7 @@ composite Main {
      // Save the "Tuple to JSON" result into a file.
      () as Sink1b = FileSink(ProfileJson) {
         param
-           file: "json_output1.dat"; 
+           file: "/tmp/json_output1.dat"; 
            quoteStrings: false;
      } // End of FileSink(ProfileJson)
 
@@ -131,7 +131,7 @@ composite Main {
      // Read the json formatted strings from a text file.
      stream<MyJsonType> ContactsInput = FileSource() {
         param
-           file: "json_input2.dat";
+           file: getApplicationDir() +"/data/json_input2.dat";
            format: line;
      } // End of FileSource()
 
@@ -141,7 +141,7 @@ composite Main {
      // Save the "JSON to Tuple" result into a file.
      () as Sink2a = FileSink(ContactsTuple) {
         param
-           file: "tuple_output2.dat";
+           file: "/tmp/tuple_output2.dat";
      } // End of FileSink(ContactsTuple)
 
      // Convert the SPL tuple into a JSON formatted string.
@@ -150,7 +150,7 @@ composite Main {
      // Save the "Tuple to JSON" result into a file.
      () as Sink2b = FileSink(ContactsJson) {
         param
-           file: "json_output2.dat"; 
+           file: "/tmp/json_output2.dat"; 
            quoteStrings: false;
      } // End of FileSink(ContactsJson)
 
@@ -160,7 +160,7 @@ composite Main {
      // Read the json formatted strings from a text file.
      stream<MyJsonType> BooksInput = FileSource() {
         param
-           file: "json_input3.dat";
+           file: getApplicationDir() +"/data/json_input3.dat";
            format: line;
      } // End of FileSource()
 
@@ -170,7 +170,7 @@ composite Main {
      // Save the "JSON to Tuple" result into a file.
      () as Sink3a = FileSink(BooksTuple) {
         param
-           file: "tuple_output3.dat";
+           file: "/tmp/tuple_output3.dat";
      } // End of FileSink(BooksTuple)
 
      // Convert the SPL tuple into a JSON formatted string.
@@ -179,7 +179,7 @@ composite Main {
      // Save the "Tuple to JSON" result into a file.
      () as Sink3b = FileSink(BooksJson) {
         param
-           file: "json_output3.dat"; 
+           file: "/tmp/json_output3.dat"; 
            quoteStrings: false;
      } // End of FileSink(BooksJson)
 
@@ -190,7 +190,7 @@ composite Main {
      // Read the tuple data from a CSV file.
      stream<HistoricalCalcResponse_t> HistoricalDataTuple = FileSource() {
         param
-           file: "historical_data_tuple_input1.csv";
+           file: getApplicationDir() +"/data/historical_data_tuple_input1.csv";
      } // End of FileSource()
 
      // Convert the SPL tuple into a JSON formatted string.
@@ -199,7 +199,7 @@ composite Main {
      // Save the "Tuple to JSON" result into a file.
      () as Sink4b = FileSink(HistoricalDataJson) {
         param
-           file: "historical_data_json_output1.txt"; 
+           file: "/tmp/historical_data_json_output1.txt"; 
            quoteStrings: false;
      } // End of FileSink(HistoricalDataJson)
 

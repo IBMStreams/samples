@@ -27,7 +27,7 @@ composite serialize_deserialize_tuples {
 		stream<PersonData> Person1 = FileSource() {
 			param
 				format: csv;
-				file: "PersonData.txt";
+				file: getApplicationDir() +"/data/PersonData.txt";
 		}
 		
 		// In this Custom operator, we will convert every incoming tuple into a blob by

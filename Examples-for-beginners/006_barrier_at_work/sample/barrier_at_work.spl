@@ -19,7 +19,7 @@ composite barrier_at_work {
 		// Read the bank transaction details one at a time.
 		stream <BankTxSchema> TxData = FileSource() {
 			param
-				file : "bank_tasks.dat";
+				file: getApplicationDir() +"/data/bank_tasks.dat";
 				format: csv;
 		} // End of FileSource.
       
@@ -76,4 +76,20 @@ composite barrier_at_work {
 			param 
 				file: "/tmp/006_barrier_bank_tasks_debit.result";
 		} // End of FileSink(FinalDebitResult)
+		() as DebitPrinter = Custom(FinalDebitResult as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("debit");
+		}
+		() as Printer = Custom(FinalDepositResult as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("debit");
+		}
 } // End of composite barrier_at_work.

@@ -20,7 +20,7 @@ composite Main {
 	graph
 		stream <employee> EmployeeRecord = FileSource() {
 			param
-				file:	"EmployeeRecords.txt";
+				file: getApplicationDir() +"/data/EmployeeRecords.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 1.0;
@@ -28,7 +28,7 @@ composite Main {
 				
 		stream <department> DepartmentRecord = FileSource() {
 			param
-				file:	"DepartmentRecords.txt";
+				file: getApplicationDir() +"/data/DepartmentRecords.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 1.0;
@@ -36,7 +36,7 @@ composite Main {
 
 		stream <orders> OrderRecord = FileSource() {
 			param
-				file:	"orders.txt";
+				file: getApplicationDir() +"/data/orders.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 1.0;
@@ -44,7 +44,7 @@ composite Main {
 		
 		stream <inventory> InventoryRecord = FileSource() {
 			param
-				file:	"inventory.txt";
+				file: getApplicationDir() +"/data/inventory.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 1.0;

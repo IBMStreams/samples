@@ -79,7 +79,7 @@ composite ConsistentRegion1 {
     @consistent(trigger=periodic, period=1.0)
     stream<rstring line> Lines = FileSource() {
       param
-        file: "loremIpsum.txt";
+        file: getApplicationDir() +"/data/loremIpsum.txt";
         format: line;
       config
         placement: partitionColocation("PE1");
