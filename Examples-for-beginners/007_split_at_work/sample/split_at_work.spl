@@ -200,6 +200,31 @@ composite split_at_work {
 
 		() as FileWriter3 = FileSink(StockReportOutput9) {
 			param 
-				file: "/tmp/007_splitsplit_ticker_output_stream_9.result";
+				file:"/tmp/007_split_ticker_output_stream_9.result";
 		} // End of FileSink(StockReportOutput9)
+
+			() as Printer7 = Custom(StockReportOutput7 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("output");
+		}
+			() as Printer1 = Custom(StockReportOutput1 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config //isolate the console output so you can see output
+			placement: partitionExlocation("output");
+		}
+		() as Printer9 = Custom(StockReportOutput9 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+			config
+			placement: partitionExlocation("output");
+		}
 } // End of composite split_at_work
