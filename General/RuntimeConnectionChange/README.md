@@ -6,7 +6,7 @@ to dynamically change  connections between running applications. This allows app
 
 Go directly to the relevant parts of the application:
 - [Change export properties](https://github.com/IBMStreams/samples/blob/master/General/RuntimeConnectionChange/application/FilterAndExport.spl#L28) and
-- [Change import subscription] (https://github.com/IBMStreams/samples/blob/master/General/RuntimeConnectionChange/application/Importers.spl#L75)
+- [Change import subscription](https://github.com/IBMStreams/samples/blob/master/General/RuntimeConnectionChange/application/Importers.spl#L75)
 
 To run the application, simply compile Main.spl in Streams Studio or use the provided Makefile.
 
