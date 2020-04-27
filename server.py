@@ -29,5 +29,5 @@ def start_server(root_dir):
     httpd.server_close()
 
 root_dir = os.getcwd()
-print "Starting server in  " + root_dir
+print ("Starting server in  " + root_dir)
 start_server(root_dir)
