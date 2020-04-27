@@ -2,7 +2,6 @@ try:
   from SimpleHTTPServer import SimpleHTTPRequestHandler as Handler
 except ImportError:
   from http.server import SimpleHTTPRequestHandler as Handler
-import cgi
 import logging
 import urllib.parse
 import os
@@ -28,7 +27,7 @@ class DownloadZipHandler(Handler):
         arg_index = self.path.find('?')
         print ("2. Checking arguments ")
         if arg_index >= 0:
-            args = cgi.parse_qs(self.path[arg_index+1:])
+            args = urllib.parse.parse_qs(self.path[arg_index+1:])
 
             if ("get" in args):
                 raw_path = args["get"][0]

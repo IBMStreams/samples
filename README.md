@@ -5,7 +5,7 @@ hosts and serves the zip files for the samples in the [Streams samples catalog](
 The code in  `initialize.sh` script is run automatically from IBM Cloud whenever a change is made to this repository. 
 
 
-Server written for Python 2
+Server written for Python 3.8
 
 # Run the server locally,
 Run `initialize.sh` then run `python server.py`

@@ -4,7 +4,7 @@ import sys
 import urllib.parse
 import time
 import datetime
-#Requires Python 2
+#Requires Python 3.8
 #tests that the links used to download zips from the server work.
 #Use run_test.sh to run this script
 #Assumption is that the initialize.sh script in the parent folder has already been run.
