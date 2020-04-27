@@ -17,7 +17,8 @@ Run tests:
 - Make sure server is running (using instructions above)
 ```
 cd test
-./run_test.sh
+./run_test.sh [local]
 ```
+Use `local` to test a local instance of the server. Omit to test live server at https://streams-github-samples.mybluemix.net.
 
 Check the latest `failure_20xx` file for results.

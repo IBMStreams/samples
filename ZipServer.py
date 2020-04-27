@@ -4,7 +4,7 @@ except ImportError:
   from http.server import SimpleHTTPRequestHandler as Handler
 import cgi
 import logging
-import urllib
+import urllib.parse
 import os
 #This is a simple server that is used to download the zip files for the samples in ibmstreams github samples repository
 #Samples are mirrored here in static/samples
@@ -33,7 +33,7 @@ class DownloadZipHandler(Handler):
             if ("get" in args):
                 raw_path = args["get"][0]
                 print ("3. requested path: " + raw_path)
-                path=urllib.unquote(raw_path)
+                path=urllib.parse.unquote(raw_path)
                 directory = os.getcwd() + "/samples/" + path+"/"
                 print ("4. Checking for " + directory)
                 if os.path.exists(directory):#"samples/" + path):
