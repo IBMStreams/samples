@@ -1,6 +1,4 @@
 import os
-import thread
-import BaseHTTPServer
 import genZips
 
 from subprocess import call, check_output, CalledProcessError
@@ -9,10 +7,7 @@ import subprocess
 import time
 from glob import glob
 from ZipServer import DownloadZipHandler
-try:
-  from SocketServer import TCPServer as Server
-except ImportError:
-  from http.server import HTTPServer as Server
+from http.server import HTTPServer as Server
 
 
 def start_server(root_dir):
