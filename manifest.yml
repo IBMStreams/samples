@@ -2,7 +2,7 @@ applications:
 - path: .
   memory: 512M
   instances: 1
-  domain: mybluemix.net
+  routes: 
+  - route: streams-github-samples.mybluemix.net
   name: streams-github-samples
-  host: streams-github-samples
   disk_quota: 1024M
