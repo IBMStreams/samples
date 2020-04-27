@@ -59,7 +59,7 @@ def zip_root_directory():
 
         num_zipped += zip_recursively(category)
 
-    print "Done...Zipped " + str(num_zipped) + " Directories"
+    print ("Done...Zipped " + str(num_zipped) + " Directories")
 
 if __name__ == '__main__':
     #Usage:  genZips.py [samples directory]
