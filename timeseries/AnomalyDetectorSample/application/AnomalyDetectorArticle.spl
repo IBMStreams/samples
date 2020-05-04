@@ -8,7 +8,7 @@ composite AnomalyDetectorArticle
 		(stream<float64 data> FileSource_1_out0) as FileSource_1 = FileSource()
 		{
 			param
-				file : "pktsPerSec.txt" ;
+				file : getApplicationDir() + "/data/pktsPerSec.txt" ;
 		}
 
 		(stream<list<float64> subsequence, uint64 startTime, uint64 endTime,
@@ -29,7 +29,14 @@ composite AnomalyDetectorArticle
 		() as FileSink_3 = FileSink(AnomalyDetector_2_out0)
 		{
 			param
-				file : "detectedAnomalies.txt" ;
+				file : "/tmp/detectedAnomalies.txt" ;
+		}
+
+		() as Printer = Custom(AnomalyDetector_2_out0 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 
 		(stream<uint64 t, float64 data> Functor_4_out0) as Functor_4 =

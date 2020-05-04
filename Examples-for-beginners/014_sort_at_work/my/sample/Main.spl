@@ -18,7 +18,7 @@ composite Main {
 	graph
 		stream <employee> EmployeeRecord = FileSource() {
 			param
-				file:	"EmployeeRecords.txt";
+				file: getApplicationDir() +"/data/EmployeeRecords.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 2.0;

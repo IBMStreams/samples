@@ -17,7 +17,7 @@ composite Main {
 	graph
 		stream <stockOrder> StockOrderRecord = FileSource() {
 			param
-				file: "StockOrders.txt";
+				file: getApplicationDir() +"/data/StockOrders.txt";
 				format: csv;
 				initDelay: 3.0f;
 				hasDelayField: true;

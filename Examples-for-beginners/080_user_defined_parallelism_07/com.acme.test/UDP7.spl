@@ -57,8 +57,16 @@ composite UDP7 {
 		
 		() as MySink = FileSink(TransformedData1, TransformedData2) {
 			param
-				file: "Test1.csv";
-		}		
+				file: "/tmp/080_udp_Test1.csv";
+				flush: 1u;
+		}
+		() as Printer = Custom(TransformedData , TransformedData2 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	
+
 }
 
 

@@ -19,12 +19,29 @@ composite source_sink_at_work {
 				initDelay: 4.0;
 	} // End of Employee = FileSource()
 
-	// Write the arriving tuples to a File sink.
 	() as FileWriter = FileSink(Employee) {
 		param
-			file: "MyResults.txt";
+			file: "/tmp/MyResults.txt";
 	} // End of FileSink.
 
+
+	() as Printer = Custom(Employee as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 } // End of Composite source_sink_at_work
 
 ~~~~~~
+
+
+## Sample output
+
+```
+{name="John Tesh",title="Software Engineer",department="DB2 Development",salary=93000.5}
+{name="Mary Mason",title="Accountant",department="Finance",salary=105000.26}
+{name="Chris Coda",title="Hardware Engineer",department="PPC Design",salary=115292.94}
+{name="Gretta Jeno",title="Group Manager",department="Legal",salary=109318.51}
+
+```

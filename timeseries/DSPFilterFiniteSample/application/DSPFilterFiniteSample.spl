@@ -59,7 +59,14 @@ composite DSPFilterFiniteSample
 		() as ResultFileSink = FileSink(DSPFilterFinite_Out)
 		{
 			param
-				file : "result.txt" ;
+				file : "/tmp/result.txt" ;
+		}
+		
+		() as Printer = Custom(DSPFilterFinite_Out as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 
 }

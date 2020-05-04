@@ -20,7 +20,7 @@ composite STD2Anomaly
 				}
 
 			param
-				file : "anomaly_input.csv" ;
+				file: getApplicationDir() + "/data/anomaly_input.csv" ;
 				format : csv ;
 			output
 				SrcStream : time = time_ ++ ;
@@ -55,9 +55,18 @@ composite STD2Anomaly
 		() as SinkOp = FileSink(AnomalyStream as inPort0Alias)
 		{
 			param
-				file : "anomaly_result.csv" ;
+				file : "/tmp/anomaly_result.csv" ;
 				flush : 1u ;
 		}
+		
+		
+		() as Printer = Custom(AnomalyStream as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
+
 
 }
 

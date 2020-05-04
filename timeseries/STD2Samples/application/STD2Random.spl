@@ -57,8 +57,15 @@ composite STD2Random
 		() as STD2ResultSink = FileSink(STDStream)
 		{
 			param
-				file : "random_results.csv" ;
+				file :   "/tmp/random_results.csv" ;
 				format : csv ;
+		}
+
+		() as Printer = Custom(STDStream as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 
 }

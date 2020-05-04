@@ -107,7 +107,7 @@ composite Main {
 		// This control stream will bring the values for the eqaulity based filter match.
 		stream <addKey> AddKey = FileSource() {
 			param
-				file: "AddMatchValues.txt";
+				file: getApplicationDir() +"/data/AddMatchValues.txt";
 				format: csv;
 				hotFile: true;
 		} // End of AddKey = FileSource()	
@@ -116,7 +116,7 @@ composite Main {
 		// This control stream will bring the values for the eqaulity based filter match.
 		stream <removeKey> RemoveKey = FileSource() {
 			param
-				file: "RemoveMatchValues.txt";
+				file: getApplicationDir() +"/data/RemoveMatchValues.txt";
 				format: csv;
 				hotFile: true;
 		} // End of RemoveKey = FileSource()	

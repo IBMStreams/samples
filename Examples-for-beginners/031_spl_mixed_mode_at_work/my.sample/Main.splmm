@@ -35,14 +35,14 @@ composite Main {
 		} // End of Split
 
 		() as FileWriter1 = FileSink(StockReportOutput1) {
-			param file: "split_ticker_output_stream_1.result";
+			param file: "/tmp/031_mixed_mode_split_ticker_output_stream_1.result";
 		} // End of FileSink(StockReportOutput1)
 
 		() as FileWriter2 = FileSink(StockReportOutput7) {
-			param file: "split_ticker_output_stream_7.result";
+			param file: "/tmp/031_mixed_mode_split_ticker_output_stream_7.result";
 		} // End of FileSink(StockReportOutput7)
 
 		() as FileWriter3 = FileSink(StockReportOutput9) {
-			param file: "split_ticker_output_stream_9.result";
+			param file: "/tmp/031_mixed_mode_split_ticker_output_stream_9.result";
 		} // End of FileSink(StockReportOutput9)
 } // End of composite Main

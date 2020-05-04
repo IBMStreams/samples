@@ -95,7 +95,7 @@ composite file_source_using_spl_custom_operator {
 		// Write the tuples received from the source input file to a sink output file.
 		() as FileSink1 = FileSink(StockRecord) {
 			param
-				file: "stock_report_output.txt";
+				file:"/tmp/stock_report_output.txt";
 				format: csv;
 				flush: 2u;
 				// Don't quote the strings in the output CSV columns.

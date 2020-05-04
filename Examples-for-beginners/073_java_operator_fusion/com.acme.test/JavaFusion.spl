@@ -40,6 +40,13 @@ composite JavaFusion {
 		
 		() as Sink1 = FileSink(MyStream) {
 			param
-				file: "Test1.csv";
-		}
+			file: "/tmp/073_udp_Test1.csv";
+	}	
+		
+		() as Printer = Custom(MyStream as in0) {
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	
 }

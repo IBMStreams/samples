@@ -2,13 +2,13 @@
 namespace FilterExample ;
 
 use com.ibm.streams.timeseries.generators::Generator ;
-use com.ibm.streams.timeseries.analysis::DSPFilter ;
+use com.ibm.streams.timeseries.analysis::DSPFilter2;
 
 composite FilterExampleMain
 {
 	graph
 		(stream<float64 origSignalValue, float64 filteredSignalValue>
-			DSPFilter_4_out0) as DSPFilter_4 = DSPFilter(Generator_3_out0 as
+			DSPFilter_4_out0) as DSPFilter_4 = DSPFilter2(Generator_3_out0 as
 			inputSignalAlias)
 		{
 			param
@@ -23,7 +23,7 @@ composite FilterExampleMain
 		() as FileSink_5 = FileSink(DSPFilter_4_out0)
 		{
 			param
-				file : "output.txt" ;
+				file : "/tmp/output.txt" ;
 		}
 
 		(stream<float64 signal> Generator_3_out0) as Generator_3 = Generator()
@@ -34,6 +34,14 @@ composite FilterExampleMain
 				iterations : 1u ;
 			output
 				Generator_3_out0 : signal = generatedTimeSeries() ;
+		}
+
+
+	() as Printer = Custom(DSPFilter_4_out0 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 
 }

@@ -145,6 +145,14 @@ composite ConsistentRegion2 {
 
 		() as FS = FileSink(JoinedStreams) {
 			param
-				file: "joined.txt";
-		}     	    	
+
+			file: "/tmp/091_consistent_region_joined.txt";
+				flush: 1u;
+		}
+		() as Printer = Custom(JoinedStreams as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	    	
 }

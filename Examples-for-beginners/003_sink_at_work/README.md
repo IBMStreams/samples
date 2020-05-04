@@ -40,7 +40,7 @@ composite sink_at_work {
 
 		() as FileWriter = FileSink(SelectedPerson) {
 			param
-				file : "myResults.txt";
+				file : "/tmp/myResults.txt";
 		} // End of FileSink.
 
 		() as ScreenWriter = Custom(SelectedPerson) {

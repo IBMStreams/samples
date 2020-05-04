@@ -17,7 +17,7 @@ composite Main {
 	graph
 		stream <cityData> CityDataRecord = FileSource() {
 			param
-				file:	"Population.txt";
+				file:	getApplicationDir()	+ "/data/Population.txt";
 				format:	csv;
 				hasDelayField: true;
 				initDelay: 2.0;			

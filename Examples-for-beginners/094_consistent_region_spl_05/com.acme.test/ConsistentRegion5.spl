@@ -97,8 +97,14 @@ composite ConsistentRegion5 {
 		
 		() as MySink1 = FileSink(FinalData) {
 			param
-				file: "result1.txt";
+				file: "/tmp/094_consistent_region_result1.txt";
 				flush: 1u;
+		}
+		() as Printer = Custom(FinalData as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 		
 		
@@ -122,7 +128,13 @@ composite ConsistentRegion5 {
 		
 		() as MySink2 = FileSink(TransformedData2) {
 			param
-				file: "result2.txt";
+				file: "/tmp/094_consistent_region_autonomous_results.txt";
 				flush: 1u;
+		}
+		() as Printer = Custom(TransformedData2 as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
 		}
 }

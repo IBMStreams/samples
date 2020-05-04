@@ -45,11 +45,18 @@ composite UDP5 {
 		
 		() as MySink = FileSink(TransformedData) {
 			param
-				file: "Test1.csv";
+				file: "/tmp/078_udp_Test1.csv";
 
 			config
 				placement: partitionColocation("AB");
-		}		
+		}	
+
+		() as Printer = Custom(TransformedData as in0) {
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}  	
 }
 
 

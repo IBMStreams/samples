@@ -56,7 +56,7 @@ composite ConsistentRegion8 {
 		stream<int32 x, int32 y, rstring operation> CalcRequest = FileSource() {
 			param
 				initDelay: 4.0;
-				file: "requests.txt";
+				file: getApplicationDir() +"/data/requests.txt";
 				format: csv;
 				hasDelayField: true;
 				hasHeaderLine: true;
@@ -71,10 +71,15 @@ composite ConsistentRegion8 {
 		
 		() as MySink1 = FileSink(CalcResponse) {
 			param
-				file: "results.txt";
+				file: "/tmp/097_consistent_region_results.txt";
 				flush: 1u;
 		}
-
+		() as Printer = Custom(CalcResponse as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 		/*
 		// This is a sink used for debugging purposes.
 		// It will record in this file all the consistent region events as they occur.		

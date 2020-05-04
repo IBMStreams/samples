@@ -59,10 +59,17 @@ composite STD2FiniteLength
 		() as STD2ResultSink = FileSink(STDStream)
 		{
 			param
-				file : "finitesignal_results.csv" ;
+				file : "/tmp/finitesignal_results.csv" ;
 				format : csv ;
 		}
 
+
+		() as Printer = Custom(STDStream as in0){
+			logic
+			onTuple in0: {
+				println(in0);
+			}
+		}
 }
 
 

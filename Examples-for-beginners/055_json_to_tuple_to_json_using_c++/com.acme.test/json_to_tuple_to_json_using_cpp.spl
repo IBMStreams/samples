@@ -81,7 +81,7 @@ composite json_to_tuple_to_json_using_cpp {
 		stream<PersonData> Person = FileSource() {
 			param
 				format: csv;
-				file: "PersonData.txt";
+				file: getApplicationDir() +"/data/PersonData.txt";
 		}
 		
 		// In this Custom operator, we will convert every incoming tuple into a 

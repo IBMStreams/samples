@@ -1,3 +1,4 @@
+namespace demo;
 /*
 This example is the simplest possible SPL application.
 It uses a Beacon operator to generate tuples that carry
@@ -8,10 +9,9 @@ composite HelloWorld {
 	graph
 		stream <rstring message> Hi = Beacon() {
 			param
-				iterations: 5u;
-				
+				iterations: 105u;
 			output
-				Hi: message = "Hello World!";
+				Hi: message = "Hello World, this is tuple number " + ((rstring)IterationCount());
 		} // End of Beacon.
 		
 		() as Sink = Custom(Hi) {

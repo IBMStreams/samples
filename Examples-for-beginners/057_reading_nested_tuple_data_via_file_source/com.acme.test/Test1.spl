@@ -76,13 +76,13 @@ composite Test1 {
 		// complex tuple definition made of nested SPL types.
 		stream<PreposData> MyData1 = FileSource() {
 			param
-				file: "prepos_rps_in.csv";
+				file: getApplicationDir() +"/data/prepos_rps_in.csv";
 				format: csv;
 		}
 		
 		// Display the complex tuple input data we ingested using the FileSource operator above.
 		() as MySink1 = FileSink(MyData1) {
 			param
-				file: "/dev/stderr";
+				file: "/dev/stdout";
 		}
 }

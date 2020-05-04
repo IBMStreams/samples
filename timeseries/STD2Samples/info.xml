@@ -9,7 +9,10 @@
   <info:dependencies>
     <info:toolkit>
       <common:name>com.ibm.streams.timeseries</common:name>
-      <common:version>[3.2.0,4.0.0)</common:version>
+      <common:version>[3.2.0,6.0.0)</common:version>
     </info:toolkit>
   </info:dependencies>
+    <info:sabFiles>
+    <info:include path="data/**"/>
+  </info:sabFiles>
 </info:toolkitInfoModel>
