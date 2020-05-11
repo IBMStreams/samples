@@ -100,7 +100,7 @@ composite ConsistentRegion5 {
 				file: "/tmp/094_consistent_region_result1.txt";
 				flush: 1u;
 		}
-		() as Printer = Custom(FinalData as in0){
+		() as Printer1 = Custom(FinalData as in0){
 			logic
 			onTuple in0: {
 				println(in0);
@@ -131,7 +131,7 @@ composite ConsistentRegion5 {
 				file: "/tmp/094_consistent_region_autonomous_results.txt";
 				flush: 1u;
 		}
-		() as Printer = Custom(TransformedData2 as in0){
+		() as Printer2 = Custom(TransformedData2 as in0){
 			logic
 			onTuple in0: {
 				println(in0);

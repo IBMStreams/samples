@@ -60,11 +60,14 @@ composite UDP7 {
 				file: "/tmp/080_udp_Test1.csv";
 				flush: 1u;
 		}
-		() as Printer = Custom(TransformedData , TransformedData2 as in0){
+		() as Printer = Custom(TransformedData1 as in0; TransformedData2 as in1){
 			logic
-			onTuple in0: {
-				println(in0);
-			}
+				onTuple in0: {
+					println(in0);
+				}
+				onTuple in1: {
+					println(in1);
+				}
 		}  	
 
 }
