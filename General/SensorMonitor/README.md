@@ -6,7 +6,7 @@ Tutorials related to this sample:
 -------
 
 - [Watch this video](https://developer.ibm.com/streamsdev/videos/compute-time-based-averages-using-the-aggregate-operator/) to see how to add event time windows to your application.
-- [Follow this videO](https://www.youtube.com/watch?v=DzH-yZ7PkH0)to see how to extend this application to send alerts to Slack.
+- [Follow this video](https://www.youtube.com/watch?v=DzH-yZ7PkH0) to see how to extend this application to send alerts to Slack.
 
 It is a two part application:
   - **PublishData** application generates sensor data and sends it to IBM Event Streams.
