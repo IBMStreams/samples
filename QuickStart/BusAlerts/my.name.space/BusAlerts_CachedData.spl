@@ -8,7 +8,7 @@ use com.ibm.streams.geospatial.st::* ;
 use com.ibm.streams.geospatial.ext::* ;
 use com.ibm.streamsx.datetime::* ;
 type POI_Type = rstring POI_ID, rstring message, rstring locationWKT ;
-type Alert = rstring id, rstring poi, rstring message, float64 distance;
+type Alert = rstring id, rstring poi, rstring message, float64 distance, float64 latitude, float64 longitude;
 /**
  * Generic type to represent the position of a vehicle
  * using an rstring id and float64 latitude and longitude.

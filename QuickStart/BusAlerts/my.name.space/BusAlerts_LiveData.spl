@@ -30,7 +30,8 @@ composite BusAlertsLiveData
 	     updateParameterFromContent: "/body/lastTime/@time";
 
 	     }
-
+		
+		@view(name = "BusLocationsLive", port = ParsedDataStream, sampleSize=10, bufferSize=40)
 		stream<rstring id,TimeMillis reportTime, float64 latitude, float64 longitude> ParsedDataStream
 		= ParseNextBusData(RawData_Live )
 		{
@@ -38,7 +39,6 @@ composite BusAlertsLiveData
 				agency : $agency ; //agency parameter specifies which bus system to monitor
 
 		}
-
 		stream<POI_Type> POI_FromFile = FileSource()
 		{
 			param
