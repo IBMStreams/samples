@@ -1,77 +1,94 @@
-
-/* Copyright (C) 2017, International Business Machines Corporation */
+/* Copyright (C) 2020, International Business Machines Corporation */
 /* All Rights Reserved */
-namespace application ;
+namespace application;
 
 /**
- * Main composite for stock processing application that runs on Bluemix.
+ * Main composite for stock processing application.
  * It ingests a stream of data representing stock prices over time and computes
  * the average price for all each stock ticker, based on the last 5 quotes.
  * This is essentially the same application as TradesAppMain.spl but has been changed for the cloud.
  * It uses a Circular File source so that data is perpetually generated. 
  * Writes to Console instead of to a file.
  * See the Quick Start Guide for step by step explanation of this application:
- * https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/#simple_streams_application
+ * http://ibmstreams.github.io/streamsx.documentation/docs/spl/quick-start/qs-2/
  */
-type Quote = rstring ticker, rstring date, rstring time, float64 askprice ;
+type Quote = rstring ticker, rstring date, rstring time, float64 askprice;
 
 composite TradesAppCloud
 {
 	graph
-	
 		stream<rstring filename> Signal = Beacon()
 		{
 			param
-				period : 2.0 ;  //Send a signal every 2 seconds 
-				iterations: 900u; //900 iterations * 2seconds each means this app will generate data for 30 minutes
+				period: 2.0; // Send a signal every 2 seconds 
 			output
-				Signal : filename = getApplicationDir() + "/data/trades.csv" ;
+				Signal: filename = getApplicationDir() + "/data/trades.csv";
 			config
-				placement :  partitionExlocation("input") ;
+				placement: partitionExlocation("input");
 		}
 
-		//Every time a tuple is received from the Signal beacon, the file will be re-read
-		stream<Quote>  Quotes  = FileSource(Signal)
+		// Instead of reading the file only once, the Signal operator will send 
+		// a tuple every 2 seconds to re-read the file so that data flows continuously through the application.
+		stream<Quote> Quotes = FileSource(Signal)
 		{
 			param
-				format : csv ;
-				hasHeaderLine : true ;
-		
+				format: csv;
+				hasHeaderLine: true;
 		}
-		
+
 		stream<Quote> FilteredQuotes = Filter(Quotes)
 		{
 			param
-				filter : askprice > 0.0 ; 
+				filter: askprice > 0.0;
 		}
 
-		stream<rstring ticker, float64 min, float64 max, float64 average> AvgPrice = Aggregate(FilteredQuotes as inPort0Alias)
+		
+		@view(name = "AvgPrices", port = AvgPrice, sampleSize = 50, bufferSize =
+			100, activateOption = automatic)
+		stream<rstring ticker, float64 min, float64 max,
+			float64 average> AvgPrice = Aggregate(FilteredQuotes as inPort0Alias)
 		{
 			window
-				inPort0Alias : tumbling, count(5), partitioned ;
+				inPort0Alias: tumbling, count(5), partitioned;
 			param
-				partitionBy : ticker ;
+				partitionBy: ticker;
 			output
-				AvgPrice : average = Average(askprice), min = Min(askprice),
-					max = Max(askprice) ;
+				AvgPrice: average = Average(askprice), min = Min(askprice), max = Max(askprice);
 			config
-				placement :  partitionExlocation("input") ;
+				placement: partitionExlocation("input");
 		}
-
-		() as PrintAvPrice = Custom(AvgPrice)
+		
+		stream<rstring ticker, float64 min, float64 max, float64 average> PrintAvPrice = Custom(AvgPrice)
 		{
 			logic
-				onTuple AvgPrice :
+				onTuple AvgPrice:
 				{
-					if(average != 0.0l)
+					if (average == 0.0l)
 					{
-						printStringLn("Average asking price for " + ticker + "  is " +(rstring)
-							average) ;
+						printStringLn("ERROR: " + ticker);
 					}
-
-				}
-
+					else
+					{ //
+						printStringLn("Average asking price for " + ticker + "  is " + (rstring) average);
+						// submit the tuple
+						submit(AvgPrice, PrintAvPrice);
+						// If you want to submit a tuple of a different schema than input, e.g. tuple of type Quote2
+						// Quote2 outTuple = {};
+						// outTuple.someAttribute = someValue; 
+						// assignFrom(Quote2, AvgPrice);
+						//submit(Quote2, PrintAvPrice)
+						
+					}
+			}
 		}
+
+		   () as PrintToFile = FileSink(PrintAvPrice)
+         {
+            param
+               file : "/tmp/tradesSummary.csv" ;
+               flush : 1u ;
+               format : csv ;
+         }
 
 }
 
