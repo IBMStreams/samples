@@ -3,5 +3,5 @@
    "language": ["SPL"], "tags": ["odbc", "database", "db2", "jdbc"],
    "toolkits": ["db", "database"],
    "operators": ["ODBCSource","ODBCAppend","ODBCEnrich"],
-   "url": "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/034_odbc_adapters_for_db2_at_work",
+   "url": "https://github.com/IBMStreams/samples/tree/main/Examples-for-beginners/034_odbc_adapters_for_db2_at_work",
     "description": "This example shows the use of the ODBCSource, ODBCAppend, and ODBCEnrich operators to access a particular test DB2 database."}
