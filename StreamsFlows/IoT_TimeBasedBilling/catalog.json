@@ -4,7 +4,7 @@
 	"language": ["Python"],
 	"category": ["1","2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/use-data-iot-devices-ibm-streams-designer/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/StreamsDesigner/IoT_TimeBasedBilling",
+		"url": "https://github.com/IBMStreams/samples/tree/main/StreamsFlows/IoT_TimeBasedBilling",
 	"tags": ["python","code operator","dashdb",""], "featured": true,
 
 		"operators": ["Code","Email"]
