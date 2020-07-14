@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["11"],
 	"blogPost": "http://developer.ibm.com/streamsdev/2015/02/20/processing-tuples-least-infosphere-streams-consistent-regions/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/WordCount",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ConsistentRegions/WordCount",
 	"tags": []
 }
