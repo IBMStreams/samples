@@ -3,7 +3,7 @@
 		"language": ["SPL"],
 	"category": ["1","2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/detect-events-with-streams/",
-	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/EventDetectionV2",
+	"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/EventDetectionV2",
 	"tags": ["complex event processing","cep","noaa","submit job","streams rest api"],"services": ["cloud","bluemix"],
  	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
 }

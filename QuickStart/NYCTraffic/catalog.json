@@ -3,7 +3,7 @@
 		"language": ["SPL"],
 	"category": ["1","2","7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/bluemix-streaming-analytics-starter-application",
-	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/NYCTraffic",
+	"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/NYCTraffic",
 	"tags": ["nyc traffic","rest","submit job","streams rest api","Rest api"],"services": ["Bluemix"],
  	"operators": ["InetSource", "HTTPPost","JSonToTuple","aggregate"]
 }
