@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/text-analytics-go/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsToGo",
+		"url": "https://github.com/IBMStreams/samples/tree/main/TextAnalysis/TextAnalyticsToGo",
 	"tags": [],
 		"toolkits": ["text"],
 		"operators": ["TextExtract"]

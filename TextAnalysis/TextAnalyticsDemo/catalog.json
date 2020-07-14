@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/real-time-text-analysis-using-streams-part-2-updating-dictionaries-and-tables/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/TextAnalyticsDemo",
+		"url": "https://github.com/IBMStreams/samples/tree/main/TextAnalysis/TextAnalyticsDemo",
 	"tags": [],
 		"toolkits": ["text", "inet"],
 		"operators": ["TextExtract", "HTTPTupleView"]

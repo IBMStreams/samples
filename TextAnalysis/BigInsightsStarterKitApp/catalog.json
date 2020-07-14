@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/03/14/real-time-text-analysis/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/TextAnalysis/BigInsightsStarterKitApp",
+		"url": "https://github.com/IBMStreams/samples/tree/main/TextAnalysis/BigInsightsStarterKitApp",
 	"tags": [],
 		"toolkits": ["text"],
 		"operators": ["TextExtract"]
