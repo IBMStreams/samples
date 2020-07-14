@@ -6,7 +6,7 @@ It demonstrates how to use the [OSMPointMatcher operator](http://www.ibm.com/sup
 ## Run the demo
 You need:
 - Version 2.7 or greater of the [com.ibm.streamsx.inet toolkit](https://github.com/IBMStreams/streamsx.inet/releases)
-- The [`MapViewerSample` project](https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample).
+- The [`MapViewerSample` project](https://github.com/IBMStreams/samples/tree/main/Geospatial/MapViewerSample).
 
 ### Download the road network file
 This sample demonstrates map matching in Bewdley, Ontario.  An OpenStreetMap (OSM) road network file is required to perform the map matching. So, before you can run the sample, download the OSM file:

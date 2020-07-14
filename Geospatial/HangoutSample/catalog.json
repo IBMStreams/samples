@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["3","7"],
 	"blogPost": "",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/HangoutSample",
+		"url": "https://github.com/IBMStreams/samples/tree/main/Geospatial/HangoutSample",
 	"tags": [],
 		"toolkits": ["geospatial","teda"],
 		"operators": ["Hangout"]

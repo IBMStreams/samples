@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["3", "7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2015/03/05/visualizing-location-data-streaming-application/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapViewerSample",
+		"url": "https://github.com/IBMStreams/samples/tree/main/Geospatial/MapViewerSample",
 	"tags": [],
 	"operators": ["HTTPTupleView"],
 		"toolkits": ["geospatial", "inet"]

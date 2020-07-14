@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/geofence-smart-marketing",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/GeofenceMarketing",
+		"url": "https://github.com/IBMStreams/samples/tree/main/Geospatial/GeofenceMarketing",
 	"tags": ["polygons"],
 		"toolkits": ["Geospatial", "inet"],
 		"operators": ["Geofence","HTTPTupleView"]
