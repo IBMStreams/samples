@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["3","2","6","8","5"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/parallelized-file-processing-parse-operator/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Performance/ParallelParse",
+		"url": "https://github.com/IBMStreams/samples/tree/main/Performance/ParallelParse",
 	"tags": ["udp"],
 		"operators": ["FileSource","Parse"]
 }
