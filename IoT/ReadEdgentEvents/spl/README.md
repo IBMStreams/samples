@@ -3,7 +3,7 @@ This project shows a Streams application written in SPL that processes events se
 The source for this application is in the IoT toolkit.
 
 ## Prerequisites
-See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents).
+See [the prerequisites here](https://github.com/IBMStreams/samples/tree/main/IoT/ReadEdgentEvents).
 
 Once you have all the prerequisites, you are ready to run the Streams application.
 
@@ -16,4 +16,4 @@ Alert!B=2.04151232298089
 ```
 The `Alert` messages are sent by the `IotpSensors` application you just submitted.
 
-[SPL source for the  sample application](https://github.com/IBMStreams/streamsx.iot/tree/master/samples/Edgent)
+[SPL source for the  sample application](https://github.com/IBMStreams/streamsx.iot/tree/develop/samples/Edgent)
