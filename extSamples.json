@@ -4,7 +4,7 @@
 "description": "Read incoming JSON data from IBM Event Streams and write it to the IBM Cloud Object Storage (COS). Also demonstrates exactly-once processing and Kafka consumer groups.",
 "language": ["SPL"],
 "category": ["2"],
-"url": "https://github.com/IBMStreams/streamsx.objectstorage/tree/master/demo/data.historian.event.streams.cos.exactly.once.semantics.demo",
+"url": "https://github.com/IBMStreams/streamsx.objectstorage/tree/develop/demo/data.historian.event.streams.cos.exactly.once.semantics.demo",
 "tags": ["event streams","message hub","json","messagehub","cos"],
 "toolkits": ["objectstorage","json","messagehub"],
 "external":true
@@ -115,7 +115,7 @@
   "language": ["Java"], "tags": ["iot","edge analytics","image processing","video analytics", "ibm cloud","cloud"],
  "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
 "category": ["1","7"],
-"zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/master.zip",
+"zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/develop.zip",
 "url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"
 },
 
@@ -128,7 +128,7 @@
 "category": ["1","7"],
 "featured":true,
 "blogPost":"https://developer.ibm.com/streamsdev/videos/get-started-with-streaming-analytics-in-python-with-ibm-cloud-private-for-data/",
-"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-RollingAverageSample.ipynb"
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-RollingAverageSample.ipynb"
 },
 {
   "name": "Score a PMML model on streaming data",
@@ -139,7 +139,7 @@
  "category": ["1","7"],
  "featured":true,
  "blogPost": "https://developer.ibm.com/streamsdev/videos/video-score-pmml-models-in-real-time-using-ibm-streams/",
-"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-PMMLScoringSample.ipynb"
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-PMMLScoringSample.ipynb"
 },
 {
   "name": "Connect to IBM Event Streams with Python",
@@ -150,7 +150,7 @@
  "category": ["2"],
  "blogPost": "https://youtu.be/s30AtkGoIc8",
  "featured":true,
-"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStreamsSample.ipynb"
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-EventStreamsSample.ipynb"
 },
 {
   "name": "Send data to IBM Db2 Event Store",
@@ -160,7 +160,7 @@
  "external": true,
  "category": ["2"],
  "blogPost": "https://developer.ibm.com/streamsdev/2019/07/10/connect-to-db2-event-store/",
-"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-EventStoreSample.ipynb"
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-EventStoreSample.ipynb"
 },
 {
   "name": "Connect to IBM Db2 Warehouse in a Python application",
@@ -170,7 +170,7 @@
  "external": true,
  "category": ["2"],
  "blogPost":"https://youtu.be/s30AtkGoIc8",
-"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/master/Streams-DatabaseSample.ipynb"
+"url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-DatabaseSample.ipynb"
 },{
   "name": "Python application template",
   "description": "This notebook is a template that outlines the basic steps you need to create a Python application using the Streams Python API. Runs on IBM Cloud Pak for Data.",
