@@ -1,7 +1,7 @@
 #!/bin/sh
 # Generates the json DB for the web app and then starts the server.
-#Run from top level samples directory, on the master branch.
-# Commit all changes to master branch first before running this script otherwise it will fail.
+# Run from top level samples directory, on the main branch.
+# Commit all changes to main branch first before running this script otherwise it will fail.
 python generate-full-catalog-json.py
 mv full-catalog.json /tmp/full-catalog.json
 echo "Switching to gh-pages branch"
