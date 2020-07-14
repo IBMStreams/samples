@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/05/03/detecting-anomalies-in-seasonal-data/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/STD2Samples",
+		"url": "https://github.com/IBMStreams/samples/tree/main/timeseries/STD2Samples",
 	"toolkits":["timeseries"]
 }

@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/predicting-the-future-in-a-streams-application/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/AutoForecasterSamples",
+		"url": "https://github.com/IBMStreams/samples/tree/main/timeseries/AutoForecasterSamples",
 	"tags": ["forecast","predictive analytics","time series"],"toolkits":["timeseries"]
 }
