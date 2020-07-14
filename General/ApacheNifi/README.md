@@ -1,1 +1,1 @@
-This application[ has been moved](https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/ApacheNifi).
+This application[ has been moved](https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/ApacheNifi).

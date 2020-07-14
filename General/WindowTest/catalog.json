@@ -3,6 +3,6 @@
 	"language": ["SPL","Java"],
 	"category": ["10","1","7","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/2014/06/02/tip-week-may-26/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/WindowTest",
+		"url": "https://github.com/IBMStreams/samples/tree/main/General/WindowTest",
 	"tags": []
 }
