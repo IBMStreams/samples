@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/rules-based-processing-in-real-time-streaming-applications",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ODM/HealthDemo",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ODM/HealthDemo",
 	"tags": [],
 		"toolkits": ["rules"]
 }
