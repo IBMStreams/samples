@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["2"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/streaming-analytics-dev-guide/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/TwitterSmackdown",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/TwitterSmackdown",
 	"tags": [],
 		"toolkits": ["inet"],
 		"operators": ["HTTPGetStream", "Aggregate"]
