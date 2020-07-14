@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["1","4"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/getting-started-with-application-dashboards/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ConsoleAndMonitoring/IndexAnalyzer",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ConsoleAndMonitoring/IndexAnalyzer",
 	"tags": ["console","IndexAnalyzer"]
 }
