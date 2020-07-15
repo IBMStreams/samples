@@ -44,7 +44,7 @@ else
 fi
 
 if [ ! -d "../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL" ]; then
-   mkdir ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
+   mkdir -p ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
 fi
 
 mv lib$FINAL_LIB_NAME.so ../$SPL_PROJECT_DIR/impl/lib/$PLATFORM.$OSLVL
