@@ -1,4 +1,4 @@
-.PHONY: build all clean distributed
+.PHONY: all clean distributed
 
 SPL_MAIN_COMPOSITE = my.sample3::Main
 SPL_CMD_ARGS ?=
@@ -17,8 +17,9 @@ else
       $(error error: environment variable STREAMS_INSTALL has to be set, or set CP4D_URL environment variable for remote build with streamsx-sc)
     else
       SPLC = streamsx-sc --disable-ssl-verify
-      SPLC_CLEAN = rm -f toolkit.xml; streamsx-streamtool --disable-ssl-verify rmtoolkit --name 025_dynamic_filter_at_work
+      SPLC_CLEAN = rm -f toolkit.xml
       SPL_MAKE_TK = streamsx-streamtool --disable-ssl-verify uploadtoolkit -p ../025_dynamic_filter_at_work
+      SPL_RM_TK = streamsx-streamtool --disable-ssl-verify rmtoolkit --name 025_dynamic_filter_at_work
       SPL_PATH = 025_dynamic_filter_at_work
     endif
   else
@@ -36,14 +37,18 @@ ifneq ($(SPL_PATH),)
   SPLC_FLAGS += -t $(SPL_PATH) 
 endif
 
-build: distributed 
 
-all: clean build
+all: clean distributed
 
 distributed:
 	$(SPL_MAKE_TK)
 	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE) $(SPL_CMD_ARGS) --output-directory=$(OUTPUT_DIR)
+	$(SPL_RM_TK)
 
-clean:
+clean: rmtk
 	$(SPLC_CLEAN)
 	rm -rf $(TO_BE_DELETED)
+
+rmtk:
+	$(SPL_RM_TK)
+
