@@ -68,6 +68,9 @@ TO_UPPER_CASE
 
 The application uses the **HTTPRequestProcess()** operator of the [INET](http://ibmstreams.github.io/streamsx.inet/) toolkit.
 
+**UpperRest.spl depends on streams.inet version [2.0.0,3.0.0).**
+
+Download a 2.x release of the inet toolkit, for example: https://github.com/IBMStreams/streamsx.inet/releases/tag/v2.9.6
 
 A built version of the program, UpperRestRH6.sab is included in this repository. 
 
