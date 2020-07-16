@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["11"],
 	"blogPost": "",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/OddEven",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ConsistentRegions/OddEven",
 	"tags": ["performance","consistent regions"],
     "optional": []
 }

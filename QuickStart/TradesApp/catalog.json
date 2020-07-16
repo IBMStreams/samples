@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/TradesApp",
+		"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/TradesApp",
 	"tags": [],
 		"operators": ["Filter", "Custom","Aggregate"]
 },
@@ -12,8 +12,8 @@
 	"language": ["SPL"],
 	"category": ["1"],"featured": true,
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/streams-quick-start-guide/",
-	"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/TradesApp",
+	"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/TradesApp",
 	"tags": ["FileSource","generate data","read the same file"],"services": ["Bluemix"],
-	"sabFile": "https://github.com/IBMStreams/samples/raw/master/QuickStart/TradesApp/starterApp/StockTradesStarterApp.sab",
+	"sabFile": "https://github.com/IBMStreams/samples/raw/main/QuickStart/TradesApp/starterApp/StockTradesStarterApp.sab",
  	"operators": ["Filter", "FileSource","Custom","Aggregate"]
 }

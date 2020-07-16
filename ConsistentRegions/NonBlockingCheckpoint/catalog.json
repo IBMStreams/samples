@@ -4,6 +4,6 @@
 	"language": ["SPL","C++"],
 	"category": ["11"], 
 	"blogPost": "https://developer.ibm.com/streamsdev/2016/10/19/non-blocking-checkpointing-of-consistent-regions-in-ibm-streams-4-2/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ConsistentRegions/NonBlockingCheckpoint",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ConsistentRegions/NonBlockingCheckpoint",
 	"tags": []
 }

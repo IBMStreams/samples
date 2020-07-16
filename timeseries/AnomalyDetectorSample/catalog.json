@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/anomaly-detection-in-streams/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/AnomalyDetectorSample",
+		"url": "https://github.com/IBMStreams/samples/tree/main/timeseries/AnomalyDetectorSample",
 	"tags": [],"toolkits":["timeseries"]
 }

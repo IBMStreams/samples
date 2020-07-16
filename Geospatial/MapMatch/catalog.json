@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/realtime-map-matching-in-streams-v4-0-1/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/Geospatial/MapMatch",
+		"url": "https://github.com/IBMStreams/samples/tree/main/Geospatial/MapMatch",
 	"tags": [],
 		"services":   ["Bluemix"],
 		"toolkits": ["geospatial","inet"],

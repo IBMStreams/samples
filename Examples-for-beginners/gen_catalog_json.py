@@ -6,7 +6,7 @@ import sys
 import json
 #for each sample
 #def gen_urls_on_github:
-base_url = "https://github.com/IBMStreams/samples/tree/master/Examples-for-beginners/" #Note: change this when we pull into GITHUB
+base_url = "https://github.com/IBMStreams/samples/tree/main/Examples-for-beginners/" #Note: change this when we pull into GITHUB
 samples_dir="/Users/natashad/Documents/dev/git/samples/Examples-for-beginners/"
 sample_list_file = open(samples_dir+"Sample_List")
 sample_list = sample_list_file.readlines()

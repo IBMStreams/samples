@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["1","2","3"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/changing-connections-runtime-export-import",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/RuntimeConnectionChange",
+		"url": "https://github.com/IBMStreams/samples/tree/main/General/RuntimeConnectionChange",
 	"tags": [],
 		"operators": ["Import", "Export", "setInputPortImportSubscription", "setOutputPortExportProperties"]
 

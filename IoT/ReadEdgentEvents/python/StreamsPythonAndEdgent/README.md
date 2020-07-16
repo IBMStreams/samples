@@ -1,8 +1,8 @@
 This project contains a Streams application written in Python that processes events sent from an [Edgent](https://edgent.apache.org) application. It also shows how to send commands to the Edgent application.
 ## Prerequisites
-See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents).
+See [the prerequisites here](https://github.com/IBMStreams/samples/tree/main/IoT/ReadEdgentEvents).
 
-A notebook version of this sample [also exists](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents/python/notebook).
+A notebook version of this sample [also exists](https://github.com/IBMStreams/samples/tree/main/IoT/ReadEdgentEvents/python/notebook).
 
 Once you have all the prerequisites, you are ready to run the Streams application.
 

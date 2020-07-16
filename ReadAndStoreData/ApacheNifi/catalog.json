@@ -4,7 +4,7 @@
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/integrating-ibm-streams-apache-nifi/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/ReadAndStoreData/ApacheNifi",
+		"url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/ApacheNifi",
 	"tags": [],
 		"toolkits": ["inet"],
 		"operators": ["HTTPBLOBInjection"]

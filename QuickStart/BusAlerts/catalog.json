@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["1","2"],
 	"blogPost": "http://ibmstreams.github.io/streamsx.documentation/docs/spl/atom/atom-guide-5-build/#about-the-sample-application",
-		"url": "https://github.com/IBMStreams/samples/tree/master/QuickStart/BusAlerts",
+		"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/BusAlerts",
 	"tags": [], "featured": true,
 		"operators": ["Custom","HTTPGetXMLContent","XMLParse"]
 }

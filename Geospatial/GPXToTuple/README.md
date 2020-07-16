@@ -7,7 +7,7 @@ It includes the GPXToTuple operator that produces a stream of tuples from a GPX 
 To compile the sample application, you need:
 
 - Streams 4.0 or greater, for the  com.ibm.streams.geospatial toolkit
-- The [MapViewer](https://github.com/IBMStreams/samples/tree/master/MapViewerSample) sample to visualize the data
+- The [MapViewer](https://github.com/IBMStreams/samples/tree/main/Geospatial/MapViewerSample) sample to visualize the data
 - [Thie inet toolkit v2.5 or greater](https://github.com/IBMStreams/streamsx.inet/releases)
   
   

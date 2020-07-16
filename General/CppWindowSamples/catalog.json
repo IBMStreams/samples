@@ -4,6 +4,6 @@
 	"language": ["SPL","C++"],
 	"category": ["10","7","1"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/c-primitive-operator-sliding-window/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/CppWindowSamples",
+		"url": "https://github.com/IBMStreams/samples/tree/main/General/CppWindowSamples",
 	"tags": []
 }

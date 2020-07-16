@@ -4,6 +4,6 @@
 	"language": ["SPL"],
 	"category": ["7"],
 	"blogPost": "",
-		"url": "https://github.com/IBMStreams/samples/tree/master/timeseries/DSPFilterFiniteSample",
+		"url": "https://github.com/IBMStreams/samples/tree/main/timeseries/DSPFilterFiniteSample",
 	"toolkits":["timeseries"]
 }

@@ -1,7 +1,7 @@
 ## Streaming Analytics Event Detection Starter Application - For use only with Streaming Analytics V2 service plans
 Welcome to the Streaming Analytics service powered by IBM Streams! This starter application demonstrates how to configure and control the Streaming Analytics service through its V2 REST API. The application is written in Node.js using the SDK for Node.js runtime in Bluemix.
 
-This sample should only be used with an instance created under a Streaming Analytics V2 service plan, because the Streams application included in this sample is compiled for RHEL/CentOS 7.x.  If you are using an instance created with a Streaming Analytics V1 service plan, please use [the V1 Event Detection sample](https://github.com/IBMStreams/samples/tree/master/QuickStart/EventDetection).
+This sample should only be used with an instance created under a Streaming Analytics V2 service plan, because the Streams application included in this sample is compiled for RHEL/CentOS 7.x.  If you are using an instance created with a Streaming Analytics V1 service plan, please use [the V1 Event Detection sample](https://github.com/IBMStreams/samples/tree/main/QuickStart/EventDetection).
 
 #### Preparing to run the starter application
 

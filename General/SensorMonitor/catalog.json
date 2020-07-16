@@ -3,7 +3,7 @@
 	"language": ["SPL"],
 	"category": ["1","7"],
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/compute-time-based-averages-using-the-aggregate-operator/",
-		"url": "https://github.com/IBMStreams/samples/tree/master/General/SensorMonitor",
+		"url": "https://github.com/IBMStreams/samples/tree/main/General/SensorMonitor",
 	"tags": [], "featured": true,
 		"operators": ["Aggregate","MetricsSink","MatchRegex","cep","complex event"]
 }

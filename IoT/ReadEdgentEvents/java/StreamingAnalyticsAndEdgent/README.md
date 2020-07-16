@@ -1,7 +1,7 @@
 This project contains a Streams application written in Java. It shows how to connect to the Watson IoT platform to process events sent from an [Edgent](https://edgent.apache.org) application, and how to send commands to the Edgent application.
 
 ## Prerequisites
-See [the prerequisites here](https://github.com/IBMStreams/samples/tree/master/IoT/ReadEdgentEvents).
+See [the prerequisites here](https://github.com/IBMStreams/samples/tree/main/IoT/ReadEdgentEvents).
 
 Once you have all the prerequisites, you are ready to run the Streams application.
 
