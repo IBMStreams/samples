@@ -1,8 +1,6 @@
 .PHONY: build all clean distributed
 
-SPL_MAIN_COMPOSITE1 = normalize.example::NormalizeMentions
-SPL_MAIN_COMPOSITE2 = tokenize.example::TokenStream
-SPL_MAIN_COMPOSITE3 = tokenize.example::TokenBag
+SPL_MAIN_COMPOSITE = com.acme.test::CompositeParams
 SPL_CMD_ARGS ?=
 SPLC_FLAGS = -a
 OUTPUT_DIR = output
@@ -20,20 +18,13 @@ else
     else
       SPLC = streamsx-sc --disable-ssl-verify
       SPLC_CLEAN = rm -f toolkit.xml
-      SPLC_OUT1 = $(OUTPUT_DIR)
-      SPLC_OUT2 = $(OUTPUT_DIR)
-      SPLC_OUT3 = $(OUTPUT_DIR) 
     endif
   else
     SPLC = $(STREAMS_INSTALL)/bin/sc
-    SPLC_CLEAN = $(SPLC) -C -M $(SPL_MAIN_COMPOSITE1)
-    SPLC_OUT1 = $(OUTPUT_DIR)/normalize.example
-    SPLC_OUT2 = $(OUTPUT_DIR)/tokenize.stream
-    SPLC_OUT3 = $(OUTPUT_DIR)/tokenize.bag
-    SPLC_DATA_DIR = --data-directory=data
-    # additional toolkits
-    SPL_PATH ?= $(STREAMS_INSTALL)/toolkits/com.ibm.streams.text
+    SPLC_CLEAN = $(SPLC) -C -M $(SPL_MAIN_COMPOSITE)
   endif  
+  # additional toolkits
+  SPL_PATH ?= 
   # delete directories and files generated and required by StreamsStudio
   TO_BE_DELETED += bin .toolkitList
 endif
@@ -43,18 +34,13 @@ ifneq ($(SPL_PATH),)
   SPLC_FLAGS += -t $(SPL_PATH)
 endif
 
-ifneq ($(SPLC_DATA_DIR),)
-  SPLC_FLAGS += $(SPLC_DATA_DIR)
-endif
-
 build: distributed 
 
 all: clean build
 
 distributed:
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE1) $(SPL_CMD_ARGS) --output-directory=$(SPLC_OUT1)
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE2) $(SPL_CMD_ARGS) --output-directory=$(SPLC_OUT2)
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE3) $(SPL_CMD_ARGS) --output-directory=$(SPLC_OUT3)
+	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE) $(SPL_CMD_ARGS) --output-directory=$(OUTPUT_DIR)
+
 clean:
 	$(SPLC_CLEAN)
 	rm -rf $(TO_BE_DELETED)
