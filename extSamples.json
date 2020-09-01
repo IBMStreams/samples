@@ -1,4 +1,14 @@
-
+{
+	"name": "Score streaming data with R and Streams flows",
+	"description": "This shows how to use an R model to score data from a Streams flows application and how to download a newer version of the model from Cloud Object Storage.",
+	"language": ["SPL"],
+	"category": ["2","7","8"],
+	"blogPost": "https://medium.com/ibm-watson/real-time-forecasting-using-r-and-watson-studio-513c45abd1a9",
+		"url": "https://github.com/IBMStreams/sample.forecast_with_r",
+	"tags": ["R","r model","streams flows","publish","microservice","model","ai"],
+	 "featured": true,
+		"operators": ["Publish","RScript","R","ObjectStorageScan", "ObjectStorageSource"]
+},
 {
 "name": "Store high volumes of streaming data from IBM Event Streams in Cloud Object Storage",
 "description": "Read incoming JSON data from IBM Event Streams and write it to the IBM Cloud Object Storage (COS). Also demonstrates exactly-once processing and Kafka consumer groups.",
