@@ -1,0 +1,11 @@
+{
+	"name": "Score streaming data with R and Streams flows",
+	"description": "This shows how to use an R model to score data from a Streams flows application and how to download a newer version of the model from Cloud Object Storage.",
+	"language": ["SPL"],
+	"category": ["2","7","8"],
+	"blogPost": "https://medium.com/ibm-watson/real-time-forecasting-using-r-and-watson-studio-513c45abd1a9",
+		"url": "https://github.com/IBMStreams/samples/tree/main/StreamsFlows/ForecastWithR",
+	"tags": ["R","r model","streams flows","publish","microservice"],
+	 "featured": true,
+		"operators": ["Publish","RScript","R","ObjectStorageScan", "ObjectStorageSource"]
+}
