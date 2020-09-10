@@ -14,8 +14,8 @@ The goal of this servlet, to easily move a Streams applications to the web, for 
 ## Demonstration walk through.
 
 Assumed:
- * You have a [Bluemix account](https://console.ng.bluemix.net/registration/).
- * You have downloaded and installed [cf](https://github.com/cloudfoundry/cli#downloads) and [Bluemix](https://console.bluemix.net/docs/starters/install_cli.html) command-line tools.
+ * You have a [IBM Cloud account](https://console.ng.bluemix.net/registration/).
+ * You have downloaded and installed [cf](https://github.com/cloudfoundry/cli#downloads) and [IBM Cloud](https://console.bluemix.net/docs/starters/install_cli.html) command-line tools.
 
 Provided:
  * UpperRestRH6.sab : The Streams application bundle file, with the demonstration Streams application, source below.
@@ -24,10 +24,10 @@ Provided:
 
 Overview of Steps.
 
-1. Allocate and attach resources in Bluemix.
+1. Allocate and attach resources in IBM Cloud.
 2. Start the Streams application.
 3. Build, install, start  the Liberty application.
-4. Access the Streams application running in Bluemix.
+4. Access the Streams application running in IBM Cloud.
 
 
 ### The Streams application.
@@ -107,7 +107,7 @@ we need to build an install the proxy server on Liberty.
 
 ### Build and upload the LibertyStreamsProxy server.
 
-From a terminal, login to your bluemix account and set your target. Using my account, it looks like...
+From a terminal, login to your IBM Cloud account and set your target. Using my account, it looks like...
 
 ```bash
 bluemix login  -o siegenth@us.ibm.com -sso

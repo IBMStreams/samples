@@ -5,5 +5,5 @@
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
 		"url": "https://github.com/IBMStreams/samples/tree/main/IoT/ReadEdgentEvents/python/StreamsPythonAndEdgent/",
 	"tags": ["send commands", "topology","read event","raspberry pi", "iot","edge device","send data", "streaming analytics"],
-	"services": ["Bluemix","Edgent"]
+	
 }

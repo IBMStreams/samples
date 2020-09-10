@@ -2,8 +2,8 @@
 	"description":"This is a complete web application that runs on IBM Cloud. It uses Streams to retrieve data from New York City traffic sensors and compute speed statistics. It also demonstrates using the Aggregate, DeDuplicate, InetSource and HTTPPost operators. The web application is written in Liberty for Java.",
 		"language": ["SPL"],
 	"category": ["1","2","7"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/bluemix-streaming-analytics-starter-application",
+	"blogPost": "https://developer.ibm.com/streamsdev/docs/Cloud-streaming-analytics-starter-application",
 	"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/NYCTraffic",
-	"tags": ["nyc traffic","rest","submit job","streams rest api","Rest api"],"services": ["Bluemix"],
+	"tags": ["nyc traffic","rest","submit job","streams rest api","Rest api"],
  	"operators": ["InetSource", "HTTPPost","JSonToTuple","aggregate"]
 }

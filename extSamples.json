@@ -57,7 +57,7 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/a87f10c5c5cd65495a2f9d880af72d7a",
 	"tags": ["messagehub","event streams"],
-	"services": ["Message hub","event streams"]
+	
 
 },
 {	"name": "Detect invalid data in IoT devices in real time using Streams and Python",
@@ -67,7 +67,7 @@
 	"blogPost": "https://developer.ibm.com/streamsdev/videos/demo-streaming-analytics-using-python-ibm-data-science-experience/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d4395f1",
 	"tags": ["icp4d","data science", "iot", "watson iot","edgent","cloud","send commands", "topology","read event","raspberry pi","edge device","send data"],
-	"services": ["Bluemix","Edgent"]
+	
 
 },
 {	"name": "How to retrieve data from IoT devices from a Python Notebook",
@@ -77,7 +77,7 @@
 	"blogPost": "https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/",
 		"url": "https://dataplatform.ibm.com/exchange/public/entry/view/ec0aa15c6ab928b9b43ac0109d9b6a73",
 	"tags": ["icp4d","data science", "iot", "watson iot","ibm cloud","cloud","send commands", "topology","read event","raspberry pi","edge device","send data", "streaming analytics"],
-	"services": ["Bluemix","Edgent"]
+	
 
 },
 
@@ -87,7 +87,7 @@
 		"language": ["Python"], "tags": ["icp4d","topology", "ibm cloud","cloud"],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca9c6e8",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		"external": true, "services": ["Bluemix","DSX","Watson Studio"],
+		"external": true, 
 	"description": "Simple notebook showing how to connect to the Streaming Analytics service from Python.  The application prints 'Hello World' to the console."
 },
 
@@ -96,7 +96,8 @@
 	  "name": "Ingest and analyze patient data in Python", "language": ["Python"], "tags": ["iot", "watson iot", "ibm cloud","cloud","streaming analytics","visualize","graph","chart","patient","health","ecg"],
 		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039cad29a6",
 		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
-		"external": true, "services": ["Bluemix", "DSX","watson studio"], "toolkits": ["Healthcare"],
+		"external": true, 
+		 "toolkits": ["Healthcare"],
 	"description": "Streams+Python notebook that analyzes simulated patient data using the Streams health toolkit. It also demonstrates how to visualize data in a view using Bokeh."
 },
 
@@ -105,7 +106,7 @@
 	  "name": "Use Numpy/Matplot/Pybrain from a Streams Python application", "language": ["Python"], "tags": [ "icp4d","iot", "watson iot","ibm cloud","cloud","visualize", "view","graph","chart","plot"],
 		"blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
 		 "url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039ca60bb7",
-		  "external": true, "services": ["Bluemix", "DSX","watson studio"],
+		  "external": true, 
 	"description": "Demonstrates applying statistical models to real time data. This notebook creates a neural network model to determine probability that an engine will fail based on its temperature.  It also demonstrates how to visualize data in a view."
 
 },
@@ -123,7 +124,7 @@
   "name": "Face detection and recognition using Edgent and Streams",
   "description": "This starter kit uses Edgent and OpenCV on a Raspberry Pi with a camera to perform face detection. Detected faces are published from the 'Smart Camera' to a Streams application to perform Face Recognition.",
   "language": ["Java"], "tags": ["iot","edge analytics","image processing","video analytics", "ibm cloud","cloud"],
- "external": true, "services": ["Bluemix", "Edgent", "Watson IoT"],
+ "external": true, 
 "category": ["1","7"],
 "zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/develop.zip",
 "url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"

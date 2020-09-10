@@ -1,6 +1,6 @@
 {"category": ["2"],
    "description": "How to set up a proxy server to connect to a Streams application running in the cloud. The Streams application receives requests via HTTP using the HTTPRequestProcess operator.", "language": ["SPL"],
-"tags": ["post", "get", "rest", "browser","inet","bluemix"],
+"tags": ["post", "get", "rest", "browser","inet","Cloud"],
  "url": "https://github.com/IBMStreams/samples/tree/main/General/LibertyStreamsProxy",
  "name": "Enable a Streams app running in the Cloud to receive HTTP requests",
  "toolkits": ["inet"],

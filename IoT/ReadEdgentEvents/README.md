@@ -13,7 +13,7 @@ This project contains Streams applications written in Java, SPL and Python. It s
 - Java and Python: Credentials for your Streaming Analytics service in a file.
 
 
-The easiest way to get started is to [deploy the Streams IoT starter kit](https://github.com/IBMStreams/streamsx.iot.starterkit). Click the **Deploy to Bluemix** button to set up all the needed services.  Then, [follow these steps](https://github.com/IBMStreams/streamsx.iot.starterkit/blob/develop/README.md#run-a-complete-edgent-streams-scenario)) to run an Edgent application that will send events to the Watson IoT Platform.
+The easiest way to get started is to [deploy the Streams IoT starter kit](https://github.com/IBMStreams/streamsx.iot.starterkit). Click the **Deploy to IBM Cloud** button to set up all the needed services.  Then, [follow these steps](https://github.com/IBMStreams/streamsx.iot.starterkit/blob/develop/README.md#run-a-complete-edgent-streams-scenario)) to run an Edgent application that will send events to the Watson IoT Platform.
 
 If you choose not to deploy the starter kit, follow [steps 1-3 of this recipe](https://developer.ibm.com/recipes/tutorials/connect-apache-edgent-to-the-streaming-analytics-service-using-the-watson-iot-platform/).
 

@@ -13,7 +13,7 @@ import com.ibm.streamsx.rest.Metric;
 import com.ibm.streamsx.rest.Operator;
 import com.ibm.streamsx.rest.StreamingAnalyticsConnection;
 /**
- * Derive the IP and PORT using the topology interface when running within BlueMix. 
+ * Derive the IP and PORT using the topology interface when running within IBM Cloud. 
  * 
  * @author siegenth
  *

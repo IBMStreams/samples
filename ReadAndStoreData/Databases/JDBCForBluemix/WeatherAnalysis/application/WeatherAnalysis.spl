@@ -6,7 +6,7 @@ use com.ibm.streamsx.inet::InetSource ;
 use com.ibm.streamsx.inet.http::HTTPGetStream ;
 use com.ibm.streamsx.jdbc::JDBCRun ;
 /*
- * You need to create the following table from the DashDB service dashboard in bluemix before running the sample
+ * You need to create the following table from the DashDB service dashboard in IBM Cloud before running the sample
  * create table weather(maxtemp int, mintemp int, maxtempfeelslike int, mintempfeelslike int, avgvisibility int, avgwindspeed int, decision char(150))
  */
 composite WeatherAnalysis

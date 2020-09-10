@@ -4,9 +4,8 @@
 	"language": ["SPL"],
 	"category": ["2"],
 	"blogPost": "https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/",
-		"url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/Databases/JDBCForBluemix",
-	"tags": [],
-		"services":   ["Bluemix", "dashDB"],
+		"url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/Databases/JDBCForCloud",
+	"tags": ["dashDB"],
 		"toolkits": ["JDBC", "inet"],
 		"operators": ["JDBCRun","HTTPGetStream","XMLParse","Aggregate","InetSource"]
 }

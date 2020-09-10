@@ -1,6 +1,6 @@
 This sample SPL application is discussed in [this article on StreamsDev](https://developer.ibm.com/streamsdev/docs/developing-streams-applications-with-the-jdbcrun-operator/).  It demonstrates how to store analyzed data into a database using the JDBCRun operator.  The application first uses a HTTPGetStream operator from the inet source toolkit to retrieve 48 hours weather information in Markham by using the REST end point: https://streamsapp-kandu-admin.mybluemix.net/rest/hello/48hours_xml_demo.    After analyzing the weather data , the JDBCRun operator is used to insert the data in to the target database. 
 
-Steps to deploy the sample application on Bluemix 
+Steps to deploy the sample application on IBM Cloud 
 
 1. Import this sample project to streams studio.
 

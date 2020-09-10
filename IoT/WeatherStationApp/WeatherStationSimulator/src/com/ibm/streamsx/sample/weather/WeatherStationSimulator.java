@@ -30,7 +30,7 @@ public class WeatherStationSimulator {
 		//Create and start the edgent application
 		createTopo(deviceCfgPath);
 
-		//Start the shutdown timer. The IoT platform on Bluemix has a limit on the amount of data that can be sent
+		//Start the shutdown timer. The IoT platform on IBM Cloud has a limit on the amount of data that can be sent
 		//if this application is left running indefinitely that could be used up quickly.
 		//The optional timeout parameter is used to determine how long to run the application.
 		//Default is 20 minutes

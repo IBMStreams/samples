@@ -5,7 +5,7 @@
 /**
  * The below provides a wrapper to the map matching operator, the operator function is explained in the
  * geospatial toolkit v3.x and higher in IBM Streams 4.x and higher. This allows for the deployment of
- * this functionality in the Cloud -- specifically BlueMix.
+ * this functionality in the Cloud -- specifically IBM Cloud.
  **/
 namespace com.ibm.streams.mapmatch ;
 

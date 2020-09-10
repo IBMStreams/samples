@@ -22,16 +22,16 @@ import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 
 /**
- * StreamsBlueResource - Support for Streams when running within BlueMix.
+ * StreamsBlueResource - Support for Streams when running within IBM Cloud.
  * Streams infrastructure was conceived as running on the bare hardware. When
- * it's running within BlueMix, this is not the case, some 'glue' is needed to
+ * it's running within IBM Cloud, this is not the case, some 'glue' is needed to
  * bridge the gap between expectations and reality.
  * 
  * 
  * <ul>
- * <li>proxy HTTP, from the wide web into Streams Bluemix.</li>
- * <li>proxy WS, from the wide web into Streams running within BlueMix</li>
- * <li>resources within in BlueMix,</li>
+ * <li>proxy HTTP, from the wide web into Streams IBM Cloud.</li>
+ * <li>proxy WS, from the wide web into Streams running within IBM Cloud</li>
+ * <li>resources within in IBM Cloud,</li>
  * </ul>
  * 
  * @author siegenth
@@ -63,7 +63,7 @@ public class StreamsBlueMix  {
 		String vcapString = System.getenv(service);
 		if (vcapString == null) {
 			throw new IllegalArgumentException(
-					"Failed to get environment variable '" + service + "', a value that is specified by BLUEMIX.");
+					"Failed to get environment variable '" + service + "', a value that is specified by IBM Cloud.");
 		}
 		JSONObject vcap = null;
 		try {

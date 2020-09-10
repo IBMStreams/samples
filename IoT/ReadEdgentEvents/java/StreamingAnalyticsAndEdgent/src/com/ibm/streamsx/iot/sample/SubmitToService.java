@@ -20,7 +20,7 @@ public class SubmitToService {
 		String serviceName = "service name"; //Insert your service name here
 		config.put(AnalyticsServiceProperties.VCAP_SERVICES, new File(credentialFile));
 		config.put(AnalyticsServiceProperties.SERVICE_NAME, serviceName);
-		// Submit application bundle to Bluemix
+		// Submit application bundle to IBM Cloud
 		Future<?> result = StreamsContextFactory.getStreamsContext(Type.ANALYTICS_SERVICE).submit(topology, config);
 		//result should be a BigInteger
 		System.out.println("Submitted job to service, job id = " + result.get().toString());
