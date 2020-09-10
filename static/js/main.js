@@ -179,10 +179,10 @@ $scope.tagFilter = function (tag) {
       if (link.operators) {
         link.tags = link.tags.concat(link.operators);
       }
-      //get the base of the full http://github/tree/master/path/to/sample
+      //get the base of the full http://github/tree/main/path/to/sample
      if (!link.zip && !link.external){ //external samples already have a zip file.
 
-        var idx = link.url.indexOf("tree/master/");
+        var idx = link.url.indexOf("tree/main/");
         if (idx != -1){
           var base= link.url.substring(idx+12); //used to get download link
           link.zip = "https://streams-github-samples.mybluemix.net/?get=" +encodeURIComponent(base);
