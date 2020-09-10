@@ -1,19 +1,19 @@
 @font-face {
-  font-family: 'Helvetica Neue for IBM';
-  src: url('../fonts/roman/helvetica-neue-roman.eot?') format('eot'), url('../fonts/roman/helvetica-neue-roman.woff2') format('woff2'), url('../fonts/roman/helvetica-neue-roman.woff') format('woff'), url('../fonts/roman/helvetica-neue-roman.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
+  font-family: 'IBM Plex Sans';
+  src: url('../fonts/bold/ibmplexsans-regular.eot?') format('eot'), url('../fonts/bold/ibmplexsans-regular.woff2') format('woff2'), url('../fonts/bold/ibmplexsans-regular.woff') format('woff'), url('../fonts/bold/ibmplexsans-regular.ttf') format('truetype');
+  font-style: norma l;
 }
 
 @font-face {
-  font-family: 'Helvetica Neue for IBM';
-  src: url('../fonts/bold/helvetica-neue-bold.eot?') format('eot'), url('../fonts/bold/helvetica-neue-bold.woff2') format('woff2'), url('../fonts/bold/helvetica-neue-bold.woff') format('woff'), url('../fonts/bold/helvetica-neue-bold.ttf') format('truetype');
-  font-weight: 700;
+  font-family: 'IBM Plex Sans';
+  src: url('../fonts/bold/ibmplexsans-bold.eot?') format('eot'), url('../fonts/bold/ibmplexsans-bold.woff2') format('woff2'), url('../fonts/bold/ibmplexsans-bold.woff') format('woff'), url('../fonts/bold/ibmplexsans-bold.ttf') format('truetype');
+  font-weight: bold;
   font-style: normal;
 }
 
+
 body {
-  font-family: "Helvetica Neue for IBM", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Noto Sans", Noto, sans-serif;
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
 }
 
 .header-container {
@@ -21,12 +21,11 @@ body {
 }
 
 
-
 #bottomrow{
   margin-top: 50px;
 }
 .header-panel.shadow-z-2 {
-  background-color: #152934;
+  background-color: #002d9c;
   padding: 2px;
   width: 100%;
 }
@@ -310,8 +309,8 @@ footer {
   border-bottom: none;
   border-radius: 10px;
   font-weight: normal;
-  background: #aaf9e6;
-  color: #238070;
+  background: #525252;
+  color: #ffffff;
 }
 .service-filter.search-body button.tagFilter.btn.btn-sm {
   padding: 1px 10px;
@@ -341,11 +340,11 @@ footer {
   border-radius: 10px;
   font-weight: normal;
   color: #fff;
-  background-color: #4682B4;
+  background-color: #525252;
 }
 .category.search-body button.tagFilter.btn.btn-sm.active {
-  background: #238070;
-  color: #aaf9e6;
+  background: #ff7eb6;
+  color: #ffffff;
 }
 
 .language.search-body button.tagFilter.btn.btn-sm {
@@ -355,13 +354,13 @@ footer {
   border-bottom: none;
   border-radius: 10px;
   font-weight: normal;
-  background: #eed3fe;
-  color: #7c4f9e;
+  background: #525252;
+  color: #ffffff;
 }
 
 .language.search-body button.tagFilter.btn.btn-sm.active{
-  background: #7c4f9e;
-  color: #eed3fe;
+  background: #ff7eb6;
+  color: #ffffff;
 }
 
 .project-content{
@@ -383,13 +382,13 @@ footer {
 }
 
 .tag-filter.language {
-  background: #eed3fe;
-  color: #7c4f9e;
+  background: #0f62fe;
+  color: #ffffff;
 }
 
 .tag-filter.category {
-  background: #aaf9e6;
-  color: #238070;
+  background: #525252;
+  color: #ffffff;
 }
 
 .services {
@@ -441,7 +440,7 @@ a.btn.btn-info.btn-raised.btn-sm.project-link {
 }
 
 .tag-level span, .tag-level a {
-  color: #337ab7;
+  color: #00539a;
 
 }
 
@@ -461,7 +460,7 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
 }
 
 .error404 {
-  color: #5596e6;
+  color: #0043ce;
   margin-left: 30px;
 }
 
@@ -518,20 +517,20 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
 }
 
 .tag:hover {
-  background-color: #5596e6;
+  background-color: #0043ce;
   color: white;
 }
 
 .tag:hover::after {
-  border-left-color: #5596e6;
+  border-left-color: #0043ce;
 }
 .tag::after:hover{
-  border-left-color: #5596e6;
-  border-left: 10px solid #5596e6;
+  border-left-color: #0043ce;
+  border-left: 10px solid #0043ce;
 }
 
 .header-panel.shadow-z-2-banner{
-  background: #5596e6;
+  background: #0043ce;
   padding: 25px 0;
   position: relative;
   overflow: hidden;
@@ -619,14 +618,14 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
 }
 
 .filterButton {
-  border: 2px solid #5596e6;
+  border: 2px solid #0043ce;
   height: 40px;
   margin-top: 15px;
   display: flex;
   justify-content: space-between;
 
   background: #FFF;
-  color: #5596e6;
+  color: #0043ce;
   text-decoration: none;
 }
 
@@ -635,7 +634,7 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
 }
 
 .filterButton:focus, .filterButton:hover, .filterButton.active {
-  background-color: #5596e6;
+  background-color: #0043ce;
   color: white;
   text-decoration: none;
 }
@@ -673,7 +672,7 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
 .dropdown {
   background: white;
   padding: 1.5rem;
-  border: 1px solid #5596e6;
+  border: 1px solid #0043ce;
   margin: 20px auto 0 auto;
   max-width: 1440px;
   display: none;
@@ -690,8 +689,8 @@ ul.list-separator.nav.navbar-nav.well.well-primary.default {
   margin: 0 auto;
   content: '';
   background-color: inherit;
-  border-bottom: 1px solid #5596e6;
-  border-right: 1px solid #5596e6;
+  border-bottom: 1px solid #0043ce;
+  border-right: 1px solid #0043ce;
 }
 
 .language {

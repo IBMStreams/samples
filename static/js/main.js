@@ -167,10 +167,6 @@ $scope.tagFilter = function (tag) {
         link.tags = link.tags.concat(link.category);
       }
 
-      if (link.services){
-
-        link.tags = link.tags.concat(link.services);
-      }
 
       if (link.toolkits) {
         link.tags = link.tags.concat(link.toolkits);
