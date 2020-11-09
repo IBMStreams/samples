@@ -24,11 +24,15 @@
 .PHONY: all clean 
 
 SPLC = $(STREAMS_INSTALL)/bin/sc
-SPLC_FLAGS = -a -t $(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.inet
+SPL_PATH = $(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.inet
+ifdef STREAMS_BUILDSERVICE
+    SPL_PATH = ../toolkits:$(STREAMS_INSTALL)/toolkits
+endif
 SAMPLE_TWITTERSTREAM = sample::TwitterStream
 SAMPLE_SMACKDOWN = sample::Smackdown
 SPL_DATA_DIR ?= /tmp
 SPL_CMD_ARGS ?=
+SPLC_FLAGS = -a -t $(SPL_PATH)
 
 all: distributed
 

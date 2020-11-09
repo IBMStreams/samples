@@ -12,6 +12,19 @@ ifeq ($(STREAMS_STUDIO_BUILDING), 1)
   SPLC = $(STREAMS_STUDIO_SC_PATH)
   SPL_PATH = $(STREAMS_STUDIO_SPL_PATH)
   OUTPUT_DIR = $(STREAMS_STUDIO_OUTPUT_DIRECTORY)
+  SPLC_OUT1 = $(OUTPUT_DIR)
+  SPLC_OUT2 = $(OUTPUT_DIR)
+  SPLC_OUT3 = $(OUTPUT_DIR) 
+else ifdef STREAMS_BUILDSERVICE
+    $(info Building using buildservice)
+    ifeq ($(STREAMS_INSTALL),)
+        $(error error: environment variable STREAMS_INSTALL has to be set)
+    endif
+    SPLC = $(STREAMS_INSTALL)/bin/sc
+    SPL_PATH = ../toolkits:$(STREAMS_INSTALL)/toolkits
+    SPLC_OUT1 = $(OUTPUT_DIR)
+    SPLC_OUT2 = $(OUTPUT_DIR)
+    SPLC_OUT3 = $(OUTPUT_DIR) 
 else
   # Building outside of Streams Studio...
   ifeq ($(STREAMS_INSTALL),)

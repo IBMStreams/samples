@@ -23,11 +23,13 @@
 # end_generated_IBM_copyright_prolog
 .PHONY: all distributed clean
 
-SPLC_FLAGS = -a -t   $(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.json:$(STREAMS_INSTALL)/toolkits/com.ibm.streams.cep:$(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.messagehub
+SPLC_FLAGS = -a -t $(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.json:$(STREAMS_INSTALL)/toolkits/com.ibm.streams.cep:$(STREAMS_INSTALL)/toolkits/com.ibm.streamsx.messagehub
+ifdef STREAMS_BUILDSERVICE
+  SPLC_FLAGS = -a -t ../toolkits:$(STREAMS_INSTALL)/toolkits
+endif
 SPLC = $(STREAMS_INSTALL)/bin/sc
 
 SPL_CMD_ARGS ?=
-SPL_DATA_DIR ?= --data-directory ./data
 SPL_MAIN_COMPOSITE_MHUB = application::SensorMonitorMain_NoMHub
 SPL_MAIN_COMPOSITE_PUBLISH_MHUB = application::PublishData
 SPL_MAIN_COMPOSITE_SIMPLE = application::SensorMonitorMain
@@ -35,9 +37,9 @@ SPL_MAIN_COMPOSITE_SIMPLE = application::SensorMonitorMain
 all: distributed
 
 distributed: 
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_MHUB) $(SPL_DATA_DIR) $(SPL_CMD_ARGS)
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_SIMPLE) $(SPL_DATA_DIR) $(SPL_CMD_ARGS)
-	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_PUBLISH_MHUB) $(SPL_DATA_DIR) $(SPL_CMD_ARGS)
+	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_MHUB) $(SPL_CMD_ARGS)
+	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_SIMPLE) $(SPL_CMD_ARGS)
+	$(SPLC) $(SPLC_FLAGS) -M $(SPL_MAIN_COMPOSITE_PUBLISH_MHUB) $(SPL_CMD_ARGS)
 
 clean:
 	$(SPLC) $(SPLC_FLAGS) -C -M $(SPL_MAIN_COMPOSITE_SIMPLE)
