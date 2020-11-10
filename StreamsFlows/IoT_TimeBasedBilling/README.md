@@ -1,7 +1,7 @@
 # Time based billing application
 
 Some utility companies offer smart meters that send usage readings from homes and businesses, improving accuracy and enabling remote reporting. Since the smart meters have more fine grained usage data, some companies are offering discounts to customers if their consumption is during off peak periods. 
-This sample demonstrates such an application in Streams flows, and the videos  ["Use IoT data in Streams flows"](https://www.youtube.com/watch?v=gdLGMZUX-B4) and  ["Use Python Code in a Streams flow"](https://www.youtube.com/watch?v=zc9fNIBTonU) show how it was done.
+This sample demonstrates such an application in Streams flows, and the videos  ["Use IoT data in Streams flows"](https://video.ibm.com/playlist/633106/video/127739009) and  ["Use Python Code in a Streams flow"](https://video.ibm.com/playlist/633106/video/127739000) show how it was done.
 
 These applications demonstrate how to do the following in Streams flows:
 - Connect to the Watson IoT platform with the `WatsonIoT` operator
@@ -11,7 +11,7 @@ These applications demonstrate how to do the following in Streams flows:
 
 
 ## Prerequisites
-- Basic knowledge of Streams designer
+- Basic knowledge of Streams flows
 - An instance of the [Watson IoT Platform service](https://console.bluemix.net/catalog/services/internet-of-things-platform) in the IBM Cloud.
 - Optional: An instance of the [DB2 Warehouse service](https://console.bluemix.net/catalog/services/db2-warehouse) in the IBM Cloud.
 
@@ -34,7 +34,7 @@ These applications demonstrate how to do the following in Streams flows:
         - Install the `ibmiotf` package using `pip`.
         - Edit  `send_data_to_iotplatform.py` with your device credentials where indicated.
         - Run the script: `python3 send_data_to_iotplatform.py`
-    - In the Data Science Experience: Import the notebook `Utility meter simulator.ipynb`. Follow the instructions therein to   start sending data.
+    - In Cloud Pak for Data or Cloud Pak for Data as a service: Import the notebook `Utility meter simulator.ipynb`. Follow the instructions therein to   start sending data.
 4. Configure the email operator:
     - Provide the details for your SMTP server. If you do not have one, you can use the free SMTP server provided by Gmail and replace the username and password with your gmail username and password. You will have to [enable access from less secure apps](https://support.google.com/accounts/answer/6010255?hl=en) in your Gmail account first.
 5. (Optional) DB2 Setup:
