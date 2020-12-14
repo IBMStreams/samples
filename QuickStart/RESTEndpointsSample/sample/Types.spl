@@ -1,0 +1,6 @@
+namespace sample;
+
+ 
+ type   Request = tuple<int32 x, int32 y>;
+type    Operation =  enum {add, subtract, divide, multiply} operation;
+ type   Response = Request, tuple<int32 result, Operation op>;

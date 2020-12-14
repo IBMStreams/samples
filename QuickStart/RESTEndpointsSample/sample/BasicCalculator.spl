@@ -1,0 +1,87 @@
+namespace sample;
+
+
+composite BasicCalculator
+{
+   graph
+     (stream<Request> Operands; stream<Operation> OperationStream) as IncomingRequest = Beacon()
+    {
+      logic
+        state:{
+          mutable int32 x_ = 10;
+          mutable int32 y_ = 20;
+
+        }
+      param
+        period: 0.5;
+      output
+       Operands: x = ++x_, 
+                y = ++y_ ;
+      OperationStream: operation = add;
+    }
+
+    @view(name = "Results", port = Results, sampleSize = 100, bufferSize = 1000, description = "result data")
+    (stream<Response> Results) as Calculator = CalculatorOp(Operands; OperationStream){
+
+      }
+
+     () as CalculationAnalyzer = FileSink(Results)
+    {
+       logic
+        onTuple Results:
+        {
+          printStringLn((rstring)Results);
+        }
+      param
+        file: "/tmp/calculator_filesink.txt";
+        flush: 1u;
+    }
+}
+
+composite CalculatorOp (input Operands, OpStream; output Results){
+  param
+    expression  $operation : add;
+  graph
+  (stream<Response> Results) as Calculator = Custom(Operands; OpStream)
+    {
+      logic
+        state :{
+          mutable enum currentOperation = $operation;
+        }
+
+        onTuple OpStream: {
+          currentOperation = OpStream.operation;
+        }
+        onTuple Operands:
+        {
+          mutable int32 myResult = 0;
+          mutable rstring symbol = "";
+          if (currentOperation == add)         {
+            myResult = Operands.x + Operands.y;
+            symbol = "+";
+          }
+          if  (currentOperation == subtract)
+          {
+            myResult = Operands.x - Operands.y;
+            symbol = "-";
+          }
+          if  (currentOperation == multiply)
+          {
+            myResult = Operands.x * Operands.y;
+            symbol = "*";
+          } 
+         if  (currentOperation == divide)
+          {
+            myResult = Operands.x / Operands.y;
+            symbol = "/";
+          }
+
+          printStringLn(((rstring)Operands.x) + " " + symbol + " " + ((rstring)Operands.y) + " =  "  + ((rstring)myResult));
+          mutable Results oTuple = {};
+          assignFrom(oTuple, Operands);
+          oTuple.op = currentOperation;
+          oTuple.result = myResult;
+          submit(oTuple, Results);
+        }
+    }
+}

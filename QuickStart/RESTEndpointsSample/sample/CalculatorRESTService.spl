@@ -1,0 +1,62 @@
+namespace sample;
+
+/**
+ * This application demonstrates how to enable a Streams job as a Cloud Pak for Data service using
+ * the EndpointSource and EndpointSink operators to insert data into and retrieve data from the
+ * job via a REST API. It performs simple addition or subtraction calculations.
+ */
+@service(title = "Web Calculator Service",
+        externalDocsUrl = "https://community.ibm.com/community/user/cloudpakfordata/viewdocument/streams-jobs-as-a-service-document?CommunityKey=c0c16ff2-10ef-4b50-ae4c-57d769937235&tab=librarydocuments#opdoc",
+        externalDocsDescription = "Web Calculator documentation", tags = "{\"Input\": {
+                            \"description\": \"APIs to insert data\",
+                            \"externalDocs\": {
+                              \"url\": \"https://ibm.biz/streams-job-service\",
+                              \"description\": \"Input documentation\"
+                            }
+                        },
+                        \"Output\" : {
+                            \"description\": \"APIs to retrieve data\",
+                            \"externalDocs\": {
+                              \"url\": \"https://ibm.biz/streams-job-service\",
+                              \"description\": \"Output documentation\"
+                            }
+                          }
+                        }", 
+          description = "This service performs simple arithmetic on the input data.",
+          version = "1.0.0.0")
+
+composite CalculatorService
+{
+
+  graph
+    @endpoint(port = Operands, summary = "Receive input for the Web Calculator", 
+              tags = "[\"Input\"]",
+              description = "This method provides the ability to feed numbers into the web calculator.",
+               attributeDescriptions = "{\"x\": { \"description\": \"The first operand.\" },
+                                \"y\": { \"description\": \"The second operand.\" },
+                                \"operation\": { \"description\": \"The operation to perform on the operands.\" }
+                                }")
+                                
+    (stream<Request> Operands; stream<Operation> OperationStream) as IncomingRequest = EndpointSource()
+    {
+    }
+
+    (stream<Response> Results) as Calculator = CalculatorOp(Operands; OperationStream){
+
+      }
+    @endpoint(port = Results, summary = "Web Calculator results", 
+              tags = "[\"Output\"]",
+              description = "Use this endpoint to retrieve the results of the Web Calculator as it processes them. The operands are also included with the results.",
+              attributeDescriptions = "{\"x\": { \"description\": \"The first operand.\" },
+                                       \"y\": { \"description\": \"The second operand.\" },
+                                       \"operation\": { \"description\": \"The operation to perform on the operands.\" },
+                                       \"result\": { \"description\": \"The calculated value.\" },
+                                      }")
+    () as CalculationAnalyzer = EndpointSink(Results)
+    {
+        //Use the bufferSize parameter to specify how many tuples to keep in memory
+        //the sink will only keep the last 10 tuples
+        param
+          bufferSize: 50;
+    }
+}
