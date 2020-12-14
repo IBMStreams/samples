@@ -4,7 +4,7 @@ namespace sample;
 composite BasicCalculator
 {
    graph
-     (stream<Request> Operands; stream<Operation> OperationStream) as IncomingRequest = Beacon()
+     (stream<Request> Operands) as IncomingRequest = Beacon()
     {
       logic
         state:{
@@ -17,7 +17,13 @@ composite BasicCalculator
       output
        Operands: x = ++x_, 
                 y = ++y_ ;
-      OperationStream: operation = add;
+     }
+      
+       stream<tuple<Operation op>> OperationStream = Custom () {
+        logic
+         onProcess: {
+            submit({op = add}, OperationStream);
+        }
     }
 
     @view(name = "Results", port = Results, sampleSize = 100, bufferSize = 1000, description = "result data")
@@ -39,18 +45,16 @@ composite BasicCalculator
 }
 
 composite CalculatorOp (input Operands, OpStream; output Results){
-  param
-    expression  $operation : add;
   graph
   (stream<Response> Results) as Calculator = Custom(Operands; OpStream)
     {
       logic
         state :{
-          mutable enum currentOperation = $operation;
+          mutable Operation currentOperation = add;
         }
 
         onTuple OpStream: {
-          currentOperation = OpStream.operation;
+          currentOperation = OpStream.op;
         }
         onTuple Operands:
         {

@@ -31,13 +31,17 @@ composite CalculatorService
   graph
     @endpoint(port = Operands, summary = "Receive input for the Web Calculator", 
               tags = "[\"Input\"]",
-              description = "This method provides the ability to feed numbers into the web calculator.",
+              description = "Use this endpoint to feed numbers into the service. By default, the two numbers will be added.",
                attributeDescriptions = "{\"x\": { \"description\": \"The first operand.\" },
                                 \"y\": { \"description\": \"The second operand.\" },
                                 \"operation\": { \"description\": \"The operation to perform on the operands.\" }
                                 }")
-                                
-    (stream<Request> Operands; stream<Operation> OperationStream) as IncomingRequest = EndpointSource()
+    @endpoint(port = OperationStream, summary = "Change the Calculator's current operation", 
+            tags = "[\"Input\"]",
+            description = "Use this endpoint to change the service's current operation.",
+              attributeDescriptions = "{\"op\": { \"description\": \"The name of the operation. Valid values are add, subtract, multiply, and divide.\"}}")
+                                          
+    (stream<Request> Operands; stream<Operation op> OperationStream) as IncomingRequest = EndpointSource()
     {
     }
 
@@ -52,7 +56,7 @@ composite CalculatorService
                                        \"operation\": { \"description\": \"The operation to perform on the operands.\" },
                                        \"result\": { \"description\": \"The calculated value.\" },
                                       }")
-    () as CalculationAnalyzer = EndpointSink(Results)
+    () as CalculationResult = EndpointSink(Results)
     {
         //Use the bufferSize parameter to specify how many tuples to keep in memory
         //the sink will only keep the last 10 tuples
