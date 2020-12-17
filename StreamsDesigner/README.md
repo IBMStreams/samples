@@ -1,1 +1,0 @@
-Streams Designer has been renamed to Streams flows, samples are at https://github.com/IBMStreams/samples/tree/main/StreamsFlows

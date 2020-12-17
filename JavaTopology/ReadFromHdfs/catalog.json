@@ -1,9 +1,0 @@
-{
-	"name": "Java application API example",
-	"description": "Use the Java API to create a Streams application (no SPL!) that reads files from HDFS.",
-	"language": ["Java"],
-	"category": ["2","10"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/source-operator-read-hdfs-files-java-application-api/",
-		"url": "https://github.com/IBMStreams/samples/tree/main/JavaTopology/ReadFromHdfs",
-	"tags": ["java topology"]
-}

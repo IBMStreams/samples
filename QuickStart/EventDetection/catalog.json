@@ -1,9 +1,0 @@
-{"name": "Detect weather events in realtime using Streams and Node.js - V1",
-	"description":"This sample demonstrates how a Node.js app on IBM Cloud can retrieve data from a running Streams application. Uses the MatchRegex operator to process weather events from an external source.",
-		"language": ["SPL"],
-	"category": ["1","2"],
-	"blogPost": "https://developer.ibm.com/streamsdev/docs/detect-events-with-streams/",
-	"url": "https://github.com/IBMStreams/samples/tree/main/QuickStart/EventDetection",
-	"tags": ["complex event processing","cep","noaa","submit job","streams rest api"],
- 	"operators": ["InetSource", "HTTPPost","JSonToTuple"]
-}
