@@ -1,5 +1,3 @@
-{"samples":
-	[
 {
 	"name": "Add REST endpoints to a Python application",
 	"description": "This tutorial includes a  Python notebook showing how to add a web service to a streaming application using the Streams jobs service",
@@ -203,6 +201,5 @@
  "category": ["1"],
  "featured":true,
 "url": ""
-}]
 }
 
