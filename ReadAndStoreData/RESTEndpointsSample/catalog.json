@@ -1,0 +1,9 @@
+{"name": "Serve/Accept streaming data via REST",
+	"description": "Example demonstrating how to support REST data access in a Streams application.",
+	"language": ["SPL"],
+	"category": ["1","2"],
+	"blogPost": "https://ibm.biz/streams-job-service",
+        "url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/RESTEndpointsSample",
+	"tags": [], "featured": true,
+		"operators": ["EndpointSource","EndpointSink"]
+}
