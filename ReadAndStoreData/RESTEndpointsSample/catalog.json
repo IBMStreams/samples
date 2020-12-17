@@ -2,7 +2,7 @@
 	"description": "Example demonstrating how to support REST data access in a Streams application.",
 	"language": ["SPL"],
 	"category": ["1","2"],
-	"blogPost": "https://ibm.biz/streams-job-service",
+	"blogPost": "https://community.ibm.com/community/user/cloudpakfordata/viewdocument/enable-data-ingest-and-retrieval-vi?CommunityKey=c0c16ff2-10ef-4b50-ae4c-57d769937235&tab=librarydocuments",
         "url": "https://github.com/IBMStreams/samples/tree/main/ReadAndStoreData/RESTEndpointsSample",
 	"tags": [], "featured": true,
 		"operators": ["EndpointSource","EndpointSink"]
