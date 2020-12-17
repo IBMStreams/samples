@@ -1,4 +1,16 @@
+{"samples":
+	[
 {
+	"name": "Add REST endpoints to a Python application",
+	"description": "This tutorial includes a  Python notebook showing how to add a web service to a streaming application using the Streams jobs service",
+	"language": ["Python"],
+	  "tags": ["cloud pak for data","rest"],
+   "external": true,
+   "category": ["2"],
+   "featured":true,
+  "url": "https://developer.ibm.com/tutorials/access-streaming-data-with-rest-services/"
+  },
+  {
 	"name": "Score streaming data with R and Streams flows",
 	"description": "This shows how to use an R model to score data from a Streams flows application and how to download a newer version of the model from Cloud Object Storage.",
 	"language": ["SPL"],
@@ -191,4 +203,6 @@
  "category": ["1"],
  "featured":true,
 "url": ""
+}]
 }
+
