@@ -54,7 +54,7 @@ composite CalculatorService
               attributeDescriptions = "{\"x\": { \"description\": \"The first operand.\" },
                                        \"y\": { \"description\": \"The second operand.\" },
                                        \"operation\": { \"description\": \"The operation to perform on the operands.\" },
-                                       \"result\": { \"description\": \"The calculated value.\" },
+                                       \"result\": { \"description\": \"The calculated value.\" }
                                       }")
     () as CalculationResult = EndpointSink(Results)
     {
