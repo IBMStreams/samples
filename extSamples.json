@@ -103,9 +103,8 @@
 
 
 {"category": ["1","2"],
-	  "name": "Ingest and analyze patient data in Python", "language": ["Python"], "tags": ["iot", "watson iot", "ibm cloud","cloud","streaming analytics","visualize","graph","chart","patient","health","ecg"],
-		"url": "https://apsportal.ibm.com/exchange/public/entry/view/9fc33ce7301f10e21a9f92039cad29a6",
-		 "blogPost": "https://developer.ibm.com/streamsdev/docs/new-in-streaming-analytics/",
+	  "name": "Ingest and analyze patient data in Python with BioPy", "language": ["Python"], "tags": ["iot", "watson iot", "ibm cloud","cloud","streaming analytics","visualize","graph","chart","patient","health","ecg"],
+		"url": "https://github.com/IBMStreams/streamsx.health/blob/develop/samples/HealthcareJupyterDemo/notebooks/HealthcareDemo-Distributed.ipynb",
 		"external": true, 
 		 "toolkits": ["Healthcare"],
 	"description": "Streams+Python notebook that analyzes simulated patient data using the Streams health toolkit. It also demonstrates how to visualize data in a view using Bokeh."
@@ -130,15 +129,6 @@
 "zip": "https://github.com/IBMStreams/streamsx.health/archive/develop.zip",
 "tags": ["java topology","topology","odm","rules","microservices","health"]
 },
-{
-  "name": "Face detection and recognition using Edgent and Streams",
-  "description": "This starter kit uses Edgent and OpenCV on a Raspberry Pi with a camera to perform face detection. Detected faces are published from the 'Smart Camera' to a Streams application to perform Face Recognition.",
-  "language": ["Java"], "tags": ["iot","edge analytics","image processing","video analytics", "ibm cloud","cloud"],
- "external": true, 
-"category": ["1","7"],
-"zip":"https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/archive/develop.zip",
-"url": "https://github.com/IBMStreams/streamsx.edgevideoanalytics.starterkit/"
-},
 
 {
   "name": "Simple rolling average in a Python notebook",
@@ -148,7 +138,7 @@
  "external": true,
 "category": ["1","7"],
 "featured":true,
-"blogPost":"https://developer.ibm.com/streamsdev/videos/get-started-with-streaming-analytics-in-python-with-ibm-cloud-private-for-data/",
+"blogPost":"https://community.ibm.com/community/user/cloudpakfordata/blogs/natasha-dsilva1/2020/10/08/analyze-streaming-data-with-python-and-cloud-pak-f",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-RollingAverageSample.ipynb"
 },
 {
@@ -159,7 +149,7 @@
  "external": true,
  "category": ["1","7"],
  "featured":true,
- "blogPost": "https://developer.ibm.com/streamsdev/videos/video-score-pmml-models-in-real-time-using-ibm-streams/",
+ "blogPost": "https://community.ibm.com/community/user/cloudpakfordata/viewdocument/score-pmml-models-in-real-time-with?CommunityKey=c0c16ff2-10ef-4b50-ae4c-57d769937235&tab=librarydocuments",
 "url": "https://github.com/IBMStreams/sample.starter_notebooks/blob/latest/Streams-PMMLScoringSample.ipynb"
 },
 {
