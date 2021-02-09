@@ -4,11 +4,6 @@ namespace sample;
 composite BasicCalculator
 {
    graph
-    (stream<Request> Operands; stream<Operation op> OperationStream) as IncomingRequest = EndpointSource()
-    {
-    }
-
-
         (stream<Request> Operands) as IncomingRequest = Beacon()
     {
       param
