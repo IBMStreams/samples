@@ -20,7 +20,7 @@ It is a two part application:
 # Run the application:
 
 ## Basic application that doesn't connect to IBM Event Streams
-Build with Streams Studio, Atom, or using the Makefile, then run the `SensorMonitorMain_NoMHub` application.
+Build with Streams Studio, VS Code, or using the Makefile, then run the `SensorMonitorMain_NoMHub` application.
 - Optional Parameters:
     - `window_size_in_seconds`: Duration of the rolling average, default is 15 second rolling average of each sensor's data.
     -  `numSensors`: Number of sensors to simulate.
@@ -33,7 +33,7 @@ Before getting started, you will need to perform the following:
 - Create credentials for the service(found under the *Service credentials* section of the service instance).  See [this link for step by step instructions](https://console.bluemix.net/docs/services/MessageHub/messagehub127.html#connect_standard_external)
 - Copy and paste the credentials into `etc/messagehub.json`.
 - Create a topic called `sensorData` in the Event Streams Service.
-- Launch `PublishSensorData` first to send sensor readings to IBM Event Streams.
+- Launch `PublishData` first to send sensor readings to IBM Event Streams.
     - Optionally set the  `numSensors`: Number of sensors to simulate.
 - Then launch `SensorMonitorMain`, which is the main application.
 Optionally set the `window_size_in_seconds`, default is 15 seconds. The application will compute a 15 second rolling average of each sensor's data.
