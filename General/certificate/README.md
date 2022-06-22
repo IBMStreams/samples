@@ -131,6 +131,7 @@ Trusted client certificate for streams-ca imported successfully for domain Strea
 ```
 streamtool getdomainproperty -a | grep sws
 sws.clientAuthenticationCertificateRequired=true
+streamtool restartdomainservice sws 
 ```
 
 ## Disable the Streams domain property **sws.clientAuthenticationCertificateRequire** 
