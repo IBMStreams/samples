@@ -133,5 +133,34 @@ streamtool getdomainproperty -a | grep sws
 sws.clientAuthenticationCertificateRequired=true
 ```
 
+## Disable the Streams domain property **sws.clientAuthenticationCertificateRequire** 
 
+It is also possible to set the Streams domain property **sws.clientAuthenticationCertificateRequire** to false.
+```
+streamtool setdomainproperty sws.clientAuthenticationCertificateRequired=false
+```
 
+But we have to set it before start domain.
+
+```
+# create domain
+streamtool mkdomain
+
+# set domain property
+streamtool setdomainproperty sws.clientAuthenticationCertificateRequired=false
+
+streamtool genkey
+
+# start domain
+streamtool startdomain
+
+```
+
+After starting the domain it is possible to check this property:
+
+```
+streamtool getdomainproperty -a | grep sws
+domain.managementResourceAllocationTags=jmx,audit,sws,authentication
+sws.clientAuthenticationCertificateRequired=false
+sws.clientAuthenticationEnabled=false
+```
