@@ -1,41 +1,40 @@
 # Add Signed Certificate to IBM Streams
 This document describes how to create a signed certificate and add it to the IBM Streams.
 
-System requirements
+## System requirements
 
-Linux RedHat
-A installed and running IBM Streams
+A installed and running IBM Streams on RedHat linux
 
 Procedure
-Complete the following steps on your RedHat Streams Server.
+Please complete the following steps on your RedHat IBM Streams Server.
 
 ## openssl
-Login as root in your Streams server und check if is openssll already installed.
+Login as root in your Streams server und check if is **openssll** package already installed.
 
 ```
 which openssl
 /usr/local/bin/openssl
 ```
-If not install openssl via yum
 
+If not install openssl via yum
 ```
 yum install openssl
 ```
-Change user to streamsadmin
-```
-su – streamsadmin
-```
+
 
 ## Create an OpenSSL client configuration file
+
+Change user to streamsadmin ann create a directory for your certificates.
+
 ```
+su – streamsadmin
 mkdir $HOME/ca-certificates
-
 cd $HOME/ca-certificates
-
+## create an OpenSSL client configuration file
 vi myca.cnf
 ```
 
-Edit myca.cnf and put your countryName, countryName, localityName and ... in openssl configuration file
+Edit myca.cnf and adapt your countryName, stateOrProvinceName, localityName and ... in openssl configuration file in section req_distinguished_name.
 
 ```
 [ req ]
