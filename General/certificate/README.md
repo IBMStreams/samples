@@ -10,9 +10,8 @@ Procedure
 Complete the following steps on your RedHat Streams Server.
 
 ## openssl
-Login as root in your Streams server
-Check if installed openssl
-check if is openssll already installed.
+Login as root in your Streams server und check if is openssll already installed.
+
 ```
 which openssl
 /usr/local/bin/openssl
@@ -21,7 +20,6 @@ If not install openssl via yum
 
 ```
 yum install openssl
-
 ```
 Change user to streamsadmin
 ```
@@ -30,14 +28,14 @@ su – streamsadmin
 
 ## Create an OpenSSL client configuration file
 ```
-mkdir $HOME/ ca-certificates
+mkdir $HOME/ca-certificates
 
-cd $HOME/ ca-certificates
+cd $HOME/ca-certificates
 
 vi myca.cnf
 ```
 
-Edit myca.cnf and put your countryName, countryName, localityName ... in openssl configuration file
+Edit myca.cnf and put your countryName, countryName, localityName and ... in openssl configuration file
 
 ```
 [ req ]
@@ -49,7 +47,7 @@ req_extensions         = v3_req
 
 [ req_distinguished_name ]
 countryName            = US
-countryName    = FL
+stateOrProvinceName    = FL
 localityName           = Miami
 organizationName       = MyOrg
 organizationalUnitName = MyOrgUnit
@@ -64,7 +62,6 @@ subjectAltName         = @sans
 [ sans ]
 DNS.0 = localhost
 DNS.1 = myexampleserver.com
-
 ```
 
 For more details about openssl configuration please refer to:
