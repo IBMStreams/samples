@@ -95,7 +95,8 @@ Trusted client certificate for streams-ca imported successfully for domain Strea
 
 ## Check domain property
 ```
-getdomainproperty -a | grep cer
+streamtool getdomainproperty -a | grep sws
+sws.clientAuthenticationCertificateRequired=true
 ```
 
 
