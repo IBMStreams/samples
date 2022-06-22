@@ -121,6 +121,8 @@ For more details about add a certificate to IBM Streams please refer to:
 
 https://www.ibm.com/docs/en/streams/4.3.0?topic=commands-streamtool-addcertificate
 
+https://www.ibm.com/docs/en/streams/4.3.0?topic=authentication-setting-up-client-certificate
+
 
 ```
 streamtool addcertificate -f $HOME/ca-certificates/streams.crt --clientid streams-ca
