@@ -5,7 +5,7 @@ This document describes how to create a signed certificate and add it to the IBM
 
 A installed and running IBM Streams on RedHat linux
 
-Procedure
+## Procedure
 Please complete the following steps on your RedHat IBM Streams Server.
 
 ## openssl
