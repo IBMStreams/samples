@@ -167,3 +167,13 @@ domain.managementResourceAllocationTags=jmx,audit,sws,authentication
 sws.clientAuthenticationCertificateRequired=false
 sws.clientAuthenticationEnabled=false
 ```
+# Check access to the streams console
+Get the SWS url with streamtool command
+
+```
+streamtool geturl
+https://your-streams-hostname.com:8443/streams/domain/console
+
+```
+
+Open this url in a browse and check the Streams Instance
