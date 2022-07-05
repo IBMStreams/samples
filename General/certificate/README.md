@@ -177,3 +177,17 @@ https://your-streams-hostname.com:8443/streams/domain/console
 ```
 
 Open this url in a browse and check the Streams Instance
+
+
+## Change the SWS client authentication
+
+It is possible to change the SWS client authentication via stremtool setdomainproperty
+```
+streamtool getdomainproperty -a | grep sws.clientAuthenticationEnabled
+sws.clientAuthenticationEnabled=false
+streamtool setdomainproperty sws.clientAuthenticationEnabled=true
+streamtool restartdomainservice sws
+streamtool getdomainproperty -a | grep sws.clientAuthenticationEnabled
+sws.clientAuthenticationEnabled=true
+```
+
